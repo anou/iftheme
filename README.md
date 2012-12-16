@@ -1,4 +1,5 @@
 iftheme
 =======
 
-Institut Français Theme by SMOL
+Institut Français Theme for WordPress by SMOL
+Contact: team(at)smol.org
