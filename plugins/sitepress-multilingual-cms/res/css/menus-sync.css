@@ -1,0 +1,7 @@
+.icl_msync i.inactive{color:#aaa; font-weight: normal}
+.icl_msync_add{ background-color: #CCFF99; padding:2px 4px;}
+.icl_msync_del{ background-color: #F5BFCC; padding:2px 4px; display:inline-block; margin-bottom: 2px;}
+.icl_msync_menu_title{background-color: #99CCCC;font-weight: bold;}
+input.icl_msync_add{background-color: #CCFF99; padding:2px 4px;}
+.icl_msync_menu_title small{font-weight:normal}
+

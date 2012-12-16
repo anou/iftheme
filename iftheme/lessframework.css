@@ -1,0 +1,447 @@
+/*	Less Framework 3
+	by Joni Korpi
+	http://lessframework.com	*/
+
+
+/*	Resets
+	------	*/
+
+html,body,div,span,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,address,cite,code,del,dfn,em,img,ins,kbd,q,samp,small,strong,sub,sup,var,b,i,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td,article,aside,canvas,details,figure,figcaption,hgroup,menu,header,footer,nav,section,summary,time,mark,audio,video{margin:0;padding:0;border:0}
+article,aside,canvas,figure,figure img,figcaption,hgroup,footer,header,nav,section,audio,video{display:block}
+a img{border:0}
+figure{position:relative}
+figure img{width:100%}
+
+
+/*	Typography presets
+	------------------	*/
+
+.gigantic {
+	font-size: 110px;
+	line-height: 120px;
+	letter-spacing: -2px;
+}
+
+.huge,
+h1 {
+	font-size: 68px;
+	line-height: 72px;
+	letter-spacing: -1px;
+}
+
+.large,
+h2 {
+	font-size: 42px;
+	line-height: 48px;
+}
+
+.big,
+h3 {
+	font-size: 26px;
+	line-height: 36px;
+}
+
+.normal,
+body {
+	text-shadow: 1px 1px 1px rgba(0,0,0,.1); -moz-text-shadow: 1px 1px 1px rgba(0,0,0,.1);
+}
+
+.small {
+	font-size: 13px;
+	line-height: 18px;
+}
+
+abbr,
+acronym{
+	border-bottom: 1px dotted;
+	cursor: help;
+	font-variant: small-caps;
+}
+address,
+cite,
+em,
+i{
+	font-style: italic;
+}
+a {
+	-webkit-transition: color .3s linear;
+	-o-transition: color .3s linear;
+	-moz-transition: color .3s linear;
+	text-decoration: none;
+	outline: none;
+}
+a:active,
+a:focus {
+	text-decoration: none;
+}
+
+/*	Default 8-column layout
+	60 px columns, 24 px gutters, 60 px margins, 768 px total
+	---------------------------------------------------------
+	1     2      3      4      5      6      7      8     
+	60px  144px  228px  312px  396px  480px  564px  648px	*/
+
+#if-logged-in {
+	position: relative;
+	width: 100%;
+	height: 24px;
+	line-height: 24px;
+	background: #000;
+	color: #aaa;
+	font-size: 10px;
+	z-index: 1000;
+}
+	#if-logged-in .container {
+		padding-top: 0;
+		padding-bottom: 0;
+	}
+	#if-logged-in p {
+		margin: 0;
+	}
+	#if-logged-in a:link,
+	#if-logged-in a:visited {
+		color: #fff;
+		text-decoration: none;
+	}
+	#if-logged-in a:hover {
+		text-decoration: underline;
+	}
+	#if-logged-in a:active {
+		text-decoration: underline;
+		margin-bottom: -1px;
+	}
+
+
+.container {
+	padding: 0 10px;
+	width: 630px;
+	margin: 0 auto;
+	overflow: hidden;
+}
+body .container.header {padding: 30px 10px 10px;}
+
+#header #top-menu-antennes {margin-left: 30px}
+	#header-image {
+		padding: 0;
+		overflow: hidden;
+	}
+		/* HEADER IMAGE
+			full size - 1068x300
+			8 column layout resized to 890x250 displayed at 648x250
+			5 column layout resized to 534x150 displayed at 396x150
+			3 column layout resized to 365x100 displayed at 228x100
+		 */
+		#header-image img {
+			width: 890px;
+			height: 250px;
+			margin-left: -121px;
+			padding: 0;
+		}
+	#content {
+		width: 630px; /* 5 columns */
+		float: left;
+		margin: 0;
+		padding: 20px;
+		/* overflow: hidden; */
+	}
+	#sidebar {
+		width: 630px;
+		margin:20px 0 10px;
+		padding: 20px 0;
+		float: left;
+		border-top: 1px dotted #008AC9
+		/* overflow: hidden; */
+	}
+	
+	#sidebar aside#sidebar-calendar {width: 300px; margin: 0 auto;}
+	#sidebar aside#sidebar-newsletter { display: block;}
+	#footer .container {width: 648px;}
+	
+	#footer .widget-footer.footer-logo {width: 128px; padding: 15px 10px; min-height: 228px; background-position: 10px 220px;}
+	#footer .widget-footer.footer-logo img {width: 130px; }
+	#footer .widget-footer {width: 130px; min-height: 218px;}
+	
+::selection {
+	background: #c6d8cd;
+}
+::-moz-selection {
+	background: #c6d8cd;
+}
+img::selection {
+	background: transparent;
+}
+img::-moz-selection {
+	background: transparent;
+}
+
+
+
+
+/*	13-column layout
+	60 px columns, 24 px gutters, 72 px margins, 1212 px total (extra space for scrollbars)
+	---------------------------------------------------------------------------------------
+	1     2      3      4      5      6      7      8      9      10     11     12     13
+	60px  144px  228px  312px  396px  480px  564px  648px  732px  816px  900px  984px  1068px	*/
+
+@media only screen and (min-width: 1212px) {
+	
+	.container {
+		padding: 0 72px;
+		width: 1068px;
+	}
+		#header-image img {
+			width: 1068px;
+			height: 300px;
+			margin-left: 0;
+		}
+		#content {
+			width: 608px; /* 8 columns */
+		}
+		#sidebar {
+			width: 356px; /* 5 columns */
+		}
+	
+}
+
+
+
+/*	5-column layout
+	60 px columns, 24 px gutters, 42 px margins, 480 px total
+	---------------------------------------------------------
+	1     2      3      4      5
+	60px  144px  228px  312px  396px	*/
+
+@media only screen and (max-width: 767px) and (min-width: 480px) {
+  body {background: #000 !important;}	
+	.container {
+		padding: 0 10px;
+		width: 420px;
+		-webkit-text-size-adjust: 100%; /* Prevents Mobile Safari from bumping up font sizes in landscape */
+	}
+		body nav#antennes {padding: 3px; border-radius: 5px}
+		body nav#antennes select{width:100%}
+		#header #header-widget {margin: 15px 10px 0 0;}
+		
+		body #slider,
+		body .slides_container div.slide,
+		body .slides_container div.slide img {width: 420px; height: 196px;}
+		body div.block-home {float: none; width: 420px}
+		
+		
+		.categ-image img,
+		body .featured-thumbnail-home img,
+		.featured-post-img img {width: 420px; height: auto;}
+		
+		body ul.display-children li {width:183px}
+		
+		.form-content label[for="bookmail"] {float: left}
+
+		#footer .container {width: 440px}
+		body #footer .widget-footer.footer-logo {width: 420px; margin-bottom: 10px; background-position: 383px 60px; min-height: 80px; padding-bottom: 0;}
+		#footer .widget-footer {width: 400px; min-height: 1px;}
+
+			#title {
+				height: 60px !important;
+			}
+				#tagline {
+					line-height: 20px !important;
+				}
+			#header-image {
+				height: 150px !important;
+				padding: 0;
+			}
+				#header-image img {
+					width: 534px;
+					height: 150px;
+					margin-left: -69px;
+				}
+		#content {
+			width: 420px; /* 5 columns */
+			float: none;
+			padding: 0;
+		}
+		#sidebar {
+			width: 420px; /* 5 columns */
+			float: none;
+			padding: 10px 0;
+		}
+	
+	.gigantic {
+		font-size: 68px;
+		line-height: 72px;
+		letter-spacing: -2px;
+	}
+	
+	.huge,
+	h1 {
+		font-size: 42px;
+		line-height: 48px;
+		letter-spacing: -1px;
+	}
+	
+	.large,
+	h2 {
+		font-size: 26px;
+		line-height: 36px;
+	}
+	
+	.big,
+	h3,
+	#post-single h2 {
+		font-size: 16px;
+		line-height: 25px;
+	}
+	
+	.normal,
+	body,
+	#post-single h3 {
+		font-size: 13px;
+		line-height: 18px;
+	}
+	
+	.small {
+		font-size: 11px;
+		line-height: 16px;
+	}
+	
+}
+
+
+/*	3-column layout
+	60 px columns, 24 px gutters, 46 px margins, 320 px total
+	---------------------------------------------------------
+	1     2      3
+	60px  144px  228px	*/
+
+@media only screen and (max-width: 479px) {
+
+	#if-logged-in {
+		height: 40px;
+		line-height: 20px;
+	}
+		#if-logged-in .right {
+			float: left;
+			clear: left;
+		}
+	
+	.container {
+		padding: 0 5px;
+		width: 290px;
+		-webkit-text-size-adjust: 100%; /* Prevents Mobile Safari from bumping up font sizes in landscape */
+	}
+	body .sides {display: none;}
+	body .container.header {padding: 10px 5px 5px;}
+
+		body #slider,
+		body .slides_container div.slide,
+		body .slides_container div.slide img {width: 290px; height: 135px;}
+		body div.block-home {float: none; width: 290px}
+		
+
+		#title {
+			height: 60px !important;
+		}
+			#tagline {
+				line-height: 20px !important;
+			}
+		#header-image img {
+			width: 365px;
+			height: 100px;
+			margin-left: -68px;
+		}
+		
+		#header #top-menu-antennes {margin: 5px 0 0 5px;}
+		#header #logo-container {margin-left: 5px}
+		#header #header-widget { margin: 5px 5px 0 0; }
+		
+		.container.for-angle {width: 280px}
+		
+		body nav#antennes {padding: 3px; border-radius: 5px}
+		body nav#antennes select{width:100%}
+		
+		#content {
+			padding: 10px;
+			width: 290px; /* 3 columns */
+			float: none;
+		}
+		#sidebar {
+			padding: 0;
+			width: 290px; /* 3 columns */
+			float: none;
+		}
+		body #sidebar aside#sidebar-calendar,
+		body #calendrier {width: 290px}
+		
+		body ul.display-children li {width:268px}
+		
+		.categ-image img,
+		body .post-single .featured-thumbnail img,
+		body .featured-post-img img,
+		body .featured-thumbnail-home img {width: 290px; height: auto;}
+
+		.date-time {padding-top: 10px; clear: left;}
+		
+		.booking-container .form-content {width: 271px}
+		.form-content label[for="bookmail"],
+		body .form-content label[for="captcha"] {float: left; margin: 0}
+		.form-content label[for="captcha"] span {display: block;}
+		
+		#footer .container {width: 300px}
+		body #footer .widget-footer.footer-logo {width: 280px; margin-bottom: 10px; background-position: 243px 60px; min-height: 80px; padding-bottom: 0;}
+		#footer .widget-footer {width: 260px; min-height: 1px;}
+	
+	
+	.gigantic {
+		font-size: 68px;
+		line-height: 72px;
+		letter-spacing: -2px;
+	}
+	
+	.huge,
+	h1 {
+		font-size: 42px;
+		line-height: 48px;
+		letter-spacing: -1px;
+	}
+	
+	.large,
+	h2 {
+		font-size: 26px;
+		line-height: 36px;
+	}
+	
+	.big,
+	h3,
+	#post-single h2 {
+		font-size: 16px;
+		line-height: 25px;
+	}
+	
+	.normal,
+	body,
+	#post-single h3 {
+		font-size: 11px;
+		line-height: 16px;
+	}
+	
+	.small {
+		font-size: 11px;
+		line-height: 16px;
+	}
+	
+}
+
+/*	Retina media query.
+	Overrides styles for devices with a 
+	device-pixel-ratio of 2+, such as iPhone 4.
+-----------------------------------------------    */
+
+@media 
+	only screen and (-webkit-min-device-pixel-ratio: 2),
+	only screen and (min-device-pixel-ratio: 2) {
+	
+	body {
+	
+	}
+	
+}

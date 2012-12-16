@@ -1,0 +1,8 @@
+{if #image.url}
+<td width="{#image.cellWidth}" height="{#image.cellHeight}">
+    <div class="wysija-image-container align-center" style="height:{#image.height}px; max-height:{#image.height}px;overflow:hidden;">
+        <a href="{#image.url}">
+            <img src="{#image.src}" height="{#image.height}" alt="{#image.alt}" width="{#image.width}" style="border:0;line-height:0.1em;" />
+        </a>
+    </div>
+</td>{/if}

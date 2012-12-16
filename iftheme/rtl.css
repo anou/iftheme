@@ -1,0 +1,61 @@
+/*
+Theme Name: Theme Institut Français
+
+Adding support for language written in a Right To Left (RTL) direction is easy -
+it's just a matter of overwriting all the horizontal positioning attributes
+of your CSS stylesheet in a separate stylesheet file named rtl.css.
+
+http://codex.wordpress.org/Right_to_Left_Language_Support
+
+*/
+
+/* =Reset reset
+----------------------------------------------- */
+
+caption, th, td {
+	text-align: right;
+}
+
+/* =Structure
+----------------------------------------------- */
+
+body {
+	direction:rtl;
+	unicode-bidi:embed;
+	text-align: right;
+}
+
+.left-corner {border-right: 25px solid transparent; border-left: 0 none;}
+.right-corner {border-left: 25px solid transparent; border-right: 0 none;}
+
+#side-right.sides {right: auto; left: 0;}
+
+#logo-container {float: right;}
+#header-widget {float: left;}
+  #searchsubmit {margin: 0 5px 0 0;}
+#header_language_list { text-align: left;}
+ #header_language_list ul li {margin: 0 5px 0 0;}
+#top-menu-antennes {
+    float: right;
+    margin: 0 60px 0 0;
+}
+
+#content{float: right;}
+
+div.block-home { float: right; margin:0 0 20px 10px}
+
+
+#sidebar {float: left;}
+ 
+ p.wysija-instruct { background: transparent url(images/fleche-nl-rtl.png) no-repeat left bottom; padding: 0 0 0 20px; float: left;}
+ .widget_wysija .wysija-submit {float: left;}
+ .wysija-p-email {float: right;}
+ input.wysija-email { padding-left: 0; padding-right: 10px; }
+
+#footer .footer-block {float: right;}
+#footer .footer-block.footer-logo {margin: 0 0 0 10px;}
+#footer .footer-block.footer-logo { background-position: 183px bottom;}
+
+/*SLIDERS*/
+#slider .caption {right: auto; left: 0; padding:3px 15px 11px 40px; }
+#slider .pagination li {margin: 0 0 0 5px;}

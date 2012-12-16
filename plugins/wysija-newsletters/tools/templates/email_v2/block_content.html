@@ -1,0 +1,37 @@
+{if ! $background_color}{set var="$background_color" value="$styles.body.background"}{/if}
+<div style="{if $background_color}background-color:{$background_color|color};{/if}clear:both; margin-bottom: 0; margin-left: 0; margin-right: 0; margin-top: 0; padding: 0;">
+    <table style="border-collapse: collapse; mso-table-lspace:0pt; mso-table-rspace:0pt; border-spacing: 0; margin: auto;" width="{#block_width|default:600}">
+        <tr style="{if $background_color}background-color:{$background_color|color};{/if}">
+            <td style="{if $background_color}background-color:{$background_color|color};{/if}clear:both;margin-bottom:0;margin-left:0;margin-right:0;margin-top:0;padding-top:10px;padding-bottom:10px;padding-left:18px;padding-right:18px;" width="{#block_width|default:600}">
+                <div style="width:564px;margin-bottom:0;margin-left:0;margin-right:0;margin-top:0;padding:0;">
+                {if #image}
+                    {if !$image_alignment}{set var="$image_alignment" value="#image.alignment"}{/if}
+                    {set var="$container_width" value="564"}
+                    {set var="$container_height" value="#image.height"}
+                    {if #text}
+                        {if $image_alignment != 'center'}
+                            {set var="$container_width" value="#image.width|inc:13"}
+                            {set var="$container_height" value="#image.height|inc:3"}
+                        {/if}
+                        {if $image_alignment == 'center'}
+                            {set var="$container_height" value="#image.height|inc:8"}
+                        {/if}
+                    {/if}
+                    <div class="wysija-image-container align-{$image_alignment}" style="width:{$container_width}px;height:{$container_height}px;max-height:{$container_height}px;overflow:hidden;">
+                        <table align="{$image_alignment}" border="0" cellpadding="0" cellspacing="0" style="{if $background_color}border:1px solid {$background_color|color};{/if}border-collapse: collapse; mso-table-lspace:0pt; mso-table-rspace:0pt; border-spacing: 0;">
+                            <tr style="{if $background_color}background-color:{$background_color|color};{/if}">
+                                <td style="{if $background_color}background-color:{$background_color|color};{/if}mso-table-lspace:0;mso-table-rspace:0;clear:both;margin-bottom:0;margin-left:0;margin-right:0;margin-top:0;padding-top:0;padding-bottom:0;padding-left:0;padding-right:0;" height="{$container_height}" width="{$container_width}" valign="top" align="{$image_alignment}">
+                                    {if #image.url}<a href="{#image.url}" style="outline:0;border:0;display:block;height:{#image.height}px;width:{#image.width}px;">{/if}
+                                    <img src="{#image.src}" height="{#image.height}" alt="{#image.alt|url_decode|htmlentities}" width="{#image.width}" style="border:0;line-height:0.1em;margin:0;padding:0;" />
+                                    {if #image.url}</a>{/if}
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                {/if}
+                {if #text}{#text.value|base64_decode|format_text}{/if}
+                </div>
+            </td>
+        </tr>
+    </table>
+</div>

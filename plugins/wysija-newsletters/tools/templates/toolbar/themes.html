@@ -1,0 +1,6 @@
+{foreach name="#themes" key="j" value="theme"}
+    <li id="wysija-theme-{#theme.name}">
+        <a class="wysija_theme" href="javascript:;" rel="{#theme.name}" title="{#theme.name|ucfirst}"><img src="{#theme.thumbnail}" wysija_src="{#theme.screenshot}" wysija_width="{#theme.width}" wysija_height="{#theme.height}"/></a>
+        <span style="display: none;" class="delete-wrap"><span class="delete del-attachment">{#theme.name}</span></span>
+    </li>
+{/foreach}

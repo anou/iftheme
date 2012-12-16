@@ -1,0 +1,50 @@
+/* --- THEME FORCE EVENTS (CUSTOM POST TYPE) --- */
+
+/* Columns CPT Events */
+
+th#if_col_ev_date, th#if_col_ev_cat {width:150px}
+td.if_col_ev_date em{color:gray;}
+th#if_col_ev_times{width:150px}
+th#if_col_ev_thumb{width:100px}
+
+th#if_col_menu_order{width:60px}
+td.if_col_menu_id{color:gray;text-align:right;}
+td.if_col_menu_order{color:#219b38;text-align:right;}
+th#if_col_menu_thumb{width:100px}
+td.if_col_menu_thumb img{border:1px solid #d8d8d8}
+th#if_col_menu_cat,th#if_col_menu_title,th#if_col_menu_size{width:150px}
+
+/* Metabox */
+
+.if-meta { display: inline-block;  }
+.if-meta ul li { min-height: 20px; clear:both; margin: 0 0 15px 0;}
+.if-meta ul li label { width: 200px; display:block; float:left; padding-top:4px; }
+.if-meta ul li input { width:auto; display:block; float:left; }
+.if-meta ul li em { width: auto; display:block; float:left; color:red; margin-left:10px; padding-top: 4px; }
+
+.if-meta ul li input[type="checkbox"] {
+    display: inline-block;
+    vertical-align: baseline;
+    width: auto;
+    float: none;
+    margin-left: 10px
+}
+
+.container-disciplines { display: inline-block;}
+
+.at-field .desc-field {color: red !important;}
+
+/*Validation css*/
+.if-meta ul li label.error,
+label.error {
+	display: inline-block;
+	float: none;
+	background: #ffd2d2;
+	padding: 4px 10px;
+	width:auto;
+}
+
+/* .if-meta ul li .container-disciplines label.error { position: absolute; top:10px; right: 20px;} */
+.if-meta ul li .container-disciplines label.error { position: relative; top: -69px; width: 100%; float: left; left: -10px;}
+
+input.error, select.error {border:1px solid red !important}

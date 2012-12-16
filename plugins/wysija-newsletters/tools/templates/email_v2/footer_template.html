@@ -1,0 +1,17 @@
+{if #image}
+<table cellspacing="0" id="wysija_footer" align="center" style="background: none; background-color:{#styles.footer.background|color}; border-collapse: collapse; border-spacing: 0; margin-bottom: 0; margin-left: 0; margin-right: 0; margin-top: 0; padding-bottom: 0; padding-left: 0; padding-right: 0; padding-top: 0; width:600px;" width="600" cellpadding="0"><tr valign="top"><td id="wysija_header_content" style="margin-bottom: 0; margin-left: 0; margin-right: 0; margin-top: 0; padding-bottom: 0; padding-left: 0; padding-right: 0; padding-top: 0;" width="600">
+<div style="clear: both; margin-bottom: 0; margin-left: 0; margin-right: 0; margin-top: 0; padding: 0;">
+    <table style="border-collapse: collapse; border-spacing: 0; margin: auto;" width="{#block_width|default:564}">
+        <tr>
+            {if #image.alignment == 'right'}<td style="margin-bottom: 0; margin-left: 0; margin-right: 0; margin-top: 0; padding: 0;" width="{#block_width|dec:#image.width}">&nbsp;</td>{/if}
+            <td style="margin-bottom: 0; margin-left: 0; margin-right: 0; margin-top: 0; padding: 0;" width="{if #image.alignment == 'center'}{#block_width|default:564}{/if}{if #image.alignment != 'center'}{#image.width}{/if}">
+                <div class="wysija-image-container alone-{#image.alignment}" style="height:{#image.height}px; max-height:{#image.height}px;overflow:hidden;">
+                    {if #image.url}<a href="{#image.url}" style="margin-bottom: 0; margin-left: 0; margin-right: 0; margin-top: 0; padding: 0;">{/if}<img class="wysija-image-{#image.alignment}" src="{#image.src}" height="{#image.height}" alt="{#image.alt|url_decode|htmlentities}" width="{#image.width}" hspace="0" vspace="0" style="border:0;">{if #image.url}</a>{/if}
+                </div>
+            </td>
+            {if #image.alignment == 'left'}<td style="margin-bottom: 0; margin-left: 0; margin-right: 0; margin-top: 0; padding: 0;" width="{#block_width|dec:#image.width}">&nbsp;</td>{/if}
+        </tr>
+    </table>
+</div>
+</td></tr></table>
+{/if}

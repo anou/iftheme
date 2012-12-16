@@ -1,0 +1,8 @@
+<div style="{if $background_color}background-color:{$background_color|color};{/if}clear:both; margin-bottom: 0; margin-left: 0; margin-right: 0; margin-top: 0; padding: 0;">
+<table style="{if $background_color}background-color:{$background_color|color};{/if}border-collapse: collapse; mso-table-lspace:0pt; mso-table-rspace:0pt; border-spacing: 0; margin: auto;" width="{#block_width|default:600}"><tr><td style="clear:both;margin-bottom:0;margin-left:0;margin-right:0;margin-top:0;padding-top:10px;padding-bottom:10px;padding-left:18px;padding-right:18px;" width="{#block_width|default:600}">
+    <table align="{#alignment}" width="{#width}" border="0" cellspacing="0" cellpadding="0" style="border-collapse: collapse; border-spacing: 0;">
+        <tr valign="top">
+            {foreach name="#items" key="j" value="image"}{include file="templates/email_v2/block_gallery_item.html"}{/foreach}
+        </tr>
+    </table>
+</td></tr></table></div>

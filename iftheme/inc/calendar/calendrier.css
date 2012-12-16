@@ -1,0 +1,64 @@
+/* CSS Document */
+
+#calendrier {
+	font-family:arial;
+	width:250px;
+	padding:10px;
+}
+#calendrier a{
+	text-decoration:underline;
+	color:#0033FF;
+	cursor:pointer;
+}
+#calendrier table{
+	border-collapse:collapse;
+	width:100%;
+}
+#calendrier th{
+	font-size:13px;
+	border-top:1px solid;
+	border-bottom:1px solid #000000;
+}
+#calendrier th.mois{
+	font-size:14px;
+	padding:3px;
+}
+#calendrier th.semaine{
+	width:20px;
+	border-bottom:1px solid;
+}
+#calendrier th.jour{
+	width:20px;
+}
+
+#calendrier td{
+	font-size:12px;
+	text-align:center;
+	border-top:1px solid #000000;
+	border-bottom:1px solid #000000;
+	width:25px;
+	padding:2px;
+	font-weight:bold;
+}
+#calendrier td.today{
+	background-color:#66CCFF;
+}
+#calendrier td.inactif{
+	font-style:italic;
+	color:#999999;
+}
+#calendrier td.actif{
+}
+#calendrier td.event{
+	background-color:#f3f3f3;
+}
+#calendrier_events{
+	font-size:12px;
+	background-color:#FFFF99;
+}
+#calendrier_events .event{
+	margin:2px;
+	padding:2px;
+}
+
+

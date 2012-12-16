@@ -1,0 +1,16 @@
+/* .bg-frame {float: left; margin: 0 10px 5px 0} */
+
+.image-radio-option label,
+.image-checkbox-option label {
+    display: block;
+    float: left;
+    margin: 0 30px 20px 2px;
+    position: relative;
+}
+
+.bg-img-preview {overflow: hidden; width: 150px; height: auto; border: 2px solid gray; margin-top: -2px; }
+.bg-img-preview img {display: block; }
+.actual-img {border: 2px solid gray; background: #333; border-bottom: 0px none; padding: 3px; color:white; font-style: italic; }
+.small {font-size: 9px; font-style: italic;}
+
+.warning {background: #900000; color: #fff; padding: 5px; border: 2px solid #bbb;}

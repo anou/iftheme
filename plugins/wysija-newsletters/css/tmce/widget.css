@@ -1,0 +1,43 @@
+#widget-form{
+    width: 430px;
+    float:left;
+    margin: 5px;
+    padding: 20px;
+}
+#widget-prev{
+   float: left;
+    width: 240px; 
+}
+#widget-preview{
+    border-color: #555555;
+    
+    margin: 5px;
+    padding: 20px;
+    position: relative;
+    
+    border-style: dashed;
+}
+
+#preview-label{
+    display: block;
+    float: left;
+    margin: 0;
+    padding: 3px;
+    position: absolute;
+    right: 3px;
+    top: 3px;
+    color:#a10b0b;
+    border-color: #a10b0b;
+    border-style: dashed;
+}
+
+body,html{
+    min-width:725px;
+    width:725px;
+    margin:0 !important;
+}
+
+#formTable{
+    padding-top: 10px;
+}
+

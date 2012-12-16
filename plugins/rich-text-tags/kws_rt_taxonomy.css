@@ -1,0 +1,6 @@
+/* For Rich Text Tags & Taxonomy WordPress Plugin */
+
+.wp-editor-container .quicktags-toolbar input.ed_button {
+	border-width: 0;
+	width:auto;
+}

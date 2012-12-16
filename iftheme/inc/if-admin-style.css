@@ -1,0 +1,24 @@
+/*
+ * CSS for admin side for Institut Français Theme
+ * by SMOL - anou@smol.org
+ */
+.if-form-table { width: auto;}
+.if-form-table th {padding: 6px 3px 3px 10px; width: auto;}
+.if-form-table td {padding: 0 10px 0 0; border-right: 1px dotted #008AC9}
+
+.description{font-family: sans-serif;font-size: 12px;font-style: italic;}
+
+#upload_img_slider .at-inline .at-text {width: 200px;}
+
+.warning {background: #900000; color: #fff; padding: 5px; border: 2px solid #bbb;}
+
+.wp-admin.widgets-php select {max-width: 220px;}
+
+.edit-tags-php #col-right {width:45%}
+.edit-tags-php #col-left {width:55%}
+.edit-tags-php th#categ_image {width:65px}
+
+#cpt_info_box {display: none;}
+
+#if_book_desc_tbl {height: 200px !important}
+#if_book_desc_ifr {height: 100px !important}
