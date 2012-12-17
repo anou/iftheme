@@ -4,7 +4,7 @@
 require_once("meta-box-class/my-meta-box-class.php");
 
 global $current_user; get_currentuserinfo();
-var_dump($current_user);
+
 /*
 * configure your meta box
 */
