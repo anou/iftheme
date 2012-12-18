@@ -1,7 +1,7 @@
 jQuery(document).ready(function($) { 
 	
   $(".ifdate").datepicker({
-    dateFormat: 'D, d M, yy',
+    dateFormat: 'D, M d, yy',
     showOn: 'button',
     buttonImage: 'http://'+window.location.hostname+'/wp-content/themes/iftheme/inc/events/images/icon-datepicker.png',
     buttonImageOnly: true,

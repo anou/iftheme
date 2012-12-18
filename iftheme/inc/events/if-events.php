@@ -32,6 +32,7 @@ function if_events_meta () {
 
     global $post;
     $custom = get_post_custom($post->ID);
+    
     $meta_sd = $custom["if_events_startdate"][0];
     $meta_ed = !empty($custom["if_events_enddate"][0]) ? $custom["if_events_enddate"][0] : NULL;
     $meta_time = $custom["if_events_time"][0]; 
@@ -46,8 +47,8 @@ function if_events_meta () {
 
     // - convert to pretty formats -
 
-    $clean_sd = date("D, d M, Y", $meta_sd);
-    $clean_ed = !$meta_ed ? '' : date("D, d M, Y", $meta_ed);
+    $clean_sd = date("D, M d, Y", $meta_sd);
+    $clean_ed = !$meta_ed ? '' : date("D, M d, Y", $meta_ed);
     //$clean_st = date($time_format, $meta_st);
 
 
