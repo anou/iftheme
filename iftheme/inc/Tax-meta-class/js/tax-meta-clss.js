@@ -13,7 +13,17 @@
 var $ =jQuery.noConflict();
 function update_repeater_fields(){
     
-      
+    /**
+     * WysiWyg editor
+     *
+     * @since 1.9.6
+     */
+    $(".theEditor").each(function(){
+      if ( typeof( tinyMCE ) == "object" && typeof( tinyMCE.execCommand ) == "function" ) {
+      tinyMCE.execCommand("mceAddControl", false, $(this).attr('id'));
+      }
+    });
+    
     /**
      * Datepicker Field.
      *
@@ -290,12 +300,14 @@ jQuery(document).ready(function($) {
     window.restore_send_to_editor = window.send_to_editor;
     //overwrite send to editor function
     window.send_to_editor = function(html) {
-      imgurl = jQuery('img',html).attr('src');
-      img_calsses = jQuery('img',html).attr('class').split(" ");
+      d = jQuery('<div>').html(html);
+      imgurl = d.find('img').attr('src');
+      img_calsses = d.find('img').attr('class').split(" ");
       att_id = '';
       jQuery.each(img_calsses,function(i,val){
         if (val.indexOf("wp-image") != -1){
           att_id = val.replace('wp-image-', "");
+          return true;
         }
       });
 

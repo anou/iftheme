@@ -39,6 +39,7 @@ switch($_REQUEST['icl_ajx_action']){
             $default_category_main = $wpdb->get_var("SELECT name FROM {$wpdb->terms} t JOIN {$wpdb->term_taxonomy} tx ON t.term_id=tx.term_id
                 WHERE term_taxonomy_id='{$default_categories[$this->get_default_language()]}' AND taxonomy='category'");            
             $default_category_trid = $wpdb->get_var("SELECT trid FROM {$wpdb->prefix}icl_translations WHERE element_id={$default_categories[$this->get_default_language()]} AND element_type='tax_category'");
+            
             foreach($active_langs as $lang){
                 $is_default = ($this->get_default_language()==$lang['code']);
                 $iclresponse .= '<li ';
@@ -56,6 +57,7 @@ switch($_REQUEST['icl_ajx_action']){
                         $this->switch_locale($lang['code']);
                         $tr_cat = __('Uncategorized', 'sitepress');
                         $this->switch_locale();
+                        if($tr_cat == 'Uncategorized') $tr_cat .= ' @' . $lang['code'];
                    }else{
                         $tr_cat = $default_category_main . ' @' . $lang['code'];    
                    }
@@ -755,16 +757,19 @@ switch($_REQUEST['icl_ajx_action']){
         }
         break;
     case 'icl_custom_tax_sync_options':
-        foreach($_POST['icl_sync_tax'] as $k=>$v){
-            $iclsettings['taxonomies_sync_option'][$k] = $v;
-            if($v){
-                $this->verify_taxonomy_translations($k);        
-            }            
+        if(!empty($_POST['icl_sync_tax'])){
+            foreach($_POST['icl_sync_tax'] as $k=>$v){
+                $iclsettings['taxonomies_sync_option'][$k] = $v;
+                if($v){
+                    $this->verify_taxonomy_translations($k);        
+                }            
+            }
+            $this->save_settings($iclsettings);
         }
-        $this->save_settings($iclsettings);
         echo '1|';
         break;
     case 'icl_custom_posts_sync_options':    
+    
         if(!empty($_POST['icl_sync_custom_posts'])){
             foreach($_POST['icl_sync_custom_posts'] as $k=>$v){            
                 $iclsettings['custom_posts_sync_option'][$k] = $v;
@@ -772,6 +777,39 @@ switch($_REQUEST['icl_ajx_action']){
                     $this->verify_post_translations($k);                
                 }            
             }
+            
+            if($this->settings['posts_slug_translation']['on']){
+                if(isset($_POST['translate_slugs']) && !empty($_POST['translate_slugs'])){
+                    foreach($_POST['translate_slugs'] as $type => $data){
+                        
+                        if(empty($_POST['icl_sync_custom_posts'][$type])) continue;
+                        
+                        $iclsettings['posts_slug_translation']['types'][$type] = intval(!empty($data['on']));
+                        
+                        if(empty($iclsettings['posts_slug_translation']['types'][$type])) continue;
+                        
+                        // assume it is already registered
+                        $post_type_obj = get_post_type_object($type);
+                        $slug = $post_type_obj->rewrite['slug'];
+                        $string_id = $wpdb->get_var($wpdb->prepare("SELECT id FROM {$wpdb->prefix}icl_strings WHERE name = %s AND value = %s ", 'URL slug: ' . $slug, $slug));
+                        if(empty($string_id)){
+                            $string_id = icl_register_string('WordPress', 'URL slug: ' . $slug, $slug);
+                        }
+                        if($string_id){
+                            foreach($this->get_active_languages() as $lang){
+                                if($lang['code'] != $this->settings['st']['strings_language']){
+                                    $data['langs'][$lang['code']] = sanitize_title_with_dashes($data['langs'][$lang['code']]);
+                                    
+                                    $data['langs'][$lang['code']] = urldecode($data['langs'][$lang['code']]);
+                                    icl_add_string_translation($string_id, $lang['code'], $data['langs'][$lang['code']] , ICL_STRING_TRANSLATION_COMPLETE);
+                                }
+                            }
+                            icl_update_string_status($string_id);
+                        }
+                    }
+                }
+            }
+            
             $this->save_settings($iclsettings);
         }
         echo '1|';
@@ -845,6 +883,11 @@ switch($_REQUEST['icl_ajx_action']){
         echo '1|';
         break;
         
+           
+    case 'update_option':
+        $iclsettings[$_REQUEST['option']] = $_REQUEST['value'];
+        $this->save_settings($iclsettings);
+        break;
            
     default:
         do_action('icl_ajx_custom_call', $_REQUEST['icl_ajx_action'], $_REQUEST);

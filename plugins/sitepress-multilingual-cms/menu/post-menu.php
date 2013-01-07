@@ -205,6 +205,14 @@
                                 }
                             }
                         }
+                        // do not allow creating duplicates for posts for which parents are not translated
+                        if($post->post_parent){
+                            $parent_tr = icl_object_id($post->post_parent, $post->post_type, false, $lang['code']);
+                            if(is_null($parent_tr)){
+                                $ddisabled = ' disabled="disabled"';
+                                $dtitle    = esc_attr__("Can't create a duplicate. The parent of this post is not translated.", 'sitepress');
+                            }
+                        }
                     ?>                
                     <input<?php echo $ddisabled?> type="checkbox" name="icl_dupes[]" value="<?php echo $lang['code'] ?>" title="<?php echo $dtitle ?>" />
                 </td>

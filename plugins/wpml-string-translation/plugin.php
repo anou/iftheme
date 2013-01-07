@@ -1,16 +1,16 @@
-<?php 
+<?php
 /*
 Plugin Name: WPML String Translation
 Plugin URI: http://wpml.org/
 Description: Adds theme and plugins localization capabilities to WPML. <a href="http://wpml.org">Documentation</a>.
 Author: ICanLocalize
 Author URI: http://wpml.org
-Version: 1.5.1
+Version: 1.5.3
 */
 
 if(defined('WPML_ST_VERSION')) return;
 
-define('WPML_ST_VERSION', '1.5.1');
+define('WPML_ST_VERSION', '1.5.3');
 define('WPML_ST_PATH', dirname(__FILE__));
 
 require WPML_ST_PATH . '/inc/constants.php';

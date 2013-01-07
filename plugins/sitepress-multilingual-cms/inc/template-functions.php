@@ -465,3 +465,57 @@ function wpml_get_language_information($post_id = null){
     return $info;    
     
 }
+
+
+function wpml_custom_post_translation_options($type_id){
+    global $sitepress, $sitepress_settings;
+    
+    $out = '<table id="wpcf-types-form-visibility-table" class="wpcf-types-form-table widefat"><thead><tr><th>' . __('Translation',
+                'sitepress') . '</th></tr></thead><tbody><tr><td>';
+    
+    $type = get_post_type_object($type_id);
+    
+    $translated = $sitepress->is_translated_post_type($type_id);
+    if(defined('WPML_TM_VERSION')){
+        $link = admin_url('admin.php?page=' . WPML_TM_FOLDER . '/menu/main.php&sm=mcsetup#icl_custom_posts_sync_options');
+        $link2 = admin_url('admin.php?page=' . WPML_TM_FOLDER . '/menu/main.php&sm=mcsetup#icl_slug_translation');
+        
+    }else{
+        $link = admin_url('admin.php?page=' . ICL_PLUGIN_FOLDER . '/menu/translation-options.php#icl_custom_posts_sync_options');    
+        $link2 = admin_url('admin.php?page=' . ICL_PLUGIN_FOLDER . '/menu/translation-options.php#icl_slug_translation');    
+    }
+    
+    if($translated){
+        
+        $out .= sprintf(__('%s is translated via WPML. %sClick here to change translation options.%s', 'sitepress'), 
+            '<strong>' . $type->labels->singular_name . '</strong>', '<a href="'.$link.'">', '</a>');
+
+        if($type->rewrite['enabled']){
+            
+            if($sitepress_settings['posts_slug_translation']['on']){                                         
+                if(empty($sitepress_settings['posts_slug_translation']['types'][$type_id])){
+                    $out .= '<ul><li>' . __('Slugs are currently not translated.', 'sitepress') . '<li></ul>';
+                }else{
+                    $out .= '<ul><li>' . __('Slugs are currently translated. Click the link above to edit the translations.', 'sitepress') . '<li></ul>';
+                }
+            }else{
+                $out .= '<ul><li>' . sprintf(__('Slug translation is currently disabled in WPML. %sClick here to enable.%s', 'sitepress'), 
+                    '<a href="'.$link2.'">', '</a>') . '</li></ul>';
+            }
+            
+        }
+        
+        
+    }else{
+        
+        $out .= sprintf(__('%s is not translated. %sClick here to make this post type translatable.%s', 'sitepress'), 
+            '<strong>' . $type->labels->singular_name . '</strong>', '<a href="'.$link.'">', '</a>');
+        
+    }
+    
+    $out .= '</tbody></table>';
+    
+    return $out;
+    
+}
+

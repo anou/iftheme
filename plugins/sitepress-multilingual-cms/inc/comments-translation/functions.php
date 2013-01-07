@@ -122,14 +122,14 @@ class IclCommentsTranslation{
             
             preg_match('#<span class="pending-count">([0-9]+)</span>#', $views[ 'moderated' ], $matches);
             if($matches[1] > 0){
-                $results = $wpdb->get_results($wpdb->prepare("
+                $results = $wpdb->get_results("
                     SELECT tr.language_code, COUNT(tr.element_id) AS c
                     FROM {$wpdb->comments} c 
                     JOIN {$wpdb->prefix}icl_translations tr ON tr.element_id = c.comment_ID
                     WHERE c.comment_approved = '0'  AND tr.element_type = 'comment' 
                     GROUP BY tr.language_code                                                                              
                     HAVING c > 0
-                "));
+                ");
                 if(!empty($results)){
                     foreach($results as $r){
                         $_ldetails = $sitepress->get_language_details($r->language_code);

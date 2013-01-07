@@ -325,7 +325,7 @@ function icl_local_edit_translator_form($action = 'add', $selected_translator = 
       $output .= '
       <input class="button-primary" type="submit" value="';
       $output .= $selected_translator ? esc_attr(__('Update', 'wpml-translation-management')) : esc_attr(__('Add as translator', 'wpml-translation-management'));
-      $output .= '" /><input type="submit" value="' . __('Cancel', 'wpml-translation-management') . '" name="cancel" class="button-secondary" onclick="history.go(-1); return false;" />';
+      $output .= '" />&nbsp;<input type="submit" value="' . __('Cancel', 'wpml-translation-management') . '" name="cancel" class="button-secondary" onclick="history.go(-1); return false;" />';
     }
     
     $return['content'] = $output;

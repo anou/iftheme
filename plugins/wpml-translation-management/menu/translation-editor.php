@@ -6,8 +6,8 @@ if(empty($job)){
     include WPML_TM_PATH . '/menu/translations-queue.php';
     return;
 }
-$rtl_original = in_array($job->source_language_code, array('ar','he','fa'));
-$rtl_translation = in_array($job->language_code, array('ar','he','fa'));
+$rtl_original = $sitepress->is_rtl($job->source_language_code);
+$rtl_translation = $sitepress->is_rtl($job->language_code);
 $rtl_original_attribute = $rtl_original ? ' dir="rtl"' : ' dir="ltr"';
 $rtl_translation_attribute = $rtl_translation ? ' dir="rtl"' : ' dir="ltr"';
 
@@ -116,7 +116,8 @@ $rtl_translation_attribute = $rtl_translation ? ' dir="rtl"' : ' dir="ltr"';
                                     $settings = array(
                                         'media_buttons'     => false,
                                         'textarea_name'     => 'fields['.$element->field_type.'][data]',
-                                        'textarea_rows'     => 20
+                                        'textarea_rows'     => 20,
+                                        'editor_css'        => $rtl_translation ? ' <style type="text/css">.wp-editor-container textarea.wp-editor-area{direction:rtl;}</style>' : ''
                                     );
                                     wp_editor($icl_tm_translated_content, 'fields['.$element->field_type.'][data]', $settings);                               
                                 }else{
@@ -130,7 +131,8 @@ $rtl_translation_attribute = $rtl_translation ? ' dir="rtl"' : ' dir="ltr"';
                             <?php foreach($icl_tm_original_content as $k=>$c): ?>
                             <?php 
                                 // if have we added/removed/replaced attached taxonomies check for existing translations!
-                                if((empty($icl_tm_translated_content[$k]) && !empty($icl_tm_translated_taxs[$element->field_type][$k])) || ($icl_tm_translated_content[$k] != $icl_tm_translated_taxs[$element->field_type][$k])){                                
+                                $__is_translated = isset($icl_tm_translated_taxs[$element->field_type]) && !empty($icl_tm_translated_taxs[$element->field_type][$k]);
+                                if((empty($icl_tm_translated_content[$k]) && $__is_translated) || ($__is_translated && ($icl_tm_translated_content[$k] != $icl_tm_translated_taxs[$element->field_type][$k]))){                                
                                     $icl_tm_translated_content[$k] = $icl_tm_translated_taxs[$element->field_type][$k];    
                                     $icl_tm_f_translated = true;
                                 }else{
@@ -244,7 +246,7 @@ $rtl_translation_attribute = $rtl_translation ? ' dir="rtl"' : ' dir="ltr"';
                                 </div>
                                 <?php endforeach;?>
                                 <?php else: ?>
-                                <div class="icl_single"<?php if ($rtl_original) echo ' dir="rtl" style="text-align:right;"'; else echo ' dir="ltr" style="text-align:left;"'; ?>><span style="white-space:pre;" id="icl_tm_original_<?php echo str_replace(' ', '__20__', $element->field_type) ?>"><?php echo esc_html($icl_tm_original_content) ?></span><br clear="all"/></div>
+                                <div class="icl_single"<?php if ($rtl_original) echo ' dir="rtl" style="text-align:right;"'; else echo ' dir="ltr" style="text-align:left;"'; ?>><span style="white-space:pre-wrap;" id="icl_tm_original_<?php echo str_replace(' ', '__20__', $element->field_type) ?>"><?php echo esc_html($icl_tm_original_content) ?></span><br clear="all"/></div>
                                 <?php endif; ?>
                             </div>
                             <?php /* ORIGINAL CONTENT */ ?>

@@ -81,10 +81,12 @@ function icl_st_init(){
                 $widgets = (array)get_option('sidebars_widgets');
                 foreach($widgets as $k=>$w){             
                     if('wp_inactive_widgets' != $k && $k != 'array_version'){
-                        foreach($widgets[$k] as $v){
-                            if(preg_match('#text-([0-9]+)#i',$v, $matches)){
-                                $active_text_widgets[] = $matches[1];
-                            }                            
+                        if(is_array($widgets[$k])){
+                            foreach($widgets[$k] as $v){
+                                if(preg_match('#text-([0-9]+)#i',$v, $matches)){
+                                    $active_text_widgets[] = $matches[1];
+                                }                            
+                            }
                         }
                     }
                 }
@@ -953,6 +955,20 @@ function icl_get_string_translations($offset=0){
     return $string_translations;
 }
 
+function icl_get_string_translations_by_id($string_id){
+    global $wpdb;
+    
+    $translations = array();
+    
+    $results = $wpdb->get_results($wpdb->prepare("SELECT language, value, status FROM {$wpdb->prefix}icl_string_translations WHERE string_id=%d", $string_id));
+    foreach($results as $row){
+        $translations[$row->language] = array('value' => $row->value, 'status' => $row->status);
+    }
+    
+    return $translations;
+    
+}
+
 function icl_get_relative_translation_status($string_id, $translator_id){
     global $wpdb, $sitepress, $sitepress_settings;
     
@@ -1073,9 +1089,9 @@ function icl_sw_filters_gettext_with_context($translation, $text, $_gettext_cont
 
 function icl_sw_filters_ngettext($translation, $single, $plural, $number, $domain, $_gettext_context = false){    
     if($number == 1){
-        return @sprintf(icl_sw_filters_gettext($translation, $single, $domain, $_gettext_context), $number);    
+        return icl_sw_filters_gettext($translation, $single, $domain, $_gettext_context);    
     }else{
-        return @sprintf(icl_sw_filters_gettext($translation, $plural, $domain, $_gettext_context), $number);
+        return icl_sw_filters_gettext($translation, $plural, $domain, $_gettext_context);            
     }
 }
 
@@ -1291,14 +1307,12 @@ function icl_t_cache_lookup($context, $name){
     static $icl_st_cache;
     $ret_value = false;
     
-    if ( defined('DOING_CRON') || isset($_GET['doing_wp_cron']) ) return $ret_value;
-        
     if(!isset($icl_st_cache[$context])){  //CACHE MISS (context)    
         
         $icl_st_cache[$context] = array();
                         
         // determine the correct current language
-        if(defined('DOING_AJAX')){            
+        if(defined('DOING_AJAX') || defined('DOING_CRON') || isset($_GET['doing_wp_cron'])){            
              $current_language = $sitepress->get_language_cookie();
         }elseif(is_admin()){            
             $current_language = $sitepress->get_admin_language();                 
@@ -2154,7 +2168,7 @@ function icl_st_translate_admin_string($option_value, $key="", $name="", $rec_le
         $option_names = get_option('_icl_admin_option_names');                
         // determine theme/plugin name
         
-        if(!empty($option_names['theme'])){
+         if(!empty($option_names['theme']) && !empty($option_names['theme'][basename(get_template_directory())])){
             foreach((array)$option_names['theme'][basename(get_template_directory())] as $ops=>$val){                
                 if(!empty($key)){
                     $int = preg_match_all('#\[([^\]]+)\]#', $key, $matches);

@@ -17,7 +17,7 @@ class WPML_Browser_Redirect{
         wp_enqueue_script('jquery.cookie', ICL_PLUGIN_URL . '/res/js/jquery.cookie.js', array('jquery'), ICL_SITEPRESS_VERSION);
         wp_enqueue_script('wpml-browser-redirect', ICL_PLUGIN_URL . '/res/js/browser-redirect.js', array('jquery', 'jquery.cookie'), ICL_SITEPRESS_VERSION);
             
-        $args['skip_missing'] = $sitepress_settings['automatic_redirect'];
+        $args['skip_missing'] = intval($sitepress_settings['automatic_redirect'] == 1);
         
         // Build multi language urls array
         $languages      = $sitepress->get_ls_languages($args);

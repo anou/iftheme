@@ -47,6 +47,10 @@
     color:#3f7257;    
 }
 
+.icl_error_input{
+    background-color: #FA9393 !important;
+}
+
 .icl_ajx_response{
     color:#E68A00;
     display: none;    
@@ -212,10 +216,11 @@ line-height: 100%; margin: 5px 0;
 }
 
 
+/* admin_language_switcher_legacy - start */
 .admin_iclflag{
     float:left;
     margin:3px 4px 0 0;
-}
+} 
 
 #icl-als-first .admin_iclflag{
     margin:2px 4px 0 0;
@@ -296,6 +301,11 @@ line-height: 100%; margin: 5px 0;
     cursor: pointer;
 }
 
+/* admin_language_switcher_legacy - end */
+
+#wpml_als_help_link{vertical-align: middle;}
+#icl_als_help_popup{position:fixed;top:30px;}
+    
 .icl_pop_info_but{
     cursor: pointer;
     position:absolute;

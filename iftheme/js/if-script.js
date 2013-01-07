@@ -124,12 +124,12 @@ $(document).ready(function() {
 	  
  
  if (windowWidth > 767){
-  if($('nav#antennes ul li.current-cat ul.children').length || $('nav#antennes ul li.current-cat-parent ul.children').length) { 
-    $('.container.for-angle ul.children').appendTo('nav#antennes').show();
+  if($('nav#antennes ul li.current-cat ul.children').length || $('nav#antennes ul li.current-cat-parent ul.children').length) { console.log($('.children'));
+    $('ul li.current-cat-parent ul.children').appendTo('nav#antennes').show();
     $('ul li.current-cat-parent ul.children').show();
   }
   if( $('.children li').hasClass('current-cat-parent')) {
-    $('.container.for-angle ul.children').appendTo('nav#antennes').show();
+    $('ul li.current-cat-parent ul.children').appendTo('nav#antennes').show();
     $('.children li.current-cat-parent').closest('ul').closest('.cat-item').addClass('current-cat-parent');
     $('.children li.current-cat-parent').closest('ul.children').show();
   }

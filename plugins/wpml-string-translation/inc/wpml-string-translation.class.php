@@ -8,8 +8,13 @@ class WPML_String_Translation{
         global $icl_st_string_translation_statuses;
         require WPML_ST_PATH . '/inc/functions.php';
         require WPML_ST_PATH . '/inc/wpml-string-shortcode.php';
+        include WPML_ST_PATH . '/inc/slug-translation.php';    
+                                                           
+        add_action('plugins_loaded', array('WPML_Slug_Translation','setup'));                                                                      
                                                            
         add_action('init', array($this,'init'));           
+        add_action('init', array('WPML_Slug_Translation','init'));           
+        
         add_action('icl_ajx_custom_call', array($this, 'ajax_calls'), 10, 2);
     }
     
@@ -71,7 +76,6 @@ class WPML_String_Translation{
         
         // add message to WPML dashboard widget
         add_action('icl_dashboard_widget_content', array($this, 'icl_dashboard_widget_content'));        
-        
         
     }
     

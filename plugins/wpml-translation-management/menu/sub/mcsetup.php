@@ -45,8 +45,17 @@
                             <li><label><input type="radio" name="t_method" value="<?php echo ICL_TM_TMETHOD_PRO ?>" <?php if($doc_translation_method==ICL_TM_TMETHOD_PRO): ?>checked="checked"<?php endif; ?> /> 
                                 <?php _e('Send to professional translation', 'wpml-translation-management')?></label></li>
                         </ul>
-                        <input type="submit" class="button-secondary" value="<?php _e('Save', 'wpml-translation-management')?>" />
-                        <span class="icl_ajx_response" id="icl_ajx_response_dtm"></span>
+                        
+                        <p>
+                        <label><input name="how_to_translate" value="1" <?php checked(empty($sitepress_settings['hide_how_to_translate']), true) ?> type="checkbox" />&nbsp;
+                            <?php _e('Show translation instructions in the list of pages', 'wpml-translation-management') ?></label>
+                        </p>
+                        
+                        <p>
+                            <input type="submit" class="button-secondary" value="<?php _e('Save', 'wpml-translation-management')?>" />
+                            <span class="icl_ajx_response" id="icl_ajx_response_dtm"></span>
+                        </p>
+                        
                         <p><a href="http://wpml.org/?page_id=3416" target="_blank"><?php _e('Learn more about the different translation options') ?></a></p>
                     </td>    
                 </tr>
@@ -70,7 +79,7 @@
             </thead>
             <tbody>
                 <tr>
-                    <td style="border: none;" nowrap="nowrap" style="background-color: pink;"><?php _e('Document status', 'wpml-translation-management')?></td>
+                    <td style="border: none;" nowrap="nowrap"><?php _e('Document status', 'wpml-translation-management')?></td>
                     <td style="border: none;">
                         <ul>
                             <li>
@@ -119,8 +128,10 @@
                 
                 <tr>
                     <td colspan="2" style="border: none;">
-                        <input type="submit" class="button-secondary" value="<?php _e('Save', 'wpml-translation-management')?>" />
-                        <span class="icl_ajx_response" id="icl_ajx_response_tdo"></span>
+                        <p>
+                            <input type="submit" class="button-secondary" value="<?php _e('Save', 'wpml-translation-management')?>" />
+                            <span class="icl_ajx_response" id="icl_ajx_response_tdo"></span>
+                        </p>
                     </td>
                 </tr>
             </tbody>
@@ -128,6 +139,8 @@
         </form>
             
         <br />
+        
+        <?php if(defined('WPML_ST_VERSION')) include WPML_ST_PATH . '/menu/_slug-translation-options.php'; ?>
             
         <form id="icl_translation_pickup_mode" name="icl_translation_pickup_mode" action="">        
         <?php wp_nonce_field('set_pickup_mode_nonce', '_icl_nonce') ?>

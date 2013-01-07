@@ -232,7 +232,7 @@ class ICLMenusSync{
     
     function _do_the_sync($data){
         global $sitepress, $wpdb;
-                
+                             
         if(isset($data['menu_translation']) && is_array($data['menu_translation'])){
             
             foreach($data['menu_translation'] as $menuinfo){
@@ -266,10 +266,10 @@ class ICLMenusSync{
             foreach($data['add'] as $iteminfo){
                 list($menu_id, $object_id, $ob_type, $parent_id) = explode('#', $iteminfo);
                 
-                
                 if(!is_numeric($menu_id)){
-                    $exp = explode('-', $menu_id);
-                    $menu_id =  $new_menus[$exp[1]][$exp[2]];
+                    if(preg_match('#newfrom-([0-9]+)-(.+)#', $menu_id, $matches)){
+                        $menu_id =  $new_menus[$matches[1]][$matches[2]];    
+                    }
                 }
                 
                 global $wp_post_types;

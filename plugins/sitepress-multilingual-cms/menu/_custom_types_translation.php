@@ -61,14 +61,59 @@
             <tr>
                 <td><?php echo $cpost->labels->name; ?></td>
                 <td>
-                    <label><input type="radio" name="icl_sync_custom_posts[<?php echo $k ?>]" value="1" <?php echo $rdisabled; 
+                    <label><input class="icl_sync_custom_posts" type="radio" name="icl_sync_custom_posts[<?php echo $k ?>]" value="1" <?php echo $rdisabled; 
                         if(@intval($sitepress_settings['custom_posts_sync_option'][$k])==1) echo ' checked="checked"'
                     ?> />&nbsp;<?php _e('Translate', 'sitepress') ?></label>&nbsp;
-                    <label><input type="radio" name="icl_sync_custom_posts[<?php echo $k ?>]" value="0" <?php echo $rdisabled;
+                    <label><input class="icl_sync_custom_posts" type="radio" name="icl_sync_custom_posts[<?php echo $k ?>]" value="0" <?php echo $rdisabled;
                         if(@intval($sitepress_settings['custom_posts_sync_option'][$k])==0) echo ' checked="checked"'
                     ?> />&nbsp;<?php _e('Do nothing', 'sitepress') ?></label>
                 </td>
             </tr>
+            
+            <?php if(defined('WPML_ST_VERSION')): ?>
+            <?php             
+            $_has_slug = isset($cpost->rewrite['slug']) && $cpost->rewrite['slug'];
+            $_on = $sitepress_settings['posts_slug_translation']['on'] &&  
+                   $_has_slug &&
+                   isset($sitepress_settings['custom_posts_sync_option'][$k]) && 
+                   $sitepress_settings['custom_posts_sync_option'][$k] == 1;                        
+            $_display = $_on ? '' : 'display:none;';  
+            $_translate = !empty($sitepress_settings['posts_slug_translation']['types'][$k]);            
+            if($_has_slug){
+                $string_id = $wpdb->get_var($wpdb->prepare("SELECT id FROM {$wpdb->prefix}icl_strings WHERE name = %s AND value = %s ", 'Url slug: ' . $cpost->rewrite['slug'], $cpost->rewrite['slug']));
+                $_slug_translations = icl_get_string_translations_by_id($string_id);
+            }else{
+                $_slug_translations = false;
+            }
+            
+            ?>
+            <?php if($_has_slug): ?>
+            <tr class="icl_slug_translation_choice" style="background-color: #efefef;<?php echo $_display; ?>">
+                <td colspan="2">
+                    <label><input name="translate_slugs[<?php echo $k ?>][on]" type="checkbox" value="1" <?php checked(1, $_translate, true) ?> />&nbsp;<?php 
+                        printf(__('Use different slugs in different languages for %s.', 'sitepress'), $cpost->labels->name); ?></label>
+                    <table <?php if(empty($_translate)):?>style="display:none"<?php endif; ?>>
+                    <?php foreach($sitepress->get_active_languages() as $lang): if($lang['code'] == $sitepress_settings['st']['strings_language']) continue; ?>                    
+                        <tr>
+                            <td style="border: none;"><?php echo $lang['display_name']?></td>
+                            <td style="border: none;"><input name="translate_slugs[<?php echo $k ?>][langs][<?php echo $lang['code'] ?>]" type="text" value="<?php 
+                                echo !empty($_slug_translations[$lang['code']]['value']) ? $_slug_translations[$lang['code']]['value'] : '';    
+                                ?>" />
+                                <?php if(isset($_slug_translations[$lang['code']]) && $_slug_translations[$lang['code']]['status'] != ICL_STRING_TRANSLATION_COMPLETE): ?>
+                                <i class="icl_st_slug_tr_warn"><?php _e("Not marked as 'complete'. Press 'Save' to enable.", 'sitepress') ?></i>
+                                <?php endif; ?>
+                                </td>                                        
+                        </tr>
+                    <?php endforeach; ?>
+                    </table>
+                    
+                </td>
+            </tr>
+            <?php endif; ?>
+            
+            <?php endif; ?>
+            
+            
             <?php endforeach; ?>
             <tr>
                 <td colspan="2">

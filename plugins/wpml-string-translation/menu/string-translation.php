@@ -79,7 +79,7 @@ function _icl_string_translation_rtl_textarea($language) {
     
     <?php if(isset($icl_st_po_strings) && !empty($icl_st_po_strings)): ?>
     
-        <p><?php printf(__('These are the strings that we found in your .po file. Please carefully review them. Then, click on the \'add\' or \'cancel\' buttons at the <a href="%s">bottom of this screen</a>. You can exclude individual strings by clearing the check boxes next to them.', 'wpml-string-translation'), '#add_po_strings_confirm'); ?></p>  
+        <p><?php printf(__("These are the strings that we found in your .po file. Please carefully review them. Then, click on the 'add' or 'cancel' buttons at the %sbottom of this screen%s. You can exclude individual strings by clearing the check boxes next to them.", 'wpml-string-translation'), ',<a href="#add_po_strings_confirm">', '</a>'); ?></p>  
         
         <form method="post" action="<?php echo admin_url("admin.php?page=" . WPML_ST_FOLDER . "/menu/string-translation.php");?>">
         <?php wp_nonce_field('add_po_strings') ?>

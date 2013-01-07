@@ -286,7 +286,7 @@ For each language, you need to enter the following information:
 	
 	function update() {
         
-			// Basic check.
+		// Basic check.
 		if (!isset($_POST['icl_edit_languages']) || !is_array($_POST['icl_edit_languages'])){
 			$this->error(__('Please, enter valid data.','sitepress'));
 			return;
@@ -314,7 +314,11 @@ For each language, you need to enter the following information:
 				// Update main table.
 			$this->update_main_table($id, $data['code'], $data['default_locale'], $data['encode_url']);
             
-            $wpdb->update($wpdb->prefix . 'icl_locale_map', array('locale' => $data['default_locale']), array('code' => $data['code']));
+            if($wpdb->get_var("SELECT code FROM {$wpdb->prefix}icl_locale_map WHERE code='{$data['code']}'")){
+                $wpdb->update($wpdb->prefix.'icl_locale_map', array('locale'=>$data['default_locale']), array('code'=>$data['code']));
+            }else{
+                $wpdb->insert($wpdb->prefix.'icl_locale_map', array('code'=>$data['code'], 'locale'=>$data['default_locale']));
+            }
             
 				// Update translations table.
 			foreach ($data['translations'] as $translation_code => $translation_value) {
@@ -377,13 +381,20 @@ For each language, you need to enter the following information:
 	}
 
 	function insert_one($data) {
-		global $sitepress;
+		global $sitepress, $wpdb;
 		
 			// Insert main table.
 		if (!$this->insert_main_table($data['code'], $data['english_name'], $data['default_locale'], 0, 1, $data['encode_url'])) {
 			$this->error(__('Adding language failed.', 'sitepress'));
 			return false;
 		}
+        
+        // add locale map
+        if($wpdb->get_var("SELECT code FROM {$wpdb->prefix}icl_locale_map WHERE code='{$data['code']}'")){
+            $wpdb->update($wpdb->prefix.'icl_locale_map', array('locale'=>$data['default_locale']), array('code'=>$data['code']));
+        }else{
+            $wpdb->insert($wpdb->prefix.'icl_locale_map', array('code'=>$data['code'], 'locale'=>$data['default_locale']));
+        }
 		
 			// Insert translations.
 		$all_languages = $sitepress->get_languages();

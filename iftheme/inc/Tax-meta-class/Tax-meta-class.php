@@ -9,7 +9,7 @@
  * This class is derived from My-Meta-Box (https://github.com/bainternet/My-Meta-Box script) which is 
  * a class for creating custom meta boxes for WordPress. 
  * 
- * @version 1.8.5
+ * @version 1.9.7
  * @copyright 2012 Ohad Raz 
  * @author Ohad Raz (email: admin@bainternet.info)
  * @link http://en.bainternet.info
@@ -247,7 +247,7 @@ class Tax_Meta_Class {
       $li    = "<li id='item_{$attachment_id}'>";
       $li   .= "<img src='{$attachment['url']}' alt='image_{$attachment_id}' />";
       //$li   .= "<a title='" . __( 'Delete this image' ) . "' class='at-delete-file' href='#' rel='{$nonce}|{$term_id}|{$id}|{$attachment_id}'>" . __( 'Delete' ) . "</a>";
-      $li   .= "<a title='" . __( 'Delete this image' ) . "' class='at-delete-file' href='#' rel='{$nonce}|{$term_id}|{$id}|{$attachment_id}'><img src='" . $this->SelfPath. "/images/delete-16.png' alt='" . __( 'Delete' ) . "' /></a>";
+      $li   .= "<a title='" . __( 'Delete this image','tax-meta') . "' class='at-delete-file' href='#' rel='{$nonce}|{$term_id}|{$id}|{$attachment_id}'><img src='" . $this->SelfPath. "/images/delete-16.png' alt='" . __( 'Delete','tax-meta') . "' /></a>";
       $li   .= "<input type='hidden' name='{$id}[]' value='{$attachment_id}' />";
       $li   .= "</li>";
       $html .= $li;
@@ -321,11 +321,15 @@ class Tax_Meta_Class {
     $field_id = isset( $_GET['field_id'] ) ? $_GET['field_id'] : 0;
     $attachment_id = isset( $_GET['attachment_id'] ) ? intval( $_GET['attachment_id'] ) : 0;
     $ok = false;
+    $remove_meta_only = apply_filters("tax_meta_class_delete_image",true);
     if (strpos($field_id, '[') === false){
       check_admin_referer( "at-delete-mupload_".urldecode($field_id));
       if ($term_id > 0)
         $this->delete_tax_meta( $term_id, $field_id );
-      $ok = wp_delete_attachment( $attachment_id );
+      if (!$remove_meta_only)
+        $ok = wp_delete_attachment( $attachment_id );
+      else
+        $ok = true;
     }else{
       $f = explode('[',urldecode($field_id));
       $f_fiexed = array();
@@ -337,7 +341,10 @@ class Tax_Meta_Class {
         unset($saved[$f[1]][$f[2]]);
         if ($term_id > 0)
           update_post_meta($term_id,$f[0],$saved);
-        $ok = wp_delete_attachment( $attachment_id );
+        if (!$remove_meta_only)
+          $ok = wp_delete_attachment( $attachment_id );
+        else
+          $ok = true;
       }
     }
 
@@ -347,7 +354,7 @@ class Tax_Meta_Class {
       echo json_encode( array('status' => 'success' ));
       die();
     }else{
-      echo json_encode(array('message' => __( 'Cannot delete file. Something\'s wrong.')));
+      echo json_encode(array('message' => __( 'Cannot delete file. Something\'s wrong.','tax-meta')));
       die();
     }
   }
@@ -494,15 +501,16 @@ class Tax_Meta_Class {
     wp_nonce_field( basename(__FILE__), 'tax_meta_class_nonce' );
     
     foreach ( $this->_fields as $field ) {
-      $meta = $this->get_tax_meta( $term_id, $field['id'], !$field['multiple'] );
-      $meta = ( $meta !== '' ) ? $meta : $field['std'];
+    $multiple = isset($field['multiple'])? $field['multiple'] : false;
+      $meta = $this->get_tax_meta( $term_id, $field['id'], !$multiple );
+    $meta = ( $meta !== '' ) ? $meta : (isset($field['std'])? $field['std'] : '');
       if ('image' != $field['type'] && $field['type'] != 'repeater')
         $meta = is_array( $meta ) ? array_map( 'esc_attr', $meta ) : esc_attr( $meta );
       
       echo '<tr class="form-field">';
       // Call Separated methods for displaying each type of field.
       call_user_func ( array( &$this, 'show_field_' . $field['type'] ), $field, is_array($meta)? $meta : stripslashes($meta) );
-     echo '</tr>';
+      echo '</tr>';
     }
     echo '</table>';
   }
@@ -526,7 +534,7 @@ class Tax_Meta_Class {
       if (count($meta) > 0 && is_array($meta) ){
          foreach ($meta as $me){
            //for labling toggles
-           $mmm =  $me[$field['fields'][0]['id']];
+           $mmm =  ($me[$field])? $me[$field['fields'][0]['id']]: "";
            echo '<div class="at-repater-block">'.$mmm.'<br/><table class="repeater-table" style="display: none;">';
            if ($field['inline']){
              echo '<tr class="at-inline" VALIGN="top">';
@@ -544,8 +552,12 @@ class Tax_Meta_Class {
           $f['id'] = $id;
           if (!$field['inline']){
             echo '<tr>';
-          } 
-          call_user_func ( array( &$this, 'show_field_' . $f['type'] ), $f, is_array($m)? $m : stripslashes($m));
+          }
+          if ($f['type'] == 'wysiwyg')
+            call_user_func ( array( &$this, 'show_field_' . $f['type'] ), $f, is_array($m)? $m : stripslashes($m),true);
+          else
+            call_user_func ( array( &$this, 'show_field_' . $f['type'] ), $f, is_array($m)? $m : stripslashes($m));
+            
           if (!$field['inline']){
             echo '</tr>';
           } 
@@ -567,7 +579,7 @@ class Tax_Meta_Class {
         }else{
           echo 'http://i.imgur.com/g8Duj.png';
         }
-        echo '" alt="'.__('Remove').'" title="'.__('Remove').'" id="remove-'.$field['id'].'"></div>';
+        echo '" alt="'.__('Remove','tax-meta').'" title="'.__('Remove','tax-meta').'" id="remove-'.$field['id'].'"></div>';
         $c = $c + 1;
         
         }
@@ -580,7 +592,7 @@ class Tax_Meta_Class {
     }else{
       echo 'http://i.imgur.com/w5Tuc.png';
     }
-    echo '" alt="'.__('Add').'" title="'.__('Add').'" id="add-'.$field['id'].'"><br/></div>';
+    echo '" alt="'.__('Add','tax-meta').'" title="'.__('Add','tax-meta').'" id="add-'.$field['id'].'"><br/></div>';
     
     //create all fields once more for js function and catch with object buffer
     ob_start();
@@ -596,7 +608,11 @@ class Tax_Meta_Class {
       if (!$field['inline']){
         echo '<tr>';
       }
-      call_user_func ( array( &$this, 'show_field_' . $f['type'] ), $f, '');
+      if ($f['type'] == 'wysiwyg')
+            call_user_func ( array( &$this, 'show_field_' . $f['type'] ), $f, '',true);
+          else
+            call_user_func ( array( &$this, 'show_field_' . $f['type'] ), $f, '');
+      
       if (!$field['inline']){
         echo '</tr>';
       }  
@@ -610,9 +626,11 @@ class Tax_Meta_Class {
     }else{
       echo 'http://i.imgur.com/g8Duj.png';
     }
-    echo '" alt="'.__('Remove').'" title="'.__('Remove').'" id="remove-'.$field['id'].'"></div>';
+    echo '" alt="'.__('Remove','tax-meta').'" title="'.__('Remove','tax-meta').'" id="remove-'.$field['id'].'"></div>';
     $counter = 'countadd_'.$field['id'];
-    $js_code = ob_get_clean ();    
+    $js_code = ob_get_clean ();
+    $js_code = str_replace("\n","",$js_code);
+    $js_code = str_replace("\r","",$js_code);
     $js_code = str_replace("'","\"",$js_code);
     $js_code = str_replace("CurrentCounter","' + ".$counter." + '",$js_code);
     echo '<script>
@@ -680,21 +698,21 @@ class Tax_Meta_Class {
   public function show_field_end( $field, $meta=NULL ,$group = false) {
     if (isset($field['group'])){
       if ($group == 'end'){
-        if ( $field['desc'] != '' ) {
-          echo "<div class='description'>{$field['desc']}</div></td>";
+        if ( isset($field['desc']) && $field['desc'] != '' && $field['type'] != 'checkbox') {
+          echo "<div class='desc-field'>{$field['desc']}</div></td>";
         } else {
           echo "</td>";
         }
       }else {
-        if ( $field['desc'] != '' ) {
-          echo "<div class='description'>{$field['desc']}</div><br/>";  
+        if ( isset($field['desc']) && $field['desc'] != '' && $field['type'] != 'checkbox') {
+          echo "<div class='desc-field'>{$field['desc']}</div><br/>";  
         }else{
           echo '<br/>';
         }  
       }    
     }else{
-      if ( $field['desc'] != '' ) {
-        echo "<div class='description'>{$field['desc']}</div>";
+      if ( isset($field['desc']) && $field['desc'] != '' && $field['type'] != 'checkbox') {
+        echo "<div class='desc-field'>{$field['desc']}</div>";
       }
       if ($this->_form_type == 'edit'){
         echo '<td>';  
@@ -714,7 +732,7 @@ class Tax_Meta_Class {
    */
   public function show_field_text( $field, $meta) {  
     $this->show_field_begin( $field, $meta );
-    echo "<input type='text' class='at-text' name='{$field['id']}' id='{$field['id']}' value='{$meta}' size='30' />";
+    echo "<input type='text' class='at-text' name='{$field['id']}' id='{$field['id']}' value='{$meta}' style='{$field['style']}' size='30' />";
     $this->show_field_end( $field, $meta );
   }
   
@@ -741,7 +759,7 @@ class Tax_Meta_Class {
    */
   public function show_field_paragraph( $field) {  
     //$this->show_field_begin( $field, $meta );
-    echo '<p>'.$field['value'].'</p>';
+    echo "<p style='{$field['style']}'>".$field['value']."</p>";
     //$this->show_field_end( $field, $meta );
   }
     
@@ -755,7 +773,7 @@ class Tax_Meta_Class {
    */
   public function show_field_textarea( $field, $meta ) {
     $this->show_field_begin( $field, $meta );
-      echo "<textarea class='at-textarea large-text' name='{$field['id']}' id='{$field['id']}' cols='60' rows='10'>{$meta}</textarea>";
+      echo "<textarea class='at-textarea large-text' style='{$field['style']}' name='{$field['id']}' id='{$field['id']}' cols='60' rows='10'>{$meta}</textarea>";
     $this->show_field_end( $field, $meta );
   }
   
@@ -773,7 +791,7 @@ class Tax_Meta_Class {
       $meta = (array) $meta;
       
     $this->show_field_begin( $field, $meta );
-      echo "<select class='at-select' name='{$field['id']}" . ( $field['multiple'] ? "[]' id='{$field['id']}' multiple='multiple'" : "'" ) . ">";
+      echo "<select class='at-select' style='{$field['style']}' name='{$field['id']}" . ( $field['multiple'] ? "[]' id='{$field['id']}' multiple='multiple'" : "'" ) . ">";
       foreach ( $field['options'] as $key => $value ) {
         echo "<option value='{$key}'" . selected( in_array( $key, $meta ), true, false ) . ">{$value}</option>";
       }
@@ -797,7 +815,7 @@ class Tax_Meta_Class {
       
     $this->show_field_begin( $field, $meta );
       foreach ( $field['options'] as $key => $value ) {
-        echo "<input type='radio' class='at-radio' name='{$field['id']}' value='{$key}'" . checked( in_array( $key, $meta ), true, false ) . " /> <span class='at-radio-label'>{$value}</span>";
+        echo "<input style='{$field['style']}' type='radio' class='at-radio' name='{$field['id']}' value='{$key}'" . checked( in_array( $key, $meta ), true, false ) . " /> <span class='at-radio-label'>{$value}</span>";
       }
     $this->show_field_end( $field, $meta );
   }
@@ -813,7 +831,7 @@ class Tax_Meta_Class {
   public function show_field_checkbox( $field, $meta ) {
   
     $this->show_field_begin($field, $meta);
-    echo "<input type='checkbox' class='rw-checkbox' name='{$field['id']}' id='{$field['id']}'" . checked(!empty($meta), true, false) . " /> ";
+    echo "<input type='checkbox' style='{$field['style']}' class='rw-checkbox' name='{$field['id']}' id='{$field['id']}'" . checked(!empty($meta), true, false) . " /> {$field['desc']}";
     $this->show_field_end( $field, $meta );
   }
   
@@ -825,13 +843,13 @@ class Tax_Meta_Class {
    * @since 1.0
    * @access public
    */
-  public function show_field_wysiwyg( $field, $meta ) {
+  public function show_field_wysiwyg( $field, $meta ,$in_repeater = false) {
     $this->show_field_begin( $field, $meta );
     // Add TinyMCE script for WP version < 3.3
     global $wp_version;
 
-    if ( version_compare( $wp_version, '3.2.1' ) < 1 ) {
-      echo "<textarea class='at-wysiwyg theEditor large-text' name='{$field['id']}' id='{$field['id']}' cols='60' rows='10'>{$meta}</textarea>";
+    if ( version_compare( $wp_version, '3.2.1' ) < 1 || $in_repeater) {
+      echo "<textarea style='{$field['style']}' class='at-wysiwyg theEditor large-text' name='{$field['id']}' id='{$field['id']}' cols='60' rows='10'>{$meta}</textarea>";
     }else{
       // Use new wp_editor() since WP 3.3
       wp_editor( stripslashes(html_entity_decode($meta)), $field['id'], array( 'editor_class' => 'at-wysiwyg' ) );
@@ -855,26 +873,26 @@ class Tax_Meta_Class {
     $this->show_field_begin( $field, $meta );
       echo "{$field['desc']}<br />";
 
-      if ( ! empty( $meta ) ) {
+      if ( !empty( $meta )  && count($meta) > 0 && !$this->is_array_empty($meta) ) {
         $nonce = wp_create_nonce( 'at_ajax_delete_file' );
-        echo '<div style="margin-bottom: 10px"><strong>' . __('Uploaded files') . '</strong></div>';
+        echo '<div style="margin-bottom: 10px"><strong>' . __('Uploaded files','tax-meta') . '</strong></div>';
         echo '<ol class="at-upload">';
         foreach ( $meta as $att ) {
           // if (wp_attachment_is_image($att)) continue; // what's image uploader for?
-          echo "<li>" . wp_get_attachment_link( $att, '' , false, false, ' ' ) . " (<a class='at-delete-file' href='#' rel='{$nonce}||{$field['id']}|{$att}'>" . __( 'Delete' ) . "</a>)</li>";
+          echo "<li>" . wp_get_attachment_link( $att, '' , false, false, ' ' ) . " (<a class='at-delete-file' href='#' rel='{$nonce}||{$field['id']}|{$att}'>" . __( 'Delete','tax-meta' ) . "</a>)</li>";
         }
         echo '</ol>';
       }
 
       // show form upload
     echo "<div class='at-file-upload-label'> \n
-      <strong>" . __( 'Upload new files' ) . "</strong>\n
+      <strong>" . __( 'Upload new files','tax-meta' ) . "</strong>\n
     </div>\n";
     echo "<div class='new-files'>\n
       <div class='file-input'>\n
         <input type='file' name='{$field['id']}[]' />\n
       </div><!-- End .file-input -->\n
-      <a class='at-add-file button' href='#'>" . __( 'Add more files' ) . "</a>\n
+      <a class='at-add-file button' href='#'>" . __( 'Add more files','tax-meta' ) . "</a>\n
       </div><!-- End .new-files -->\n";
     echo "</td>";
     $this->show_field_end( $field, $meta );
@@ -926,7 +944,7 @@ class Tax_Meta_Class {
     $this->show_field_begin( $field, $meta );
       echo "<input class='at-color' type='text' name='{$field['id']}' id='{$field['id']}' value='{$meta}' size='8' />";
     //  echo "<a href='#' class='at-color-select button' rel='{$field['id']}'>" . __( 'Select a color' ) . "</a>";
-      echo "<input type='button' class='at-color-select button' rel='{$field['id']}' value='" . __( 'Select a color' ) . "'/>";
+      echo "<input type='button' class='at-color-select button' rel='{$field['id']}' value='" . __( 'Select a color','tax-meta' ) . "'/>";
       echo "<div style='display:none' class='at-color-picker' rel='{$field['id']}'></div>";
     $this->show_field_end($field, $meta);
     
@@ -950,7 +968,7 @@ class Tax_Meta_Class {
       $html = array();
     
       foreach ($field['options'] as $key => $value) {
-        $html[] = "<input type='checkbox' class='at-checkbox_list' name='{$field['id']}[]' value='{$key}'" . checked( in_array( $key, $meta ), true, false ) . " /> {$value}";
+        $html[] = "<input style='{$field['style']}' type='checkbox' class='at-checkbox_list' name='{$field['id']}[]' value='{$key}'" . checked( in_array( $key, $meta ), true, false ) . " /> {$value}";
       }
     
       echo implode( '<br />' , $html );
@@ -969,7 +987,7 @@ class Tax_Meta_Class {
    */
   public function show_field_date( $field, $meta ) {
     $this->show_field_begin( $field, $meta );
-      echo "<input type='text' class='at-date' name='{$field['id']}' id='{$field['id']}' rel='{$field['format']}' value='{$meta}' size='30' />";
+      echo "<input style='{$field['style']}' type='text' class='at-date' name='{$field['id']}' id='{$field['id']}' rel='{$field['format']}' value='{$meta}' size='30' />";
     $this->show_field_end( $field, $meta );
   }
   
@@ -983,7 +1001,7 @@ class Tax_Meta_Class {
    */
   public function show_field_time( $field, $meta ) {
     $this->show_field_begin( $field, $meta );
-      echo "<input type='text' class='at-time' name='{$field['id']}' id='{$field['id']}' rel='{$field['format']}' value='{$meta}' size='30' />";
+      echo "<input style='{$field['style']}' type='text' class='at-time' name='{$field['id']}' id='{$field['id']}' rel='{$field['format']}' value='{$meta}' size='30' />";
     $this->show_field_end( $field, $meta );
   }
   
@@ -1066,9 +1084,14 @@ class Tax_Meta_Class {
    */
   public function save( $term_id ) {
     
-    $taxnow = $_POST['taxonomy'];
+    // check if the we are coming from quick edit issue #38 props to Nicola Peluchetti.
+    if (isset($_REQUEST['action'])  &&  $_REQUEST['action'] == 'inline-save-tax') {
+      return $term_id;
+    }
+
     if ( ! isset( $term_id )                            // Check Revision
-    || ( ! in_array( $taxnow, $this->_meta_box['pages'] ) )              // Check if current taxonomy type is supported.
+    || ( ! isset( $_POST['taxonomy'] ) )              // Check if current taxonomy type is set.
+    || ( ! in_array( $_POST['taxonomy'], $this->_meta_box['pages'] ) )              // Check if current taxonomy type is supported.
     || ( ! check_admin_referer( basename( __FILE__ ), 'tax_meta_class_nonce') )    // Check nonce - Security
     || ( ! current_user_can('manage_categories') ) )                 // Check permission
     {
@@ -1085,7 +1108,7 @@ class Tax_Meta_Class {
 
       // Validate meta value
       if ( class_exists( 'Tax_Meta_Validate' ) && method_exists( 'Tax_Meta_Validate', $field['validate_func'] ) ) {
-        $new = call_user_func( array( 'at_Meta_Box_Validate', $field['validate_func'] ), $new );
+        $new = call_user_func( array( 'Tax_Meta_Validate', $field['validate_func'] ), $new );
       }
       
       //skip on Paragraph field
@@ -1294,7 +1317,7 @@ class Tax_Meta_Class {
     $this->_meta_box = array_merge( array( 'context' => 'normal', 'priority' => 'high', 'pages' => array( 'post' ) ),(array)$this->_meta_box );
 
     // Default values for fields
-    foreach ( $this->_fields as &$field ) {
+    foreach ( (array)$this->_fields as $field ) {
       
       $multiple = in_array( $field['type'], array( 'checkbox_list', 'file', 'image' ) );
       $std = $multiple ? array() : '';
@@ -1317,6 +1340,11 @@ class Tax_Meta_Class {
     foreach ( $this->_fields as $field ) {
       if ( $type == $field['type'] ) 
         return true;
+      elseif('repeater' == $field['type'] ){
+        foreach((array)$field["fields"] as $repeater_field)  {
+            if($type == $repeater_field["type"]) return true;
+        }
+      }
     }
     return false;
   }
@@ -1388,7 +1416,7 @@ class Tax_Meta_Class {
    *  @param $args mixed|array
    */
   public function addField($id,$args){
-    $new_field = array('id'=> $id,'std' => '','desc' => '','style' =>'');
+    $new_field = array('id'=> $id,'std' => '','desc' => '','style' =>'','multiple' => false);
     $new_field = array_merge($new_field, $args);
     $this->_fields[] = $new_field;
   }
@@ -1408,7 +1436,7 @@ class Tax_Meta_Class {
    *   @param $repeater bool  is this a field inside a repeatr? true|false(default) 
    */
   public function addText($id,$args,$repeater=false){
-    $new_field = array('type' => 'text','id'=> $id,'std' => '','desc' => '','style' =>'','name' => 'Text Field');
+    $new_field = array('type' => 'text','id'=> $id,'std' => '','desc' => '','style' =>'','name' => 'Text Field','multiple' => false);
     $new_field = array_merge($new_field, $args);
     if(false === $repeater){
       $this->_fields[] = $new_field;
@@ -1431,7 +1459,7 @@ class Tax_Meta_Class {
    *   @param $repeater bool  is this a field inside a repeatr? true|false(default) 
    */
   public function addHidden($id,$args,$repeater=false){
-    $new_field = array('type' => 'hidden','id'=> $id,'std' => '','desc' => '','style' =>'','name' => 'Text Field');
+    $new_field = array('type' => 'hidden','id'=> $id,'std' => '','desc' => '','style' =>'','name' => 'Text Field', 'multiple' => false);
     $new_field = array_merge($new_field, $args);
     if(false === $repeater){
       $this->_fields[] = $new_field;
@@ -1450,7 +1478,7 @@ class Tax_Meta_Class {
    *  @param $repeater bool  is this a field inside a repeatr? true|false(default) 
    */
   public function addParagraph($id,$args,$repeater=false){
-    $new_field = array('type' => 'paragraph','id'=> $id,'value' => '');
+    $new_field = array('type' => 'paragraph','id'=> $id,'value' => '','style' =>'', 'std' => '', 'multiple' => false);
     $new_field = array_merge($new_field, $args);
     if(false === $repeater){
       $this->_fields[] = $new_field;
@@ -1473,7 +1501,7 @@ class Tax_Meta_Class {
    *  @param $repeater bool  is this a field inside a repeatr? true|false(default) 
    */
   public function addCheckbox($id,$args,$repeater=false){
-    $new_field = array('type' => 'checkbox','id'=> $id,'std' => '','desc' => '','style' =>'','name' => 'Checkbox Field');
+    $new_field = array('type' => 'checkbox','id'=> $id,'std' => '','desc' => '','style' =>'','name' => 'Checkbox Field','multiple' => false);
     $new_field = array_merge($new_field, $args);
     if(false === $repeater){
       $this->_fields[] = $new_field;
@@ -1500,7 +1528,7 @@ class Tax_Meta_Class {
    *   which means the last param as false to get the values in an array
    */
   public function addCheckboxList($id,$options,$args,$repeater=false){
-    $new_field = array('type' => 'checkbox_list','id'=> $id,'std' => '','desc' => '','style' =>'','name' => 'Checkbox List Field');
+    $new_field = array('type' => 'checkbox_list','id'=> $id,'std' => '','desc' => '','style' =>'','name' => 'Checkbox List Field', 'multiple' => false);
     $new_field = array_merge($new_field, $args);
     if(false === $repeater){
       $this->_fields[] = $new_field;
@@ -1524,7 +1552,7 @@ class Tax_Meta_Class {
    *  @param $repeater bool  is this a field inside a repeatr? true|false(default) 
    */
   public function addTextarea($id,$args,$repeater=false){
-    $new_field = array('type' => 'textarea','id'=> $id,'std' => '','desc' => '','style' =>'','name' => 'Textarea Field');
+    $new_field = array('type' => 'textarea','id'=> $id,'std' => '','desc' => '','style' =>'','name' => 'Textarea Field','multiple' => false);
     $new_field = array_merge($new_field, $args);
     if(false === $repeater){
       $this->_fields[] = $new_field;
@@ -1574,7 +1602,7 @@ class Tax_Meta_Class {
    *  @param $repeater bool  is this a field inside a repeatr? true|false(default)
    */
   public function addRadio($id,$options,$args,$repeater=false){
-    $new_field = array('type' => 'radio','id'=> $id,'std' => array(),'desc' => '','style' =>'','name' => 'Radio Field','options' => $options);
+    $new_field = array('type' => 'radio','id'=> $id,'std' => array(),'desc' => '','style' =>'','name' => 'Radio Field','options' => $options,'multiple' => false);
     $new_field = array_merge($new_field, $args);
     if(false === $repeater){
       $this->_fields[] = $new_field;
@@ -1598,7 +1626,7 @@ class Tax_Meta_Class {
    *  @param $repeater bool  is this a field inside a repeatr? true|false(default) 
    */
   public function addDate($id,$args,$repeater=false){
-    $new_field = array('type' => 'date','id'=> $id,'std' => '','desc' => '','format'=>'d MM, yy','name' => 'Date Field');
+    $new_field = array('type' => 'date','id'=> $id,'style' =>'','std' => '','desc' => '','format'=>'d MM, yy','name' => 'Date Field','multiple' => false);
     $new_field = array_merge($new_field, $args);
     if(false === $repeater){
       $this->_fields[] = $new_field;
@@ -1622,7 +1650,7 @@ class Tax_Meta_Class {
    *  @param $repeater bool  is this a field inside a repeatr? true|false(default) 
    */
   public function addTime($id,$args,$repeater=false){
-    $new_field = array('type' => 'time','id'=> $id,'std' => '','desc' => '','format'=>'hh:mm','name' => 'Time Field');
+    $new_field = array('type' => 'time','id'=> $id,'std' => '','style' =>'','desc' => '','format'=>'hh:mm','name' => 'Time Field','multiple' => false);
     $new_field = array_merge($new_field, $args);
     if(false === $repeater){
       $this->_fields[] = $new_field;
@@ -1645,7 +1673,7 @@ class Tax_Meta_Class {
    *  @param $repeater bool  is this a field inside a repeatr? true|false(default) 
    */
   public function addColor($id,$args,$repeater=false){
-    $new_field = array('type' => 'color','id'=> $id,'std' => '','desc' => '','name' => 'ColorPicker Field');
+    $new_field = array('type' => 'color','id'=> $id,'std' => '','style' =>'','desc' => '','name' => 'ColorPicker Field','multiple' => false);
     $new_field = array_merge($new_field, $args);
     if(false === $repeater){
       $this->_fields[] = $new_field;
@@ -1667,7 +1695,7 @@ class Tax_Meta_Class {
    *  @param $repeater bool  is this a field inside a repeatr? true|false(default) 
    */
   public function addImage($id,$args,$repeater=false){
-    $new_field = array('type' => 'image','id'=> $id,'desc' => '','name' => 'Image Field');
+    $new_field = array('type' => 'image','id'=> $id,'desc' => '','style' =>'','name' => 'Image Field', 'std' => '','multiple' => false);
     $new_field = array_merge($new_field, $args);
     if(false === $repeater){
       $this->_fields[] = $new_field;
@@ -1689,7 +1717,7 @@ class Tax_Meta_Class {
    *  @param $repeater bool  is this a field inside a repeatr? true|false(default)
    */
   public function addFile($id,$args,$repeater=false){
-    $new_field = array('type' => 'file','id'=> $id,'desc' => '','name' => 'File Field');
+    $new_field = array('type' => 'file','id'=> $id,'desc' => '','name' => 'File Field','multiple' => false);
     $new_field = array_merge($new_field, $args);
     if(false === $repeater){
       $this->_fields[] = $new_field;
@@ -1713,7 +1741,7 @@ class Tax_Meta_Class {
    *  @param $repeater bool  is this a field inside a repeatr? true|false(default)
    */
   public function addWysiwyg($id,$args,$repeater=false){
-    $new_field = array('type' => 'wysiwyg','id'=> $id,'std' => '','desc' => '','style' =>'width: 300px; height: 400px','name' => 'WYSIWYG Editor Field');
+    $new_field = array('type' => 'wysiwyg','id'=> $id,'std' => '','desc' => '','style' =>'width: 300px; height: 400px','name' => 'WYSIWYG Editor Field','multiple' => false);
     $new_field = array_merge($new_field, $args);
     if(false === $repeater){
       $this->_fields[] = $new_field;
@@ -1745,7 +1773,7 @@ class Tax_Meta_Class {
     $type = 'select';
     $temp = array('taxonomy' => $tax,'type' => $type,'args' => $q);
     $options = array_merge($temp,$options);
-    $new_field = array('type' => 'taxonomy','id'=> $id,'desc' => '','name' => 'Taxonomy Field','options'=> $options);
+    $new_field = array('type' => 'taxonomy','id'=> $id,'desc' => '','name' => 'Taxonomy Field','options'=> $options,'multiple' => false);
     $new_field = array_merge($new_field, $args);
     if(false === $repeater){
       $this->_fields[] = $new_field;
@@ -1775,7 +1803,7 @@ class Tax_Meta_Class {
     $q = array('posts_per_page' => -1);
     $temp = array('post_type' =>'post','type'=>'select','args'=>$q);
     $options = array_merge($temp,$options);
-    $new_field = array('type' => 'posts','id'=> $id,'desc' => '','name' => 'Posts Field','options'=> $options);
+    $new_field = array('type' => 'posts','id'=> $id,'desc' => '','name' => 'Posts Field','options'=> $options,'multiple' => false);
     $new_field = array_merge($new_field, $args);
     if(false === $repeater){
       $this->_fields[] = $new_field;
@@ -1895,7 +1923,7 @@ class Tax_Meta_Class {
    */
   public function footer_js(){
     ?>
-    <script type="text/javascript">
+    <SCRIPT TYPE="text/javascript">
     //fix issue #2
     var numberOfRows = 0;
     jQuery(document).ready(function(){
@@ -1927,7 +1955,7 @@ class Tax_Meta_Class {
 
       }
     });
-    </script>
+    </SCRIPT>
     <?php
   }
   

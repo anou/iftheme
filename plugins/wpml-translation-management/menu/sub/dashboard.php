@@ -171,6 +171,7 @@ if(!defined('ICL_DONT_PROMOTE') || !ICL_DONT_PROMOTE){
                             $option_status = array(
                                                    'all' => __('All documents', 'wpml-translation-management'),
                                                    'not' => __('Not translated or needs updating', 'wpml-translation-management'),
+                                                   'need-update' => __('Needs updating', 'wpml-translation-management'),
                                                    'in_progress' => __('Translation in progress', 'wpml-translation-management'),
                                                    'complete' => __('Translation complete', 'wpml-translation-management'));
                         ?>
@@ -536,7 +537,7 @@ if(!defined('ICL_DONT_PROMOTE') || !ICL_DONT_PROMOTE){
                     </ul>                    
                     <input name="iclnonce" type="hidden" value="<?php echo wp_create_nonce('pro-translation-icl') ?>" />
                     <input id="icl_tm_jobs_submit" class="button-primary" type="submit" value="<?php _e('Send documents', 'wpml-translation-management') ?>" 
-                        <?php if(empty($icl_selected_languages) && empty($icl_selected_posts)):?>disabled="disabled" <?php endif; ?> />                        
+                        <?php if(empty($icl_selected_languages) && empty($icl_selected_posts)):?>disabled="disabled" <?php endif; ?> /><br /><br />                        
                     <div class="icl_tm_error" id="icl_dup_ovr_warn" style="display: none">
                         <?php esc_html_e('Any existing content (translations) will be overwritten when creating duplicates.', 'wpml-translation-management'); ?><br />
                         <?php esc_html_e("When duplicating content, please first duplicate parent pages to maintain the site's hierarchy.", 'wpml-translation-management'); ?>

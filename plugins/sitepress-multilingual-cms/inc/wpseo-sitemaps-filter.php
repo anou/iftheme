@@ -191,13 +191,13 @@ class WPSEO_XML_Sitemaps_Filter {
 	function get_last_mod_date($post_type, $language_code){
 		global $wpdb;
 		
-		$date = $wpdb->get_var( $wpdb->prepare( "SELECT post_modified_gmt, ID FROM $wpdb->posts 
+		$date = $wpdb->get_var( "SELECT post_modified_gmt, ID FROM $wpdb->posts 
 		INNER JOIN {$wpdb->prefix}icl_translations
 		ON $wpdb->posts.ID = {$wpdb->prefix}icl_translations.element_id
 		WHERE $wpdb->posts.post_status = 'publish' 
 		AND $wpdb->posts.post_type = '$post_type' 
 		AND {$wpdb->prefix}icl_translations.language_code = '$language_code'
-		ORDER BY post_modified_gmt DESC LIMIT 1 OFFSET 0"));
+		ORDER BY post_modified_gmt DESC LIMIT 1 OFFSET 0");
 		
 		$date = strtotime($date);
 		$date = date( 'c', $date );

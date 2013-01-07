@@ -174,7 +174,7 @@ function icl_sitepress_activate(){
         if($wpdb->get_var("SHOW TABLES LIKE '{$table_name}'") != $table_name){
             $sql = "
                 CREATE TABLE `{$table_name}` (
-                    `code` VARCHAR( 8 ) NOT NULL ,
+                    `code` VARCHAR( 7 ) NOT NULL ,
                     `locale` VARCHAR( 8 ) NOT NULL ,
                     UNIQUE (`code` ,`locale`)
                 ) ENGINE=MyISAM {$charset_collate}"; 
@@ -213,7 +213,7 @@ function icl_sitepress_activate(){
             $sql = "
                 CREATE TABLE `{$table_name}` (
                   `id` bigint(20) unsigned NOT NULL auto_increment,
-                  `language` varchar(10) NOT NULL,
+                  `language` varchar(7) NOT NULL,
                   `context` varchar(160) NOT NULL,
                   `name` varchar(160) NOT NULL,
                   `value` text NOT NULL,
