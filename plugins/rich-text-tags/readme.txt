@@ -3,7 +3,7 @@ Contributors: katzwebdesign
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=zackkatz%40gmail%2ecom&item_name=Rich%20Text%20Tags&no_shipping=0&no_note=1&tax=0&currency_code=USD&lc=US&bn=PP%2dDonationsBF&charset=UTF%2d8
 Tags: tag, tags, taxonomy, taxonomies, category, categories, category description, rich text category, editor, rich text, description, tag description, taxonomy description, rich text, wysiwyg, tinyMCE, SEO, search engine optimization, terms, bio, biography, user, user data, user description
 Requires at least: 3.3
-Tested up to: 3.4.1
+Tested up to: 3.5
 Stable tag: trunk
 
 The Rich Text Tags Plugin allows you to edit tag, category, and taxonomy descriptions using Wordpress' built in WYSIWYG editor.

@@ -1,5 +1,8 @@
 <?php
 //include the main class file
+// for category customization
+require_once("Tax-meta-class/Tax-meta-class.php");
+//include the main class file
 //for post customization
 require_once("meta-box-class/my-meta-box-class.php");
 
@@ -154,9 +157,6 @@ $post1->addTime('time',array('name'=> __('Start time', 'iftheme'), 'desc'=> __("
 $post1->Finish();
 */
 
-//include the main class file
-// for category customization
-require_once("Tax-meta-class/Tax-meta-class.php");
  
 /*
 * configure taxonomy custom fields

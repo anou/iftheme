@@ -158,7 +158,7 @@ function kws_add_form($object = ''){
 		} else {
 			$editor_id = $editor_selector = 'category_description';
 		}
-		
+		$css = '';
 		?>
 <tr class="form-field">
 	<th scope="row" valign="top"><label for="description"><?php _ex('Description', 'Taxonomy Description'); ?></label></th>

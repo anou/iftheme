@@ -5,8 +5,8 @@ Author URI: http://upthemes.com/
 Plugin URI: http://upthemes.com/plugins/kint-debugger
 Tags: debug, debugger, print_r, var_dump, backtrace, debug_backtrace, krumo, php, tool, trace, developer, debug-bar
 Requires at least: 2.5
-Tested up to: 3.3
-Stable tag: 0.2
+Tested up to: 3.5
+Stable tag: 0.3
 
 Kint Debugger makes debugging and dumping variables a more pleasant experience. Kint Debugger integrates seamlessly with the Debug Bar plugin.
 

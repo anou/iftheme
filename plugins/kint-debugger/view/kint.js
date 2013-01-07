@@ -1,1 +1,192 @@
-var d=!1; if("undefined"===typeof f){var g=function(a){var b=window.getSelection(),c=document.createRange();c.selectNodeContents(a);b.removeAllRanges();b.addRange(c)},h=function(a){a.className=a.className.replace(/(\s|^)kint-minus(\s|$)/," ");return a},i=function(a){var b;b||(b="dd");do a=a.nextElementSibling;while(a.nodeName.toLowerCase()!=b);return a},j=function(a,b){var c=i(a),e=a.getElementsByClassName("_kint-collapse")[0];"undefined"==typeof b&&(b="block"==c.style.display);b?(c.style.display="none",h(e)): (c.style.display="block",h(e).className+=" kint-minus")},l=function(a,b){var c=a.parentNode.parentNode.getElementsByClassName(b)[0];c.style.display="block"==c.style.display?"none":"block"},f={};window.addEventListener("load",function(){for(var a=document.getElementsByClassName("kint-parent"),b=a.length,c,e=document.getElementsByClassName("kint");b--;)a[b].addEventListener("mousedown",function(){j(this)},d);a=document.getElementsByClassName("_kint-collapse");for(b=a.length;b--;)a[b].addEventListener("mousedown", function(a){var b=this;setTimeout(function(){if(0<parseInt(b.a,10))b.a--;else{for(var a=b.parentNode,c=i(a),k=c.getElementsByClassName("kint-parent"),e=k.length,c="block"==c.style.display;e--;)j(k[e],c);j(a,c)}},300);a.stopPropagation()},d),a[b].addEventListener("dblclick",function(a){this.a=2;for(var b=document.getElementsByClassName("kint-parent"),c=b.length,e="block"==i(this.parentNode).style.display;c--;)j(b[c],e);a.stopPropagation()},d);for(b=e.length;b--;){a=e[b].getElementsByTagName("var"); for(c=a.length;c--;)a[c].addEventListener("mouseup",function(){g(this)},d);a=e[b].getElementsByTagName("dfn");for(c=a.length;c--;)a[c].addEventListener("mouseup",function(){g(this)},d)}a=document.getElementsByClassName("kint-args-parent");for(b=a.length;b--;)a[b].addEventListener("click",function(a){l(this,"kint-args");a.preventDefault()},d);a=document.getElementsByClassName("kint-source-parent");for(b=a.length;b--;)a[b].addEventListener("click",function(a){l(this,"kint-source");a.preventDefault()}, d);a=document.getElementsByClassName("kint-object-parent");for(b=a.length;b--;)a[b].addEventListener("click",function(a){l(this,"kint-object");a.preventDefault()},d);a=document.getElementsByClassName("kint-ide-link");for(c=a.length;c--;)a[c].addEventListener("click",function(a){a.preventDefault();a=new XMLHttpRequest;a.open("GET",this.href);a.send(null);return d},d)},d)};
+if ( typeof kint === 'undefined' ) {
+	var kint = {
+
+		selectText:function (element) {
+			var selection = window.getSelection(),
+					range = document.createRange();
+
+			range.selectNodeContents(element);
+			selection.removeAllRanges();
+			selection.addRange(range);
+		},
+
+		addClass:function (ele) {
+			kint.removeClass(ele).className += " kint-minus";
+		},
+
+		removeClass:function (ele) {
+			ele.className = ele.className.replace(/(\s|^)kint-minus(\s|$)/, ' ');
+			return ele
+		},
+
+		next:function (element, nodeName) {
+			if ( !nodeName ) nodeName = 'dd';
+
+			do {
+				element = element.nextElementSibling;
+			} while ( element.nodeName.toLowerCase() != nodeName );
+
+			return element;
+		},
+
+		toggleChildren:function (element) {
+			var parent = kint.next(element),
+					nodes = parent.getElementsByClassName('kint-parent'),
+					i = nodes.length,
+					visible = parent.style.display == 'block';
+
+			while ( i-- ) {
+				kint.toggle(nodes[i], visible)
+			}
+			kint.toggle(element, visible)
+
+		},
+
+		toggle:function (element, hide) {
+			var parent = kint.next(element),
+					plus = element.getElementsByClassName('_kint-collapse')[0];
+
+
+			if ( typeof hide == 'undefined' ) {
+				hide = parent.style.display == 'block'
+			}
+
+			if ( hide ) {
+				parent.style.display = 'none';
+				kint.removeClass(plus);
+			} else {
+				parent.style.display = 'block';
+				kint.addClass(plus);
+			}
+		},
+
+		toggleAll:function (element) {
+			var elements = document.getElementsByClassName('kint-parent'),
+					i = elements.length,
+					visible = kint.next(element.parentNode).style.display == 'block';
+
+
+			while ( i-- ) {
+				kint.toggle(elements[i], visible)
+			}
+
+		},
+
+		toggleTrace:function (el, className) {
+			var nel = el.parentNode.parentNode.getElementsByClassName(className)[0];
+			nel.style.display = nel.style.display == 'block' ? 'none' : 'block';
+		}
+
+	};
+
+
+	window.addEventListener("load", function () {
+		var parents = document.getElementsByClassName('kint-parent'),
+				i = parents.length, j,
+				grandparents = document.getElementsByClassName('kint');
+
+
+		while ( i-- ) {
+			parents[i].addEventListener("mousedown", function () {
+				kint.toggle(this)
+			}, false);
+		}
+
+		// add separate events to click and doubleclick
+		parents = document.getElementsByClassName('_kint-collapse');
+		i = parents.length;
+		while ( i-- ) {
+			parents[i].addEventListener(
+					"mousedown",
+					function (e) {
+						var that = this;
+
+						setTimeout(function () {
+							var timer = parseInt(that.kintTimer, 10);
+							if ( timer > 0 ) {
+								that.kintTimer--;
+							} else {
+								kint.toggleChildren(that.parentNode); // let's hope this is <dt>
+							}
+						}, 300);
+						e.stopPropagation();
+					},
+					false
+
+			);
+			parents[i].addEventListener(
+					"dblclick",
+					function (e) {
+						this.kintTimer = 2;
+						kint.toggleAll(this);
+						e.stopPropagation();
+					},
+					false
+			);
+		}
+
+		i = grandparents.length;
+		while ( i-- ) {
+			parents = grandparents[i].getElementsByTagName('var');
+			j = parents.length;
+
+			while ( j-- ) {
+				parents[j].addEventListener("mouseup", function () {
+					kint.selectText(this);
+				}, false);
+			}
+
+			parents = grandparents[i].getElementsByTagName('dfn');
+			j = parents.length;
+
+			while ( j-- ) {
+				parents[j].addEventListener("mouseup", function () {
+					kint.selectText(this);
+				}, false);
+			}
+		}
+
+		parents = document.getElementsByClassName('kint-args-parent');
+		i = parents.length;
+		while ( i-- ) {
+			parents[i].addEventListener("click", function (e) {
+				kint.toggleTrace(this, 'kint-args');
+				e.preventDefault();
+			}, false);
+		}
+
+		parents = document.getElementsByClassName('kint-source-parent');
+		i = parents.length;
+		while ( i-- ) {
+			parents[i].addEventListener("click", function (e) {
+				kint.toggleTrace(this, 'kint-source');
+				e.preventDefault();
+			}, false);
+		}
+
+		parents = document.getElementsByClassName('kint-object-parent');
+		i = parents.length;
+		while ( i-- ) {
+			parents[i].addEventListener("click", function (e) {
+				kint.toggleTrace(this, 'kint-object');
+				e.preventDefault();
+			}, false);
+		}
+
+
+		// add ajax call to contact editor but prevent link default action
+		parents = document.getElementsByClassName('kint-ide-link');
+		j = parents.length;
+		while ( j-- ) {
+			parents[j].addEventListener("click", function (e) {
+				e.preventDefault();
+				var ajax = new XMLHttpRequest();
+				ajax.open('GET', this.href);
+				ajax.send(null);
+				return false;
+			}, false);
+		}
+
+
+	}, false);
+}

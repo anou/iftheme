@@ -316,8 +316,12 @@ class AT_Meta_Box {
   public function wp_ajax_delete_image() {
     $post_id = isset( $_GET['post_id'] ) ? intval( $_GET['post_id'] ) : 0;
     $field_id = isset( $_GET['field_id'] ) ? $_GET['field_id'] : 0;
+    
+    if($field_id == 'categ_img'){require_once( get_template_directory() . "/inc/Tax-meta-class/Tax-meta-class.php"); return;}
+    
     $attachment_id = isset( $_GET['attachment_id'] ) ? intval( $_GET['attachment_id'] ) : 0;
     $ok = false;
+
     if (strpos($field_id, '[') === false){
       check_admin_referer( "at-delete-mupload_".urldecode($field_id));
       $ok = delete_post_meta( $post_id, $field_id );
@@ -342,7 +346,7 @@ class AT_Meta_Box {
       echo json_encode( array('status' => 'success' ));
       die();
     }else{
-      echo json_encode(array('message' => __( 'Cannot delete file. Something\'s wrong.')));
+      echo json_encode(array('message' => __( 'Cannot delete file. Something\'s wrong.tyty')));
       die();
     }
   }

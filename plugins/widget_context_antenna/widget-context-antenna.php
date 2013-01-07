@@ -280,7 +280,7 @@ class widget_context {
 	function count_words_on_page() {
 		global $wp_query;
 		
-		$this->words_on_page = 0;
+		$this->words_on_page = $words_in_post = 0;
 		
 		if (count($wp_query->posts) > 0 && function_exists('strip_shortcodes')) {
 			foreach ($wp_query->posts as $pid => $post_data) {

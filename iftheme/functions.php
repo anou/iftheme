@@ -432,7 +432,6 @@ function get_categ_data($cid){
 
 //get slug in default language
 function get_category_slug($id) {
-    _deprecated_function( __FUNCTION__, '2.3.1', 'get_cat_name()' );
     global $wpdb;
     $term_id = $wpdb->get_var("SELECT term_id FROM {$wpdb->prefix}term_taxonomy WHERE term_taxonomy_id = {$id}");
     if ($term_id) {
@@ -640,9 +639,8 @@ add_action( 'pre_get_posts', 'if_display_posts_listing' );
 * to be aware of our meta field "if_events_startdate"
 */
 function if_display_posts_on_archive_pages( $query ) {
-
 	//if( $query->is_main_query() && isset($query->query['year']) && !is_admin() ) {
-	if( $query->is_main_query() && $query->is_archive && !is_admin() ) {
+	if( $query->is_main_query() && $query->is_archive && !is_admin() && !$query->is_category) {
 
 		$year = $query->query['year'];
 		$month = isset($query->query['monthnum']) ? $query->query['monthnum'] : NULL;
