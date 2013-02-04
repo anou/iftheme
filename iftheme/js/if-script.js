@@ -63,7 +63,7 @@ $(document).ready(function() {
 				$('.pagination').animate({ right: animRight},200);
 			},
 			slidesLoaded: function() {
-				$('.caption').animate({right:0},200);console.log($('.caption').outerWidth());
+				$('.caption').animate({right:0},200);//console.log($('.caption').outerWidth());
 				var animRightStart = $('.caption').outerWidth();
 
 				if(windowWidth <= 767) { animRightStart = animRightStart+210; }
@@ -124,9 +124,9 @@ $(document).ready(function() {
 	  
  
  if (windowWidth > 767){
-  if($('nav#antennes ul li.current-cat ul.children').length || $('nav#antennes ul li.current-cat-parent ul.children').length) { console.log($('.children'));
-    $('ul li.current-cat-parent ul.children').appendTo('nav#antennes').show();
-    $('ul li.current-cat-parent ul.children').show();
+  if($('nav#antennes ul li.current-cat ul.children').length || $('nav#antennes ul li.current-cat-parent ul.children').length) { //console.log($('.children'));
+    $('ul li.current-cat-parent ul.children, ul li.current-cat ul.children').appendTo('nav#antennes').show();
+    $('ul li.current-cat-parent ul.children, ul li.current-cat ul.children').show();
   }
   if( $('.children li').hasClass('current-cat-parent')) {
     $('ul li.current-cat-parent ul.children').appendTo('nav#antennes').show();
