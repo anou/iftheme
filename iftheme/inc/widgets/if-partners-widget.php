@@ -34,7 +34,7 @@ class If_Antenna_Partners extends WP_Widget {
 			'meta_value' => $aid
 		);
 		$partners = get_posts($args);
-
+		
 		// prints the form on the widgets page
 		$defaults = array('partnersshown'=>0);
 		$instance = wp_parse_args( (array) $instance, $defaults );
@@ -69,13 +69,15 @@ class If_Antenna_Partners extends WP_Widget {
 	function widget ($args,$instance) {
 	// used when the sidebar calls in the widget
 		extract($args);
-		
 		$postId = $instance['partnersshown'];
+
 		//$postW = get_post( $postId );
 		if($postId) {
 			$wPartners = get_meta_partners( $postId );
-			if(!is_array($wPartners)) echo $wPartners;
-			return;
+			if(!is_array($wPartners)) {
+			 echo $wPartners;
+			 return;
+			}
 			//$a = $wPartners['antenna'];
 			$partners = $wPartners['partners'];
 			$name = get_the_title($postId);
@@ -85,7 +87,7 @@ class If_Antenna_Partners extends WP_Widget {
 		
 		
 		$title = apply_filters('widget_title', empty( $instance['title'] ) ? $name : $instance['title'], $instance, $this->id_base);
-		
+
 		//print the widget for the widget area
 		echo $before_widget;
 		echo $before_title.$title.$after_title; ?>
@@ -97,8 +99,16 @@ class If_Antenna_Partners extends WP_Widget {
             <?php foreach($partners as $pPart => $pInfo): 
 	            $img = wp_get_attachment_image_src( $pInfo['image_logo']['id'],'partner');
 	            $marge = round((150 - $img[2]) /2); //150 = height of the widget block
+	            $link = false;
+	            if(strlen($pInfo['link_to_partner'])) {  $link = true; }
             ?>
-            	<div><a href="<?php echo $pInfo['link_to_partner'];?>" target="_blank"><img src="<?php echo $img[0]; ?>" width="<?php echo $img[1]; ?>" height="<?php echo $img[2]; ?>" alt="<?php echo $pInfo['partner_title'];?>" style="margin-top:<?php echo $marge.'px';?>" /></a></div>
+            	<div>
+            <?php if($link):?>
+            	 <a href="<?php echo $pInfo['link_to_partner'];?>" target="_blank"><img src="<?php echo $img[0]; ?>" width="<?php echo $img[1]; ?>" height="<?php echo $img[2]; ?>" alt="<?php echo $pInfo['partner_title'];?>" style="margin-top:<?php echo $marge.'px';?>" /></a>
+            <?php else :?>
+            	 <img src="<?php echo $img[0]; ?>" width="<?php echo $img[1]; ?>" height="<?php echo $img[2]; ?>" alt="<?php echo $pInfo['partner_title'];?>" style="margin-top:<?php echo $marge.'px';?>" />
+            <?php endif;?>
+              </div>
             <?php endforeach;?>
             <?php endif;?>
             </div>

@@ -374,7 +374,7 @@ input.wysija-email { border: 1px solid #ababac; padding: 0; width: 150px; height
 /*
  * Calendrier
  */
-#ajax_calendrier { background: #fff url(images/bg-top-post.png) repeat left top;}
+#ajax_calendrier { background: #fff url(images/bg-top-post.png) repeat left top; margin-bottom: 15px;}
 
 #calendrier { width: 300px; position: relative;}
 
@@ -501,6 +501,8 @@ input.wysija-email { border: 1px solid #ababac; padding: 0; width: 150px; height
 	text-shadow:none;
 }
 /*PARTNERS*/
+body #sidebar .widget-sidebar .partners,
+body #sidebar .widget-sidebar .partners div {padding: 0;}
 .partners_container {
     width:297px;
     height:150px;
