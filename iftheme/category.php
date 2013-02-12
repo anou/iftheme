@@ -1,7 +1,7 @@
 	<?php get_header(); ?>
 
 
-<div id="content">
+<div id="content"><span style="color:#ccc" class="none"> Home Page ONE ANTENNA </span>
 	
 	<?php //if(get_query_var('cat') === get_current_antenna() && $multi): //HOME PAGE Antennas ?>
 <?php 
@@ -15,22 +15,32 @@
 	<?php $args_slider = array(
 			'post_type'=> 'if_slider',
 			'order'    => 'DESC',
-			'meta_key' => 'slide_antenna',
-			'meta_value' => $original,
-			'posts_per_page' => 1
+			'meta_query' => array(
+        array(
+          'key' => 'slide_antenna',
+          'value' => $original
+        ),
+      ),
 			);
 			
-			query_posts( $args_slider );
+  		query_posts( $args_slider );
+			
 	?>
 	<?php if (have_posts()) : while (have_posts()) : the_post(); ?>
 	<?php //get slider data
 			$dslide = get_meta_slider($post->ID);
-			foreach($dslide['slides'] as $s => $vals){
-				$slides[$s]['title'] = $vals['slide_title'];
-				$slides[$s]['link'] = $vals['url_img_slide']; 
-				$slides[$s]['img'] = $vals['image_slide']['id']; 
-			}
-			$slides = array_reverse($slides);
+			$slides = array();
+
+			if(empty($dslide['frontpage'])) {
+
+  			foreach($dslide['slides'] as $s => $vals){
+  				$slides[$s]['title'] = $vals['slide_title'];
+  				$slides[$s]['link'] = $vals['url_img_slide']; 
+  				$slides[$s]['img'] = $vals['image_slide']['id']; 
+  			}
+
+  			$slides = array_reverse($slides);
+  		
 	?>
 		<div id="slider">
 			<div id="slides"><!-- #slides -->
@@ -55,6 +65,7 @@
 			
 			</div><!-- /#slides -->
 		</div><!-- /#slider -->
+		<?php } ?>
 	<?php endwhile; ?>
 	<?php /*end query slider*/ wp_reset_query(); ?>
 	<?php endif; ?>

@@ -301,7 +301,7 @@ input.wysija-email { border: 1px solid #ababac; padding: 0; width: 150px; height
 
 #error404 {}
 
-#sidebar {  }
+#sidebar { border-top: 0 none; }
 	#sidebar aside {padding: 0; margin-bottom: 15px; width: 100%;}
 	#sidebar h3 { color: #fff; background: #008ac9 url(images/bg-post-title.png) repeat left top; font-family: 'dinMed'; font-size: 18px; padding: 10px;}
 	#sidebar ul, #sidebar ul li {padding: 0; margin: 0; list-style: none none;}

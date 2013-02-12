@@ -263,8 +263,10 @@ function save_if_events() {
     endif;
     
     //disciplines
-    $updatedis = $_POST["if_events_disciplines"];
-    update_post_meta($post->ID, "if_events_disciplines", $updatedis );
+    if(isset($_POST["if_events_disciplines"])):
+      $updatedis = $_POST["if_events_disciplines"];
+      update_post_meta($post->ID, "if_events_disciplines", $updatedis );
+    endif;
     
     if(isset($_POST["if_events_lieu"])):
         $updatelieu = $_POST["if_events_lieu"];
@@ -377,9 +379,9 @@ function events_scripts() {
     global $post_type;
     if( 'post' != $post_type )
     return;
-    wp_enqueue_script('jquery-ui', get_bloginfo('template_url') . '/inc/events/js/jquery-ui-1.8.9.custom.min.js', array('jquery'));
+    //wp_enqueue_script('jquery-ui', get_bloginfo('template_url') . '/inc/events/js/jquery-ui-1.8.9.custom.min.js', array('jquery'));
 
-    wp_enqueue_script('ui-datepicker', get_bloginfo('template_url') . '/inc/events/js/jquery.ui.datepicker.js');
+    wp_enqueue_script('ui-datepicker', get_bloginfo('template_url') . '/inc/events/js/jquery.ui.datepicker.js', array('jquery'));
 		
 		wp_enqueue_script('jquery-validate', get_bloginfo('template_url') . '/inc/events/js/jquery.validate.min.js', array('jquery'), '1.8.1',true);
     

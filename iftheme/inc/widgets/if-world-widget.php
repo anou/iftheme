@@ -59,7 +59,7 @@ class If_World_Links extends WP_Widget {
 	// used when the sidebar calls in the widget
 		extract($args);
 
-		$title = apply_filters('widget_title', $instance['title'] ? $instance['title'] : __("Numeric IF",'iftheme'));
+		$title = apply_filters('widget_title', isset($instance['title']) ? $instance['title'] : __("Numeric IF",'iftheme'));
 		
 		//print the widget for the widget area
 		echo $before_widget;

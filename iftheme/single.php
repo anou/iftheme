@@ -43,7 +43,7 @@
 		<div id="post-<?php the_ID(); ?>" <?php post_class('post'); ?>>
 
 			<article class="post">
-				<div class="infos-post bxshadow"><?php echo $start ? $start . $end .' - ' : ''; ?><?php echo get_cat_name($antenna);?></div>
+				<?php if($start):?><div class="infos-post bxshadow"><?php echo $start ? $start . $end .' - ' : ''; ?><?php echo get_cat_name($antenna);?></div><?php endif;?>
 				<h1><a href="<?php the_permalink() ?>" title="<?php the_title(); ?>" rel="bookmark"><?php the_title(); ?></a></h1>
 				<small><?php edit_post_link(__('Edit this entry', 'iftheme')); ?></small>
 				<?php if ( has_post_thumbnail() ) { echo '<div class="featured-post-img">'; the_post_thumbnail('post-img'); echo '</div>'; } ?>
@@ -67,6 +67,7 @@
 				</div><!--#post-meta-->
 			</article>
 
+		<?php if('post' == get_post_type()):?>
 		<!-- ADDITIONAL INFOS -->
 			<div class="booking-container add-infos">
 				<h3 class="booking-title"><span class="picto-book"></span><?php _e("Useful informations",'iftheme'); ?></h3>
@@ -84,7 +85,7 @@
 	              <?php echo $data['link3'] ? '<a href="'. $data['link3'] .'" target="_blank">'. $data['link3'] .'</a><br />' : '';?>
 				</div>
 			</div><!-- #booking-container -->
-
+		<?php endif;?>
 		<!-- BOOKING FORM -->
 		<?php if($book == 'on'):?>
 			<div class="booking-container">

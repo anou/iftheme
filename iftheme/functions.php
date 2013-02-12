@@ -18,9 +18,11 @@
 
 function if_init() {
 	if (!is_admin()) {
+/*
 		wp_deregister_script('jquery');
 		wp_register_script('jquery', ("http://ajax.googleapis.com/ajax/libs/jquery/1.7/jquery.min.js"), false);
 		wp_enqueue_script('jquery');
+*/
 		wp_enqueue_script('masonry', get_bloginfo('stylesheet_directory') . '/js/jquery.masonry.min.js', array('jquery'));
 		
 		//RTL languages
@@ -269,7 +271,7 @@ function get_cat_slug($cat_id) {
 	$cat_id = (int) $cat_id;	
 	$category = &get_category($cat_id);
 
-	return $category->slug;
+	return property_exists($category,'slug') ? $category->slug : '';
 }
 //Prepare vars for IF category vs antenna system
 function get_cat_if_user($uid){
@@ -544,6 +546,7 @@ add_action('manage_category_custom_column','manage_category_custom_fields',10,3)
 
 function if_restrict_categories($categories) {
 	global $current_user; get_currentuserinfo();
+	
 	$a = get_cat_if_user($current_user->ID);
 	//echo('antenna == '.$a.'<br>');
 
@@ -553,10 +556,11 @@ function if_restrict_categories($categories) {
 	//if (is_admin() && $onPostPage) {
 		$size = count($categories);
 		for ($i = 0; $i < $size; $i++) {
-		//echo '<pre>';print_r($categories[$i]);
+		 if(is_object($categories[$i])){
 			if($categories[$i]->parent != $a && $categories[$i]->term_id != $a){
 				unset($categories[$i]);
-			}			
+			}
+		 }
 		}
 	}
 
@@ -728,11 +732,11 @@ function get_meta_if_post($pid=''){
 	$data['time'] = $time;  
 	
 	//add featured img id if exist
-	$img = $meta['_thumbnail_id'];
+	$img = isset($meta['_thumbnail_id']) ?$meta['_thumbnail_id'] : array();
 	$data['img'] = !empty($img) ? $img[0] : NULL;
 	
 	//booking infos
-	$book =  $meta['if_book_enable'][0];
+	$book =  isset($meta['if_book_enable']) ? $meta['if_book_enable'][0] : '';
 	if($book == 'on'){
 		$data['booking'] = $book;
 		$data['book_mail'] = $meta['if_book_mail'][0];
@@ -753,7 +757,7 @@ function get_meta_if_post($pid=''){
 	
 	$data['longitude'] = $meta['if_events_long'][0];
 	$data['latitude'] = $meta['if_events_lat'][0];
-	$data['schedule'] = $meta['if_events_hour'][0];//field schedule. not used for now.
+	$data['schedule'] = isset($meta['if_events_hour']) ? $meta['if_events_hour'][0] : '';//field schedule. not used for now.
 	$data['tel'] = $meta['if_events_tel'][0];
 	$data['event_mail'] = $meta['if_events_mmail'][0];
 	$data['link1'] = $meta['if_events_link1'][0];
@@ -768,6 +772,7 @@ function get_meta_slider($pid=''){
 	$pid = !$pid ? $post->ID : $pid;
 		
 	$data['antenna'] = get_post_meta($pid, 'slide_antenna', false);
+	$data['frontpage'] = get_post_meta($pid, 'is_country', false);
 	
 	//imgz
 	$tab_imgz = get_post_meta($post->ID,'re_');
@@ -1188,23 +1193,36 @@ if(function_exists('icl_get_languages')) {
 		return $content;
 	}
 
-	// custom excerpt ellipses for 2.9+
-	function custom_excerpt_more($more) {
-		return 'Read More &raquo;';
-	}
-	add_filter('excerpt_more', 'custom_excerpt_more');
-	// no more jumping for read more link
-	function no_more_jumping($post) {
-		return '...<a href="'.get_permalink($post->ID).'" class="read-more">'.__('Continue Reading','iftheme').' >'.'</a>';
-	}
-	add_filter('excerpt_more', 'no_more_jumping');
+  if ( ! function_exists( 'twentyeleven_continue_reading_link' ) ) :
+    /**
+     * Returns a "Continue Reading" link for excerpts
+     */
+    function iftheme_continue_reading_link() {
+    	return '<a href="'. esc_url( get_permalink() ) . '" class="read-more">'.__('Continue Reading','iftheme').' >'.'</a>';
+    }
+  endif; // twentyeleven_continue_reading_link
+
+  /**
+   * Replaces "[...]" (appended to automatically generated excerpts) with an ellipsis and twentyeleven_continue_reading_link().
+   *
+   * To override this in a child theme, remove the filter and add your own
+   * function tied to the excerpt_more filter hook.
+   */
+  function iftheme_auto_excerpt_more( $more ) {
+  	return '...' . iftheme_continue_reading_link();
+  }
+  add_filter( 'excerpt_more', 'iftheme_auto_excerpt_more' );
 	
 	// category id in body and post class
 	function category_id_class($classes) {
 		global $post;
-		foreach((get_the_category($post->ID)) as $category)
-			$classes [] = 'cat-' . $category->cat_ID . '-id';
-			return $classes;
+		if(is_object($post)){
+  		foreach(get_the_category($post->ID) as $category){
+    		$classes [] = 'cat-' . $category->cat_ID . '-id';
+  		}
+    }
+    return $classes;
+
 	}
 	add_filter('post_class', 'category_id_class');
 	add_filter('body_class', 'category_id_class');
@@ -1286,7 +1304,7 @@ function createXML(){
     $xml .= '<imageurl>' . $image[0] . '</imageurl>';	//URL image à la une
     $xml .= '<videourl></videourl>';
     //$xml .= '<description>' .get_excerpt_by_id($row->ID) . '</description>'; 	// "the_excerpt" (! pas de HTML !)
-    $xml .= '<description>' . strip_tags(strip_shortcodes(html_entity_decode($row->post_content))) . '</description>'; 	// "the_content !!!" (! pas de HTML !)
+    $xml .= '<description>' . strip_tags(strip_shortcodes(html_entity_decode($row->post_content,ENT_COMPAT, 'UTF-8'))) . '</description>'; 	// "the_content !!!" (! pas de HTML !)
     $xml .= '<datepub>' . mysql2date('d/m/Y',$row->post_date) . '</datepub>'; //format dd/mm/yyyy - date de publication  => post date WP
     $xml .= '<datedebut>' . mysql2date('d/m/Y', date_i18n('Y-m-d H:i:s',$meta_values['if_events_startdate'][0])) . '</datedebut>'; //date début event
 		$xml .= '<datefin>' . mysql2date('d/m/Y', date_i18n('Y-m-d H:i:s',$meta_values['if_events_enddate'][0])) . '</datefin>'; //date fin event
@@ -1322,6 +1340,7 @@ function createXML(){
 
   $path = 'wp-content/themes/iftheme/xml/events.xml';
 
+  $xml = str_replace(array("&amp;", "&"), array("&", "&amp;"), $xml);
   $sxe = new SimpleXMLElement($xml);
 
   $sxe->asXML($path); 

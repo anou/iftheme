@@ -69,9 +69,9 @@ function iftheme_theme_options_init() {
 	}
 	// Add the section to theme options settings so we can add our fields to it.
 	//Only for admin (user 1)
-	if($current_user->ID === 1) {
+	//if($current_user->ID === 1) {
 	  add_settings_section('social_setting_section', __('Social sites on the web','iftheme'), 'social_setting_section_callback_function','theme_options');
-  }
+  //}
 	
 	// Register our individual settings fields
 	add_settings_field(
@@ -85,7 +85,7 @@ function iftheme_theme_options_init() {
 	add_settings_field( 'theme_home_categ', __( 'Displayed home categories', 'iftheme' ), 'iftheme_settings_field_home_categories', 'theme_options', 'general' );//categories on homepage
 	add_settings_field('background_img', __('Background image','iftheme'), 'iftheme_settings_field_background_img', 'theme_options', 'general'); // Background image
 
-	
+
 	// Add the field with the names and function to use for our new
 	// settings, put it in our new section
 	add_settings_field('theme_options_setting_facebook', __('Facebook Page','iftheme'),'theme_options_setting_facebook_callback_function','theme_options','social_setting_section');
@@ -287,10 +287,12 @@ function iftheme_settings_field_home_categories($pays=NULL) {
 
   if(!empty($categz)){
 	foreach ( $categz as $home_categ ) {
+	  $keyCateg = $pays ? 'theme_home_categ_country' : 'theme_home_categ';
+	  $checked = isset($options[$keyCateg][0][$home_categ['value']]) ? $options[$keyCateg][0][$home_categ['value']] : '';
 		?>
 		<div class="layout image-checkbox-option theme-home-categ">
 		<label class="description">
-			<input type="checkbox" name="iftheme_theme_options_<?php echo $antenna;?>[theme_home_categ<?php echo $pays ? '_'.$pays : '';?>][<?php echo $home_categ['value'];?>]" value="<?php echo esc_attr( $home_categ['value'] ); ?>" <?php checked( $pays ? $options['theme_home_categ_country'][0][$home_categ['value']] : $options['theme_home_categ'][0][$home_categ['value']], $home_categ['value'] ); ?> />
+			<input type="checkbox" name="iftheme_theme_options_<?php echo $antenna;?>[theme_home_categ<?php echo $pays ? '_'.$pays : '';?>][<?php echo $home_categ['value'];?>]" value="<?php echo esc_attr( $home_categ['value'] ); ?>" <?php checked( $checked, $home_categ['value'] ); ?> />
 			<span><?php echo $home_categ['label']; ?></span> <?php if(isset($home_categ['antenne'])):?><span class="small">(<?php echo $home_categ['antenne']; ?>)</span><?php endif;?>
 		</label>
 		</div>
@@ -365,7 +367,8 @@ function iftheme_theme_options_render_page() { ?>
 		<h2><?php printf( __( '%s Theme Options', 'iftheme' ), $theme_name ); ?></h2>
 		<?php settings_errors(); ?>
 	<?php $opt = iftheme_get_theme_options();
-		 //echo '<pre>';print_r($opt);echo '</pre>';?>
+		 //echo '<pre>';print_r($opt);echo '</pre>';
+		 //d($opt);?>
 
 		<form method="post" action="options.php" enctype="multipart/form-data">
 			<?php

@@ -52,11 +52,18 @@
 	//langue
   global $sitepress;
   $default_lg = isset($sitepress) ? $sitepress->get_default_language() : 'fr';//assuming that 'fr' should be default language
-  
-  $lang = defined('WPLANG') ? strstr(WPLANG, '_', true) : 'en';
+
+  if(version_compare(PHP_VERSION, '5.3.0') <= 0) {      
+    $lang = defined('WPLANG') ? substr(WPLANG, 0, strpos(WPLANG, '_')) : 'en';
+  } else {
+    $lang = defined('WPLANG') ? strstr(WPLANG, '_', true) : 'en';
+  }
   $pathlang = '';
-  if(defined('ICL_LANGUAGE_CODE')) {
-  	$lang = isset($_POST['lang']) ? str_replace('_','',strstr($_POST['lang'], '_')) : strtoupper(ICL_LANGUAGE_CODE);
+  $default_lg = !$default_lg ? $lang : $default_lg;
+
+  
+  if(defined('ICL_LANGUAGE_CODE') && ICL_LANGUAGE_CODE ) { 
+  	$lang = isset($_POST['lang']) ? str_replace('_','',strstr($_POST['lang'], '_')) : ICL_LANGUAGE_CODE;
   	$pathlang = ICL_LANGUAGE_CODE == $default_lg ? '' : "/". ICL_LANGUAGE_CODE;
 	}
 	
@@ -64,8 +71,8 @@
 	  $postlang = strtolower(str_replace('_','',strstr($_POST['lang'], '_')));
 	  if($postlang != $default_lg) { $pathlang = "/". $postlang; }
 	}
-	
-	$obj_cal->setLangue($lang);
+
+	$obj_cal->setLangue(strtoupper($lang));
 	$lang_exist = $obj_cal->getLangue();
 	$obj_cal->setLangue($lang_exist);
 	

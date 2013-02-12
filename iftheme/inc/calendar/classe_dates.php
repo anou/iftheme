@@ -103,7 +103,7 @@
 		protected function _num2Month($a_mois)
 		{
 			$res = $this->moisCourt ? $this->moisC[$this->lng][$a_mois] : $this->mois[$this->lng][$a_mois];
-			return(htmlentities($res));
+			return($res);
 		}
 	
 

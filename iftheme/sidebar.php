@@ -53,21 +53,22 @@
 			}
 			?>
 		<!-- SOCIAL NETWORKS -->
-		<?php 
-			  $fb = isset($options['theme_options_setting_facebook']) ? $options['theme_options_setting_facebook'] : $options[1]['theme_options_setting_facebook'];
-			  $twit = isset($options['theme_options_setting_twitter']) ? $options['theme_options_setting_twitter'] : $options[1]['theme_options_setting_twitter'];
-			  $gg = isset($options['theme_options_setting_googleplus']) ? $options['theme_options_setting_googleplus'] : $options[1]['theme_options_setting_googleplus'];
+		<?php if($antenna != 'front'):
+			  $fb = isset($options['theme_options_setting_facebook']) ? $options['theme_options_setting_facebook'] : $options[$antenna]['theme_options_setting_facebook'];
+			  $twit = isset($options['theme_options_setting_twitter']) ? $options['theme_options_setting_twitter'] : $options[$antenna]['theme_options_setting_twitter'];
+			  $gg = isset($options['theme_options_setting_googleplus']) ? $options['theme_options_setting_googleplus'] : $options[$antenna]['theme_options_setting_googleplus'];
 		  
 			  if($fb || $twit || $gg):
 		?>
 			<aside id="sidebar-social" class="widget bxshadow clearfix">
 			  <h3><?php _e('Join-us','iftheme');?></h3>
 			  <ul>
-				<li id="fb"><a href="<?php echo $fb;?>"><img src="<?php bloginfo('template_directory');?>/images/social/fb.png" alt="facebook" /></a></li>
-				<li id="twit"><a href="<?php echo $twit;?>"><img src="<?php bloginfo('template_directory');?>/images/social/twit.png" alt="twitter" /></a></li>
-				<li id="gg"><a href="<?php echo $gg;?>"><img src="<?php bloginfo('template_directory');?>/images/social/gg.png" alt="google plus" /></a></li>
+				<?php if($fb):?><li id="fb"><a href="<?php echo $fb;?>" target="_blank"><img src="<?php bloginfo('template_directory');?>/images/social/fb.png" alt="facebook" /></a></li><?php endif;?>
+				<?php if($twit):?><li id="twit"><a href="<?php echo $twit;?>" target="_blank"><img src="<?php bloginfo('template_directory');?>/images/social/twit.png" alt="twitter" /></a></li><?php endif;?>
+				<?php if($gg):?><li id="gg"><a href="<?php echo $gg;?>" target="_blank"><img src="<?php bloginfo('template_directory');?>/images/social/gg.png" alt="google plus" /></a></li><?php endif;?>
 			  </ul>
 			</aside>
+		<?php endif; ?>
 		<?php endif; ?>
 		
 		<!-- CALENDAR -->

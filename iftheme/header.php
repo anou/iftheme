@@ -77,7 +77,7 @@ global $current_user; get_currentuserinfo();
 				?>
         <script type="text/javascript">
             jQuery(function(){
-              jQuery('.container.for-angle ul.children').appendTo('nav#antennes').show();
+              jQuery('.container.for-angle .current-cat ul.children').appendTo('nav#antennes').show();
             });
         </script>
     <?php endif;?>
