@@ -167,10 +167,12 @@ class widget_context {
 		
 		foreach ($wp_registered_widgets as $widget_id => $widget_data) {
 			// Check if widget will be shown
-			$do_show = $this->check_widget_visibility($this->context_options[$widget_id]);
+			if(isset($this->context_options[$widget_id])){
+  			$do_show = $this->check_widget_visibility($this->context_options[$widget_id]);
+			}
 			
 			if (!$do_show) { // If not shown, remove it temporeraly from the list of existing widgets
-				unregister_sidebar_widget($widget_id);
+				wp_unregister_sidebar_widget($widget_id);
 			} else {
 				//if (!$wp_registered_widgets[$widget_id]['params'][0]['widget_id']) {
 				// Save the original widget id
