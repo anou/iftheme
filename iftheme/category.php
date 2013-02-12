@@ -69,6 +69,7 @@
 				<div class="block-home">
 					<h2 class="posts-category"><?php echo $cat;?></h2>
 					<?php //alter query
+					$time = (time() - (60*60*24));
           $args = array(
              'cat' => $id,
              'meta_key' => 'if_events_enddate',
@@ -77,7 +78,7 @@
              'meta_query' => array(
                  array(
                      'key' => 'if_events_enddate',
-                     'value' => (time() - (60*60*24)),
+                     'value' => $time,
                      'compare' => '>=',
                  )
              )

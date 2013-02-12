@@ -52,8 +52,13 @@
 	//langue
   global $sitepress;
   $default_lg = isset($sitepress) ? $sitepress->get_default_language() : 'fr';//assuming that 'fr' should be default language
-	$lang = isset($_POST['lang']) ? str_replace('_','',strstr($_POST['lang'], '_')) : strtoupper(ICL_LANGUAGE_CODE);
-	$pathlang = ICL_LANGUAGE_CODE == $default_lg ? '' : "/". ICL_LANGUAGE_CODE;
+  
+  $lang = defined('WPLANG') ? strstr(WPLANG, '_', true) : 'en';
+  $pathlang = '';
+  if(defined('ICL_LANGUAGE_CODE')) {
+  	$lang = isset($_POST['lang']) ? str_replace('_','',strstr($_POST['lang'], '_')) : strtoupper(ICL_LANGUAGE_CODE);
+  	$pathlang = ICL_LANGUAGE_CODE == $default_lg ? '' : "/". ICL_LANGUAGE_CODE;
+	}
 	
 	if(isset($_POST['lang'])) {
 	  $postlang = strtolower(str_replace('_','',strstr($_POST['lang'], '_')));
@@ -89,12 +94,14 @@
  	//get language code if multilang
  	$tablemap = $wpdb->prefix.'icl_locale_map';
  	$query_lang = "SELECT code FROM $tablemap WHERE locale = '$curLang'";
- 	$code_lang = $wpdb->get_row($query_lang);
+ 	$code_lang = $wpdb->get_var("SHOW TABLES LIKE '$tablemap'") != $tablemap ? NULL : $wpdb->get_row($query_lang);
 
- 	$tabletrans = $wpdb->prefix.'icl_translations';
- 	$query_trans = "SELECT * FROM $tabletrans WHERE language_code = '$code_lang->code' AND element_type = 'post_post'";
- 	$results_trans = $wpdb->get_results($query_trans);
-	
+ 	if($code_lang){
+   	$tabletrans = $wpdb->prefix.'icl_translations';
+   	$query_trans = "SELECT * FROM $tabletrans WHERE language_code = '$code_lang->code' AND element_type = 'post_post'";
+   	$results_trans = $wpdb->get_results($query_trans);
+  }
+  
 	$query_str = "
 		SELECT wposts.* 
 		FROM $wpdb->posts wposts, $wpdb->postmeta wpostmeta
@@ -108,30 +115,58 @@
 	$entries = $wpdb->get_results( $query_str, OBJECT );
 
 	$i = 0;
-	foreach($entries as $k => $o){
-	 foreach($results_trans as $kt => $ot){
-	 if($o->ID == $ot->element_id && $ot->language_code == $code_lang->code){
-		$data = get_meta_raw_if_post($o->ID);
-		$start = !empty($data['start']) ? date('Y-m-d',$data['start']) : NULL;
-		$end = !empty($data['end']) ? date('Y-m-d',$data['end']) : NULL;
-		$time = !empty($data['time']) ? $data['time'] : NULL;
-		$title = $data['title'];
-		
-		if($start !== $end) {
-			$period = getAllDays($start, $end, $aslist = false);
-			
-			foreach($period as $d){
-				$events[$i][$d] = $title;
-			}
-			
-		} else {
-			$events[$i][$start] = $title;
-		}
-		$i++;
-   }
-   }
-	}
+	
+	if(isset($results_trans)){
+  	foreach($entries as $k => $o){
+  
+  	 foreach($results_trans as $kt => $ot){
+  	 if($o->ID == $ot->element_id && $ot->language_code == $code_lang->code){
+  
+  		$data = get_meta_raw_if_post($o->ID);
+  		$start = !empty($data['start']) ? date('Y-m-d',$data['start']) : NULL;
+  		$end = !empty($data['end']) ? date('Y-m-d',$data['end']) : NULL;
+  		$time = !empty($data['time']) ? $data['time'] : NULL;
+  		$title = $data['title'];
+  		
+  		if($start !== $end) {
+  			$period = getAllDays($start, $end, $aslist = false);
+  			
+  			foreach($period as $d){
+  				$events[$i][$d] = $title;
+  			}
+  			
+  		} else {
+  			$events[$i][$start] = $title;
+  		}
+  		$i++;
+     }
+     }
+  	}
+  }
+  else {
+  	foreach($entries as $k => $o){
+    
+  		$data = get_meta_raw_if_post($o->ID);
+  		$start = !empty($data['start']) ? date('Y-m-d',$data['start']) : NULL;
+  		$end = !empty($data['end']) ? date('Y-m-d',$data['end']) : NULL;
+  		$time = !empty($data['time']) ? $data['time'] : NULL;
+  		$title = $data['title'];
+  		
+  		if($start !== $end) {
+  			$period = getAllDays($start, $end, $aslist = false);
+  			
+  			foreach($period as $d){
+  				$events[$i][$d] = $title;
+  			}
+  			
+  		} else {
+  			$events[$i][$start] = $title;
+  		}
+  		$i++;
+  	}
 
+  }
+  
 	//add events to the calendar
 	if($events){
 		foreach($events as $k => $e){
