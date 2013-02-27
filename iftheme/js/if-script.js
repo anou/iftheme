@@ -214,6 +214,7 @@ $(selectMenu).change(function() {
 	    //.wysija-msg.ajax
     }
     if($(".wysija_lists .checkbox").length){
+/*
 	    $(".wysija_lists .checkbox").unbind('click');
 		//styling checkboxes
 		$(".wysija_lists .checkbox").each(function() {
@@ -243,6 +244,7 @@ $(selectMenu).change(function() {
 			}
 		});
 		
+*/
 	} else { $('input.wysija-email').css({ width: '233px'}); }
     
     //homepages
