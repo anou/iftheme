@@ -107,9 +107,9 @@ $(document).ready(function() {
 		var thumbs = $('.featured-thumbnail');
 		thumbs.each(function(){
 			$(this).next('.top-block').css({'float':'left','width':'400px','margin-bottom':'15px'});
-			var newH = $(this).closest('article').height();
+			var newH = $(this).closest('article').outerHeight();
 			if($(this).height() < newH ) {
-				$(this).height(newH+2);
+				$(this).css('min-height',newH+(newH/3));
 				
 			} else if($(this).height() >= newH ) {
 				$(this).closest('article').height($(this).height());

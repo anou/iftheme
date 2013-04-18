@@ -156,7 +156,7 @@
 				$start = $data['start'];
 				$end = $data['end'];  
 			?>
-			<article class="post-single">
+			<article class="post-single clearfix">
 				<?php if ( has_post_thumbnail() ) { /* loades the post's featured thumbnail, requires Wordpress 3.0+ */ echo '<div class="featured-thumbnail">'; the_post_thumbnail('listing-post'); echo '</div>'; } ?>
 				<div class="top-block bxshadow">
 					<div class="date-time">

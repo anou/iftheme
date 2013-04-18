@@ -206,7 +206,7 @@ header { }
 	div.block-home { width: 310px; float: left; background: #fff; margin:0 10px 20px 0}
 		h2.posts-category {font: normal 22px/1.2em 'dinMed',sans-serif !important; text-transform: uppercase; color: #008AC9; background-color: #fff;}
 		article.post-single-home { margin: 10px 0 5px 0; box-shadow: 0 2px 2px rgba(0, 0, 0, 0.2); -webkit-box-shadow: 0 2px 2px rgba(0, 0, 0, 0.2);}
-		article.post-single { margin: 0 0 23px;}
+		article.post-single { margin: 0 0 23px; width: 100%}
 		.featured-thumbnail {float: left; margin-right: 10px;}
 		.featured-thumbnail img {width: 200px; height: auto;}
 		.featured-thumbnail-home img {width: 310px; height: auto;}
@@ -282,7 +282,7 @@ header { }
 .post {}
 	.postContent {}
 	.post .infos-post {background: #fff url(images/bg-top-post.png) repeat left top; padding: 10px; font-size: 18px; font-family: 'dinMed',sans-serif; text-transform: uppercase; margin-bottom: 16px}
-	.post-excerpt {font-size: 13px; padding: 5px 10px 0;}
+	.post-excerpt {font-size: 13px; padding: 5px 10px 0; min-height: 15px}
 	#post-meta {text-transform: uppercase; font-size: 10px; color:#3E647E; }
 
 nav.oldernewer {}
