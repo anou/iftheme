@@ -13,6 +13,7 @@ function antenna_role() {
 	$owner_role = get_role('antenna');
 	$owner_role->add_cap('edit_theme_options');
 	$owner_role->add_cap('manage_categories');
+	$owner_role->add_cap('unfiltered_html');
 }
 add_action('init','antenna_role',1);
 

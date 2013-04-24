@@ -204,12 +204,12 @@ class iclNavMenu{
                 && (empty($nav_menu_recently_edited_lang->language_code) || $nav_menu_recently_edited_lang->language_code != $sitepress->get_admin_language_cookie()) 
                 && (empty($_POST['action']) || $_POST['action']!='update')){
             // if no menu is specified, no language is set, override nav_menu_recently_edited if its language is different than default           
-            $nav_menu_selected_id = $this->_get_first_menu($sitepress->get_admin_language_cookie());    
+            $nav_menu_selected_id = $this->_get_first_menu($sitepress->get_current_language());    
             update_user_option(get_current_user_id(), 'nav_menu_recently_edited', $nav_menu_selected_id);
         }elseif(isset( $_REQUEST['menu'] )){
             $nav_menu_selected_id = $_REQUEST['menu'];
         }else{
-            $nav_menu_selected_id = $nav_menu_recently_edited;
+            $nav_menu_selected_id = $nav_menu_recently_edited;            
         }
         
         $this->current_menu['id'] = $nav_menu_selected_id;        

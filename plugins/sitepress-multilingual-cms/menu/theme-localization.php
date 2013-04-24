@@ -78,8 +78,7 @@ $locales = $sitepress->get_locale_file_names();
     <?php 
         $wptranslations = $WPML_ST_MO_Downloader->get_option('translations');
     ?>
-    <th scope="col" align="right"><?php echo __('WP Translation (current)', 'sitepress') ?></th>
-    <th scope="col"><?php echo __('WP Translation (available)', 'sitepress') ?></th>
+    <th scope="col" align="right"><?php echo __('WP Translation', 'sitepress') ?></th>
     <th scope="col">&nbsp;</th>
     <?php endif; ?>
     </tr>        
@@ -115,15 +114,47 @@ $locales = $sitepress->get_locale_file_names();
     <?php endif; ?> 
     <?php if(!empty($sitepress_settings['st']['auto_download_mo'])):?>
     <td scope="col"><?php 
-        if(isset($wptranslations[$lang['code']]['installed'])){
-            echo $wptranslations[$lang['code']]['installed'] . ' ( ' . date("F j, Y @H:i", $wptranslations[$lang['code']]['time']) .  ')';
-        }else{
-            _e('not available', 'sitepress');
+            
+        $wpl_disabled = true;
+        if($lang['code'] == 'en'){
+            echo '&nbsp;';    
+        }else{            
+            if(empty($wptranslations[$lang['code']])){
+                echo '<span class="icl_error_text" >' . __('not available', 'sitepress') . '</span>';
+            }else{
+                
+                $update_available = array();
+                foreach($wptranslations[$lang['code']] as $project => $info){
+                    
+                    // filter only core( & admin)
+                    if($project != 'admin' && $project != 'core') continue;
+                    
+                    if(!empty($info['available']) && (empty($info['installed']) || $info['installed'] != $info['available'])){
+                        $update_available[$project] = $info['available'];
+                    }
+                }
+                if($update_available){
+                    
+                    $vkeys = array();
+                    foreach($update_available as $project => $signature){
+                        $vkeys[] = $project.'|'.$signature;
+                    }                    
+                    $updates_versions[$lang['code']] = join(';', $vkeys);
+                    
+                    echo '<strong class="icl_valid_text">' . __('Updates available', 'sitepress')  . '</strong>';                    
+                    $wpl_disabled = false;
+                }else{
+                    echo '<span class="icl_valid_text" >' . __('Up to date', 'sitepress') . '</span>';
+                }
+                
+            }
         }
     ?></td>
-    <td scope="col"><?php echo isset($wptranslations[$lang['code']]['available']) ? $wptranslations[$lang['code']]['available'] : _e('not available', 'sitepress'); ?></td>
-    <?php $disabled = empty($wptranslations[$lang['code']]['available']); ?>
-    <td scope="col" align="right"><a href="<?php if(!$disabled) echo admin_url('admin.php?page=' . WPML_ST_FOLDER . '/menu/string-translation.php&amp;download_mo=' . $lang['code']. '&amp;version=' . $wptranslations[$lang['code']]['available']); else echo '#'; ?>" class="button-secondary" <?php if($disabled): ?>disabled="disabled" onclick="return false;"<?php endif;?>><?php  _e('Review changes and update', 'wpml-string-translation') ?></a></td>
+    <td scope="col" align="right">
+        <?php if($lang['code'] == 'en'): ?>&nbsp;<?php else: ?>
+        <a href="<?php if(!$wpl_disabled) echo admin_url('admin.php?page=' . WPML_ST_FOLDER . '/menu/string-translation.php&amp;download_mo=' . $lang['code']. '&amp;version=' . $updates_versions[$lang['code']]); else echo '#'; ?>" class="button-secondary" <?php if($wpl_disabled): ?>disabled="disabled" onclick="return false;"<?php endif;?>><?php  _e('Review changes and update', 'wpml-string-translation') ?></a>
+        <?php endif; ?>
+    </td>
     <?php endif; ?>
     </tr>
     <?php endforeach; ?>                                                          

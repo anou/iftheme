@@ -47,7 +47,9 @@
                         foreach ($your_translator->language_pairs as $from => $lp) {
                             $tos = array();
                             foreach ($lp as $to => $null) {
-                                $tos[] = $active_languages[$to]['display_name'];
+                                if(isset($active_languages[$to])){
+                                    $tos[] = $active_languages[$to]['display_name'];    
+                                }
                             }
                             printf(__('%s to %s', 'wpml-translation-management'), $active_languages[$from]['display_name'], join(', ', $tos));
                         }

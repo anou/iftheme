@@ -41,6 +41,10 @@ jQuery(document).ready(function($) {
 				required: true
 			},
 			
+			longlat: {
+  			required: true
+			},
+			
 			if_events_long: {
   			required: true,
   			number: true
@@ -79,6 +83,7 @@ jQuery(document).ready(function($) {
 			if_events_lieu: objectL10n.place,
 			if_events_city: objectL10n.mandatory,
 			if_events_pays: objectL10n.mandatory,
+			longlat: objectL10n.mandatory,
 			if_events_long: objectL10n.long,
 			if_events_lat: objectL10n.lat,
 			if_events_link1: objectL10n.httpurl,

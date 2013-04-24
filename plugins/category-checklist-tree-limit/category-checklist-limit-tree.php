@@ -23,8 +23,8 @@ class Category_Checklist_Limit {
 		$uid = $current_user->ID;
 		
 		if($uid != 1) { 
-			if(function_exists('get_cat_if_user')){
-				$cat = get_cat_if_user($uid);
+			if(function_exists('get_cat_if_user_lang')){
+				$cat = get_cat_if_user_lang($uid);
 				
 				if(!$cat) {return;}
 				

@@ -1,6 +1,6 @@
 .icl_tm_wrap{
     border: 1px solid #CCCCCC;
-    padding:10px;    
+    padding:10px;
     background-color:#ffffff;
 }
 
@@ -8,7 +8,7 @@
     margin-top: 4px;
 }
 #icl_tm_adduser .icl_tm_lang_pairs{
-    display: none;    
+    display: none;
     padding:5px;
 }
 
@@ -27,7 +27,7 @@
 .icl_tm_no_to{
     display: none;
     background-color: pink;
-    padding:5px;    
+    padding:5px;
     -moz-border-radius: 4px;
     margin-bottom: 5px;
 }
@@ -40,7 +40,7 @@
     background-color: #fff;
 }
 .nav-tab-active{
-    font-weight: bold;        
+    font-weight: bold;
     background-color: #fff;
     border-bottom-color: #fff;
 }
@@ -61,7 +61,7 @@
 
 #icl_custom_posts_sync_options, #icl_custom_tax_sync_options{
     width:49%;
-    float:left;    
+    float:left;
 }
 #icl_custom_posts_sync_options{
     margin-right:2%;
@@ -87,7 +87,7 @@
     color:#ff0000;
 }
 
-#icl_quick_src_users{ 
+#icl_quick_src_users{
     width:150px;
     border-color:red;
 }
@@ -101,4 +101,93 @@ select.icl_tm_auto_suggest_dd{
     font-size:90%;
     font-style: italic;
 }
+
+
+.icl-translation-services {
+	position: relative;
+	text-align: center;
+	margin: 20px 0 0 0;
+	padding: 0 10px 0 0;
+}
+
+.icl-translation-services.hidden {
+	display: none;
+}
+
+	.icl-translation-services .icl-translation-services-inner {
+		border: 1px solid #CFCFCF;
+		border-radius: 5px;
+		padding: 30px 50px;
+	}
+
+		.icl-translation-services .icl-translation-services-logo {
+			margin-top: -49px;
+		}
+			.icl-translation-services .icl-translation-services-logo span {
+				display: inline-block;
+				background: #F9F9F9;
+				padding: 0 2px;
+			}
+
+			.icl-translation-services .icl-translation-services-header {
+				color: #333;
+				font-size: 14px;
+				font-weight: bold;
+			}
+
+			.icl-translation-services .icl-translation-desc {
+				margin-bottom: 10px;
+			}
+
+			.icl-translation-services .icl-translation-buttons {
+				margin: -16px 0 0 0;
+				line-height: 30px;
+			}
+
+			.icl-translation-services .icl-translation-buttons a {
+				margin: 0 8px;
+			}
+
+			.icl-translation-services .icl-translation-buttons a.button-primary  {
+				height: 30px;
+				line-height: 28px;
+			}
+			.icl-translation-services .icl-translation-buttons a.button-secondary {
+				font-weight: bold;
+			}
+				.icl-translation-services .icl-translation-buttons a.button-secondary span {
+					background: url('../img/icl-button-man-ico.png') center left no-repeat;
+					display: inline-block;
+					padding: 0 0 0 20px;
+				}
+
+			.icl-translation-services .icl-translation-links {
+				margin: 20px 0 10px 0;
+				text-align: right;
+				line-height: 1.1;
+			}
+
+				.icl-translation-services .icl-translation-links a {
+					display: inline-block;
+					margin: 0 0 0 10px;
+				}
+
+				.icl-translation-services .icl-translation-links a:first-child {
+					border-right: 1px solid #BDBDBD;
+					padding-right: 10px;
+				}
+
+				.icl-translation-services .icl-translation-links a.icl-mail-ico {
+					padding-left: 12px;
+					background: url('../img/icl-button-mail-ico.png') center left no-repeat;
+				}
+				.icl-translation-services .icl-translation-links a#icl_hide_promo {
+					padding-left: 15px;
+					background: url('../img/icl-button-close-ico.png') center left no-repeat;
+				}
+
+
+
+
+
 

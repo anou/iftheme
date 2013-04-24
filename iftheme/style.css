@@ -102,7 +102,7 @@ h1,h2,h3,h4,h5,h6 {font-weight: normal; line-height: 1.2em;}
 p {margin: 1em 0;}
 
 table { width: 100%; border-collapse: collapse; border-spacing: 0; border: 1px solid #008ac9; font-size: 14px;}
-th, td {text-align: left; border: 1px solid #008ac9; padding: 10px;}
+th, td {text-align: left; border: 1px solid #008ac9; padding: 5px 10px;}
 th {background-clip: #f2f2f2;}
 
 #content ul {margin: 0 0 0 15px;}
@@ -203,9 +203,9 @@ header { }
 		#content .description ol {list-style: decimal outside none; margin-left: 20px}
 		#content .description ul li {}
 	div#home-list { width: 640px}
-	div.block-home { width: 310px; float: left; background: #fff; margin:0 10px 20px 0}
+	div.block-home { /* width: 310px; float: left; */ background: #fff; margin:0 10px 20px 0}
 		h2.posts-category {font: normal 22px/1.2em 'dinMed',sans-serif !important; text-transform: uppercase; color: #008AC9; background-color: #fff;}
-		article.post-single-home { margin: 10px 0 5px 0; box-shadow: 0 2px 2px rgba(0, 0, 0, 0.2); -webkit-box-shadow: 0 2px 2px rgba(0, 0, 0, 0.2);}
+		article.post-single-home { display: block; width: 310px; margin: 10px 0 5px 0; box-shadow: 0 2px 2px rgba(0, 0, 0, 0.2); -webkit-box-shadow: 0 2px 2px rgba(0, 0, 0, 0.2);}
 		article.post-single { margin: 0 0 23px; width: 100%}
 		.featured-thumbnail {float: left; margin-right: 10px;}
 		.featured-thumbnail img {width: 200px; height: auto;}
@@ -528,6 +528,17 @@ body #sidebar .widget-sidebar .partners div {padding: 0;}
 .alignleft {text-align: left;}
 .alignright {text-align: right;}
 
+.nav-previous,
+.previous-image,
+.nav-next,
+.next-image {	width: 50%; background: #008ac9 url(images/bg-header-menu-on.png) repeat left top; color: #fff; font-size: 10px; text-transform: uppercase;}
+.nav-previous a, .nav-next a { color: #fff; padding: 5px 10px; display: inline-block;}
+.nav-previous a:hover, .nav-next a:hover { background-image: url(images/bg-post-title.png); color: #fff}
+
+.nav-previous{	float: right; }
+.nav-next { float: left; }
+
+
 .clearfix:after {
 	content: ".";
 	display: block;
@@ -577,4 +588,12 @@ html[xmlns] .clearfix {
 
 
 /* Always remember to compress your live stylesheet and keep an uncompressed backup */
+
+.kint {position: relative; z-index: 1000;}
+/* Assistive text */
+.assistive-text,
+.site .screen-reader-text {
+	position: absolute !important;
+	clip: rect(1px, 1px, 1px, 1px);
+}
 

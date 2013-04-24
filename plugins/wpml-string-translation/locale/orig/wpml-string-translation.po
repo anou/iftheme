@@ -12,45 +12,6 @@ msgstr ""
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
 
-msgid "WPML String Translation is enabled but not effective. It requires <a href=\"%s\">WPML</a> in order to work."
-msgstr ""
-
-msgid "WPML String Translation is enabled but not effective. It is not compatible with  <a href=\"%s\">WPML</a> versions prior 2.0.5."
-msgstr ""
-
-msgid "No strings selected"
-msgstr ""
-
-msgid "Include the following PHP in your code. <em>functions.php</em> would be a good place."
-msgstr ""
-
-msgid "Error: no strings selected"
-msgstr ""
-
-msgid "String Translation"
-msgstr ""
-
-msgid "Configure"
-msgstr ""
-
-msgid "String translation allows you to enter translation for texts such as the site's title, tagline, widgets and other text not contained in posts and pages."
-msgstr ""
-
-msgid "There is <a href=\"%s\"><b>1</b> string</a> that needs to be updated or translated. "
-msgstr ""
-
-msgid "There are <a href=\"%s\"><b>%s</b> strings</a> that need to be updated or translated. "
-msgstr ""
-
-msgid "All strings are up to date."
-msgstr ""
-
-msgid "Translate strings"
-msgstr ""
-
-msgid "String translation"
-msgstr ""
-
 msgid "Updated %s translation is available for WordPress %s."
 msgstr ""
 
@@ -171,6 +132,108 @@ msgstr ""
 msgid "Automatically add paragraphs"
 msgstr ""
 
+msgid "WPML String Translation is enabled but not effective. It requires <a href=\"%s\">WPML</a> in order to work."
+msgstr ""
+
+msgid "WPML String Translation is enabled but not effective. It is not compatible with  <a href=\"%s\">WPML</a> versions prior 2.0.5."
+msgstr ""
+
+msgid "No strings selected"
+msgstr ""
+
+msgid "Include the following PHP in your code. <em>functions.php</em> would be a good place."
+msgstr ""
+
+msgid "Error: no strings selected"
+msgstr ""
+
+msgid "String Translation"
+msgstr ""
+
+msgid "Configure"
+msgstr ""
+
+msgid "String translation allows you to enter translation for texts such as the site's title, tagline, widgets and other text not contained in posts and pages."
+msgstr ""
+
+msgid "There is <a href=\"%s\"><b>1</b> string</a> that needs to be updated or translated. "
+msgstr ""
+
+msgid "There are <a href=\"%s\"><b>%s</b> strings</a> that need to be updated or translated. "
+msgstr ""
+
+msgid "All strings are up to date."
+msgstr ""
+
+msgid "Translate strings"
+msgstr ""
+
+msgid "String translation"
+msgstr ""
+
+msgid "Select how to get translations for WordPress core"
+msgstr ""
+
+msgid "WPML will automatically download translations for WordPress"
+msgstr ""
+
+msgid "I will download translations for WordPress and save .mo files in wp-includes/languages"
+msgstr ""
+
+msgid "Save"
+msgstr ""
+
+msgid "No action performed. Please select the strings that you need to update or add."
+msgstr ""
+
+msgid "Invalid language: %s"
+msgstr ""
+
+msgid "This update includes %d new strings and %d updated strings. You can review the strings below. Then, go to the <a%s>bottom of this page</a> and click on the Proceed button."
+msgstr ""
+
+msgid "Updated translations (%d)"
+msgstr ""
+
+msgid "New translations (%d)"
+msgstr ""
+
+msgid "Auto-download WordPress translations"
+msgstr ""
+
+msgid "Success!"
+msgstr ""
+
+msgid "Check other languages"
+msgstr ""
+
+msgid "Missing version number for translation."
+msgstr ""
+
+msgid "String"
+msgstr ""
+
+msgid "Existing translation"
+msgstr ""
+
+msgid "New translation"
+msgstr ""
+
+msgid "Translation"
+msgstr ""
+
+msgid "Add the new translations."
+msgstr ""
+
+msgid "Cancel"
+msgstr ""
+
+msgid "There is nothing to be updated or to be added."
+msgstr ""
+
+msgid "Proceed"
+msgstr ""
+
 msgid "The fields with <span%s>cyan</span> background are text fields and the fields with <span%s>gray</span> background are numeric."
 msgstr ""
 
@@ -198,103 +261,7 @@ msgstr ""
 msgid "No options found. Make sure you saved your theme options at least once. <br />Some themes only add these to the wp_options table after the user explicitly saves over the theme defaults"
 msgstr ""
 
-msgid "Domain"
-msgstr ""
-
-msgid "Translation status"
-msgstr ""
-
-msgid "Count"
-msgstr ""
-
-msgid "no domain"
-msgstr ""
-
-msgid "Fully translated"
-msgstr ""
-
-msgid "View all the theme's texts"
-msgstr ""
-
-msgid "View strings that need translation"
-msgstr ""
-
-msgid "Not translated or needs update"
-msgstr ""
-
-msgid "Total"
-msgstr ""
-
-msgid "To translate your theme's texts, click on the button below. WPML will scan your theme for texts and let you enter translations."
-msgstr ""
-
-msgid "Scan the theme for strings"
-msgstr ""
-
-msgid "Plugin"
-msgstr ""
-
-msgid "Active"
-msgstr ""
-
-msgid "n/a"
-msgstr ""
-
-msgid "Yes"
-msgstr ""
-
-msgid "Network"
-msgstr ""
-
-msgid "MU"
-msgstr ""
-
-msgid "No"
-msgstr ""
-
-msgid "View all the plugin's texts"
-msgstr ""
-
-msgid "Scan the selected plugins for strings"
-msgstr ""
-
-msgid "Strings in the theme"
-msgstr ""
-
-msgid "Re-scanning the plugins or the themes will reset the strings tracked in the code or the HTML source"
-msgstr ""
-
-msgid "The following strings were found in your theme."
-msgstr ""
-
-msgid "Load translations if found in the .mo files. (it will not override existing translations)"
-msgstr ""
-
-msgid "Strings in the plugins"
-msgstr ""
-
-msgid "create PO file"
-msgstr ""
-
-msgid "Select how to get translations for WordPress core"
-msgstr ""
-
-msgid "WPML will automatically download translations for WordPress"
-msgstr ""
-
-msgid "I will download translations for WordPress and save .mo files in wp-includes/languages"
-msgstr ""
-
-msgid "Save"
-msgstr ""
-
-msgid "These are the strings that we found in your .po file. Please carefully review them. Then, click on the 'add' or 'cancel' buttons at the <a href=\"%s\">bottom of this screen</a>. You can exclude individual strings by clearing the check boxes next to them."
-msgstr ""
-
-msgid "String"
-msgstr ""
-
-msgid "Cancel"
+msgid "These are the strings that we found in your .po file. Please carefully review them. Then, click on the 'add' or 'cancel' buttons at the %sbottom of this screen%s. You can exclude individual strings by clearing the check boxes next to them."
 msgstr ""
 
 msgid "Add selected strings"
@@ -504,53 +471,98 @@ msgstr ""
 msgid "Track where strings appear on the site"
 msgstr ""
 
+msgid "Performance considerations"
+msgstr ""
+
 msgid "Highlight color for strings"
 msgstr ""
 
 msgid "Translate texts in admin screens &raquo;"
 msgstr ""
 
-msgid "No action performed. Please select the strings that you need to update or add."
+msgid "Domain"
 msgstr ""
 
-msgid "Invalid language: %s"
+msgid "Translation status"
 msgstr ""
 
-msgid "This update includes %d new strings and %d updated strings. You can review the strings below. Then, go to the <a%s>bottom of this page</a> and click on the Proceed button."
+msgid "Count"
 msgstr ""
 
-msgid "Updated translations (%d)"
+msgid "no domain"
 msgstr ""
 
-msgid "New translations (%d)"
+msgid "Fully translated"
 msgstr ""
 
-msgid "Auto-download WordPress translations"
+msgid "View all the theme's texts"
 msgstr ""
 
-msgid "Success!"
+msgid "View strings that need translation"
 msgstr ""
 
-msgid "Check other languages"
+msgid "Not translated or needs update"
 msgstr ""
 
-msgid "Missing version number for translation."
+msgid "Total"
 msgstr ""
 
-msgid "Existing translation"
+msgid "To translate your theme's texts, click on the button below. WPML will scan your theme for texts and let you enter translations."
 msgstr ""
 
-msgid "New translation"
+msgid "Scan the theme for strings"
 msgstr ""
 
-msgid "Translation"
+msgid "Plugin"
 msgstr ""
 
-msgid "Add the new translations."
+msgid "Active"
 msgstr ""
 
-msgid "There is nothing to be updated or to be added."
+msgid "n/a"
 msgstr ""
 
-msgid "Proceed"
+msgid "Yes"
+msgstr ""
+
+msgid "Network"
+msgstr ""
+
+msgid "MU"
+msgstr ""
+
+msgid "No"
+msgstr ""
+
+msgid "View all the plugin's texts"
+msgstr ""
+
+msgid "Scan the selected plugins for strings"
+msgstr ""
+
+msgid "Strings in the theme"
+msgstr ""
+
+msgid "Re-scanning the plugins or the themes will reset the strings tracked in the code or the HTML source"
+msgstr ""
+
+msgid "The following strings were found in your theme."
+msgstr ""
+
+msgid "Load translations if found in the .mo files. (it will not override existing translations)"
+msgstr ""
+
+msgid "Strings in the plugins"
+msgstr ""
+
+msgid "create PO file"
+msgstr ""
+
+msgid "Translate custom posts slugs (via WPML String Translation)."
+msgstr ""
+
+msgid "Custom posts slug translation options"
+msgstr ""
+
+msgid "Slug translation is a new and experimental feature, which may not work in all permalink settings."
 msgstr ""

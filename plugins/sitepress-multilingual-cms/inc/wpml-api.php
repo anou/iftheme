@@ -506,7 +506,7 @@ function wpml_get_word_count($string, $language = false){
     if($language && in_array($language, $asian_languages)){
         $count = ceil(mb_strlen($string)/WPML_API_MAGIC_NUMBER);
     }else{
-        $count = count(explode(' ', $string));
+        $count = count(preg_split('/[\s\/]+/', $string, 0, PREG_SPLIT_NO_EMPTY));
     }
     
     $cost  = $count * WPML_API_COST_PER_WORD;

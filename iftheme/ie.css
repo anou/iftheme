@@ -1,0 +1,29 @@
+	.container {
+		padding: 0 10px;
+		width: 940px;
+	}
+	.main-container {padding: 10px;}
+	body .container.header {padding: 30px 10px 10px;}
+
+		#header-image img {
+			width: 940px;
+			height: 264px;
+			margin-left: 0;
+		}
+		#content {
+			width: 630px; /* 8 columns */
+		}
+		#sidebar {
+			width: 300px; /* 4 columns */
+			padding: 0;
+			margin: 0 0 10px 10px
+		}
+		#sidebar aside#sidebar-newsletter {width: 280px;}
+		body #footer .widget-footer.footer-logo {width: 210px;}
+		#footer .footer-all-block {width: 690px;}
+		#footer .container {width: 960px;}
+		  #footer .widget-footer.footer-logo {width: auto; min-height: 188px; height: 188px; padding: 25px 20px;}
+		  #footer .widget-footer {width: 200px; min-height: 198px;}
+		  
+		  
+div.block-home {float:left}

@@ -32,6 +32,12 @@ function icl_nobreak($str){
     return preg_replace("# #", '&nbsp;', $str);
 } 
 
+function icl_strip_control_chars($string){
+    // strip out control characters (all but LF, NL and TAB)
+    $string = preg_replace('/[\x00-\x08\x0B-\x0C\x0E-\x1F\x7F]/', '', $string);
+    return $string;
+}
+
 function _icl_tax_has_objects_recursive($id, $term_id = -1, $rec = 0){
     // based on the case where two categories were one the parent of another
     // eliminating the chance of infinite loops by letting this function calling itself too many times

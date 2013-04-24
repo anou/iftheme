@@ -51,85 +51,22 @@ msgstr ""
 msgid "<strong>Warning:</strong> You are trying to add a translation using the standard WordPress editor but your site is configured to use the WPML Translation Editor."
 msgstr ""
 
-msgid "Translation editor"
+msgid "Translation management"
 msgstr ""
 
-msgid "You are translating %s from %s to %s."
+msgid "Translation Dashboard"
 msgstr ""
 
-msgid "Copy from %s"
+msgid "Translators"
 msgstr ""
 
-msgid "Jobs queue"
+msgid "Translation Jobs"
 msgstr ""
 
-msgid "Cancel"
+msgid "Multilingual Content Setup"
 msgstr ""
 
-msgid "Are you sure you want to resign from this job?"
-msgstr ""
-
-msgid "Note for translator"
-msgstr ""
-
-msgid "Click to toggle"
-msgstr ""
-
-msgid "Translated content"
-msgstr ""
-
-msgid "Translated field"
-msgstr ""
-
-msgid "This translation is finished."
-msgstr ""
-
-msgid "This field cannot be empty"
-msgstr ""
-
-msgid "Original content"
-msgstr ""
-
-msgid "HTML"
-msgstr ""
-
-msgid "Visual"
-msgstr ""
-
-msgid "Show Changes"
-msgstr ""
-
-msgid "Translation of this document is complete"
-msgstr ""
-
-msgid "Please review the document translation and fill in all the required fields."
-msgstr ""
-
-msgid "Save translation"
-msgstr ""
-
-msgid "Resign"
-msgstr ""
-
-msgid "Notify translator about new job:"
-msgstr ""
-
-msgid "Notify immediately"
-msgstr ""
-
-msgid "No notification"
-msgstr ""
-
-msgid "Notify translator manager when job is completed:"
-msgstr ""
-
-msgid "Daily notifications summary"
-msgstr ""
-
-msgid "Notify translator when removed from job:"
-msgstr ""
-
-msgid "Save"
+msgid "Translation Notifications"
 msgstr ""
 
 msgid "Published"
@@ -166,6 +103,9 @@ msgid "All documents"
 msgstr ""
 
 msgid "Not translated or needs updating"
+msgstr ""
+
+msgid "Needs updating"
 msgstr ""
 
 msgid "Translation in progress"
@@ -276,6 +216,9 @@ msgstr ""
 msgid "Clear"
 msgstr ""
 
+msgid "Save"
+msgstr ""
+
 msgid "Translation options"
 msgstr ""
 
@@ -354,6 +297,9 @@ msgstr ""
 msgid "Send"
 msgstr ""
 
+msgid "Cancel"
+msgstr ""
+
 msgid "Cancel selected"
 msgstr ""
 
@@ -361,6 +307,111 @@ msgid "Are you sure you want to cancel these jobs?"
 msgstr ""
 
 msgid "WARNING: %s job(s) are currently being translated."
+msgstr ""
+
+msgid "Same as the original document"
+msgstr ""
+
+msgid "Choose if translations should be published when received. Note: If Publish is selected, the translation will only be published if the original node is published when the translation is received."
+msgstr ""
+
+msgid "Auto-generate from title (default)"
+msgstr ""
+
+msgid "Translate (this will include the slug in the translation and not create it automatically from the title)"
+msgstr ""
+
+msgid "Copy from original language if translation language uses encoded URLs"
+msgstr ""
+
+msgid "Send an email notification when translations complete"
+msgstr ""
+
+msgid "How to translate posts and pages"
+msgstr ""
+
+msgid "Create translations manually"
+msgstr ""
+
+msgid "Use the translation editor"
+msgstr ""
+
+msgid "Send to professional translation"
+msgstr ""
+
+msgid "Show translation instructions in the list of pages"
+msgstr ""
+
+msgid "Learn more about the different translation options"
+msgstr ""
+
+msgid "Translated documents options"
+msgstr ""
+
+msgid "Document status"
+msgstr ""
+
+msgid "Page url"
+msgstr ""
+
+msgid "Translation pickup mode"
+msgstr ""
+
+msgid "How should the site receive completed translations from ICanLocalize?"
+msgstr ""
+
+msgid "ICanLocalize will deliver translations automatically using XML-RPC"
+msgstr ""
+
+msgid "Hide reminders"
+msgstr ""
+
+msgid "The site will fetch translations manually"
+msgstr ""
+
+msgid "WPML can read a configuration file that tells it what needs translation in themes and plugins. The file is named wpml-config.xml and it's placed in the root folder of the plugin or theme."
+msgstr ""
+
+msgid "Learn more"
+msgstr ""
+
+msgid "Custom fields translation"
+msgstr ""
+
+msgid "No custom fields found. It is possible that they will only show up here after you add more posts after installing a new plugin."
+msgstr ""
+
+msgid "Don't translate"
+msgstr ""
+
+msgid "Copy from original to translation"
+msgstr ""
+
+msgid "Translate"
+msgstr ""
+
+msgid "Admin Strings to Translate"
+msgstr ""
+
+msgid "Edit translatable strings"
+msgstr ""
+
+msgid "Notify translator about new job:"
+msgstr ""
+
+msgid "Notify immediately"
+msgstr ""
+
+msgid "No notification"
+msgstr ""
+
+msgid "Notify translator manager when job is completed:"
+msgstr ""
+
+msgid "Daily notifications summary"
+msgstr ""
+
+msgid "Notify translator when removed from job:"
 msgstr ""
 
 msgid "Edit translator"
@@ -450,88 +501,61 @@ msgstr ""
 msgid "You haven't added any translator accounts yet."
 msgstr ""
 
-msgid "Same as the original document"
+msgid "Translation editor"
 msgstr ""
 
-msgid "Choose if translations should be published when received. Note: If Publish is selected, the translation will only be published if the original node is published when the translation is received."
+msgid "You are translating %s from %s to %s."
 msgstr ""
 
-msgid "Auto-generate from title (default)"
+msgid "Copy from %s"
 msgstr ""
 
-msgid "Translate (this will include the slug in the translation and not create it automatically from the title)"
+msgid "Jobs queue"
 msgstr ""
 
-msgid "Copy from original language if translation language uses encoded URLs"
+msgid "Are you sure you want to resign from this job?"
 msgstr ""
 
-msgid "Send an email notification when translations complete"
+msgid "Note for translator"
 msgstr ""
 
-msgid "How to translate posts and pages"
+msgid "Click to toggle"
 msgstr ""
 
-msgid "Create translations manually"
+msgid "Translated content"
 msgstr ""
 
-msgid "Use the translation editor"
+msgid "Translated field"
 msgstr ""
 
-msgid "Send to professional translation"
+msgid "This translation is finished."
 msgstr ""
 
-msgid "Learn more about the different translation options"
+msgid "This field cannot be empty"
 msgstr ""
 
-msgid "Translated documents options"
+msgid "Original content"
 msgstr ""
 
-msgid "Document status"
+msgid "HTML"
 msgstr ""
 
-msgid "Page url"
+msgid "Visual"
 msgstr ""
 
-msgid "Translation pickup mode"
+msgid "Show Changes"
 msgstr ""
 
-msgid "How should the site receive completed translations from ICanLocalize?"
+msgid "Translation of this document is complete"
 msgstr ""
 
-msgid "ICanLocalize will deliver translations automatically using XML-RPC"
+msgid "Please review the document translation and fill in all the required fields."
 msgstr ""
 
-msgid "Hide reminders"
+msgid "Save translation"
 msgstr ""
 
-msgid "The site will fetch translations manually"
-msgstr ""
-
-msgid "WPML can read a configuration file that tells it what needs translation in themes and plugins. The file is named wpml-config.xml and it's placed in the root folder of the plugin or theme."
-msgstr ""
-
-msgid "Learn more"
-msgstr ""
-
-msgid "Custom fields translation"
-msgstr ""
-
-msgid "No custom fields found. It is possible that they will only show up here after you add more posts after installing a new plugin."
-msgstr ""
-
-msgid "Don't translate"
-msgstr ""
-
-msgid "Copy from original to translation"
-msgstr ""
-
-msgid "Translate"
-msgstr ""
-
-msgid "Admin Strings to Translate"
-msgstr ""
-
-msgid "Edit translatable strings"
+msgid "Resign"
 msgstr ""
 
 msgid "You've resigned from this job."
@@ -567,22 +591,34 @@ msgstr ""
 msgid "Apply"
 msgstr ""
 
-msgid "Translation management"
+msgid "%d documents sent to translation.<br />%d are complete, %d waiting for translation."
 msgstr ""
 
-msgid "Translation Dashboard"
+msgid "%s offers affordable professional translation via a streamlined process."
 msgstr ""
 
-msgid "Translators"
+msgid "Your translators"
 msgstr ""
 
-msgid "Translation Jobs"
+msgid "Translate content"
 msgstr ""
 
-msgid "Multilingual Content Setup"
+msgid "Need translation work?"
 msgstr ""
 
-msgid "Translation Notifications"
+msgid "Get translators"
+msgstr ""
+
+msgid "Content translation"
+msgstr ""
+
+msgid "Add translators from ICanLocalize &raquo;"
+msgstr ""
+
+msgid "Add your own translators &raquo;"
+msgstr ""
+
+msgid "Translate contents &raquo;"
 msgstr ""
 
 msgid "Update %s translation"
@@ -646,34 +682,4 @@ msgid "Failed sending to translation."
 msgstr ""
 
 msgid "Sent to translation."
-msgstr ""
-
-msgid "%d documents sent to translation.<br />%d are complete, %d waiting for translation."
-msgstr ""
-
-msgid "%s offers affordable professional translation via a streamlined process."
-msgstr ""
-
-msgid "Your translators"
-msgstr ""
-
-msgid "Translate content"
-msgstr ""
-
-msgid "Need translation work?"
-msgstr ""
-
-msgid "Get translators"
-msgstr ""
-
-msgid "Content translation"
-msgstr ""
-
-msgid "Add translators from ICanLocalize &raquo;"
-msgstr ""
-
-msgid "Add your own translators &raquo;"
-msgstr ""
-
-msgid "Translate contents &raquo;"
 msgstr ""

@@ -12,6 +12,7 @@
 			if(defined('WYSIJA')) {
 				$modelList = &WYSIJA::get("list","model");
 				$arrayOfMailingLists = $modelList->get(false,array('is_enabled'=>1));
+				
 				$nbMailingLists = count($arrayOfMailingLists);
 				
 				foreach($arrayOfMailingLists as $k => $list){
@@ -20,7 +21,7 @@
 				}
 				
 				
-				$widgetdata=array (
+				$widgetdata = array (
 				   'widget_id' => 'wysija-nl-php-1',//form identifier important when many subscription forms on the same page
 				   'title' =>  __('Newsletter','iftheme'),//title of widget
 				   'instruction' => __('Subscribe','iftheme'), // instruction to be displayed on top of the widget
@@ -28,7 +29,7 @@
 				   'lists_name' => $names, //array of lists names ( array(list_id => name) )
 				   'submit' => __('OK','iftheme'),//name of the subscribe button
 				   'success' => __('You’ve successfully subscribed. Check your inbox now to confirm your subscription.','iftheme'),//success message returned when registered
-				   'customfields' =>array ( //optional array of custom fields to be displayed lastname, firstname, email
+				   'customfields' => array ( //optional array of custom fields to be displayed lastname, firstname, email
 				        //'firstname' => array ('column_name' => 'firstname','label' => 'Prénom'),
 				        //'lastname' => array ('column_name' => 'lastname','label' => 'Nom'),
 				        'email' => array ('label' => __('Your Email','iftheme'))
@@ -54,9 +55,9 @@
 			?>
 		<!-- SOCIAL NETWORKS -->
 		<?php if($antenna != 'front'):
-			  $fb = isset($options['theme_options_setting_facebook']) ? $options['theme_options_setting_facebook'] : $options[$antenna]['theme_options_setting_facebook'];
-			  $twit = isset($options['theme_options_setting_twitter']) ? $options['theme_options_setting_twitter'] : $options[$antenna]['theme_options_setting_twitter'];
-			  $gg = isset($options['theme_options_setting_googleplus']) ? $options['theme_options_setting_googleplus'] : $options[$antenna]['theme_options_setting_googleplus'];
+			  $fb = isset($options['theme_options_setting_facebook']) ? $options['theme_options_setting_facebook'] : $options[(int)$antenna]['theme_options_setting_facebook'];
+			  $twit = isset($options['theme_options_setting_twitter']) ? $options['theme_options_setting_twitter'] : $options[(int)$antenna]['theme_options_setting_twitter'];
+			  $gg = isset($options['theme_options_setting_googleplus']) ? $options['theme_options_setting_googleplus'] : $options[(int)$antenna]['theme_options_setting_googleplus'];
 		  
 			  if($fb || $twit || $gg):
 		?>

@@ -117,3 +117,6 @@ input.icl_multiple{
 
 #icl_dashboard_advanced_filters table{}
 #icl_dashboard_advanced_filters table td{padding:1px;}
+
+#icl_tm_languages table, #icl_tm_languages td{border:none;}
+#icl_tm_languages td{height:20px;vertical-align: middle;}

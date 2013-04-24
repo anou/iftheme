@@ -44,7 +44,7 @@ if (isset($data['submit-for-later'])) {
         $user['platform_kind'] = 2;
         $user['cms_kind'] = 1;
         $user['blogid'] = $wpdb->blogid ? $wpdb->blogid : 1;
-        $user['url'] = get_option('home');
+        $user['url'] = get_option('siteurl');
         $user['title'] = get_option('blogname');
         $user['description'] = $sitepress_settings['icl_site_description'];
         $user['is_verified'] = 1;

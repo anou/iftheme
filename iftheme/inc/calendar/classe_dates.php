@@ -29,19 +29,23 @@
 
 		protected $jours = array(
 			'FR' => array(0=>"Dimanche",1=>"Lundi",2=>"Mardi",3=>"Mercredi",4=>"Jeudi",5=>"Vendredi",6=>"Samedi",7=>"Dimanche"),
-			'EN' => array(0=>"Sunday",1=>"Monday",2=>"Tuesday",3=>"Wednesday",4=>"Thursday",5=>"Friday",6=>"Saturday",7=>"Sunday")
+			'EN' => array(0=>"Sunday",1=>"Monday",2=>"Tuesday",3=>"Wednesday",4=>"Thursday",5=>"Friday",6=>"Saturday",7=>"Sunday"),
+			'TR' => array(0=>"Pazar",1=>"Pazartesi",2=>"Salı",3=>"Çarşamba",4=>"Perşembe",5=>"Cuma",6=>"Cumartesi",7=>"Pazar")
 			);
 		protected $joursC = array(
 			'FR' => array (0=>"Dim.",1=>"Lun.",2=>"Mar.",3=>"Mer.",4=>"Jeu.",5=>"Ven.",6=>"Sam.",7=>"Dim."),
-			'EN' => array(0=>"Sun.",1=>"Mon.",2=>"Tue.",3=>"Wed.",4=>"Thu.",5=>"Fri.",6=>"Sat.",7=>"Sun.")
+			'EN' => array(0=>"Sun.",1=>"Mon.",2=>"Tue.",3=>"Wed.",4=>"Thu.",5=>"Fri.",6=>"Sat.",7=>"Sun."),
+			'TR' => array(0=>"Pzr.",1=>"Pzt.",2=>"Sal.",3=>"Çar.",4=>"Per.",5=>"Cum.",6=>"Cts.",7=>"Pzr.")
 			);
 		protected $mois = array(
 			'FR' => array(1=>"Janvier",2=>"Février",3=>"Mars",4=>"Avril",5=>"Mai",6=>"Juin",7=>"Juillet",8=>"Août",9=>"Septembre",10=>"Octobre",11=>"Novembre",12=>"Décembre"),
-			'EN' => array(1=>"January",2=>"February",3=>"March",4=>"April",5=>"May",6=>"June",7=>"July",8=>"August",9=>"September",10=>"October",11=>"November",12=>"December")
+			'EN' => array(1=>"January",2=>"February",3=>"March",4=>"April",5=>"May",6=>"June",7=>"July",8=>"August",9=>"September",10=>"October",11=>"November",12=>"December"),
+			'TR' => array(1=>"Ocak",2=>"Şubat",3=>"Mart",4=>"Nisan",5=>"Mayıs",6=>"Haziran",7=>"Temmuz",8=>"Ağustos",9=>"Eylül",10=>"Ekim",11=>"Kasım",12=>"Aralık")
 			);
 		protected $moisC = array(
 			'FR' => array(1=>"Janv.",2=>"Févr.",3=>"Mars",4=>"Avr.",5=>"Mai",6=>"Juin",7=>"Juil.",8=>"Août",9=>"Sept.",10=>"Oct.",11=>"Nov.",12=>"Déc."),
-			'EN' => array(1=>"Jan.",2=>"Feb.",3=>"Mar.",4=>"Apr.",5=>"May",6=>"Jun.",7=>"Jul.",8=>"Aug.",9=>"Sep.",10=>"Oct.",11=>"Nov.",12=>"Dec.")
+			'EN' => array(1=>"Jan.",2=>"Feb.",3=>"Mar.",4=>"Apr.",5=>"May",6=>"Jun.",7=>"Jul.",8=>"Aug.",9=>"Sep.",10=>"Oct.",11=>"Nov.",12=>"Dec."),
+			'TR' => array(1=>"Oca.",2=>"Şub.",3=>"Mar.",4=>"Nis.",5=>"May.",6=>"Haz.",7=>"Tem.",8=>"Ağu.",9=>"Eyl.",10=>"Eki.",11=>"Kas.",12=>"Ara.")
 			);
 		
 		protected $lng = "FR";
@@ -66,28 +70,36 @@
 */
 		protected function _getNoJourSemaine($a_jour){
 			$jour = strtolower($a_jour);
+
 			switch ($jour)
 			{
 				case "lundi":		case "lun":
 				case "monday":		case "mon":
+				case "pazartesi":	case "pts":
 					$num = 1;	break;
 				case "mardi":		case "mar":
 				case "tuesday":		case "tue":
+				case "salı":		case "sal":
 					$num = 2;	break;
 				case "mercredi":	case "mer":
 				case "wednesday":	case "wed":
+				case "çarşamba":	case "çar":
 					$num = 3;	break;
 				case "jeudi":		case "jeu":
 				case "thursday":	case "thu":
+				case "perşembe":	case "per":
 					$num = 4;	break;
 				case "vendredi":	case "ven":
 				case "friday":		case "fri":
+				case "cuma":		case "cum":
 					$num = 5;	break;
 				case "samedi":		case "sam":
 				case "saturday":	case "sat":
+				case "cumartesi":	case "cts":
 					$num = 6;	break;
 				case "dimanche":	case "dim":
 				case "sunday":		case "sun":
+				case "pazar":		case "paz":
 					$num = 7;	break;
 			}
 			return ($num);
@@ -110,63 +122,77 @@
 
 /**
 		* retourne le no du mois
-		* français et anglais
+		* français et anglais + turc
 */
 		protected function _month2Num($a_mois)
 		{
-			$num="";
-			switch (strtolower($a_mois))
+			$num="";			
+			$mois = strtolower($a_mois);
+
+			switch (strtolower($mois))
 			{
 				case "janvier":			case "jan":
 				case "january":
+				case "ocak":			case "oca":
 					$num = "01";		break;
 					
 				case "fevrier":			case "février":			case "fev":			case "fév":
 				case "february":		case "feb":
+				case "şubat":			case "şub":
 					$num = "02";		break;
 					
 				case "mars":			case "mar":
 				case "march":
+				case "mart":			case "mar":
 					$num = "03";		break;
 					
 				case "avril":			case "avr":
 				case "april":			case "apr":
+				case "nisan":			case "nis":
 					$num = "04";		break;
 					
 				case "mai":
 				case "may":
+				case "mayıs":			
 					$num = "05";		break;
 					
 				case "juin":			case "jun":
 				case "june":
+				case "haziran":			case "haz":
 					$num = "06";		break;
 					
 				case "juillet":			case "jul":
 				case "july":
+				case "temmuz":			case "tem":
 					$num = "07";		break;
 					
 				case "aout":			case "août":			case "aou":			case "aoû":
 				case "august":			case "aug":
+				case "ağustos":			case "ağu":
 					$num = "08";		break;
 					
 				case "septembre":		case "sep":
 				case "septeber":
+				case "eylül":			case "eyl":
 					$num = "09";		break;
 					
 				case "octobre":			case "oct":
 				case "october":
+				case "ekim":			case "eki":
 					$num = "10";		break;
 					
 				case "novembre":		case "nov":
 				case "november":
+				case "kasım":			case "kas":
 					$num = "11";		break;
 					
 				case "decembre":		case "décembre":		case "dec":			case "déc":
 				case "december":
+				case "aralık":			case "ara":
 					$num = "12";		break;
 			}
+			
 			return($num);
-
 		}
 		
 		
@@ -196,6 +222,13 @@
 			$patternEn .= "[[:space:]]*([\d]{2,4})";
 			$patternEn .= "[[:space:]]?([\d]{2}:[\d]{2}(:[\d]{2})*)?";
 			$patternEn .= "$/i";
+			
+			$patternTr = "/^(pazartesi|pts|salı|sal|çarşamba|çar|perşembe|per|cuma|cum|cumartesi|cts|pazar|paz)?";
+			$patternTr .= "[[:space:]]*([\d]{1,2})";
+			$patternTr .= "[[:space:]]*(ocak|oca|şubat|şub|mart|mar|nisan|nis|mayıs|may|haziran|haz|temmuz|tem|ağustos|ağu|eylül|eyl|ekim|eki|kasım|kas|aralık|ara)";
+			$patternTr .= "[[:space:]]*([\d]{2,4})";
+			$patternTr .= "[[:space:]]?([\d]{2}:[\d]{2}(:[\d]{2})*)?";
+			$patternTr .= "$/i";
 		
 			$res=array();
 			$date = strlen($a_date)>0 ? $a_date : $this->date;
@@ -259,8 +292,18 @@
 			}
 
 			
+			// TR 					pazartesi 11 ağustos 2008 14:18:58
+			else if (preg_match($patternTR,$date,$l_date))
+			{
+				$res['format'] = "TR";
+				$res['annee'] = $l_date[4];
+				$res['mois'] = $this->_month2Num($l_date[3]);
+				$res['jour'] = $l_date[2];
+				$res['heure'] = isset($l_date[5]) ? trim($l_date[5]) : "00:00:00";
+		  }
+		  
+		  
 			return ($res);
-
 		}
 
 
@@ -301,10 +344,11 @@
 		{
 			$c_langue = $this->lng;
 			
-			//Only EN and FR exists
+			//Only EN, FR and TR exist
 			switch($c_langue){
   			case 'FR':
   			case 'EN':
+			case 'TR':
   			  $c_langue = $c_langue;
   		  break;
   		  default://default to EN
@@ -517,6 +561,7 @@
 		* STR		:	JJ/MM/YYYY H:i:s
 		* FR		:	Jour JJ Mois YYYY
 		* EN		:	Jour JJth Mois YYYY
+		* TR		:	Jour JJ Mois YYYY
 		* UNX		:	timestamp unix
 		* URL		:	YYYY/MM/JJ
 		* USR		:	MM/JJ/YYYY (pour commande linux useradd)
@@ -547,6 +592,12 @@
 						$res =  ($this->jourCourt ? $this->joursC['FR'][gmdate("w",$timestamp)] : $this->jours['FR'][gmdate("w",$timestamp)]) . 
 								gmdate(" d ",$timestamp) . 
 								($this->moisCourt ? $this->moisC['FR'][gmdate("n",$timestamp)] : $this->mois['FR'][gmdate("n",$timestamp)]) . 
+								gmdate(" Y".($this->heure ? " H:i".(!$this->heureCourte ? ":s": ""): ""),$timestamp);
+						break;
+					case "TR":
+						$res =  ($this->jourCourt ? $this->joursC['TR'][gmdate("w",$timestamp)] : $this->jours['TR'][gmdate("w",$timestamp)]) . 
+								gmdate(" d ",$timestamp) . 
+								($this->moisCourt ? $this->moisC['TR'][gmdate("n",$timestamp)] : $this->mois['TR'][gmdate("n",$timestamp)]) . 
 								gmdate(" Y".($this->heure ? " H:i".(!$this->heureCourte ? ":s": ""): ""),$timestamp);
 						break;
 					case "EN":

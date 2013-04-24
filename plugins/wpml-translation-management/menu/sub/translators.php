@@ -45,7 +45,10 @@ if ($selected_translator->ID) {
     foreach ($languages as $language) {
 //              $selected_from = ($language->code == $default->language->code) ? ' selected="selected"' : '';
 //              $selected_from = ($language->code == $default->language->code) ? ' selected="selected"' : '';
-      $from .= '<option value="' . $language['code'] . '"' . @strval($selected_from) . '>' . $language['display_name']
+      // select language from request
+      $selected_from =  (isset($_GET['icl_lng']) && $_GET['icl_lng'] == $language['code']) ? ' selected="selected"' : '';
+      
+      $from .= '<option '.$selected_from.'  value="' . $language['code'] . '"' . @strval($selected_from) . '>' . $language['display_name']
                . '</option>' . "\r\n";
       $to .= '<option value="' . $language['code'] . '"' . @strval($selected_to) . '>' . $language['display_name']
              . '</option>' . "\r\n";

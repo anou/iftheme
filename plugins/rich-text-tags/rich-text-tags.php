@@ -150,7 +150,8 @@ function kws_add_form($object = ''){
 	} 
 	// This is a taxonomy
 	else {
-		$content = is_object($object) && isset($object->description) ? html_entity_decode($object->description) : '';
+		//$content = is_object($object) && isset($object->description) ? html_entity_decode($object->description) : '';
+		$content = is_object($object) && isset($object->description) ? html_entity_decode(str_replace('&nbsp;', '<br />', $object->description)) : '';
 		
 		if( in_array($pagenow, array('edit-tags.php')) ) {
 			$editor_id = 'tag_description';

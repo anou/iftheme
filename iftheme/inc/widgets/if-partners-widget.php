@@ -47,7 +47,7 @@ class If_Antenna_Partners extends WP_Widget {
 		  <h4><?php _e("Select Partners:",'iftheme');?></h4>
 		<?php if($partners):?>
 			<?php foreach($partners as $o):?>
-				<label for="<?php echo $this->get_field_id('partnersshown'); ?>"><input type="radio" id="<?php echo $this->get_field_id( 'partnersshown' ); ?>" name="<?php echo $this->get_field_name( 'partnersshown' ); ?>" value="<?php echo  $o->ID;?>" <?php if($instance['partnersshown'] == $o->ID):?>checked="checked"<?php endif;?> /><?php echo $o->post_title;?></label>
+				<label for="<?php echo $this->get_field_id('partnersshown'); ?>">&nbsp;<input type="radio" id="<?php echo $this->get_field_id( 'partnersshown' ); ?>" name="<?php echo $this->get_field_name( 'partnersshown' ); ?>" value="<?php echo  $o->ID;?>" <?php if($instance['partnersshown'] == $o->ID):?>checked="checked"<?php endif;?> /><?php echo $o->post_title;?></label>
 			<?php endforeach;?>
 		<?php else:?>
 			<div class="msg warning"><?php _e("You must create a Partner in order to use this widget: <a href=\"/wp-admin/edit.php?post_type=if_partner\">Partners</a>",'iftheme');?></div>

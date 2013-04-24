@@ -752,8 +752,7 @@ function icl_get_string_translations($offset=0){
                     {$extra_cond}
                 ORDER BY string_id DESC
                 LIMIT {$offset},{$limit}
-            ";
-            //echo '<pre>' . print_r($sql,1) . '</pre>';
+            ";            
             $res = $wpdb->get_results($sql, ARRAY_A);
             
         }else{
@@ -841,7 +840,6 @@ function icl_get_string_translations($offset=0){
                         'translations'          => $_translations
                     );                    
                 }
-                //echo '<pre>' . print_r($string_translations,1) . '</pre>';
             }else{
                 foreach($res as $row){
 
@@ -1042,8 +1040,11 @@ function icl_sw_filters_gettext($translation, $text, $domain, $name = false){
     global $sitepress_settings;
     $has_translation = 0;
     
+    static $gettext_calls = array('__', '_e', '_ex', '_n', '_n_noop', '_nx', '_nx_noop', '_x', 'esc_attr__', 'esc_attr_e', 'esc_attr_x', 'esc_html__', 'esc_html_e', 'esc_html_x',);
+    
     $dbt = debug_backtrace();    
-    $dbt4 = @str_replace('\\','/',$dbt[4]['file']);
+    $dbt4 = isset($dbt[4]['file']) ? str_replace('\\','/',$dbt[4]['file']) : '';
+    $dbt5 = isset($dbt[5]['file']) ? str_replace('\\','/',$dbt[5]['file']) : '';
     $wp_plugin_dir = str_replace('\\','/',WP_PLUGIN_DIR);
     $wpmu_plugin_dir = str_replace('\\','/',WPMU_PLUGIN_DIR); 
     
@@ -1055,8 +1056,18 @@ function icl_sw_filters_gettext($translation, $text, $domain, $name = false){
             $plugin_folder = $exp[0];    
         }
         $context = 'plugin ' . $plugin_folder;
+    }elseif(0 === strpos($dbt5, $wp_plugin_dir) && in_array($dbt[5]['function'], $gettext_calls)){        
+        if(dirname($dbt4) == $wp_plugin_dir){
+            $plugin_folder = basename(str_replace($wp_plugin_dir, '', $dbt5));    
+        }else{
+            $exp = explode('/', ltrim(str_replace($wp_plugin_dir, '', $dbt5),'/'));            
+            $plugin_folder = $exp[0];    
+        }
+        $context = 'plugin ' . $plugin_folder;
     }elseif(0 === strpos($dbt4, $wpmu_plugin_dir)){ 
         $context = ($domain != 'default') ? 'plugin ' . $domain : 'plugin';         
+    }elseif(0 === strpos($dbt5, $wpmu_plugin_dir) && in_array($dbt[5]['function'], $gettext_calls)){ 
+        $context = ($domain != 'default') ? 'plugin ' . $domain : 'plugin';                 
     }else{
         $context = ($domain != 'default') ? 'theme ' . $domain : 'WordPress';
     }
@@ -1065,10 +1076,11 @@ function icl_sw_filters_gettext($translation, $text, $domain, $name = false){
     if(isset($sitepress_settings['st']['track_strings']) && $sitepress_settings['st']['track_strings'] && current_user_can('edit_others_posts')){
         icl_st_track_string($text, $context, ICL_STRING_TRANSLATION_STRING_TRACKING_TYPE_PAGE);
     }   
-    
+
     if(empty($name)){
         $name = md5($text);
-    } 
+    }     
+    
     $ret_translation = icl_t($context, $name, $text, $has_translation);
     if(false === $has_translation){
         $ret_translation = $translation;   
@@ -1158,7 +1170,7 @@ function icl_st_author_description_filter($value, $user_id){
     
     $user = new WP_User($user_id);        
     
-    if ( is_array( $user->roles ) && array_intersect($user->roles, (array)$sitepress_settings['st']['translated-users'])){
+    if ( is_array( $user->roles ) && is_array($sitepress_settings['st']['translated-users']) && array_intersect($user->roles, $sitepress_settings['st']['translated-users'])){
         $value = icl_st_translate_author_fields('description', $value, $user_id);
     }
     
@@ -1183,7 +1195,7 @@ function icl_st_translate_author_fields($field, $value, $user_id){
     if(empty($user_id)) $user_id = get_current_user_id();
     
     $user = new WP_User($user_id);        
-    if ( is_array( $user->roles ) && array_intersect($user->roles, (array)$sitepress_settings['st']['translated-users'])){
+    if ( is_array( $user->roles ) && is_array($sitepress_settings['st']['translated-users'])  && array_intersect($user->roles, (array)$sitepress_settings['st']['translated-users'])){
         $value = icl_translate('Authors', $field . '_' . $user_id, $value, true);
     }
 
@@ -1195,7 +1207,7 @@ function icl_st_register_user_strings($user_id){
     
     $user = new WP_User($user_id);        
 
-    if ( is_array( $user->roles ) && array_intersect($user->roles, (array)$sitepress_settings['st']['translated-users'])){
+    if ( is_array( $user->roles ) && is_array($sitepress_settings['st']['translated-users'])  && array_intersect($user->roles, (array)$sitepress_settings['st']['translated-users'])){
         $fields = array('first_name', 'last_name', 'nickname', 'description');                  
         foreach($fields as $field){
             icl_register_string('Authors', $field . '_' . $user_id, get_the_author_meta($field, $user_id), true, true);
@@ -1511,7 +1523,7 @@ function __icl_st_scan_theme_files_store_results($string, $domain, $_gettext_con
             $context = 'theme ' . $domain;            
         }        
         
-        $name = $_gettext_context ? $_gettext_context : md5($string);
+        $name = $_gettext_context ? $_gettext_context . ': ' . $string  : md5($string);
         icl_register_string($context, $name, $string);
         
         $__icl_registered_strings[$domain.'||'.$string.'||'.$_gettext_context] = true;
@@ -1617,10 +1629,13 @@ function __icl_st_scan_plugin_files_store_results($string, $domain, $_gettext_co
     }
     
     if(!isset($__icl_registered_strings[$icl_st_p_scan_plugin_id.'||'.$string])){
+        
+        $name = $_gettext_context ? $_gettext_context . ': ' . $string  : md5($string);
+        
         if(!$domain){
-            icl_register_string('plugins', md5($string), $string);
+            icl_register_string('plugins', $name, $string);
         }else{
-            icl_register_string('plugin ' . $icl_st_p_scan_plugin_id, md5($string), $string);
+            icl_register_string('plugin ' . $icl_st_p_scan_plugin_id, $name, $string);
         }        
         $__icl_registered_strings[$icl_st_p_scan_plugin_id.'||'.$string] = true;
     }  
@@ -1917,12 +1932,13 @@ function icl_st_scan_options_strings(){
     $options = array();
     
     // scan theme php file for update_option(), add_option()
-    $options_names = _icl_st_get_options_writes(get_template_directory());
+    $options_names = _icl_st_get_options_writes(ICL_STRING_TRANSLATION_TEMPLATE_DIRECTORY);
     
-    $options_names = array_merge($options_names, _icl_st_get_options_writes(get_stylesheet_directory()));
+    
+    $options_names = array_merge($options_names, _icl_st_get_options_writes(ICL_STRING_TRANSLATION_STYLESHEET_DIRECTORY));
     $options_names = array_unique($options_names);
     $options_names = array_map('mysql_real_escape_string', $options_names);
-        
+            
     if(!empty($options_names)){   
         $res = $wpdb->get_results("SELECT option_name, option_value FROM $wpdb->options WHERE option_name IN ('".join("','", $options_names)."')");
         foreach($res as $row){
@@ -1934,6 +1950,7 @@ function icl_st_scan_options_strings(){
     
     
     $_icl_admin_option_names = get_option('_icl_admin_option_names', array());
+    
     $_icl_admin_option_names = @array_merge_recursive($_icl_admin_option_names, $options_names);
     $_icl_admin_option_names = __array_unique_recursive($_icl_admin_option_names);
     
@@ -2087,17 +2104,19 @@ function wpml_register_admin_strings($serialized_array){
 
 add_action('plugins_loaded', 'icl_st_set_admin_options_filters', 10);
 function icl_st_set_admin_options_filters(){
-    $option_names = get_option('_icl_admin_option_names');
-    if(!empty($option_names['theme']) && !empty($option_names['theme'][basename(get_template_directory())])){
-        foreach($option_names['theme'][basename(get_template_directory())] as $option_key=>$option){
+    static $option_names;
+    if(empty($option_names)) $option_names = get_option('_icl_admin_option_names');
+
+    if(!empty($option_names['theme']) && !empty($option_names['theme'][basename(ICL_STRING_TRANSLATION_TEMPLATE_DIRECTORY)])){
+        foreach($option_names['theme'][basename(ICL_STRING_TRANSLATION_TEMPLATE_DIRECTORY)] as $option_key=>$option){
             if(is_array($option) || is_object($option)){
                 add_filter('option_'.$option_key, 'icl_st_translate_admin_string');        
             }else{
                 add_filter('option_'.$option, 'icl_st_translate_admin_string');        
             }                
         }
-        if(get_template_directory() != get_stylesheet_directory() && !empty($option_names['theme'][basename(get_stylesheet_directory())])){                         
-            foreach((array)$option_names['theme'][basename(get_stylesheet_directory())] as $option_key=>$option){
+        if(ICL_STRING_TRANSLATION_TEMPLATE_DIRECTORY != ICL_STRING_TRANSLATION_STYLESHEET_DIRECTORY && !empty($option_names['theme'][basename(ICL_STRING_TRANSLATION_STYLESHEET_DIRECTORY)])){                         
+            foreach((array)$option_names['theme'][basename(ICL_STRING_TRANSLATION_STYLESHEET_DIRECTORY)] as $option_key=>$option){
                 if(is_array($option) || is_object($option)){
                     add_filter('option_'.$option_key, 'icl_st_translate_admin_string');        
                 }else{
@@ -2165,11 +2184,12 @@ function icl_st_translate_admin_string($option_value, $key="", $name="", $rec_le
         }            
         
     }else{   
-        $option_names = get_option('_icl_admin_option_names');                
+        static $option_names;
+        if(empty($option_names)) $option_names = get_option('_icl_admin_option_names');                
         // determine theme/plugin name
         
-         if(!empty($option_names['theme']) && !empty($option_names['theme'][basename(get_template_directory())])){
-            foreach((array)$option_names['theme'][basename(get_template_directory())] as $ops=>$val){                
+         if(!empty($option_names['theme']) && !empty($option_names['theme'][basename(ICL_STRING_TRANSLATION_TEMPLATE_DIRECTORY)])){
+            foreach((array)$option_names['theme'][basename(ICL_STRING_TRANSLATION_TEMPLATE_DIRECTORY)] as $ops=>$val){                
                 if(!empty($key)){
                     $int = preg_match_all('#\[([^\]]+)\]#', $key, $matches);
                     if($int) $opname = $matches[1][0];
@@ -2178,13 +2198,13 @@ function icl_st_translate_admin_string($option_value, $key="", $name="", $rec_le
                 }
                 
                 if($ops == $opname){
-                    $key_suff = 'theme_' . basename(get_template_directory());
+                    $key_suff = 'theme_' . basename(ICL_STRING_TRANSLATION_TEMPLATE_DIRECTORY);
                     break;
                 }
             }
             
-            if(get_template_directory() != get_stylesheet_directory()){
-                foreach((array)$option_names['theme'][basename(get_stylesheet_directory())] as $ops=>$val){
+            if(ICL_STRING_TRANSLATION_TEMPLATE_DIRECTORY != ICL_STRING_TRANSLATION_STYLESHEET_DIRECTORY){
+                foreach((array)$option_names['theme'][basename(ICL_STRING_TRANSLATION_STYLESHEET_DIRECTORY)] as $ops=>$val){
                     
                     if(!empty($key)){
                         $int = preg_match_all('#\[([^\]]+)\]#', $key, $matches);
@@ -2194,7 +2214,7 @@ function icl_st_translate_admin_string($option_value, $key="", $name="", $rec_le
                     }
                     
                     if($ops == $opname){
-                        $key_suff = 'theme_' . get_stylesheet_directory();
+                        $key_suff = 'theme_' . ICL_STRING_TRANSLATION_STYLESHEET_DIRECTORY;
                         break;
                     }
                 }

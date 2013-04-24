@@ -67,6 +67,9 @@
                     <label><input class="icl_sync_custom_posts" type="radio" name="icl_sync_custom_posts[<?php echo $k ?>]" value="0" <?php echo $rdisabled;
                         if(@intval($sitepress_settings['custom_posts_sync_option'][$k])==0) echo ' checked="checked"'
                     ?> />&nbsp;<?php _e('Do nothing', 'sitepress') ?></label>
+                    <?php if($rdisabled): ?>
+                    <input type="hidden" name="icl_sync_custom_posts[<?php echo $k ?>]" value="<?php echo @intval($sitepress_settings['custom_posts_sync_option'][$k]) ?>" />
+                    <?php endif; ?>
                 </td>
             </tr>
             
@@ -80,12 +83,21 @@
             $_display = $_on ? '' : 'display:none;';  
             $_translate = !empty($sitepress_settings['posts_slug_translation']['types'][$k]);            
             if($_has_slug){
-                $string_id = $wpdb->get_var($wpdb->prepare("SELECT id FROM {$wpdb->prefix}icl_strings WHERE name = %s AND value = %s ", 'Url slug: ' . $cpost->rewrite['slug'], $cpost->rewrite['slug']));
+                if($sitepress->get_default_language() != $sitepress_settings['st']['strings_language']){
+                    $string_id = $wpdb->get_var($wpdb->prepare("
+                        SELECT s.id FROM {$wpdb->prefix}icl_strings s
+                            JOIN {$wpdb->prefix}icl_string_translations st
+                            ON st.string_id = s.id
+                            WHERE st.language=%s AND st.value=%s AND s.name LIKE %s                        
+                    ", $sitepress->get_default_language(), $cpost->rewrite['slug'], 'URL slug: %'));
+                    
+                }else{
+                    $string_id = $wpdb->get_var($wpdb->prepare("SELECT id FROM {$wpdb->prefix}icl_strings WHERE name = %s AND value = %s ", 'Url slug: ' . $cpost->rewrite['slug'], $cpost->rewrite['slug']));    
+                }
                 $_slug_translations = icl_get_string_translations_by_id($string_id);
             }else{
                 $_slug_translations = false;
             }
-            
             ?>
             <?php if($_has_slug): ?>
             <tr class="icl_slug_translation_choice" style="background-color: #efefef;<?php echo $_display; ?>">

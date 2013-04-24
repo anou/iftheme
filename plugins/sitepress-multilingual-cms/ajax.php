@@ -121,6 +121,11 @@ switch($_REQUEST['icl_ajx_action']){
             echo __('WordPress language file (.mo) is missing. Keeping existing display language.', 'sitepress');
         }
         break;
+    case 'set_languages_order':        
+        $iclsettings['languages_order'] = explode(';', $_POST['order']);
+        $this->save_settings($iclsettings);
+        echo json_encode(array('message' => __('Languages order updated', 'sitepress')));
+        break;
     case 'icl_tdo_options':
         $iclsettings['translated_document_status'] = intval($_POST['icl_translated_document_status']);
         $iclsettings['translated_document_page_url'] = $_POST['icl_translated_document_page_url'];
@@ -190,6 +195,8 @@ switch($_REQUEST['icl_ajx_action']){
         
         if (isset($_POST['icl_lang_sel_type']))
             $iclsettings['icl_lang_sel_type'] = $_POST['icl_lang_sel_type'];
+        if (isset($_POST['icl_lang_sel_stype']))
+            $iclsettings['icl_lang_sel_stype'] = $_POST['icl_lang_sel_stype'];
         
         if (isset($_POST['icl_lang_sel_footer']))
             $iclsettings['icl_lang_sel_footer'] = 1;
@@ -240,6 +247,7 @@ switch($_REQUEST['icl_ajx_action']){
         $iclsettings['sync_private_flag'] = @intval($_POST['icl_sync_private_flag']);            
         $iclsettings['sync_post_format'] = @intval($_POST['icl_sync_private_flag']);            
         $iclsettings['sync_delete'] = @intval($_POST['icl_sync_delete']);            
+        $iclsettings['sync_delete_tax'] = @intval($_POST['icl_sync_delete_tax']);            
         $iclsettings['sync_post_taxonomies'] = @intval($_POST['icl_sync_post_taxonomies']);            
         $iclsettings['sync_post_date'] = @intval($_POST['icl_sync_post_date']);            
         $iclsettings['sync_taxonomy_parents'] = @intval($_POST['icl_sync_taxonomy_parents']);            
@@ -460,8 +468,10 @@ switch($_REQUEST['icl_ajx_action']){
     case 'setup_got_to_step1':
         $iclsettings['existing_content_language_verified'] = 0;
         $iclsettings['setup_wizard_step'] = 1;
-        @mysql_query("TRUNCATE TABLE {$wpdb->prefix}icl_translations");
+        $wpdb->query("TRUNCATE TABLE {$wpdb->prefix}icl_translations");
+        $wpdb->update($wpdb->prefix . 'icl_languages', array('active' => 0), array('active' => 1));
         $this->save_settings($iclsettings);
+        
         break;
     case 'setup_got_to_step2':
         $iclsettings['setup_wizard_step'] = 2;
@@ -721,13 +731,13 @@ switch($_REQUEST['icl_ajx_action']){
             foreach($val['tr'] as $k=>$display){        
                 if(strpos($k,'Norwegian Bokm')===0){ $k = 'Norwegian Bokmål';}
                 if(!trim($display)){$display = $lang;}
-                if(!($wpdb->get_var("SELECT id FROM {$table_name} WHERE language_code='{$lang_codes[$lang]}' AND display_language_code='{$lang_codes[$k]}'"))){
+                if(!($wpdb->get_var("SELECT id FROM {$wpdb->prefix}icl_languages_translations WHERE language_code='{$lang_codes[$lang]}' AND display_language_code='{$lang_codes[$k]}'"))){
                     $wpdb->insert($wpdb->prefix . 'icl_languages_translations', 
                     array('language_code'=>$lang_codes[$lang], 'display_language_code'=>$lang_codes[$k], 'name'=>$display));
                 }
             }    
         } 
-        $wpdb->update($wpdb->prefix.'icl_flags', array('from_template'=>0));       
+        $wpdb->update($wpdb->prefix.'icl_flags', array('from_template'=>0),null);       
         
         $codes = $wpdb->get_col("SELECT code FROM {$wpdb->prefix}icl_languages");
         foreach($codes as $code){
@@ -780,6 +790,7 @@ switch($_REQUEST['icl_ajx_action']){
             
             if($this->settings['posts_slug_translation']['on']){
                 if(isset($_POST['translate_slugs']) && !empty($_POST['translate_slugs'])){
+                    
                     foreach($_POST['translate_slugs'] as $type => $data){
                         
                         if(empty($_POST['icl_sync_custom_posts'][$type])) continue;
@@ -798,8 +809,10 @@ switch($_REQUEST['icl_ajx_action']){
                         if($string_id){
                             foreach($this->get_active_languages() as $lang){
                                 if($lang['code'] != $this->settings['st']['strings_language']){
-                                    $data['langs'][$lang['code']] = sanitize_title_with_dashes($data['langs'][$lang['code']]);
                                     
+                                    // allow '/' in slugs 
+                                    //$data['langs'][$lang['code']] = sanitize_title_with_dashes($data['langs'][$lang['code']]);                                                                       
+                                    $data['langs'][$lang['code']] = join('/', array_map('sanitize_title_with_dashes', explode('/', $data['langs'][$lang['code']])));                                                                       
                                     $data['langs'][$lang['code']] = urldecode($data['langs'][$lang['code']]);
                                     icl_add_string_translation($string_id, $lang['code'], $data['langs'][$lang['code']] , ICL_STRING_TRANSLATION_COMPLETE);
                                 }

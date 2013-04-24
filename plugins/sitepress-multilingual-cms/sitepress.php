@@ -5,11 +5,11 @@ Plugin URI: http://wpml.org/
 Description: WPML Multilingual CMS. <a href="http://wpml.org">Documentation</a>.
 Author: ICanLocalize
 Author URI: http://wpml.org
-Version: 2.6.3
+Version: 2.8.1
 */
 
 if(defined('ICL_SITEPRESS_VERSION')) return;
-define('ICL_SITEPRESS_VERSION', '2.6.3');
+define('ICL_SITEPRESS_VERSION', '2.8.1');
 define('ICL_PLUGIN_PATH', dirname(__FILE__));
 define('ICL_PLUGIN_FOLDER', basename(ICL_PLUGIN_PATH));
 define('ICL_PLUGIN_URL', plugins_url() . '/' . ICL_PLUGIN_FOLDER );
@@ -65,10 +65,16 @@ if(is_admin() || defined('XMLRPC_REQUEST')){
     require ICL_PLUGIN_PATH . '/inc/translation-management/pro-translation.class.php';        
 }
 
-if( !isset($_REQUEST['action'])     || ($_REQUEST['action']!='activate' && $_REQUEST['action']!='activate-selected') 
-    || ((!isset($_REQUEST['plugin']) || $_REQUEST['plugin'] != basename(ICL_PLUGIN_PATH).'/'.basename(__FILE__)) 
-        && !@in_array(basename(ICL_PLUGIN_PATH).'/'.basename(__FILE__), $_REQUEST['checked']))){
+if( 
+    !isset($_REQUEST['action']) || 
+    ($_REQUEST['action'] != 'activate' && $_REQUEST['action']!='activate-selected') || 
+    (
+        (!isset($_REQUEST['plugin']) || 
+        $_REQUEST['plugin'] != basename(ICL_PLUGIN_PATH).'/'.basename(__FILE__)
+    ) && 
+    !@in_array(ICL_PLUGIN_FOLDER . '/' . basename(__FILE__), $_REQUEST['checked']))){
 
+    global $sitepress;
     $sitepress = new SitePress();
     $sitepress_settings = $sitepress->get_settings();
 

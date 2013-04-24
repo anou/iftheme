@@ -24,7 +24,9 @@ function if_init() {
 		wp_enqueue_script('jquery');
 */
 		wp_enqueue_script('masonry', get_bloginfo('stylesheet_directory') . '/js/jquery.masonry.min.js', array('jquery'));
-		
+		wp_enqueue_script('moment', get_bloginfo('stylesheet_directory') . '/js/moment.min.js', array('jquery'));
+		wp_enqueue_script('langs', get_bloginfo('stylesheet_directory') . '/js/langs.min.js', array('moment'));
+
 		//RTL languages
 		if ( is_rtl() ) {
 			wp_enqueue_script( 'slides-rtl', get_bloginfo('stylesheet_directory') . '/js/slides.jquery.rtl.js', array('jquery'));
@@ -90,6 +92,7 @@ function iftheme_setup() {
 	//include the main classes file
 	// for category and post customization
 	require_once( get_template_directory() . "/inc/theme-classes.php");
+	require_once( get_template_directory() . "/inc/theme-taxo-classes.php");
 
 }
 endif; // iftheme_setup
@@ -181,7 +184,7 @@ function get_if_level2_categ($args=array()){
 		'hide_empty' => 0,
 		'use_desc_for_title' => 0,
 		'title_li' => '',
-		'child_of' 	 => get_current_antenna(),
+		'child_of' 	 => get_current_parent_categ(),
 		'depth' => 2
     );
     
@@ -273,6 +276,7 @@ function get_cat_slug($cat_id) {
 
 	return property_exists($category,'slug') ? $category->slug : '';
 }
+
 //Prepare vars for IF category vs antenna system
 function get_cat_if_user($uid){
 	$categ = 0;
@@ -280,9 +284,21 @@ function get_cat_if_user($uid){
 
 	//must have assigned a category to user (cf. edit profil page)
 	if(isset($user['categ_to_antenna'])) $categ = $user['categ_to_antenna'][0];
-	
-	
+		
 	//returns an ID
+	return $categ;	
+}
+
+function get_cat_if_user_lang($uid){
+	$categ = 0;
+	$user = get_user_meta( $uid );
+
+	//must have assigned a category to user (cf. edit profil page)
+	if(isset($user['categ_to_antenna'])) $categ = $user['categ_to_antenna'][0];
+	
+	if(defined('ICL_LANGUAGE_CODE')) $categ = icl_object_id($categ,'category',false,ICL_LANGUAGE_CODE);
+	
+	//returns an ID (dependant on language if any)
 	return $categ;	
 }
 //Get info for IF Antenna
@@ -409,15 +425,41 @@ function get_current_antenna(){
 	$default_lg = isset($sitepress) ? $sitepress->get_default_language() : 'fr';//assuming that 'fr' should be default language
 
 	$current_id = function_exists('icl_object_id') ? icl_object_id(1, 'category', true) : 1;//default category
+	
 	if(is_category()) {
 		//get root category (antenna)
-		$current_id = get_root_category(get_query_var('cat'));
+	  $current_id = defined('ICL_LANGUAGE_CODE') ? icl_object_id(get_root_category(get_query_var('cat')),'category',true,$default_lg) : get_root_category(get_query_var('cat'));
+
 		//$current_id = function_exists('icl_object_id') ? icl_object_id($current_id, 'category', true, $default_lg) : $current_id;
 	} elseif(is_single()){
 		//get the category id of post
 		$cats = get_the_category();
 		//get root category (antenna)
-		$current_id = get_root_category($cats[0]->term_id);//if post has multiple categories, no problem we only need to get the root categ.
+		//if post has multiple categories, no problem we only need to get the root categ.
+		$current_id = defined('ICL_LANGUAGE_CODE') ? icl_object_id(get_root_category($cats[0]->term_id),'category',true,$default_lg) : get_root_category($cats[0]->term_id);
+	}
+	
+	return	$current_id;
+}
+
+//get current top level category
+function get_current_parent_categ(){
+	global $sitepress;
+	$default_lg = isset($sitepress) ? $sitepress->get_default_language() : 'fr';//assuming that 'fr' should be default language
+
+	$current_id = function_exists('icl_object_id') ? icl_object_id(1, 'category', true) : 1;//default category
+	
+	if(is_category()) {
+		//get root category (antenna)
+	  $current_id = get_root_category(get_query_var('cat'));
+
+		//$current_id = function_exists('icl_object_id') ? icl_object_id($current_id, 'category', true, $default_lg) : $current_id;
+	} elseif(is_single()){
+		//get the category id of post
+		$cats = get_the_category();
+		//get root category (antenna)
+		//if post has multiple categories, no problem we only need to get the root categ.
+		$current_id = get_root_category($cats[0]->term_id);
 	}
 	
 	return	$current_id;
@@ -490,8 +532,8 @@ add_action('admin_head', 'load_inline_js_to_admin');
 function load_inline_css_to_admin(){
 	global $current_user; get_currentuserinfo();
 	$out = '<style type="text/css">';
-	$out .= '#widgets-right .widgets-holder-wrap {visibility:hidden;}';
-	$out .= $current_user->ID == 1 ? '#widgets-right .widgets-holder-wrap {visibility:visible}':'#widgets-right .widgets-holder-wrap.sidebar-'.get_cat_if_user($current_user->ID).' {visibility:visible; position:absolute; top:-10px;width:100%} #widgets-right {position:relative;}';
+	$out .= '#widgets-right .widgets-holder-wrap {display:none}';
+	$out .= $current_user->ID == 1 ? '#widgets-right .widgets-holder-wrap {display:block}':'#widgets-right .widgets-holder-wrap.sidebar-'.get_cat_if_user($current_user->ID).' {display:block}';
 	
 	$out .= '</style>';
 
@@ -547,19 +589,20 @@ add_action('manage_category_custom_column','manage_category_custom_fields',10,3)
 function if_restrict_categories($categories) {
 	global $current_user; get_currentuserinfo();
 	
-	$a = get_cat_if_user($current_user->ID);
-	//echo('antenna == '.$a.'<br>');
+	$a = get_cat_if_user_lang($current_user->ID);
 
 	$onPostPage = (strpos($_SERVER['PHP_SELF'], 'edit-tags.php'));
-
+	
 	if (is_admin() && $onPostPage && !current_user_can('level_10')) {
 	//if (is_admin() && $onPostPage) {
 		$size = count($categories);
+
 		for ($i = 0; $i < $size; $i++) {
 		 if(is_object($categories[$i])){
-			if($categories[$i]->parent != $a && $categories[$i]->term_id != $a){
+			//if($categories[$i]->parent != $a && $categories[$i]->term_id != $a){
+			if(!cat_is_ancestor_of($a, $categories[$i]->term_id) && $categories[$i]->term_id != $a){
 				unset($categories[$i]);
-			}
+			} 
 		 }
 		}
 	}
@@ -632,7 +675,7 @@ function if_display_posts_listing ( $query ) {
 		$query->set( 'orderby', 'meta_value_num' );
 		$query->set( 'meta_key', 'if_events_startdate' );
 		$query->set( 'order', 'ASC' );
-		//$query->set( 'posts_per_page', '10' );		
+		//$query->set( 'posts_per_page', '10' );//can set this in /wp-admin/options-reading.php
 		
 	}
 }
@@ -712,7 +755,7 @@ function get_meta_if_post($pid=''){
 	$pid = !$pid ? $post->ID : $pid;
 	
 	setlocale(LC_ALL, get_locale());
-	
+
 	$meta = get_post_meta($pid);
 	
 	$post_categs = wp_get_post_categories($pid);
@@ -1131,9 +1174,11 @@ if ( function_exists('register_sidebar') ) {
 if(function_exists('icl_get_languages')) {
 	function languages_list_header(){ //cf. http://wpml.org/documentation/getting-started-guide/language-setup/custom-language-switcher/
 	    $languages = icl_get_languages('skip_missing=0&orderby=code');
-	    //print_r($languages);
+
 	    if(!empty($languages)){
+	        
 	        echo '<div id="header_language_list"><ul>';
+	        
 	        foreach($languages as $l){
 	        	$class = $l['active'] ? 'class="active"':'';
 	            echo '<li '.$class.'>';
@@ -1143,6 +1188,7 @@ if(function_exists('icl_get_languages')) {
 	            if(!$l['active']) echo '</a>';
 	            echo '</li>';
 	        }
+	        
 	        echo '</ul></div>';
 	    }
 	}
@@ -1414,4 +1460,26 @@ function curl_get($url, array $get = NULL, array $options = array()) {
     curl_close($ch); 
     return $result; 
 }
+
+if ( ! function_exists( 'iftheme_content_nav' ) ) :
+/**
+ * Displays navigation to next/previous pages when applicable.
+ *
+ * FROM Twenty Twelve 1.0 ;-)
+ */
+function iftheme_content_nav( $html_id ) {
+	global $wp_query;
+
+	$html_id = esc_attr( $html_id );
+
+	if ( $wp_query->max_num_pages > 1 ) : ?>
+		<nav id="<?php echo $html_id; ?>" class="navigation" role="navigation">
+			<h3 class="assistive-text"><?php _e( 'Post navigation', 'twentytwelve' ); ?></h3>
+			<div class="nav-next alignleft"><?php previous_posts_link( __( '<span class="meta-nav">&larr;</span> Previous', 'iftheme' ) ); ?></div>
+			<div class="nav-previous alignright"><?php next_posts_link( __( 'Next <span class="meta-nav">&rarr;</span>', 'iftheme' ) ); ?></div>
+		</nav><!-- #<?php echo $html_id; ?> .navigation -->
+	<?php endif;
+}
+endif;
+
  

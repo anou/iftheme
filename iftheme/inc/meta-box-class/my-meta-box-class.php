@@ -346,7 +346,7 @@ class AT_Meta_Box {
       echo json_encode( array('status' => 'success' ));
       die();
     }else{
-      echo json_encode(array('message' => __( 'Cannot delete file. Something\'s wrong.tyty')));
+      echo json_encode(array('message' => __( 'Cannot delete file. Something\'s wrong')));
       die();
     }
   }

@@ -56,15 +56,16 @@
 		if($home_cat):?>
 			<div id="home-list">
 			<?php foreach($home_cat as $id):?>
-				<?php $cat = get_category($id);?>
+				<?php $cat = get_category($id); $antparent = get_cat_name($cat->parent);?>
 				<div class="block-home">
-					<h2 class="posts-category"><?php echo $cat->name;?></h2>
+					<h2 class="posts-category"><?php echo $cat->name;?> / <?php echo $antparent;?></h2>
 					<?php //alter query
           $args = array(
              'cat' => $id,
-             'meta_key' => 'if_events_enddate',
+             'meta_key' => 'if_events_startdate',
              'orderby' => 'meta_value_num',
              'order' => 'ASC',
+             'posts_per_page' => -1,
              'meta_query' => array(
                  array(
                      'key' => 'if_events_enddate',
@@ -84,7 +85,7 @@
 								$antenna_id = $data['antenna_id'];
 								 
 ?>
-						<article class="post-single-home">
+						<article class="post-single-home clearfix" id="post-<?php the_ID();?>">
 							<div class="top-block">
 								<?php if($start):?><div class="date-time"><span class="start"><?php echo $start;?></span><span class="end"><?php echo $end;?></span><?php endif;?><span class="post-antenna"><?php if('page' == get_post_type()){ bloginfo('description'); } else { echo ' - '.get_cat_name($antenna_id);}?></span></div>
 								<h3 class="post-title"><a href="<?php the_permalink() ?>" title="<?php the_title(); ?>" rel="bookmark"><?php the_title(); ?></a></h3>
@@ -97,7 +98,39 @@
 								</div>
 							<?php endif;?>
 						</article><!--.post-single-->
+      			<?php //prepare data for dates in JS 
+      			   $raw_data = get_meta_raw_if_post($pid);
+      			?>
+      			<script type="text/javascript">
+      			  var lang = !icl_lang ? bInfo['bLang'] : icl_lang;
+      			  moment.lang(lang);
+      			  
+      			  var startYear = new Date(<?php echo $raw_data['start'];?>*1000).getFullYear();
+      			  var endYear = new Date(<?php echo $raw_data['end'];?>*1000).getFullYear();
+        			var thisPostStart = jQuery("#post-<?php the_ID();?> .start");
+        			var thisPostEnd = jQuery("#post-<?php the_ID();?> .end");
+        			
+        			var start = moment.unix(<?php echo $raw_data['start'];?>).format('ll');
+        			var end = moment.unix(<?php echo $raw_data['end'];?>).format('ll');
+        			var time = '<?php echo $raw_data['time'];?>';
+        			
+        			start = start.replace(startYear, '');
+        			thisPostStart.text(start);
+        			end = end.replace(endYear, '');
+        			end = !time ? end : time;
+        			
+        			if(end !== start) thisPostEnd.text(' / '+end);
+        			
+      			</script>
 					<?php endwhile; ?>
+
+<!--
+		<div class="oldernewer">
+			<p class="older"><?php next_posts_link('&laquo; Older Entries') ?></p>
+			<p class="newer"><?php previous_posts_link('Newer Entries &raquo;') ?></p>
+		</div>
+-->
+
 					<?php wp_reset_query();?>
 					<?php else: ?>
 						<div class="no-results bxshadow">
@@ -154,12 +187,6 @@
 				<p><?php _e('No post in this category','iftheme'); ?></p>
 			</div><!--noResults-->
 		<?php */ endif; ?>
-	<?php /*		
-		<div class="oldernewer">
-			<p class="older"><?php next_posts_link('&laquo; Older Entries') ?></p>
-			<p class="newer"><?php previous_posts_link('Newer Entries &raquo;') ?></p>
-		</div><!--.oldernewer-->
-	*/?>	
 	<?php endif;?>
 
 </div><!--#content-->

@@ -7,7 +7,8 @@
 <?php 
   	  global $sitepress;
   	  $default_lg = isset($sitepress) ? $sitepress->get_default_language() : 'fr';//assuming that 'fr' should be default language
-  	  $currenta = get_current_antenna();
+  	  //$currenta = get_current_antenna();
+  	  $currenta = get_current_parent_categ();
 	    $original = function_exists('icl_object_id') ? icl_object_id($currenta, 'category', true, $default_lg) : $currenta;
 	
 	if(get_query_var('cat') === $currenta && $multi):?>
@@ -24,14 +25,13 @@
 			);
 			
   		query_posts( $args_slider );
-			
 	?>
 	<?php if (have_posts()) : while (have_posts()) : the_post(); ?>
 	<?php //get slider data
 			$dslide = get_meta_slider($post->ID);
 			$slides = array();
 
-			if(empty($dslide['frontpage'])) {
+			if(empty($dslide['frontpage'])) { 
 
   			foreach($dslide['slides'] as $s => $vals){
   				$slides[$s]['title'] = $vals['slide_title'];
@@ -50,12 +50,12 @@
 				<div class="slides_container">
 				<?php foreach($slides as $slide => $values):
 						  $img = wp_get_attachment_image_src( $values['img'],'slider');
-				?>
+				 if($img) : ?>
 					<div class="slide">
 						<a href="<?php echo $values['link'];?>" title="<?php echo $values['link'];?>"><img src="<?php echo $img[0]; ?>" width="<?php echo $img[1]; ?>" height="<?php echo $img[2]; ?>" alt="" /></a><div class="caption"><?php echo $values['title'];?></div>
 					</div><!-- /.slide -->
 					
-				<?php endforeach;?>
+				<?php endif; endforeach; ?>
 				
 				</div><!-- /.slides_container -->
 				<a href="#" class="prev none"><img src="<?php bloginfo('template_directory');?>/images/slide/arrow-prev.png" width="24" height="43" alt="Arrow Prev"></a>
@@ -81,11 +81,13 @@
 					<h2 class="posts-category"><?php echo $cat;?></h2>
 					<?php //alter query
 					$time = (time() - (60*60*24));
+					$paged = (get_query_var('paged')) ? get_query_var('paged') : 1;
           $args = array(
              'cat' => $id,
-             'meta_key' => 'if_events_enddate',
+             'meta_key' => 'if_events_startdate',
              'orderby' => 'meta_value_num',
              'order' => 'ASC',
+             'paged' => $paged,
              'meta_query' => array(
                  array(
                      'key' => 'if_events_enddate',
@@ -97,7 +99,7 @@
 					query_posts($args); ?>
 
 					<?php if (have_posts()) : while (have_posts()) : the_post(); ?>
-						<article class="post-single-home">
+						<article class="post-single-home clearfix" id="post-<?php the_ID();?>">
 							<?php //prepare data 
 									$pid = get_the_ID();
 									$data = get_meta_if_post($pid);
@@ -117,7 +119,34 @@
 								</div>
 							<?php endif;?>
 						</article><!--.post-single-->
+      			<?php //prepare data for dates in JS 
+      			   $raw_data = get_meta_raw_if_post($pid);
+      			?>
+      			<script type="text/javascript">
+      			  var lang = !icl_lang ? bInfo['bLang'] : icl_lang;
+      			  moment.lang(lang);
+      			  
+      			  var startYear = new Date(<?php echo $raw_data['start'];?>*1000).getFullYear();
+      			  var endYear = new Date(<?php echo $raw_data['end'];?>*1000).getFullYear();
+        			var thisPostStart = jQuery("#post-<?php the_ID();?> .start");
+        			var thisPostEnd = jQuery("#post-<?php the_ID();?> .end");
+        			
+        			var start = moment.unix(<?php echo $raw_data['start'];?>).format('ll');
+        			var end = moment.unix(<?php echo $raw_data['end'];?>).format('ll');
+        			var time = '<?php echo $raw_data['time'];?>';
+        			
+        			start = start.replace(startYear, '');
+        			thisPostStart.text(start);
+        			end = end.replace(endYear, '');
+        			end = !time ? end : time;
+        			
+        			if(end !== start) thisPostEnd.text(' / '+end);
+        			
+      			</script>
 					<?php endwhile; ?>
+
+					<?php iftheme_content_nav( 'nav-below' ); //next-prev nav ?>
+
 					<?php wp_reset_query();?>
 					<?php else: ?>
 						<div class="no-results bxshadow">
@@ -142,7 +171,9 @@
 			<div class="description"><?php echo category_description(); /* displays the category's description from the Wordpress admin */ ?></div>
 		<!-- Child categories -->
 		<?php if(!empty($data['children'])):?>
-			<ul class="display-children clearfix"><?php wp_list_categories('title_li=&use_desc_for_title=0&hide_empty=0&depth=1&child_of='.get_query_var('cat')); ?></ul>
+			<ul class="display-children clearfix">
+  			<?php  wp_list_categories('title_li=&use_desc_for_title=0&hide_empty=0&depth=1&child_of='.get_query_var('cat')); ?>
+			</ul>
 		<?php endif;?>
 		<!-- POSTS -->
 		<?php if (have_posts() && !empty($data['posts'])) : ?> 
@@ -155,8 +186,8 @@
 				$data = get_meta_if_post($pid);
 				$start = $data['start'];
 				$end = $data['end'];  
-			?>
-			<article class="post-single clearfix">
+			?>			 
+			<article class="post-single clearfix" id="post-<?php the_ID();?>">
 				<?php if ( has_post_thumbnail() ) { /* loades the post's featured thumbnail, requires Wordpress 3.0+ */ echo '<div class="featured-thumbnail">'; the_post_thumbnail('listing-post'); echo '</div>'; } ?>
 				<div class="top-block bxshadow">
 					<div class="date-time">
@@ -168,19 +199,41 @@
 					<?php the_excerpt(); /* the excerpt is loaded to help avoid duplicate content issues */ ?>
 				</div>
 				<div class="post-meta"><?php the_category(', ') ?></div>
-		
 			</article><!--.post-single-->
+
+			<?php //prepare data for dates in JS 
+			   $raw_data = get_meta_raw_if_post($pid);
+			?>
+			<script type="text/javascript">
+			  var lang = !icl_lang ? bInfo['bLang'] : icl_lang;
+			  moment.lang(lang);
+			  
+			  var startYear = new Date(<?php echo $raw_data['start'];?>*1000).getFullYear();
+			  var endYear = new Date(<?php echo $raw_data['end'];?>*1000).getFullYear();
+  			var thisPostStart = jQuery("#post-<?php the_ID();?> .start");
+  			var thisPostEnd = jQuery("#post-<?php the_ID();?> .end");
+  			
+  			var start = moment.unix(<?php echo $raw_data['start'];?>).format('ll');
+  			var end = moment.unix(<?php echo $raw_data['end'];?>).format('ll');
+  			var time = '<?php echo $raw_data['time'];?>';
+  			
+  			start = start.replace(startYear, '');
+  			thisPostStart.text(start);
+  			end = end.replace(endYear, '');
+  			end = !time ? end : time;
+  			
+  			if(end !== start) thisPostEnd.text(' / '+end);
+  			
+			</script>
+
 		<?php endwhile; else: /* ?>
 			<div class="no-results bxshadow">
 				<p><?php _e('No post in this category','iftheme'); ?></p>
 			</div><!--noResults-->
 		<?php */ endif; ?>
-	<?php /*		
-		<div class="oldernewer">
-			<p class="older"><?php next_posts_link('&laquo; Older Entries') ?></p>
-			<p class="newer"><?php previous_posts_link('Newer Entries &raquo;') ?></p>
-		</div><!--.oldernewer-->
-	*/?>	
+		
+		<?php iftheme_content_nav( 'nav-below' ); //next-prev nav ?>
+	
 	<?php endif;?>
 
 </div><!--#content-->

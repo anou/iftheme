@@ -197,7 +197,8 @@ class SitePressLanguageSwitcher {
     }
     
     function language_selector_footer() {
-        $languages = icl_get_languages('orderby=id&order=asc&skip_missing=0');
+        $languages = icl_get_languages('skip_missing=0');
+        
         if(!empty($languages)){
             echo '
                 <div id="lang_sel_footer">
@@ -552,7 +553,7 @@ class SitePressLanguageSwitcher {
         if($w_this_lang['code']=='all'){
             $main_language['native_name'] = __('All languages', 'sitepress');
         }
-        $active_languages = icl_get_languages('orderby=id&order=asc&skip_missing=0');
+        $active_languages = icl_get_languages('skip_missing=0');
         if(empty($active_languages)) return; ?>
         
 <div id="lang_sel_list"<?php if(empty($this->settings['icl_lang_sel_type']) || $this->settings['icl_lang_sel_type'] == 'dropdown') echo ' style="display:none;"';?>>           

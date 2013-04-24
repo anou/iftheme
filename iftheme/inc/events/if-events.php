@@ -33,9 +33,9 @@ function if_events_meta () {
     global $post;
     $custom = get_post_custom($post->ID);
     
-    $meta_sd = $custom["if_events_startdate"][0];
+    $meta_sd = !empty($custom["if_events_startdate"][0]) ? $custom["if_events_startdate"][0] : NULL;
     $meta_ed = !empty($custom["if_events_enddate"][0]) ? $custom["if_events_enddate"][0] : NULL;
-    $meta_time = $custom["if_events_time"][0]; 
+    $meta_time = !empty($custom["if_events_time"][0]) ? $custom["if_events_time"][0] : NULL;
     // - grab wp time format -
 
     $date_format = get_option('date_format'); // Not required in my code
@@ -74,21 +74,22 @@ function if_events_mobile () {
     $custom = get_post_custom($post->ID);
 
     $meta_disciplines = isset($custom["if_events_disciplines"]) ? unserialize($custom["if_events_disciplines"][0]) : array();
-    $meta_lieu = $custom["if_events_lieu"][0];
-    $meta_address = $custom["if_events_adresse"][0];
-    $meta_address_bis = $custom["if_events_adresse_bis"][0];
-    $meta_zip = $custom["if_events_zip"][0];
+    $meta_lieu = isset($custom["if_events_lieu"][0]) ? $custom["if_events_lieu"][0] : NULL;
+    $meta_address = isset($custom["if_events_adresse"][0]) ?  $custom["if_events_adresse"][0] : NULL;
+    $meta_address_bis = isset($custom["if_events_adresse_bis"][0]) ?  $custom["if_events_adresse_bis"][0] : NULL;
+    $meta_zip = isset($custom["if_events_zip"][0]) ?  $custom["if_events_zip"][0] : NULL;
     $meta_city = isset($custom["if_events_city"]) ? $custom["if_events_city"][0] : $antenna;
-    $meta_pays = isset($custom["if_events_pays"][0]) ? $custom["if_events_pays"][0] : array();
-    $meta_long = isset($custom["if_events_long"][0]) ? $custom["if_events_long"][0] : 4.835658999999964;
-    $meta_lat = isset($custom["if_events_lat"][0]) ? $custom["if_events_lat"][0] : 45.764043;
+    $meta_pays = isset($custom["if_events_pays"][0]) ? $custom["if_events_pays"][0] : '';
+    $meta_longlat = isset($custom["longlat"][0]) ? $custom["longlat"][0] : '';
+    $meta_long = isset($custom["if_events_long"][0]) ? $custom["if_events_long"][0] : 0;
+    $meta_lat = isset($custom["if_events_lat"][0]) ? $custom["if_events_lat"][0] : 0;
     $zoom = isset($custom["zoom"][0]) ? $custom["zoom"][0] : 11;
     //$meta_hour = $custom["if_events_hour"][0];
-    $meta_tel = $custom["if_events_tel"][0];
-    $meta_mail = $custom["if_events_mmail"][0];
-    $meta_link1 = $custom["if_events_link1"][0];
-    $meta_link2 = $custom["if_events_link2"][0];
-    $meta_link3 = $custom["if_events_link3"][0];
+    $meta_tel = isset($custom["if_events_tel"][0]) ?  $custom["if_events_tel"][0] : NULL;
+    $meta_mail = isset($custom["if_events_mmail"][0]) ?  $custom["if_events_mmail"][0] : NULL;
+    $meta_link1 = isset($custom["if_events_link1"][0]) ?  $custom["if_events_link1"][0] : NULL;
+    $meta_link2 = isset($custom["if_events_link2"][0]) ?  $custom["if_events_link2"][0] : NULL;
+    $meta_link3 = isset($custom["if_events_link3"][0]) ?  $custom["if_events_link3"][0] : NULL;
     $meta_url = isset($custom["if_events_url"]) ? $custom["if_events_url"][0] : $post->guid;
 
     // - output -
@@ -177,10 +178,7 @@ function if_events_mobile () {
     googleMaps(<?php echo $meta_lat;?>,<?php echo $meta_long;?>,<?php echo $zoom;?>);
   })
 </script>
-    
-    
-    
-    
+
         <ul>
             <li>
               <label><?php _e("Disciplines",'iftheme');?>&nbsp;<span style="color:red" title="<?php __("Mandatory field", 'iftheme');?>">*</span></label>
@@ -209,7 +207,7 @@ function if_events_mobile () {
               <?php if(!$pays) {echo $msg;}?>
             </li>
             <li>
-              <label><?php _e("Get longitude & latitude",'iftheme');?></label><input size="50" type="text" name="longlat" id="longlat" value="" /><?php _e("<em>Type here the full address of your event. <b>Press \"tab\" key</b> to get/modify the longitude and latitude</em>",'iftheme');?><br /><br /><br /><br />
+              <label><?php _e("Get longitude & latitude",'iftheme');?>&nbsp;<span style="color:red" title="<?php __("Mandatory field", 'iftheme');?>">*</span></label><input size="50" type="text" name="longlat" id="longlat" value="<?php echo $meta_longlat;?>" /><?php _e("<em>Type here the full address of your event. <b>Press \"tab\" key</b> to get/modify the longitude and latitude</em>",'iftheme');?><br /><br /><br /><br />
               <div id="map_canvas" style="height:200px; margin:5px 0px; clear:both"></div>
               <form id="gmaplatlon" method="post" action="">              
               <fieldset style="margin:10px 0 10px 150px"><li><label style="width:auto"><?php _e("Longitude",'iftheme');?>&nbsp;<span style="color:red" title="<?php __("Mandatory field", 'iftheme');?>">*</span></label>&nbsp;<input type="text" name="if_events_long" id="if_events_long" value="<?php echo $meta_long; ?>" />&nbsp;&nbsp;&nbsp;&nbsp;<label style="width:auto"><?php _e("Latitude",'iftheme');?>&nbsp;<span style="color:red" title="<?php __("Mandatory field", 'iftheme');?>">*</span></label>&nbsp;<input type="text" name="if_events_lat" id="if_events_lat" value="<?php echo $meta_lat; ?>" />&nbsp;<label for="zoom" style="width:auto"><?php _e("Zoom",'iftheme');?></label><input type="text" id="zoom" name="zoom" style="width:25px;" maxlength="50" value="<?php echo $zoom; ?>"></fieldset>
@@ -291,6 +289,10 @@ function save_if_events() {
     if(isset($_POST["if_events_pays"])):
         $updatepays = $_POST["if_events_pays"];
         update_post_meta($post->ID, "if_events_pays", $updatepays );
+    endif;
+    if(isset($_POST["longlat"])):
+        $updatelonglat = $_POST["longlat"];
+        update_post_meta($post->ID, "longlat", $updatelonglat );
     endif;
     if(isset($_POST["if_events_long"])):
         $updatelong = $_POST["if_events_long"];

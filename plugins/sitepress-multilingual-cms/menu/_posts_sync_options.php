@@ -48,6 +48,10 @@
                         <label><input type="checkbox" name="icl_sync_delete" <?php if($sitepress_settings['sync_delete']): ?>checked="checked"<?php endif; ?> value="1" />
                         <?php echo __('When deleting a post, delete translations as well', 'sitepress') ?></label>                        
                     </p>  
+                    <p>
+                        <label><input type="checkbox" name="icl_sync_delete_tax" <?php if($sitepress_settings['sync_delete_tax']): ?>checked="checked"<?php endif; ?> value="1" />
+                        <?php echo __('When deleting a taxonomy (category, tag or custom), delete translations as well', 'sitepress') ?></label>                        
+                    </p>                      
                     <p style="border-top:solid 1px #ddd;font-size:2px">&nbsp;</p>
                     <p>
                         <label><input type="checkbox" name="icl_sync_post_taxonomies" <?php if($sitepress_settings['sync_post_taxonomies']): ?>checked="checked"<?php endif; ?> value="1" />

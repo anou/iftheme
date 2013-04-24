@@ -44,8 +44,9 @@
                 }
                                 
                 echo '</label>';
+                global $source_language;
                 $iclTranslationManagement->translators_dropdown(array(
-                        'from'          => $language_pair['from'],
+                        'from'          => $source_language,
                         'to'            => $lang,
                         'name'          => 'translator['.$lang.']',
                         'selected'      =>  isset($icl_selected_translators[$lang]) ? $icl_selected_translators[$lang] : 0,

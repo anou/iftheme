@@ -1,4 +1,4 @@
-#lang_sel {height:32px; position:relative; z-index:99;  font-family: verdana, arial, sans-serif;}
+#lang_sel {height:32px; position:relative; font-family: verdana, arial, sans-serif; display: inline-block;}
 /* hack to correct IE5.5 faulty box model */
 * html #lang_sel {width:12em; w\idth:12em;}
 /* remove all the bullets, borders and padding from the default list styling */

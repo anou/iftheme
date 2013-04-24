@@ -3,6 +3,7 @@
 	include "classe_dates.php";
 	include "classe_calendrier.php";
 
+
 	function getAllDays($start, $end, $aslist = true) {
 		// convert the strings we get in to a timestamp
 		$start = strtotime($start);
@@ -50,9 +51,11 @@
 	$obj_cal = new classe_calendrier('ifcalendar');
 	
 	//langue
-  global $sitepress;
+  global $sitepress, $sitepress_settings;
   $default_lg = isset($sitepress) ? $sitepress->get_default_language() : 'fr';//assuming that 'fr' should be default language
-
+  
+  
+  
   if(version_compare(PHP_VERSION, '5.3.0') <= 0) {      
     $lang = defined('WPLANG') ? substr(WPLANG, 0, strpos(WPLANG, '_')) : 'en';
   } else {
@@ -64,12 +67,38 @@
   
   if(defined('ICL_LANGUAGE_CODE') && ICL_LANGUAGE_CODE ) { 
   	$lang = isset($_POST['lang']) ? str_replace('_','',strstr($_POST['lang'], '_')) : ICL_LANGUAGE_CODE;
-  	$pathlang = ICL_LANGUAGE_CODE == $default_lg ? '' : "/". ICL_LANGUAGE_CODE;
+  	$pathlang = ICL_LANGUAGE_CODE == $default_lg ? '' :  ICL_LANGUAGE_CODE;
 	}
 	
 	if(isset($_POST['lang'])) {
 	  $postlang = strtolower(str_replace('_','',strstr($_POST['lang'], '_')));
-	  if($postlang != $default_lg) { $pathlang = "/". $postlang; }
+	  if($postlang != $default_lg) { $pathlang = $postlang; }
+	}
+  /* 
+    $sitepress_settings['language_negotiation_type'] can have 3 values: 
+    - 1 == languages in different folder (/en, /fr...)
+    - 2 == languages in different domains
+    - 3 == mysite.com?lang=fr
+  */
+  $pathJ = "http://".$_SERVER['SERVER_NAME'] . "/%04s/%02s/%02s/";
+  $pathM = "http://".$_SERVER['SERVER_NAME'] . "/%04s/%02s/";
+  
+	if(isset($sitepress_settings['language_negotiation_type'])) {
+    switch ($sitepress_settings['language_negotiation_type']) {
+      case 1:
+        $pathlang = '/'.$pathlang;
+        $pathJ = "http://".$_SERVER['SERVER_NAME'] . $pathlang . "/%04s/%02s/%02s/";
+        $pathM = "http://".$_SERVER['SERVER_NAME'] . $pathlang . "/%04s/%02s/";
+      break;
+      case 2:
+        $pathlang = '';
+      break;
+      case 3:
+        $pathlang = '?lang='.$pathlang;
+        $pathJ = "http://".$_SERVER['SERVER_NAME'] . "/%04s/%02s/%02s/" . $pathlang;
+        $pathM = "http://".$_SERVER['SERVER_NAME'] . "/%04s/%02s/". $pathlang;
+      break;
+    }
 	}
 
 	$obj_cal->setLangue(strtoupper($lang));
@@ -90,8 +119,8 @@
 	
 	$obj_cal->activeJoursEvenements();
 	
-	$obj_cal->setFormatLienJours("http://".$_SERVER['SERVER_NAME'] . $pathlang . "/%04s/%02s/%02s/");    
-	$obj_cal->setFormatLienMois("http://".$_SERVER['SERVER_NAME'] . $pathlang . "/%04s/%02s/");
+	$obj_cal->setFormatLienJours($pathJ);    
+	$obj_cal->setFormatLienMois($pathM);
 	
 	$obj_cal->activeAjax("ajax_calendrier","http://".$_SERVER['SERVER_NAME']."/wp-content/themes/iftheme/inc/calendar/calendrier.php");
 

@@ -58,7 +58,7 @@ global $current_user; get_currentuserinfo();
 	<?php /* The HTML5 Shim is required for older browsers, mainly older versions IE */ ?>
 	<!--[if lt IE 9]>
 		<script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
-	<![endif]-->
+  <![endif]-->
 	
 	<script type="text/javascript"> 
 		var bInfo = new Array(); 
@@ -85,9 +85,9 @@ global $current_user; get_currentuserinfo();
 	<link rel="stylesheet" type="text/css" media="all" href="<?php bloginfo( 'template_url' ); ?>/lessframework.css" />
 	<link rel="stylesheet" type="text/css" media="all" href="<?php bloginfo( 'stylesheet_url' ); ?>" />
 	<?php if(get_bloginfo('text_direction') =='rtl'):?><link rel="stylesheet" type="text/css" media="all" href="<?php bloginfo( 'template_directory' );?>/rtl.css" /><?php endif;?>
-	
+
 	<style type="text/css">
-		<?php if(!is_date() && !is_404() && $multi && (!is_front_page() || !is_home())) : ?> #top-menu-antennes ul li.cat-item-<?php echo $antenna;?> a { color: #008ac9; } <?php endif;?>
+		<?php if(!is_date() && !is_404() && !is_search() && !is_page() && $multi && (!is_front_page() || !is_home())) : ?> #top-menu-antennes ul li.cat-item-<?php echo $antenna;?> a { color: #008ac9; } <?php endif;?>
 	<?php 
 	if($multi){ 
 	  $i = 0; 
@@ -112,9 +112,15 @@ global $current_user; get_currentuserinfo();
 	?>
   	@media only screen and (max-width: 960px) { html body.black {background-image: none !important; background-color: #000 !important;} }
 	</style>
+	<!--[if lt IE 9]>
+		<link rel="stylesheet" href="<?php bloginfo('template_directory'); ?>/ie.css" type="text/css" media="all" />
+  <![endif]-->
 
 </head>
 <body <?php body_class(); ?>>
+
+<?php //d($options);?>
+
 <div class="none">
 	<p><a href="#content"><?php _e('Skip to Content'); ?></a></p><?php /* used for accessibility, particularly for screen reader applications */ ?>
 </div><!--.none-->
@@ -138,29 +144,36 @@ global $current_user; get_currentuserinfo();
 
 			<!-- Header widget area -->
 			<div id="header-widget" class="widget-area widget-header">
-			  <?php if ( !function_exists('dynamic_sidebar') || !dynamic_sidebar( 'Header' ) ) : // NOT USED ?>
-				<?php if(function_exists('languages_list_header')) :?>
+			 <?php if ( !function_exists('dynamic_sidebar') || !dynamic_sidebar( 'Header' ) ) : // NOT USED ?>
+				
+				<?php if(function_exists('languages_list_header')) : ?>
 					<aside id="header-languages" class="widget">
 						<?php languages_list_header(); /* outputs the language switcher */ ?>
 					</aside>
 				<?php endif;?>
-				<aside id="header-pages-menu" class="widget">
+				
+				<aside id="header-pages-menu" class="widget none">
 					<?php wp_page_menu(); /* outputs the pages menu */ ?>
 				</aside>
+				
 				<aside id="header-search" class="widget">
 					<?php get_search_form(); /* outputs the default Wordpress search form */ ?>
 				</aside>
-			<?php endif ?>
+			 <?php endif ?>
 			</div>
 			<div class="clear"></div>
 		</div><!--.container.header-->
 		<div class="container for-angle">
 			<!-- div for bevel angle -->
 			<div class="right-corner"></div>
-			<?php if($multi):?>
-				<?php if(!is_date() && !is_404() && (!is_front_page() || !is_home())) :?><nav id="antennes" role="navigation"><ul class="menu clearfix"><?php  get_if_level2_categ(); ?></ul></nav><!-- /#antennes --><?php endif;?>
-			<?php else :?>
-				<nav id="antennes" role="navigation"><ul class="menu clearfix"><?php  get_if_level2_categ(); ?></ul></nav><!-- /#antennes -->
+			
+			<?php if($multi): //MENU multi antennes ?>
+				<?php if(!is_date() && !is_404() && !is_search() && !is_page() && (!is_front_page() || !is_home())) :?>
+				  <nav id="antennes" role="navigation"><ul class="menu clearfix"><?php  get_if_level2_categ(); ?></ul></nav><!-- /#antennes -->
+				<?php endif;?>
+		  
+		  <?php else :?>
+				<nav id="antennes" role="navigation"><ul class="menu clearfix"><?php  get_current_parent_categ(); ?></ul></nav><!-- /#antennes -->
 			<?php endif;?>
 
 		</div><!--/.container.for-angle-->

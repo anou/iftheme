@@ -19,9 +19,12 @@
             $blog_current_lang = $wpdb->get_var("SELECT code FROM {$wpdb->prefix}icl_languages WHERE code='{$exp[0]}'");
         }
         if(!$blog_current_lang && defined('WPLANG') && WPLANG != ''){
-            $blog_lang = WPLANG;
-            $exp = explode('_',$blog_lang);
-            $blog_current_lang = $wpdb->get_var("SELECT code FROM {$wpdb->prefix}icl_languages WHERE code='{$exp[0]}'");        
+            $blog_current_lang = $wpdb->get_var($wpdb->prepare("SELECT code FROM {$wpdb->prefix}icl_languages WHERE default_locale=%s", WPLANG));
+            if(!$blog_current_lang){
+                $blog_lang = WPLANG;
+                $exp = explode('_',$blog_lang);
+                $blog_current_lang = $wpdb->get_var("SELECT code FROM {$wpdb->prefix}icl_languages WHERE code='{$exp[0]}'");        
+            }
         }
         if(!$blog_current_lang){
             $blog_current_lang = 'en';
@@ -329,7 +332,7 @@ global $language_switcher_defaults, $language_switcher_defaults_alt;
                                     </li>
                                     <?php 
                                     global $wpmu_version;                                    
-                                    if(isset($wpmu_version) || function_exists('is_multisite') && is_multisite()){
+                                    if(isset($wpmu_version) || function_exists('is_multisite') && is_multisite() && (!defined('WPML_SUNRISE_MULTISITE_DOMAINS') || !WPML_SUNRISE_MULTISITE_DOMAINS)){
                                         $icl_lnt_disabled = 'disabled="disabled" ';
                                     }else{
                                         $icl_lnt_disabled = '';
@@ -342,6 +345,10 @@ global $language_switcher_defaults, $language_switcher_defaults_alt;
                                             <?php if($icl_lnt_disabled): ?>
                                             <span class="icl_error_text"><?php echo __('This option is not yet available for Multisite installs', 'sitepress')?></span>
                                             <?php endif; ?>
+                                            <?php if(defined('WPML_SUNRISE_MULTISITE_DOMAINS') && WPML_SUNRISE_MULTISITE_DOMAINS): ?>
+                                            <span class="icl_error_text"><?php echo __('Experimental', 'sitepress')?></span>
+                                            <?php endif; ?>
+
                                         </label>
                                         <?php wp_nonce_field('language_domains_nonce', '_icl_nonce_ldom', false); ?>
                                         <?php wp_nonce_field('validate_language_domain_nonce', '_icl_nonce_vd', false); ?>
@@ -462,11 +469,26 @@ global $language_switcher_defaults, $language_switcher_defaults_alt;
                                                                 <option value="">--<?php _e('select', 'sitepress')?>--</option>
                                                                 <?php endif; ?>
                                                                 <?php foreach($nav_menus as $nav_menu):?>
-                                                                    <option value="<?php echo $nav_menu->term_id ?>"<?php if($nav_menu->term_id == $sitepress_settings['menu_for_ls']):?> selected="selected"<?php endif;?>><?php echo $nav_menu->name ?></option>
+                                                                    <option value="<?php echo $nav_menu->term_id ?>"<?php if(isset($sitepress_settings['menu_for_ls']) && $nav_menu->term_id == $sitepress_settings['menu_for_ls']):?> selected="selected"<?php endif;?>><?php echo $nav_menu->name ?></option>
                                                                 <?php endforeach; ?>
                                                             </select>                                                            
                                                         </span>                                                    
                                                 </li>                                                
+                                                
+                                                <li>
+                                                    <h4><?php _e('Languages order', 'sitepress')?></h4>
+                                                    <?php $active_languages_ordered = $sitepress->order_languages($active_languages); ?>
+                                                    <ul id="icl_languages_order">
+                                                    <?php foreach($active_languages_ordered as $language): ?>
+                                                    <li class="icl_languages_order_<?php echo $language['code']?>" ><?php echo $language['display_name']?></li>
+                                                    <?php endforeach; ?>
+                                                    </ul>
+                                                    <span style="display:none;" class="icl_languages_order_ajx_resp"></span>
+                                                    <input type="hidden" id="icl_languages_order_nonce" value="<?php echo wp_create_nonce('set_languages_order_nonce') ?>" />
+                                                    <br clear="all" />
+                                                    <small><?php _e('Drag the languages to change their order', 'sitepress') ?></small>
+                                                </li>
+                                                                                                    
                                                 <li>
                                                     <h4><?php echo __('Language switcher style', 'sitepress')?></h4>
                                                     
@@ -488,7 +510,12 @@ global $language_switcher_defaults, $language_switcher_defaults_alt;
                                                         <label>
                                                             <input type="radio" name="icl_lang_sel_type" value="dropdown" <?php if(!$sitepress_settings['icl_lang_sel_type'] || $sitepress_settings['icl_lang_sel_type'] == 'dropdown'):?>checked="checked"<?php endif?> />
                                                             <?php echo __('Drop-down menu', 'sitepress') ?>
-                                                        </label>                    
+                                                        </label> 
+                                                        <select name="icl_lang_sel_stype" <?php if($sitepress_settings['icl_lang_sel_type'] != 'dropdown'): ?>style="display:none<?php endif;?>">
+                                                            <option <?php selected( $sitepress_settings['icl_lang_sel_stype'], 'classic' ); ?> value="classic"><?php _e('Classic', 'sitepress') ?></option>
+                                                            <option <?php selected( $sitepress_settings['icl_lang_sel_stype'], 'mobile-auto' ); ?> value="mobile-auto"><?php _e('Mobile friendly for mobile agents only', 'sitepress') ?></option>
+                                                            <option <?php selected( $sitepress_settings['icl_lang_sel_stype'], 'mobile' ); ?> value="mobile"><?php _e('Mobile friendly always', 'sitepress') ?></option>
+                                                        </select>                                                                           
                                                         </li>
                                                         <li>
                                                             <label>

@@ -182,7 +182,7 @@ function fadeInAjxResp(spot, msg, err){
         col = jQuery(spot).css('color');
         jQuery(spot).css('color','red');
     }
-    jQuery(spot).html('<span>'+msg+'<span>');
+    jQuery(spot).html(msg);
     jQuery(spot).fadeIn();
     window.setTimeout(fadeOutAjxResp, 3000, spot);
     if(err != undefined){

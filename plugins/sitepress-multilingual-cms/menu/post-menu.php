@@ -46,8 +46,8 @@
                             $src_language_title = $wpdb->get_var("SELECT post_title FROM {$wpdb->prefix}posts WHERE ID = {$src_language_id}");                            
                         }
                     ?>
-                    <?php if($src_language_title && !isset($_GET['icl_ajx'])): ?>
-                        <option value="<?php echo $src_language_id ?>" selected="selected"><?php echo $src_language_title ?>&nbsp;</option>
+                    <?php if(isset($src_language_title) && !isset($_GET['icl_ajx'])): ?>
+                        <option value="<?php echo $src_language_id ?>" selected="selected"><?php echo $src_language_title; ?>&nbsp;</option>
                     <?php endif; ?>
                 <?php else: ?>
                     <option value="none" selected="selected"><?php echo __('--None--', 'sitepress') ?></option>
@@ -67,7 +67,7 @@
                             $src_language_title = $wpdb->get_var("SELECT post_title FROM {$wpdb->prefix}posts WHERE ID = {$src_language_id}");
                         }
                     ?>
-                    <?php if($src_language_title): ?>
+                    <?php if(isset($src_language_title)): ?>
                         <option value="<?php echo $src_language_id ?>" selected="selected"><?php echo $src_language_title ?></option>
                     <?php endif; ?>
                 <?php else: ?>   

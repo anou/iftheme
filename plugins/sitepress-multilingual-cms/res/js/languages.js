@@ -155,6 +155,33 @@ addLoadEvent(function(){
         else
             jQuery('#icl_ls_menus_list').hide();            
     });
+    
+    jQuery('input[name=icl_lang_sel_type]').change(function(){
+        if(jQuery(this).val()=='dropdown'){
+            jQuery('select[name=icl_lang_sel_stype]').fadeIn();
+        }else{
+            jQuery('select[name=icl_lang_sel_stype]').hide();
+        }
+    })
+    
+    jQuery('#icl_languages_order').sortable({
+        update: function(event, ui){            
+            jQuery('.icl_languages_order_ajx_resp').html(icl_ajxloaderimg).fadeIn();
+            var languages_order = new Array();
+            jQuery('#icl_languages_order li').each(function(){                
+                languages_order.push(jQuery(this).attr('class').replace(/icl_languages_order_/, ''));
+            })
+            jQuery.ajax({
+                type: "POST",
+                url: icl_ajx_url,
+                dataType: 'json',
+                data: 'icl_ajx_action=set_languages_order&_icl_nonce=' + jQuery('#icl_languages_order_nonce').val()  + '&order=' + languages_order.join(';'),
+                success: function(resp){
+                    fadeInAjxResp('.icl_languages_order_ajx_resp', resp.message);
+                }
+            });
+        }
+    });
         
 });
 function editingDefaultLanguage(){

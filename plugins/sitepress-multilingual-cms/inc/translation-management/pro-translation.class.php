@@ -231,7 +231,7 @@ class ICL_Pro_Translation{
                     $data['url']                = htmlentities($post_url);
                     $data['contents']['title']  = array(
                                                         'translate'=>1,
-                                                        'data'=>base64_encode($post->post_title),
+                                                        'data'=>base64_encode(icl_strip_control_chars($post->post_title)),
                                                         'format'=>'base64'
                                                         );
                     if($sitepress_settings['translated_document_page_url'] == 'translate'){
@@ -245,12 +245,12 @@ class ICL_Pro_Translation{
                     if(!empty($post->post_excerpt))
                     $data['contents']['excerpt']  = array(
                                                         'translate'=>1,
-                                                        'data'=>base64_encode($post->post_excerpt),
+                                                        'data'=>base64_encode(icl_strip_control_chars($post->post_excerpt)),
                                                         'format'=>'base64'
                                                         );
                     $data['contents']['body']     = array(
                                                         'translate'=>1,
-                                                        'data'=>base64_encode($post->post_content),
+                                                        'data'=>base64_encode(icl_strip_control_chars($post->post_content)),
                                                         'format'=>'base64'
                                                         );
                     $data['contents']['original_id']  = array(
@@ -437,13 +437,14 @@ class ICL_Pro_Translation{
         
         $methods = $methods + $icl_methods;    
         if(defined('XMLRPC_REQUEST') && XMLRPC_REQUEST){
-            preg_match('#<methodName>([^<]+)</methodName>#i', $GLOBALS['HTTP_RAW_POST_DATA'], $matches);
-            $method = $matches[1];    
-            if(in_array($method, array_keys($icl_methods))){  
-                //error_reporting(E_NONE);                
-                //ini_set('display_errors', '0');        
-                $old_error_handler = set_error_handler(array($this, "_translation_error_handler"),E_ERROR|E_USER_ERROR);
-            }
+            if (preg_match('#<methodName>([^<]+)</methodName>#i', $GLOBALS['HTTP_RAW_POST_DATA'], $matches)) {
+            	$method = $matches[1];    
+            	if(in_array($method, array_keys($icl_methods))){  
+                	//error_reporting(E_NONE);                
+                	//ini_set('display_errors', '0');        
+                	$old_error_handler = set_error_handler(array($this, "_translation_error_handler"),E_ERROR|E_USER_ERROR);
+            	}
+	    }
         }
         return $methods;
         
@@ -1812,14 +1813,16 @@ class ICL_Pro_Translation{
             if(in_array($lang_code, self::$__asian_languages)){
                 $words += strlen(strip_tags($data->post_title)) / 6;
             } else {
-                $words += count(explode(' ',$data->post_title));
+                $words += count(preg_split(
+                    '/[\s\/]+/', $data->post_title, 0, PREG_SPLIT_NO_EMPTY));
             }
         }
         if(isset($data->post_content)){
             if(in_array($lang_code, self::$__asian_languages)){
                 $words += strlen(strip_tags($data->post_content)) / 6;
             } else {
-                $words += count(explode(' ',strip_tags($data->post_content)));
+                $words += count(preg_split(
+                    '/[\s\/]+/', strip_tags($data->post_content), 0, PREG_SPLIT_NO_EMPTY));
             }
         }        
         return (int)$words;
@@ -1840,7 +1843,9 @@ class ICL_Pro_Translation{
                 if(in_array($lang_code, self::$__asian_languages)){
                     $words += strlen(strip_tags($custom_fields_value)) / 6;
                 } else {
-                    $words += count(explode(' ',strip_tags($custom_fields_value)));
+                    $words += count(preg_split(
+                        '/[\s\/]+/', strip_tags($custom_fields_value), 0, 
+                        PREG_SPLIT_NO_EMPTY));
                 }
             }
         }        

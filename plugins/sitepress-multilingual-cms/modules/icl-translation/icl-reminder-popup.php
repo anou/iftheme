@@ -5,7 +5,7 @@
     // NOTE: this is also used for other popup links to ICanLocalize
 
     global $wpdb;
-    	
+        
     $target = $_GET['target'];    
     $auto_resize = isset($_GET['auto_resize']) && $_GET['auto_resize'];
     $unload_cb = isset($_GET['unload_cb']) ? $_GET['unload_cb'] : false;
@@ -78,7 +78,15 @@
         }else{
             
             $iclsettings['language_pairs'] = $this->settings['language_pairs'];
-            $iclsettings['language_pairs'][$from_lang][$to_lang] = 1;
+            $iclsettings['language_pairs'][$from_lang][$to_lang] = 1;    
+            
+            // languages pair clean up            
+            
+            foreach($iclsettings['language_pairs'][$from_lang] as $tol => $val){
+                if(empty($lang_server[$tol])){
+                    unset($iclsettings['language_pairs'][$from_lang][$tol]);
+                }
+            }
             $this->save_settings($iclsettings);
             
             // update account - add language pair
@@ -141,13 +149,13 @@
     
     $admin_lang = $this->get_admin_language();
     
-	
-	if (isset($_GET['code'])) {
-		$add = '&code=' . urlencode($_GET['code']);
-	}else{
+    
+    if (isset($_GET['code'])) {
+        $add = '&code=' . urlencode($_GET['code']);
+    }else{
         $add = '';
     }
-	
+    
     if (strpos($target, '?') === false) {
         $target .= '?';
     } else {

@@ -13,6 +13,7 @@
     // '_wp_attached_file'
     
     $cf_keys = array_diff($cf_keys, $cf_keys_exceptions);
+    
     $cf_keys = array_unique(@array_merge($cf_keys, (array)$iclTranslationManagement->settings['custom_fields_readonly_config']));
     
     if ( $cf_keys )
@@ -21,6 +22,17 @@
     $cf_settings = $iclTranslationManagement->settings['custom_fields_translation'];  
     $cf_settings_ro = (array)$iclTranslationManagement->settings['custom_fields_readonly_config'];  
     $doc_translation_method = intval($iclTranslationManagement->settings['doc_translation_method']);
+    
+    //show custom fields defiend in types and not used yet
+    if(function_exists('types_get_fields')){
+        $types_cf = types_get_fields(array(), 'wpml' );
+        foreach($types_cf as $key => $option){
+            if(!in_array($key, $cf_keys)){
+                $cf_keys[] = $key;        
+                $cf_settings[$key] = $option;
+            }
+        }
+    }
     
 ?>
         

@@ -518,4 +518,3 @@ function wpml_custom_post_translation_options($type_id){
     return $out;
     
 }
-

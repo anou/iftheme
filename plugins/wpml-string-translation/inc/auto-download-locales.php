@@ -1,7 +1,7 @@
 <?php
 
 class WPML_ST_MO_Downloader{
-    const   LOCALES_XML_FILE = 'http://icanlocalze-static.icanlocalize.com/wp-locales.xml.gz';
+    const   LOCALES_XML_FILE = 'http://d2pf4b3z51hfy8.cloudfront.net/wp-locales.xml.gz';
     
     const   CONTEXT = 'WordPress';
     private $settings;
@@ -16,6 +16,13 @@ class WPML_ST_MO_Downloader{
         if(!defined('ICL_SITEPRESS_VERSION') || ICL_PLUGIN_INACTIVE) return;
         
         $wpversion = preg_replace('#-(.+)$#', '', $wp_version);
+         
+        $fh = fopen(WPML_ST_PATH . '/inc/lang-map.csv', 'r');
+        while(list($locale, $code) = fgetcsv($fh)){
+            $this->lang_map[$locale] = $code;            
+        }   
+        $this->lang_map_rev =& array_flip($this->lang_map);
+         
          
         $this->settings = get_option('icl_adl_settings');
         
@@ -54,22 +61,20 @@ class WPML_ST_MO_Downloader{
         
         foreach($active_languages as $language){
             if($language != $default_language){
-                if(isset($this->translation_files[$language['code']]['core'])){
-                    $int = preg_match('@tags/([^/]+)/@', $this->translation_files[$language['code']]['core'], $matches);   
-                    if($int){
-                        $version = $matches[1];                        
-                        if(empty($this->settings['translations'][$language['code']]['installed']) 
-                                || version_compare($this->settings['translations'][$language['code']]['installed'], $version, '<')){
-                            $updates['languages'][$language['code']] = $version;    
-                        }
-                        $this->settings['translations'][$language['code']]['available'] = $version;                            
-                    }else{
-                        $int = preg_match('@/trunk/@', $this->translation_files[$language['code']]['core']);   
-                        if($int){
-                            $this->settings['translations'][$language['code']]['available'] = 'trunk';                            
-                        }                        
-                    } 
+                
+                if(isset($this->translation_files[$language['code']])){
+                    foreach($this->translation_files[$language['code']] as $project => $info){
+                        
+                        $this->settings['translations'][$language['code']][$project]['available'] = $info['signature'];
+                        if(empty($this->settings['translations'][$language['code']][$project]['installed']) || 
+                            isset($this->translation_files[$language['code']][$project]['available']) && 
+                            $this->settings['translations'][$language['code']][$project]['installed'] != $this->translation_files[$language['code']][$project]['available']){
+                                $updates['languages'][$language['code']][$project] = $this->settings['translations'][$language['code']][$project]['available'];    
+                            }
+                        
+                    }
                 }
+                
             }
             
         }
@@ -92,27 +97,50 @@ class WPML_ST_MO_Downloader{
         try{
             $updates = $this->updates_check();
             
+            // filter only core( & admin)
+            $updates_core = array();
+            foreach($updates['languages'] as $k => $v){
+                if(!empty($v['core'])){
+                    $updates_core['languages'][$k]['core']  = $v['core'];                        
+                }                
+                if(!empty($v['admin'])){
+                    $updates_core['languages'][$k]['admin']  = $v['admin'];                        
+                }                                
+            }
+            $updates = $updates_core;            
+                        
             if(!empty($updates)){
                 $html .= '<table>';
             
             
-                foreach($updates['languages'] as $language => $version){
+                foreach($updates['languages'] as $language => $projects){
                     $l = $sitepress->get_language_details($language);
-
-                    $html .= '<tr>';
-                    $html .= '<td>' . sprintf(__("Updated %s translation is available for WordPress %s.", 'wpml-string-translation'), 
-                        '<strong>' . $l['display_name'] . '</strong>' , '<strong>' . $version . '</strong>') . '</td>';
-                    $html .= '<td align="right">';
-                    $html .= '<a href="' . admin_url('admin.php?page=' . WPML_ST_FOLDER . '/menu/string-translation.php&amp;download_mo=' . $language . '&amp;version=' . $version) . '" class="button-secondary">' .  __('Review changes and update', 'wpml-string-translation') . '</a>'; 
-                    $html .= '</td>';
-                    $html .= '<tr>';
-                    $html .= '</tr>';
+                    
+                    if(!empty($projects['core']) || !empty($projects['admin'])){
+                        
+                        $vkeys = array();
+                        foreach($projects as $key => $value){
+                            $vkeys[] = $key . '|' . $value;
+                        }
+                        $version_key = join(';', $vkeys);
+                        
+                        
+                        $html .= '<tr>';
+                        $html .= '<td>' . sprintf(__("Updated %s translation is available", 'wpml-string-translation'), 
+                            '<strong>' . $l['display_name'] . '</strong>') . '</td>';
+                        $html .= '<td align="right">';
+                        $html .= '<a href="' . admin_url('admin.php?page=' . WPML_ST_FOLDER . '/menu/string-translation.php&amp;download_mo=' . $language . '&amp;version=' . $version_key) . '" class="button-secondary">' .  __('Review changes and update', 'wpml-string-translation') . '</a>'; 
+                        $html .= '</td>';
+                        $html .= '<tr>';
+                        $html .= '</tr>';
+                    }
+                    
                 }
 
             
                 $html .= '</table>';
             }else{
-                $html .= __('No newer versions found.', 'wpml-string-translation');    
+                $html .= __('No updates found.', 'wpml-string-translation');    
             }
             
         }catch(Exception $error){
@@ -160,46 +188,54 @@ class WPML_ST_MO_Downloader{
         
     }
     
-    function get_mo_file_urls($locale){
+    function get_mo_file_urls($wplocale){
         global $wp_version;        
         
         $wpversion = preg_replace('#-(.+)$#', '', $wp_version)   ;
+        $wpversion = join('.', array_slice(explode('.', $wpversion), 0, 2)) . '.x';
         
-        if(false !== strpos($locale, '_')){
-            $exp = explode('_', $locale);    
-            $lpath = $exp[0] . '/' . $exp[1]; 
-        }else{
-            $lpath = $locale;
-        }
-
+        $exp = explode('-', $wplocale);
+        $language = $exp[0];
+        $locale = isset($exp[1]) ? $wplocale : $language;
+        
         $mo_files = array();
         
-        
-        $language_path = $this->xml->xpath($lpath . '/versions/version[@number="' . $wpversion . '"]');
-        if(empty($language_path)){
-            $language_path = $this->xml->xpath($lpath . '/versions/version[@number="trunk"]');
-        }
-        if(!empty($language_path)){
-            $mo_files = (array)$language_path[0];                
-            unset($mo_files['@attributes']);
-        }elseif(empty($language_path)){
-            $other_versions = $this->xml->xpath($lpath . '/versions/version');
-            if(is_array($other_versions) && !empty($other_versions)){
-                $most_recent = 0;
-                foreach($other_versions as $v){
-                    $tmpv = (string)$v->attributes()->number;
-                    if(version_compare($tmpv , $most_recent, '>')){
-                        $most_recent = $tmpv;   
+        $projects = $this->xml->xpath($language . '/' . $locale);
+        if(!empty($projects)){
+            
+            $project_names = array();
+            foreach($projects[0] as $project_name => $data){
+                // subprojects
+                if(empty($data->versions)){
+                    $subprojects = $this->xml->xpath($language . '/' . $locale . '/' . $project_name);
+                    if(!empty($subprojects)){
+                        foreach($subprojects[0] as $sub_project_name => $sdata){
+                            $project_names[] = $project_name . '/' . $sub_project_name ;    
+                        }    
                     }
+                }else{
+                    $project_names[] = $project_name;
                 }
-                if($most_recent > 0){
-                    $most_recent_version = $this->xml->xpath($lpath . '/versions/version[@number="' . $most_recent . '"]');
-                    $mo_files['core'] = (string)$most_recent_version[0]->core[0];
+            }
+            
+            if(!empty($project_names)){
+                foreach($project_names as $project_name){
+                    // try to get the corresponding version
+                    $locv_path = $this->xml->xpath("{$language}/{$locale}/{$project_name}/versions/version[@number=\"" . $wpversion . "\"]");
+                    // try to get the dev recent version
+                    if(empty($locv_path)){
+                        $locv_path = $this->xml->xpath("{$language}/{$locale}/{$project_name}/versions/version[@number=\"dev\"]");
+                    }
+                    if(!empty($locv_path)){
+                        $mo_files[$project_name]['url']         = (string)$locv_path[0]->url;
+                        $mo_files[$project_name]['signature']   = (string)$locv_path[0]['signature'];
+                        $mo_files[$project_name]['translated']  = (string)$locv_path[0]['translated'];
+                        $mo_files[$project_name]['untranslated']= (string)$locv_path[0]['untranslated'];                    
+                    }                    
                 }
-                
             }
         }
-
+        
         return $mo_files;
         
     }
@@ -212,7 +248,11 @@ class WPML_ST_MO_Downloader{
         
         foreach($active_languages as $language){            
             $locale = $sitepress->get_locale($language['code']);
-            $urls = $this->get_mo_file_urls($locale);            
+            if(!isset($this->lang_map[$locale])) continue;
+            $wplocale = $this->lang_map[$locale];
+            
+            $urls = $this->get_mo_file_urls($wplocale);            
+            
             if(!empty($urls)){
                 $this->translation_files[$language['code']] = $urls;    
             }
@@ -229,81 +269,83 @@ class WPML_ST_MO_Downloader{
         
         // defaults
         $defaults = array(
-            'type'      => 'core'
+            'types'      => array('core')
         );
         
         extract($defaults);
         extract($args, EXTR_OVERWRITE);
+
+        if(!class_exists('WP_Http')) include_once ABSPATH . WPINC . '/class-http.php';
+        $client = new WP_Http();
         
-        
-        if(isset($this->translation_files[$language])){
-        
-            if(!class_exists('WP_Http')) include_once ABSPATH . WPINC . '/class-http.php';
-            $client = new WP_Http();
-            $response = $client->request($this->translation_files[$language][$type], array('timeout'=>15));
+        foreach($types as $type){
             
-            if(is_wp_error($response)){
-                $err = __('Error getting the translation file. Please go back and try again.', 'wpml-string-translation');
-                if(isset($response->errors['http_request_failed'][0])){
-                    $err .= '<br />' . $response->errors['http_request_failed'][0];
-                }
-                echo '<div class="error"><p>' . $err . '</p></div>';
-                return false;
-                
-            }        
+            if(isset($this->translation_files[$language][$type]['url'])){
             
-            $mo = new MO();
-            $pomo_reader = new POMO_StringReader($response['body']);
-            $mo->import_from_reader( $pomo_reader );
-            
-            
-            foreach($mo->entries as $key=>$v){
+                $response = $client->request($this->translation_files[$language][$type]['url'], array('timeout'=>15));
                 
-                $tpairs = array();
-                $v->singular = str_replace("\n",'\n', $v->singular);
-                $tpairs[] = array(
-                    'string'        => $v->singular, 
-                    'translation'   => $v->translations[0],
-                    'name'          => !empty($v->context) ? $v->context . ': ' . $v->singular : md5($v->singular)
-                );
-                
-                if($v->is_plural){
-                    $v->plural = str_replace("\n",'\n', $v->plural);
-                    $tpairs[] = array(
-                        'string'        => $v->plural, 
-                        'translation'   => !empty($v->translations[1]) ? $v->translations[1] : $v->translations[0],
-                        'name'          => !empty($v->context) ? $v->context . ': ' . $v->plural : md5($v->singular)
-                    );
-                }
-                
-                foreach($tpairs as $pair){
-                    $existing_translation = $wpdb->get_var($wpdb->prepare("
-                        SELECT st.value 
-                        FROM {$wpdb->prefix}icl_string_translations st
-                        JOIN {$wpdb->prefix}icl_strings s ON st.string_id = s.id
-                        WHERE s.context = %s AND s.name = %s AND st.language = %s 
-                    ", self::CONTEXT, $pair['name'], $language));
-                    
-                    if(empty($existing_translation)){
-                        $translations['new'][] = array(
-                                                'string'        => $pair['string'],
-                                                'translation'   => '',
-                                                'new'           => $pair['translation'],
-                                                'name'          => $pair['name']
-                        );
-                    }else{
-                        
-                        if(strcmp($existing_translation, $pair['translation']) !== 0){
-                            $translations['updated'][] = array(
-                                                'string'        => $pair['string'],
-                                                'translation'   => $existing_translation,
-                                                'new'           => $pair['translation'],
-                                                'name'          => $pair['name']
-                            );
-                        }
-                        
+                if(is_wp_error($response)){
+                    $err = __('Error getting the translation file. Please go back and try again.', 'wordpress-language');
+                    if(isset($response->errors['http_request_failed'][0])){
+                        $err .= '<br />' . $response->errors['http_request_failed'][0];
                     }
-                } 
+                    echo '<div class="error"><p>' . $err . '</p></div>';
+                    return false;
+                    
+                }        
+                
+                $mo = new MO();
+                $pomo_reader = new POMO_StringReader($response['body']);
+                $mo->import_from_reader( $pomo_reader );
+                
+                foreach($mo->entries as $key=>$v){
+                    
+                    $tpairs = array();
+                    $v->singular = str_replace("\n",'\n', $v->singular);
+                    $tpairs[] = array(
+                        'string'        => $v->singular, 
+                        'translation'   => $v->translations[0],
+                        'name'          => !empty($v->context) ? $v->context . ': ' . $v->singular : md5($v->singular)
+                    );
+                    
+                    if($v->is_plural){
+                        $v->plural = str_replace("\n",'\n', $v->plural);
+                        $tpairs[] = array(
+                            'string'        => $v->plural, 
+                            'translation'   => !empty($v->translations[1]) ? $v->translations[1] : $v->translations[0],
+                            'name'          => !empty($v->context) ? $v->context . ': ' . $v->plural : md5($v->singular)
+                        );
+                    }
+                    
+                    foreach($tpairs as $pair){
+                        $existing_translation = $wpdb->get_var($wpdb->prepare("
+                            SELECT st.value 
+                            FROM {$wpdb->prefix}icl_string_translations st
+                            JOIN {$wpdb->prefix}icl_strings s ON st.string_id = s.id
+                            WHERE s.context = %s AND s.name = %s AND st.language = %s 
+                        ", self::CONTEXT, $pair['name'], $language));
+                        
+                        if(empty($existing_translation)){
+                            $translations['new'][] = array(
+                                                    'string'        => $pair['string'],
+                                                    'translation'   => '',
+                                                    'new'           => $pair['translation'],
+                                                    'name'          => $pair['name']
+                            );
+                        }else{
+                            
+                            if(strcmp($existing_translation, $pair['translation']) !== 0){
+                                $translations['updated'][] = array(
+                                                    'string'        => $pair['string'],
+                                                    'translation'   => $existing_translation,
+                                                    'new'           => $pair['translation'],
+                                                    'name'          => $pair['name']
+                                );
+                            }
+                            
+                        }
+                    } 
+                }
             }
         }
         
@@ -311,6 +353,8 @@ class WPML_ST_MO_Downloader{
     }
     
     function save_translations($data, $language, $version = false){
+        
+       set_time_limit(0);
         
         if(false === $version){
             global $wp_version;        
@@ -325,8 +369,13 @@ class WPML_ST_MO_Downloader{
         }    
         
         
-        $this->settings['translations'][$language]['time'] = time();
-        $this->settings['translations'][$language]['installed'] = $version;
+        $version_projects = explode(';', $version);
+        foreach($version_projects as $project){
+            $exp = explode('|', $project);
+            $this->settings['translations'][$language][$exp[0]]['time'] = time();
+            $this->settings['translations'][$language][$exp[0]]['installed'] = $exp[1];
+        }        
+        
         $this->save_settings();
         
     }

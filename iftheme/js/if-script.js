@@ -250,11 +250,14 @@ $(selectMenu).change(function() {
     //homepages
   if(windowWidth > 767){
     if($('.block-home').length) { //for all possible options see http://masonry.desandro.com/docs/options.html
-	    $('#home-list').masonry({
-		    // options
-		    itemSelector : '.block-home',
-		    columnWidth : 320
-		  });
+      var $container = $('#home-list');
+
+      $container.imagesLoaded( function(){
+        $container.masonry({
+          itemSelector : '.block-home',
+          columnWidth : 320
+        });
+      });
     }
   }
     //more then 3 blocks in footer widget area

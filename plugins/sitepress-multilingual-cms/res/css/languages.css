@@ -105,3 +105,22 @@ a#toggle-theme-localization{
 
 .horlist{margin-bottom: 12px;}
 .horlist li{float:left;margin-right:10px;line-height: 20px;}
+
+
+#icl_languages_order li{
+    cursor: move;
+    float:left;
+    -moz-border-radius-bottomleft:3px;
+    -moz-border-radius-bottomright:3px;
+    -moz-border-radius-topleft:3px;
+    -moz-border-radius-topright:3px;
+    border-bottom-left-radius: 3px 3px;
+    border-bottom-right-radius: 3px 3px;
+    border-top-left-radius: 3px 3px;
+    border-top-right-radius: 3px 3px;
+    padding:2px 8px;
+    background: linear-gradient(to top, #ECECEC, #F9F9F9) repeat scroll 0 0 #F1F1F1;
+    border: 1px solid #DFDFDF;
+    margin-right:8px;
+}
+.icl_languages_order_ajx_resp{color:#E68A00;display:inline-block;padding-top:5px;}

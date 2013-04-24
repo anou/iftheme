@@ -20,7 +20,7 @@
 	</h1>
 
 	<?php if (have_posts()) : while (have_posts()) : the_post(); ?>
-			<article class="post-single">
+			<article class="post-single clearfix">
 				<?php //prepare data 
 					$pid = get_the_ID();
 					//$pid =$post->ID;
