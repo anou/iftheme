@@ -455,15 +455,16 @@
 			
 			
 			// ligne des jours litéraux
-			if ($this->cjours)
-			{
+			if ($this->cjours) {
 				$code .=  "<tr>\n";
 				if ($this->csemaines)
-					$code .=  "<th>&nbsp;</th>";
-				for ($j=1; $j<=7; $j++)
-				{
-					$code .=  "<th class=\"jour\">".substr($this->jours[$this->lng][$j],0,3)."</th>";
+					$code .=  '<th>&nbsp;</th>';
+					
+				for ($j=1; $j<=7; $j++) {
+					//$code .=  '<th class="jour">' . substr($this->jours[$this->lng][$j],0,3) . '</th>';
+					$code .=  '<th class="jour">' . $this->joursC[$this->lng][$j] . '</th>';
 				}
+				
 				$code .=  "</tr>\n";
 			}
 			

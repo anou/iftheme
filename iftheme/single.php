@@ -33,8 +33,8 @@
 	} elseif('post' == get_post_type()) { 
 
 			$data = get_meta_if_post();
-			$start = $data['start'];
-			$end = $data['end']; 
+			$start = '<span class="start">' . $data['start'] . '</span>';
+			$end = '<span class="end">' . $data['end'] . '</span>'; 
 			$book = $data['booking']; 
 	}
 ?>
@@ -67,13 +67,13 @@
 				</div><!--#post-meta-->
 			</article>
 
-		<?php if('post' == get_post_type()):?>
+		<?php if('post' == get_post_type()): ?>
 		<!-- ADDITIONAL INFOS -->
 			<div class="booking-container add-infos">
 				<h3 class="booking-title"><span class="picto-book"></span><?php _e("Useful informations",'iftheme'); ?></h3>
 				<div class="form-content bxshadow">
 	            <h4><?php echo $data['lieu'];?></h4>
-	            <p class="date-time"><?php echo $start . $end;?> <?php echo $data['time'] !== str_replace(' / ', '', $end) ? ' - ' .$data['time'] : '';?></p>
+	            <p class="date-time"><?php echo $start . $end;?> <?php echo $data['time'] != '00:00' ? ' - ' .$data['time'] : '';?></p>
 	            <p>
 	              <?php echo $data['adresse'] ? $data['adresse'].'<br />':'';?>
 	              <?php echo $data['adressebis'] ? $data['adressebis'].'<br />':'';?>
@@ -106,6 +106,32 @@
 		--><!--.newer-older-->
 		
 		<?php //comments_template( '', true ); ?>
+
+		<?php //prepare data for dates in JS 
+		   $pid = get_the_ID();
+		   $raw_data = get_meta_raw_if_post($pid);
+		?>
+		<script type="text/javascript">
+		  var lang = !icl_lang ? bInfo['bLang'] : icl_lang;
+		  moment.lang(lang);
+		  
+		  var startYear = new Date(<?php echo $raw_data['start'];?>*1000).getFullYear();
+		  var endYear = new Date(<?php echo $raw_data['end'];?>*1000).getFullYear();
+			var thisPostStart = jQuery("#post-<?php the_ID();?> .start");
+			var thisPostEnd = jQuery("#post-<?php the_ID();?> .end");
+			
+			var start = moment.unix(<?php echo $raw_data['start'];?>).format('ll');
+			var end = moment.unix(<?php echo $raw_data['end'];?>).format('ll');
+			var time = '<?php echo $raw_data['time'];?>';
+			
+			start = start.replace(startYear, '');
+			thisPostStart.text(start);
+			end = end.replace(endYear, '');
+			end = !time ? end : time;
+			
+			if(end !== start) thisPostEnd.text(' / '+end);
+			
+		</script>
 
 	<?php endwhile; /* end loop */ ?>
 </div><!--#content-->

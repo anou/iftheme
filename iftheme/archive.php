@@ -6,7 +6,7 @@
 */
 ?>
 <div id="content">
-	<h1>
+	<h1 id="titledate">
 		<?php setlocale(LC_ALL, get_locale());  $q = $wp_query->query;
 			if ( is_day() ) : /* if the daily archive is loaded */ ?>
 			<?php echo utf8_encode(strftime('%d %B %Y', mktime(0, 0, 0, $q['monthnum'], $q['day'], $q['year'])));?>
@@ -18,9 +18,20 @@
 			Blog Archives
 		<?php endif; ?>
 	</h1>
+	<script type="text/javascript">
+	  var lang = !icl_lang ? bInfo['bLang'] : icl_lang;
+	  moment.lang(lang);
+
+    var titleDate = jQuery('#titledate').text();
+    titleDate = moment(titleDate).format('LL');
+    jQuery('#titledate').text(titleDate);
+    
+    console.log(titleDate);
+  </script>
+
 
 	<?php if (have_posts()) : while (have_posts()) : the_post(); ?>
-			<article class="post-single clearfix">
+			<article class="post-single clearfix" id="post-<?php the_ID();?>">
 				<?php //prepare data 
 					$pid = get_the_ID();
 					//$pid =$post->ID;
@@ -42,6 +53,30 @@
 				<div class="post-meta"><?php the_category(', ') ?></div>
 		
 			</article><!--.post-single-->
+
+			<?php //prepare data for dates in JS 
+			   $raw_data = get_meta_raw_if_post($pid);
+			?>
+			<script type="text/javascript">
+			  
+			  var startYear = new Date(<?php echo $raw_data['start'];?>*1000).getFullYear();
+			  var endYear = new Date(<?php echo $raw_data['end'];?>*1000).getFullYear();
+  			var thisPostStart = jQuery("#post-<?php the_ID();?> .start");
+  			var thisPostEnd = jQuery("#post-<?php the_ID();?> .end");
+  			
+  			var start = moment.unix(<?php echo $raw_data['start'];?>).format('ll');
+  			var end = moment.unix(<?php echo $raw_data['end'];?>).format('ll');
+  			var time = '<?php echo $raw_data['time'];?>';
+  			
+  			start = start.replace(startYear, '');
+  			thisPostStart.text(start);
+  			end = end.replace(endYear, '');
+  			end = !time ? end : time;
+  			
+  			if(end !== start) thisPostEnd.text(' / '+end);
+  			
+			</script>
+
 	<?php endwhile; else:  ?>
 		<div class="no-results">
 			<p><?php _e('No results', 'iftheme'); ?></p>

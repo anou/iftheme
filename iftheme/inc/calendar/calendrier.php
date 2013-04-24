@@ -83,7 +83,10 @@
   $pathJ = "http://".$_SERVER['SERVER_NAME'] . "/%04s/%02s/%02s/";
   $pathM = "http://".$_SERVER['SERVER_NAME'] . "/%04s/%02s/";
   
-	if(isset($sitepress_settings['language_negotiation_type'])) {
+	if(isset($sitepress_settings['language_negotiation_type'])) { 
+	
+	  $pathlang = !$pathlang ? $sitepress_settings['default_language'] : $pathlang;
+  
     switch ($sitepress_settings['language_negotiation_type']) {
       case 1:
         $pathlang = '/'.$pathlang;
