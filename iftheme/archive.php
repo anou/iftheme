@@ -25,8 +25,6 @@
     var titleDate = jQuery('#titledate').text();
     titleDate = moment(titleDate).format('LL');
     jQuery('#titledate').text(titleDate);
-    
-    console.log(titleDate);
   </script>
 
 

@@ -118,9 +118,6 @@ global $current_user; get_currentuserinfo();
 
 </head>
 <body <?php body_class(); ?>>
-
-<?php //d($options);?>
-
 <div class="none">
 	<p><a href="#content"><?php _e('Skip to Content'); ?></a></p><?php /* used for accessibility, particularly for screen reader applications */ ?>
 </div><!--.none-->

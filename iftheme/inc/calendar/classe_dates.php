@@ -231,7 +231,7 @@
 			$patternTr .= "$/i";
 		
 			$res=array();
-			$date = strlen($a_date)>0 ? $a_date : $this->date;
+			$date = strlen($a_date) ? $a_date : $this->date;
 
 			// timestamp
 			if (is_numeric($date))
@@ -271,8 +271,7 @@
 			}
 
 			// FR 					lundi 11 aout 2008 14:18:58
-			else if (preg_match($patternFr,$date,$l_date))
-			{
+			else if (preg_match($patternFr,$date,$l_date)) {
 				$res['format'] = "FR";
 				$res['annee'] = $l_date[4];
 				$res['mois'] = $this->_month2Num($l_date[3]);
@@ -282,8 +281,7 @@
 
 
 			// EN 					Monday 11th august 2008 14:18:58
-			else if (preg_match($patternEn,$date,$l_date))
-			{
+			else if (preg_match($patternEn,$date,$l_date)) {
 				$res['format'] = "EN";
 				$res['annee'] = $l_date[4];
 				$res['mois'] = $this->_month2Num($l_date[3]);
@@ -293,15 +291,13 @@
 
 			
 			// TR 					pazartesi 11 ağustos 2008 14:18:58
-			else if (preg_match($patternTR,$date,$l_date))
-			{
+  		else if (preg_match($patternTr,$date,$l_date)) {
 				$res['format'] = "TR";
 				$res['annee'] = $l_date[4];
 				$res['mois'] = $this->_month2Num($l_date[3]);
 				$res['jour'] = $l_date[2];
 				$res['heure'] = isset($l_date[5]) ? trim($l_date[5]) : "00:00:00";
 		  }
-		  
 		  
 			return ($res);
 		}
