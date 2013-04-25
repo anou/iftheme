@@ -66,12 +66,12 @@
 
   
   if(defined('ICL_LANGUAGE_CODE') && ICL_LANGUAGE_CODE ) { 
-  	$lang = isset($_POST['lang']) ? str_replace('_','',strstr($_POST['lang'], '_')) : ICL_LANGUAGE_CODE;
+  	$lang = isset($_POST['lang']) ? strtolower(substr($_POST['lang'], 0,2)) : ICL_LANGUAGE_CODE;
   	$pathlang = ICL_LANGUAGE_CODE == $default_lg ? '' :  ICL_LANGUAGE_CODE;
 	}
 	
 	if(isset($_POST['lang'])) {
-	  $postlang = strtolower(str_replace('_','',strstr($_POST['lang'], '_')));
+	  $postlang = strtolower(substr($_POST['lang'], 0,2));
 	  if($postlang != $default_lg) { $pathlang = $postlang; }
 	}
   /* 
@@ -80,16 +80,18 @@
     - 2 == languages in different domains
     - 3 == mysite.com?lang=fr
   */
+  
+  
   $pathJ = "http://".$_SERVER['SERVER_NAME'] . "/%04s/%02s/%02s/";
   $pathM = "http://".$_SERVER['SERVER_NAME'] . "/%04s/%02s/";
   
 	if(isset($sitepress_settings['language_negotiation_type'])) { 
-	
-	  $pathlang = !$pathlang ? $sitepress_settings['default_language'] : $pathlang;
+    //last verif before output link
+	  $pathlang = $pathlang == $sitepress_settings['default_language'] ? '' : $pathlang;
   
     switch ($sitepress_settings['language_negotiation_type']) {
       case 1:
-        $pathlang = '/'.$pathlang;
+        $pathlang = $pathlang ? '/'.$pathlang : '';
         $pathJ = "http://".$_SERVER['SERVER_NAME'] . $pathlang . "/%04s/%02s/%02s/";
         $pathM = "http://".$_SERVER['SERVER_NAME'] . $pathlang . "/%04s/%02s/";
       break;
@@ -97,7 +99,7 @@
         $pathlang = '';
       break;
       case 3:
-        $pathlang = '?lang='.$pathlang;
+        $pathlang = $pathlang ? '?lang='.$pathlang : '';
         $pathJ = "http://".$_SERVER['SERVER_NAME'] . "/%04s/%02s/%02s/" . $pathlang;
         $pathM = "http://".$_SERVER['SERVER_NAME'] . "/%04s/%02s/". $pathlang;
       break;

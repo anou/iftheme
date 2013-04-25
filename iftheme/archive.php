@@ -7,7 +7,8 @@
 ?>
 <div id="content">
 	<h1 id="titledate">
-		<?php setlocale(LC_ALL, get_locale());  $q = $wp_query->query;
+		<?php //setlocale(LC_ALL, get_locale());  
+		  $q = $wp_query->query;
 			if ( is_day() ) : /* if the daily archive is loaded */ ?>
 			<?php echo utf8_encode(strftime('%d %B %Y', mktime(0, 0, 0, $q['monthnum'], $q['day'], $q['year'])));?>
 		<?php elseif ( is_month() ) : /* if the montly archive is loaded */ ?>
@@ -19,7 +20,7 @@
 		<?php endif; ?>
 	</h1>
 	<script type="text/javascript">
-	  var lang = !icl_lang ? bInfo['bLang'] : icl_lang;
+	  var lang = !icl_lang ? bInfo['bLang'] : icl_lang;	  
 	  moment.lang(lang);
 
     var titleDate = jQuery('#titledate').text();
