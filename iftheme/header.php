@@ -169,7 +169,7 @@ global $current_user; get_currentuserinfo();
 				  <nav id="antennes" role="navigation"><ul class="menu clearfix"><?php  get_if_level2_categ(); ?></ul></nav><!-- /#antennes -->
 				<?php endif;?>
 		  
-		  <?php else :?>
+		  <?php else : ?>
 				<nav id="antennes" role="navigation"><ul class="menu clearfix"><?php  get_if_level2_categ(); ?></ul></nav><!-- /#antennes -->
 			<?php endif;?>
 
