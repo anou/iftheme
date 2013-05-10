@@ -73,7 +73,7 @@
 				<h3 class="booking-title"><span class="picto-book"></span><?php _e("Useful informations",'iftheme'); ?></h3>
 				<div class="form-content bxshadow">
 	            <h4><?php echo $data['lieu'];?></h4>
-	            <p class="date-time"><?php echo $start . $end;?> <?php echo $data['time'] != '00:00' ? ' - ' .$data['time'] : '';?></p>
+	            <p class="date-time"><?php echo $start . $end;?> <?php echo $data['time'] != str_replace(' / ', '', $data['end']) ? ' - ' .$data['time'] : '';?></p>
 	            <p>
 	              <?php echo $data['adresse'] ? $data['adresse'].'<br />':'';?>
 	              <?php echo $data['adressebis'] ? $data['adressebis'].'<br />':'';?>

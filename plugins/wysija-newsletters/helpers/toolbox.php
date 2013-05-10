@@ -5,23 +5,23 @@ class WYSIJA_help_toolbox extends WYSIJA_object{
     }
 
     
-    function temp($content,$key="temp",$format=".tmp"){
-        $helperF=&WYSIJA::get("file","helper");
+    function temp($content,$key='temp',$format='.tmp'){
+        $helperF=&WYSIJA::get('file','helper');
         $tempDir=$helperF->makeDir();
 
-        $filename=$key."-".time().$format;
-        $handle=fopen($tempDir.$filename, "w");
+        $filename=$key.'-'.time().$format;
+        $handle=fopen($tempDir.$filename, 'w');
         fwrite($handle, $content);
         fclose($handle);
-        return array('path'=>$tempDir.$filename,'name'=>$filename, 'url'=>$this->url($filename,"temp"));
+        return array('path'=>$tempDir.$filename,'name'=>$filename, 'url'=>$this->url($filename,'temp'));
     }
     
-    function url($filename,$folder="temp"){
+    function url($filename,$folder='temp'){
         $upload_dir = wp_upload_dir();
-        if(file_exists($upload_dir['basedir'].DS."wysija")){
-            $url=$upload_dir['baseurl']."/wysija/".$folder."/".$filename;
+        if(file_exists($upload_dir['basedir'].DS.'wysija')){
+            $url=$upload_dir['baseurl'].'/wysija/'.$folder.'/'.$filename;
         }else{
-            $url=$upload_dir['baseurl']."/".$filename;
+            $url=$upload_dir['baseurl'].'/'.$filename;
         }
         return $url;
     }
@@ -33,20 +33,20 @@ class WYSIJA_help_toolbox extends WYSIJA_object{
             header('Content-Disposition: attachment; filename="export_wysija.csv"');
             readfile($path);
             exit();
-        }else $this->error(__('Yikes! We couldn\'t export. Make sure that your folder permissions for /wp-content/upload/wysija/temp is set to 755.',WYSIJA),true);
+        }else $this->error(__('Yikes! We couldn\'t export. Make sure that your folder permissions for /wp-content/uploads/wysija/temp is set to 755.',WYSIJA),true);
     }
     
     function clear(){
-        $foldersToclear=array("import","temp");
-        $filenameRemoval=array("import-","export-");
+        $foldersToclear=array('import','temp');
+        $filenameRemoval=array('import-','export-');
         $deleted=array();
-        $helperF=&WYSIJA::get("file","helper");
+        $helperF=&WYSIJA::get('file','helper');
         foreach($foldersToclear as $folder){
             $path=$helperF->getUploadDir($folder);
             
             $files = scandir($path);
             foreach($files as $filename){
-                if(!in_array($filename, array('.','..',".DS_Store","Thumbs.db"))){
+                if(!in_array($filename, array('.','..','.DS_Store','Thumbs.db'))){
                     if(preg_match('/('.implode($filenameRemoval,'|').')[0-9]*\.csv/',$filename,$match)){
                        $deleted[]=$path.$filename;
                     }
@@ -81,7 +81,8 @@ class WYSIJA_help_toolbox extends WYSIJA_object{
         }
         return $html;
     }
-    function excerpt($text,$num_words=8,$more=" ..."){
+    
+    function excerpt($text,$num_words=8,$more=' ...'){
         $words_array = preg_split('/[\r\t ]+/', $text, $num_words + 1, PREG_SPLIT_NO_EMPTY);
         if(count($words_array) > $num_words) {
                 array_pop($words_array);
@@ -92,6 +93,7 @@ class WYSIJA_help_toolbox extends WYSIJA_object{
         }
         return $this->closetags($text);
     }
+    
     function _make_domain_name($url=false){
         if(!$url) $url=admin_url('admin.php');
         $domain_name=str_replace(array('https://','http://','www.'),'',strtolower($url));
@@ -99,17 +101,18 @@ class WYSIJA_help_toolbox extends WYSIJA_object{
         $domain_name=explode('/',$domain_name);
         return $domain_name[0];
     }
+    
     function duration($s,$durationin=false,$level=1){
         $t=time();
         if($durationin){
             $e=$t+$s;
             $s=$t;
-            
+
             $timestamp = $e - $s;
         }else{
             $timestamp = $t - $s;
         }
-        
+
         $years=floor($timestamp/(60*60*24*365));$timestamp%=60*60*24*365;
         $weeks=floor($timestamp/(60*60*24*7));$timestamp%=60*60*24*7;
         $days=floor($timestamp/(60*60*24));$timestamp%=60*60*24;
@@ -118,43 +121,54 @@ class WYSIJA_help_toolbox extends WYSIJA_object{
         if($timestamp>60)$secs=$timestamp%60;
         else $secs=$timestamp;
 
-        
+
         $str='';
         $mylevel=0;
-        if ($mylevel<$level && $years >= 1) { $str.= sprintf(_n( '%1$s year', '%1$s years', $years, WYSIJA ),$years)." ";$mylevel++; }
-        if ($mylevel<$level && $weeks >= 1) { $str.= sprintf(_n( '%1$s week', '%1$s weeks', $weeks, WYSIJA ),$weeks)." ";$mylevel++; }
-        if ($mylevel<$level && $days >= 1) { $str.=sprintf(_n( '%1$s day', '%1$s days', $days, WYSIJA ),$days)." ";$mylevel++; }
-        if ($mylevel<$level && $hrs >= 1) { $str.=sprintf(_n( '%1$s hour', '%1$s hours', $hrs, WYSIJA ),$hrs)." ";$mylevel++; }
-        if ($mylevel<$level && $mins >= 1) { $str.=sprintf(_n( '%1$s minute', '%1$s minutes', $mins, WYSIJA ),$mins)." ";$mylevel++; }
-        if ($mylevel<$level && $secs >= 1) { $str.=sprintf(_n( '%1$s second', '%1$s seconds', $secs, WYSIJA ),$secs)." ";$mylevel++; }
+        if ($mylevel<$level && $years >= 1) { $str.= sprintf(_n( '%1$s year', '%1$s years', $years, WYSIJA ),$years).' ';$mylevel++; }
+        if ($mylevel<$level && $weeks >= 1) { $str.= sprintf(_n( '%1$s week', '%1$s weeks', $weeks, WYSIJA ),$weeks).' ';$mylevel++; }
+        if ($mylevel<$level && $days >= 1) { $str.=sprintf(_n( '%1$s day', '%1$s days', $days, WYSIJA ),$days).' ';$mylevel++; }
+        if ($mylevel<$level && $hrs >= 1) { $str.=sprintf(_n( '%1$s hour', '%1$s hours', $hrs, WYSIJA ),$hrs).' ';$mylevel++; }
+        if ($mylevel<$level && $mins >= 1) { $str.=sprintf(_n( '%1$s minute', '%1$s minutes', $mins, WYSIJA ),$mins).' ';$mylevel++; }
+        if ($mylevel<$level && $secs >= 1) { $str.=sprintf(_n( '%1$s second', '%1$s seconds', $secs, WYSIJA ),$secs).' ';$mylevel++; }
         return $str;
     }
-    function serverTimeToLocal($val){
-        $curenttime=time();
-        $curentofftime=$this->offset_time($curenttime);
-        $timedifference=$curenttime-$curentofftime;
-        return $val+$timedifference;
-    }
-    function localTimeToServer($val){
-        $curenttime=time();
-        $curentofftime=$this->offset_time($curenttime);
-        $timedifference=$curenttime-$curentofftime;
-        return $val-$timedifference;
-    }
+    
     function localtime($time,$justtime=false){
         if($justtime) $time=strtotime($time);
         return date(get_option('time_format'),$time);
     }
+    
     function time_tzed($val=false){
-        return gmdate( 'Y-m-d H:i:s', $this->offset_time($val) );
+        return gmdate( 'Y-m-d H:i:s', $this->servertime_to_localtime($val) );
     }
-    function offset_time($val=false){
-        $gmttime=time() - date('Z');
-        $time_offseted=$gmttime + ( get_option( 'gmt_offset' ) * 3600 );
-        if(!$val) return $time_offseted;
-        $timediff=time()-$time_offseted;
-        return $val +$timediff;
+    
+    function servertime_to_localtime($unixTime=false){
+
+        $current_server_time = time();
+        $gmt_time = $current_server_time - date('Z');
+
+        $current_local_time = $gmt_time + ( get_option( 'gmt_offset' ) * 3600 );
+        if(!$unixTime) return $current_local_time;
+        else{
+
+            $time_difference = $current_local_time - $current_server_time;
+
+            return $unixTime + $time_difference;
+        }
     }
+    
+    function localtime_to_servertime($server_time){
+
+        $current_server_time = time();
+        $gmt_time = $current_server_time - date('Z');
+
+        $current_local_time = $gmt_time + ( get_option( 'gmt_offset' ) * 3600 );
+
+        $time_difference = $current_local_time - $current_server_time;
+
+        return $server_time - $time_difference;
+    }
+    
     function getday($day=false){
         $days=array('monday'=>__('Monday',WYSIJA),
                     'tuesday'=>__('Tuesday',WYSIJA),
@@ -166,6 +180,7 @@ class WYSIJA_help_toolbox extends WYSIJA_object{
         if(!$day || !isset($days[$day])) return $days;
         else return $days[$day];
     }
+    
     function getweeksnumber($week=false){
         $weeks=array(
                     '1'=>__('1st',WYSIJA),
@@ -176,9 +191,10 @@ class WYSIJA_help_toolbox extends WYSIJA_object{
         if(!$week || !isset($weeks[$week])) return $weeks;
         else return $weeks[$week];
     }
-
+    
     function getdaynumber($day=false){
         $daynumbers=array();
+
         for($i = 1;$i < 29;$i++) {
             switch($i){
                 case 1:

@@ -388,13 +388,19 @@ class widget_context {
 		
 		// Check Antennas settings
 		if (!empty($vis_settings['antenna'])) {
-			
+			 
 			if(function_exists('get_current_antenna')){
 				$current_antenna = $multi && is_front_page() ? '' : get_current_antenna();
 			}
 			$visibility_options_antennas = array_keys($vis_settings['antenna']);
 			
-			if(in_array($current_antenna, $visibility_options_antennas)){
+			if (function_exists('icl_object_id')) {
+			 foreach ($visibility_options_antennas as $k => $antID) {
+  			 $tabID[] = icl_object_id($antID, 'category', true, ICL_LANGUAGE_CODE);
+			 }	
+			}
+
+			if(in_array($current_antenna, $visibility_options_antennas) || in_array($current_antenna, $tabID)) {
 				$do_show_by_antenna = true;
 			}
 		}

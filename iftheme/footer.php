@@ -12,6 +12,7 @@
   		  <img src="<?php echo bloginfo('template_url');?>/images/logo-footer.png" alt="<?php bloginfo('name'); ?>" />
   		  <div class="tagline"><?php bloginfo('description'); ?></div>
   		</div>
+  		
 		  <div class="footer-all-block clearfix">
 <?php if (!function_exists('dynamic_sidebar') ||  ! dynamic_sidebar( 'Footer' )) : ?><!--Wigitized Footer-->
 		    <div class="widget-footer footer-pages">
@@ -35,6 +36,6 @@
 	  </footer>
 	</div><!--#footer-->
 </div><!--#main-->
-<?php wp_footer(); /* this is used by many Wordpress features and plugins to work proporly */ ?>
+<?php wp_footer(); /* this is used by many Wordpress features and plugins to work properly */ ?>
 </body>
 </html>

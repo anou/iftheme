@@ -113,6 +113,17 @@ color:#FFF
 .clearlooks2 a.mceResizeSW {bottom:0; left:0; cursor:sw-resize}
 .clearlooks2 a.mceResizeSE {bottom:0; right:0; cursor:se-resize}
 
+/* Remore resize handlers. */
+
+.clearlooks2 .mceResize,
+.clearlooks2 .mceMove {
+	display: none !important;
+}
+
+.clearlooks2 .mceBottom .mceRight {
+	display: none;
+}
+
 /* Alert/Confirm */
 .clearlooks2 .mceButton {font-weight:bold; bottom:10px; width:80px; height:30px; background:url(img/button.gif); line-height:30px; vertical-align:middle; text-align:center; outline:0}
 .clearlooks2 .mceMiddle .mceIcon {left:15px; top:35px; width:32px; height:32px}

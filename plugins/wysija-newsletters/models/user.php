@@ -57,22 +57,21 @@ class WYSIJA_model_user extends WYSIJA_model{
 
         $data['details']=$array;
 
-        /* get the list  that the user subscribed to */
-        $modelRECYCLE=&WYSIJA::get("user_list","model");
-        $conditions=array("user_id"=>$data['details']['user_id']);
+        //get the list  that the user subscribed to
+        $modelRECYCLE=&WYSIJA::get('user_list','model');
+        $conditions=array('user_id'=>$data['details']['user_id']);
         if($subscribedListOnly){
-            $conditions["unsub_date"]=0;
+            $conditions['unsub_date']=0;
         }
 
         $data['lists']=$modelRECYCLE->get(false,$conditions);
 
-        /* get the user stats if requested */
+        //get the user stats if requested
         if($stats){
-            $modelRECYCLE=&WYSIJA::get("email_user_stat","model");
-            $modelRECYCLE->setConditions(array("equal"=>array("user_id"=>$data['details']['user_id'])));
+            $modelRECYCLE=&WYSIJA::get('email_user_stat','model');
+            $modelRECYCLE->setConditions(array('equal'=>array('user_id'=>$data['details']['user_id'])));
             $data['emails']=$modelRECYCLE->count(false);
         }
-
 
         return $data;
     }
@@ -88,7 +87,7 @@ class WYSIJA_model_user extends WYSIJA_model{
         }
 
 
-        /* the subscriber doesn't exist*/
+        //the subscriber doesn't exist
         if(!$objUser){
             $data=get_userdata(WYSIJA::wp_get_userdata('ID'));
             $firstname=$data->first_name;
@@ -107,8 +106,8 @@ class WYSIJA_model_user extends WYSIJA_model{
         return $objUser;
     }
 
-    function getConfirmLink($userObj=false,$action="subscribe",$text=false,$urlOnly=false){
-        if(!$text) $text=__("Click here to subscribe",WYSIJA);
+    function getConfirmLink($userObj=false,$action='subscribe',$text=false,$urlOnly=false){
+        if(!$text) $text=__('Click here to subscribe',WYSIJA);
         $userspreview=false;
         //if($action=='subscriptions')dbg($userObj);
         if(!$userObj){
@@ -118,44 +117,54 @@ class WYSIJA_model_user extends WYSIJA_model{
         }
         $params=array(
         'wysija-page'=>1,
-        'controller'=>"confirm",
+        'controller'=>'confirm',
         );
         if($userObj && isset($userObj->keyuser)){
+            //if the user key doesn exists let's generate it
             if(!$userObj->keyuser){
                 $this->getKeyUser($userObj);
             }
 
             $this->reset();
-
-
-
             $params['wysija-key']=$userObj->keyuser;
-
         }
         $params['action']=$action;
-        $modelConf=&WYSIJA::get("config","model");
+        $modelConf=&WYSIJA::get('config','model');
         if($userspreview) $params['demo']=1;
-        $fullurl=WYSIJA::get_permalink($modelConf->getValue("confirm_email_link"),$params);
+        $fullurl=WYSIJA::get_permalink($modelConf->getValue('confirm_email_link'),$params);
         if($urlOnly) return $fullurl;
         return '<a href="'.$fullurl.'" target="_blank">'.$text.'</a>';
     }
 
     function getEditsubLink($userObj=false,$urlOnly=false){
-        return $this->getConfirmLink($userObj,"subscriptions",__("Edit your subscriptions",WYSIJA),$urlOnly);
+        return $this->getConfirmLink($userObj,'subscriptions',__('Edit your subscriptions',WYSIJA),$urlOnly);
     }
 
     function getUnsubLink($userObj=false,$urlOnly=false){
-        $modelConf=&WYSIJA::get("config","model");
-        return $this->getConfirmLink($userObj,"unsubscribe",$modelConf->getValue("unsubscribe_linkname"),$urlOnly);
+        $modelConf=&WYSIJA::get('config','model');
+        return $this->getConfirmLink($userObj,'unsubscribe',$modelConf->getValue('unsubscribe_linkname'),$urlOnly);
+    }
+
+    function getResendLink($userid,$email_id){
+        $params=array(
+            'wysija-page'=>1,
+            'controller'=>'confirm',
+            'action'=>'resend',
+            'user_id'=>$userid,
+            'email_id'=>$email_id
+        );
+
+        $modelConf=&WYSIJA::get('config','model');
+        return WYSIJA::get_permalink($modelConf->getValue('confirm_email_link'),$params);
     }
 
     function getKeyUser($user){
-        /* generate a user key */
+        //generate a user key
         $user->keyuser=$this->generateKeyuser($user->email);
-         while($this->exists(array("keyuser"=>$user->keyuser))){
+         while($this->exists(array('keyuser'=>$user->keyuser))){
              $user->keyuser=$this->generateKeyuser($user->email);
          }
-        $this->update(array("keyuser"=>$user->keyuser),array('user_id'=>$user->user_id));
+        $this->update(array('keyuser'=>$user->keyuser),array('user_id'=>$user->user_id));
     }
 
     function generateKeyuser($email){
@@ -193,25 +202,24 @@ class WYSIJA_model_user extends WYSIJA_model{
     }
 
     function afterDelete(){
-        $helperU=&WYSIJA::get('user','helper');
-        $helperU->refreshUsers();
+        $helper_user=&WYSIJA::get('user','helper');
+        $helper_user->refreshUsers();
         return true;
     }
 
     function afterInsert($id){
-
-        $helperU=&WYSIJA::get('user','helper');
-        $helperU->refreshUsers();
+        $helper_user=&WYSIJA::get('user','helper');
+        $helper_user->refreshUsers();
 
         do_action('wysija_subscriber_added', $id);
         return true;
     }
 
     function afterUpdate($id){
+        $helper_user=&WYSIJA::get('user','helper');
+        $helper_user->refreshUsers();
+        
         do_action('wysija_subscriber_modified', $id);
         return true;
     }
-
-
-
 }

@@ -15,7 +15,8 @@ class WYSIJA_help_user extends WYSIJA_object{
     }
     function validEmail($email){
             if(empty($email) OR !is_string($email)) return false;
-            if(!preg_match('/^([a-z0-9_\'&\.\-\+\æ\ø\å])+\@(([a-z0-9\-\æ\ø\å])+\.)+([a-z0-9]{2,10})+$/i',$email)) return false;
+            $stringSpecialChars='\æ\ø\å\ä\ö\ü';
+            if(!preg_match('/^([a-z0-9_\'&\.\-\+'.$stringSpecialChars.'])+\@(([a-z0-9\-'.$stringSpecialChars.'])+\.)+([a-z0-9]{2,10})+$/i',$email)) return false;
             return true;
     }
     function checkUserKey(){
@@ -26,11 +27,11 @@ class WYSIJA_help_user extends WYSIJA_object{
                 return $result;
             }
             else{
-                $this->error(__("Page is not accessible.",WYSIJA),true);
+                $this->error(__('Page is not accessible.',WYSIJA),true);
                 return false;
             }
         }else{
-            $this->error(__("Page is not accessible.",WYSIJA),true);
+            $this->error(__('Page is not accessible.',WYSIJA),true);
             return false;
         }
     }
@@ -67,25 +68,22 @@ class WYSIJA_help_user extends WYSIJA_object{
             $modelU=&WYSIJA::get('queue','model');
             $modelU->delete(array('user_id'=>$user_id));
 
-            $modelUserList->delete(array('user_id'=>$user_id,'list_id'=>$listidsenableduser));
+            $modelUserList->update(array('unsub_date'=>time(), 'sub_date'=>0),array('user_id'=>$user_id));
         }
         $modelUser=&WYSIJA::get('user','model');
         $modelUser->update(array('status'=>$status),array('user_id'=>$user_id));
 
-        
         if($status){
-            
+
             if(!$auto){
                 $modelUserList=&WYSIJA::get('user_list','model');
-                $datecol='sub_date';
-                $cols=array($datecol=>$time,'unsub_date'=>0);
+                $cols=array('sub_date'=>$time,'unsub_date'=>0);
                 $modelUserList->update($cols,array('user_id'=>$user_id,'list_id'=>$listids));
             }
-            
+
             $lists=$this->getUserLists($user_id,$listids);
             $this->sendAutoNl($user_id,$lists);
         }
-
         return $listidsenableduser;
     }
     function checkData(&$data){
@@ -104,45 +102,61 @@ class WYSIJA_help_user extends WYSIJA_object{
         if(!$backend){
             $validEmail=apply_filters( 'wysija_beforeAddSubscriber', true ,$data['user']['email']);
             if(!$validEmail){
-                $this->error(sprintf(__('The email %1$s is not valid!',WYSIJA),'<strong>'.$data['user']['email'].'</strong>'),true);
+                $this->error(__('The email is not valid!',WYSIJA),true);
                 return false;
             }
         }
 
-        $userHelper=&WYSIJA::get('user','helper');
         if(!$this->validEmail($data['user']['email'])){
-            $this->error(sprintf(__('The email %1$s is not valid!',WYSIJA),'<strong>'.$data['user']['email'].'</strong>'),true);
+            $this->error(__('The email is not valid!',WYSIJA),true);
             return false;
         }
 
-        $modelUser=&WYSIJA::get('user','model');
-        $userGet=$modelUser->getOne(false,array('email'=>trim($data['user']['email'])));
+        $model_user=&WYSIJA::get('user','model');
+        $user_get=$model_user->getOne(false,array('email'=>trim($data['user']['email'])));
         $config=&WYSIJA::get('config','model');
         $dbloptin=$config->getValue('confirm_dbleoptin');
-        if($userGet){
+
+        $message_success='';
+        if(isset($data['message_success'])) {
+            $message_success = strip_tags($data['message_success'], '<p><em><span><b><strong><i><h1><h2><h3><a><ul><ol><li><br>');
+        } else if(isset($data['success_message'])) {
+            $message_success = strip_tags(nl2br(base64_decode($data['success_message'])), '<p><em><span><b><strong><i><h1><h2><h3><a><ul><ol><li><br>');
+        } else if(isset($data['form_id'])) {
+
+            $model_forms =& WYSIJA::get('forms', 'model');
+            $form = $model_forms->getOne(array('data'), array('form_id' => (int)$data['form_id']));
+            $form_data = unserialize(base64_decode($form['data']));
+
+            if($form_data['settings']['on_success'] === 'message') {
+                $message_success = nl2br($form_data['settings']['success_message']);
+            }
+        }
+        if($user_get){
 
             if($backend){
-                $this->error(str_replace(array('[link]','[/link]'),array('<a href="admin.php?page=wysija_subscribers&action=edit&id='.$userGet['user_id'].'" >',"</a>"),__(' Oops! This user already exists. Find him [link]here[/link].',WYSIJA)),true);
+                $this->error(str_replace(array('[link]','[/link]'),array('<a href="admin.php?page=wysija_subscribers&action=edit&id='.$user_get['user_id'].'" >',"</a>"),__('Subscriber already exists. [link]Click to edit[/link].',WYSIJA)),true);
                 return false;
             }
 
-            if((int)$userGet['status']<1){
-                $modelUser->reset();
-                $modelUser->update(array('status'=>0),array('user_id'=>$userGet['user_id']));
+            if((int)$user_get['status']<1){
+                $model_user->reset();
+                $model_user->update(array('status'=>0),array('user_id'=>$user_get['user_id']));
                 $subscribetolist=0;
                 if(!$dbloptin)  $subscribetolist=time();
-                $this->addToLists($data['user_list']['list_ids'], $userGet['user_id'],$subscribetolist);
+                $this->addToLists($data['user_list']['list_ids'], $user_get['user_id'],$subscribetolist);
                 if($dbloptin){
-                    $emailsent=$this->sendConfirmationEmail((object)$userGet,true,$data['user_list']['list_ids']);
+                    $emailsent=$this->sendConfirmationEmail((object)$user_get,true,$data['user_list']['list_ids']);
                 }else{
-                    $lists=$this->getUserLists($userGet['user_id'],$data['user_list']['list_ids']);
-                    $this->sendAutoNl($userGet['user_id'],$lists);
+                    $lists=$this->getUserLists($user_get['user_id'],$data['user_list']['list_ids']);
+                    $this->sendAutoNl($user_get['user_id'],$lists);
                 }
-                if(isset($data['message_success'])) $this->notice($data['message_success']);
+
+                if(!empty($message_success))    $this->notice($message_success);
                 return true;
             }
             $mUserList=&WYSIJA::get('user_list','model');
-            $userListsSub=$mUserList->get(array('list_id'),array('greater'=>array('sub_date'=>0),'equal'=>array('user_id'=>$userGet['user_id'])));
+            $userListsSub=$mUserList->get(array('list_id'),array('greater'=>array('sub_date'=>0),'equal'=>array('user_id'=>$user_get['user_id'])));
             $arrayListids=array();
             foreach($userListsSub as $userlistdetail){
                 $arrayListids[]=$userlistdetail['list_id'];
@@ -159,16 +173,16 @@ class WYSIJA_help_user extends WYSIJA_object{
                 if(isset($data['user']['status'])) $subscriber_status=$data['user']['status'];
                 if(($dbloptin && $subscriber_status) || !$dbloptin) $subscribetolist=time();
 
-                $this->addToLists($data['user_list']['list_ids'], $userGet['user_id'],$subscribetolist);
+                $this->addToLists($data['user_list']['list_ids'], $user_get['user_id'],$subscribetolist);
                 if($dbloptin){
 
-                    $emailsent=$this->sendConfirmationEmail((object)$userGet,true,$sendConfForIds);
+                    $emailsent=$this->sendConfirmationEmail((object)$user_get,true,$sendConfForIds);
                 }
-                if(isset($data['message_success'])) $this->notice($data['message_success']);
+                if(!empty($message_success))    $this->notice($message_success);
 
                 if(!$dbloptin &&(!empty($sendConfForIds))){
-                    $lists=$this->getUserLists($userGet['user_id'],$data['user_list']['list_ids']);
-                    $this->sendAutoNl($userGet['user_id'],$lists);
+                    $lists=$this->getUserLists($user_get['user_id'],$data['user_list']['list_ids']);
+                    $this->sendAutoNl($user_get['user_id'],$lists);
                 }
             }else{
 
@@ -180,11 +194,26 @@ class WYSIJA_help_user extends WYSIJA_object{
 
         $dataInsert=$data['user'];
         $dataInsert['ip']=$this->getIP();
-        $modelUser->reset();
-        $user_id=$modelUser->insert($dataInsert);
+        $model_user->reset();
+        $user_id=$model_user->insert($dataInsert);
 
         if($user_id ){
-            if(isset($data['message_success'])) $this->notice($data['message_success']);
+
+            if(isset($data['form_id']) && (int)$data['form_id'] > 0) {
+
+                $model_forms =& WYSIJA::get('forms', 'model');
+                $form = $model_forms->getOne(array('form_id', 'subscribed'), array('form_id' => (int)$data['form_id']));
+                if(isset($form['form_id']) && (int)$form['form_id'] === (int)$data['form_id']) {
+
+                    $model_forms->update(array(
+                        'subscribed' => $form['subscribed'] + 1
+                    ), array(
+                        'form_id' => (int)$form['form_id']
+                    ));
+                }
+            }
+
+            if(!empty($message_success))    $this->notice($message_success);
         }else{
             $this->notice(__('Subscriber has not been saved.',WYSIJA));
             if($backend) return false;
@@ -199,9 +228,9 @@ class WYSIJA_help_user extends WYSIJA_object{
         if($subscriber_status>-1){
             if($dbloptin){
                 if($subscriber_status==0){
-                    $modelUser->reset();
-                    $modelUser->getFormat=OBJECT;
-                    $receiver=$modelUser->getOne(false,array('email'=>trim($data['user']['email'])));
+                    $model_user->reset();
+                    $model_user->getFormat=OBJECT;
+                    $receiver=$model_user->getOne(false,array('email'=>trim($data['user']['email'])));
                     $this->sendConfirmationEmail($receiver,true,$data['user_list']['list_ids']);
                 }else{
 
@@ -212,7 +241,6 @@ class WYSIJA_help_user extends WYSIJA_object{
                 $sendAutonl=true;
                 if($config->getValue('emails_notified') && $config->getValue('emails_notified_when_sub')){
 
-                    $this->uid=$user_id;
                     if(!$backend) $this->_notify($data['user']['email'],true,$data['user_list']['list_ids']);
                 }
             }
@@ -291,36 +319,21 @@ class WYSIJA_help_user extends WYSIJA_object{
         }
     }
     
-    function insertAutoQueue($user_id,$email_id,$emailparams){
-        $modelQueue=&WYSIJA::get('queue','model');
+    function insertAutoQueue($user_id,$email_id,$email_params_autonl){
+        $model_queue=&WYSIJA::get('queue','model');
         $queueData=array('priority'=>'-1','email_id'=>$email_id,'user_id'=>$user_id);
-        $delay=0;
-        
-        if(isset($emailparams['numberafter']) && (int)$emailparams['numberafter']>0){
-            switch($emailparams['numberofwhat']){
-                case 'immediate':
-                    $delay=0;
-                    break;
-                case 'hours':
-                    $delay=(int)$emailparams['numberafter']*3600;
-                    break;
-                case 'days':
-                    $delay=(int)$emailparams['numberafter']*3600*24;
-                    break;
-                case 'weeks':
-                    $delay=(int)$emailparams['numberafter']*3600*24*7;
-                    break;
+        $delay=$model_queue->calculate_delay($email_params_autonl);
+        $queueData['send_at']=time()+$delay;
+        if(!$model_queue->exists(array('email_id'=>$email_id,'user_id'=>$user_id))){
+
+            if(isset($email_params_autonl['unique_send']) && $email_params_autonl['unique_send']){
+
+                $modelEUS=&WYSIJA::get('email_user_stat','model');
+                if(!$modelEUS->exists(array('email_id'=>$email_id,'user_id'=>$user_id)))
+                        $model_queue->insert($queueData,true);
+            }else{
+                $model_queue->insert($queueData,true);
             }
-            $queueData['send_at']=time()+$delay;
-        }
-        
-        if(isset($emailparams['unique_send']) && $emailparams['unique_send']){
-            
-            $modelEUS=&WYSIJA::get('email_user_stat','model');
-            if(!$modelEUS->exists(array('email_id'=>$email_id,'user_id'=>$user_id)))
-                    $modelQueue->insert($queueData);
-        }else{
-            $modelQueue->insert($queueData);
         }
 
         if($delay==0){
@@ -329,7 +342,6 @@ class WYSIJA_help_user extends WYSIJA_object{
             WYSIJA::log('insertAutoQueue queue process',array('email_id'=>$email_id,'user_id'=>$user_id),'queue_process');
             $queueH->process($email_id,$user_id);
         }
-        return true;
     }
     function unsubscribe($user_id,$auto=false){
         return $this->subscribe($user_id,false,$auto);
@@ -360,12 +372,42 @@ class WYSIJA_help_user extends WYSIJA_object{
             }
             $mailer->listnames=$arrayNames;
         }
+
+        $mEmail=&WYSIJA::get('email','model');
+        $mEmail->getFormat=OBJECT;
+        $emailConfirmationData=$mEmail->getOne(false,array('email_id'=>$config->getValue('confirm_email_id')));
+        if(empty($emailConfirmationData)){
+
+            $dataEmailCon=array('from_name'=>$config->getValue('from_name'),'from_email'=>$config->getValue('from_email'),
+                    'replyto_name'=>$config->getValue('replyto_name'),'replyto_email'=>$config->getValue('replyto_email'),
+                    'subject'=>$config->getValue('confirm_email_title'),'body'=>$config->getValue('confirm_email_body'),'type'=>'0','status'=>'99');
+            $confemailid=$mEmail->insert($dataEmailCon);
+            if($confemailid)    $config->save(array('confirm_email_id'=>$confemailid));
+            $mEmail->reset();
+            $mEmail->getFormat=OBJECT;
+            $emailConfirmationData=$mEmail->getOne(false,array('email_id'=>$config->getValue('confirm_email_id')));
+        }
         foreach($users as $userObj){
-            $resultsend=$mailer->sendOne($config->getValue('confirm_email_id'),$userObj,true);
+            $resultsend=$mailer->sendOne($emailConfirmationData,$userObj,true);
         }
         if(!$sendone)   $this->notice(sprintf(__('%1$d emails have been sent to unconfirmed subscribers.',WYSIJA),count($users)));
         else    return $resultsend;
         return true;
+    }
+    
+    function get_unconfirmed_subscribers() {
+
+        $model_user =& WYSIJA::get('user','model');
+        $query = 'SELECT user_id
+                  FROM ' . '[wysija]' . $model_user->table_name. '
+                  WHERE  status = 0';
+        $result = $model_user->query('get_res', $query);
+
+        $unconfirmed_subscribers = array();
+        foreach($result as $unconfirmed_user){
+            $unconfirmed_subscribers[] = $unconfirmed_user['user_id'];
+        }
+        return $unconfirmed_subscribers;
     }
 
     function delete($user_ids,$sendone=false){
@@ -473,7 +515,7 @@ class WYSIJA_help_user extends WYSIJA_object{
         $modelC->save(array('total_subscribers'=>$count));
         return true;
     }
-
+    
     function synchList($listid,$total=false){
         $model=&WYSIJA::get('list','model');
         $data=$model->getOne(false,array('list_id'=>(int)$listid,'is_enabled'=>'0'));
@@ -503,16 +545,18 @@ class WYSIJA_help_user extends WYSIJA_object{
                     }
                 }
                 $infosImport=array('name'=>'WordPress',
-            "pk"=>"ID",
-            "matches"=>array("ID"=>"wpuser_id","user_email"=>"email","display_name"=>"firstname"),
-            "matchesvar"=>array("status"=>1));
-                $importHelper=&WYSIJA::get("import","helper");
+            'pk'=>'ID',
+            'matches'=>array('ID'=>'wpuser_id','user_email'=>'email','display_name'=>'firstname'),
+            'matchesvar'=>array('status'=>1));
+                $importHelper=&WYSIJA::get('import','helper');
                 $listsids=array(
-                    "wysija_list_main_id"=>$data['list_id']
+                    'wysija_list_main_id'=>$data['list_id']
                 );
                 $importHelper->import($data['namekey'],$infosImport,false,$total,$listsids);
+                $this->cleanWordpressUsersList();
             }elseif(strpos($data['namekey'], 'query-')!==false){
                 
+
                 $queryUid=apply_filters('wysija_synch_'.  str_replace('-', '_', $data['namekey']));
                 $importHelper=&WYSIJA::get('import','helper');
                 $queryUid=str_replace(array('[list_id]','[created_at]'), array($data['list_id'],time()), $queryUid);
@@ -525,7 +569,6 @@ class WYSIJA_help_user extends WYSIJA_object{
                     $importHelper=&WYSIJA::get('import','helper');
                     $dataMainList=$model->getOne(false,array('namekey'=>$data['namekey'],'is_enabled'=>'0'));
                     $importHelper->import($data['namekey'],$importHelper->getPluginsInfo($data['namekey']),false,false,array('wysija_list_main_id'=>$dataMainList['list_id']));
-
                 }
             }
             $this->notice(sprintf(__('List "%1$s" has been synchronised.',WYSIJA),$data['name']));
@@ -534,5 +577,21 @@ class WYSIJA_help_user extends WYSIJA_object{
             $this->error(__('The list does not exists or cannot be synched.',WYSIJA),true);
             return false;
         }
+    }
+    function cleanWordpressUsersList(){
+
+        $model=&WYSIJA::get('list','model');
+        $query="UPDATE [wysija]user as A LEFT JOIN [wp]users as B on A.email=B.user_email SET A.wpuser_id = B.ID WHERE A.wpuser_id=0";
+        $model->query($query);
+
+
+        $model->reset();
+        $model->query($query);
+        $mConfig=&WYSIJA::get('config','model');
+        $selectuserCreated="SELECT [wysija]user.user_id, ".$mConfig->getValue('importwp_list_id').", ".time()." FROM [wysija]user WHERE wpuser_id>0";
+        $query="INSERT IGNORE INTO `[wysija]user_list` (`user_id`,`list_id`,`sub_date`) ".$selectuserCreated;
+        $model->reset();
+        $model->query($query);
+        return true;
     }
 }

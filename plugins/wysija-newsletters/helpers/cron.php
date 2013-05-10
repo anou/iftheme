@@ -4,12 +4,13 @@ class WYSIJA_help_cron extends WYSIJA_object{
     var $report=false;
     function WYSIJA_help_cron(){
     }
+    
     function run() {
         @ini_set('max_execution_time',0);
         $modelC=&WYSIJA::get('config','model');
         $running=false;
         if(!$modelC->getValue('cron_manual')){
-            exit;
+            return;
         }
 
         $report=$process=false;
@@ -24,8 +25,7 @@ class WYSIJA_help_cron extends WYSIJA_object{
             $this->report=$_SERVER['argv'][3];
         }
         if($process){
-            
-            
+
             if(isset($_REQUEST[WYSIJA_CRON]) || ( isset($_SERVER['argv'][1]) && $_SERVER['argv'][1]==WYSIJA_CRON )) echo '';
             else exit;
             $cron_schedules=get_option('wysija_schedules');
@@ -35,22 +35,23 @@ class WYSIJA_help_cron extends WYSIJA_object{
             }else $processes[]=$process;
             foreach($processes as $scheduleprocess){
                 if($scheduleprocess!='all'){
-                    $this->check_process($cron_schedules,$scheduleprocess);
+                    $this->check_scheduled_task($cron_schedules,$scheduleprocess);
                 }else{
                     $allProcesses=array('queue','bounce','daily','weekly','monthly');
                     foreach($allProcesses as $processNK){
-                        $this->check_process($cron_schedules,$processNK);
+                        $this->check_scheduled_task($cron_schedules,$processNK);
                     }
-                    if($this->report) echo 'processed : All'.'<br/>';
-                    if(!isset($_REQUEST['silent'])) echo "It works. Wysija's cron is trigger happy.";
+                    if($this->report) echo 'processed : All<br/>';
+                    if(!isset($_REQUEST['silent'])) echo 'Wysija\'s cron is ready. Simply setup a CRON job on your server (cpanel or other) to trigger this page.';
                     exit;
                 }
             }
         }
-        if(!isset($_REQUEST['silent'])) echo "It works. Wysija's cron is trigger happy.";
-        exit;
+        if(!isset($_REQUEST['silent'])) echo '"Wysija\'s cron is ready. Simply setup a CRON job on your server (cpanel or other) to trigger this page.' ;
+        if($process)    exit;
     }
-    function check_process($cron_schedules,$processNK){
+    
+    function check_scheduled_task($cron_schedules,$processNK){
         $toolboxH=&WYSIJA::get('toolbox','helper');
         $timepassed=$timeleft=0;
         if($cron_schedules[$processNK]['running']){
@@ -60,10 +61,9 @@ class WYSIJA_help_cron extends WYSIJA_object{
             $timeleft=$cron_schedules[$processNK]['next_schedule']-time();
             $timeleft=$toolboxH->duration($timeleft,true,2);
         }
-
         if($cron_schedules[$processNK]['next_schedule']<time() && !$cron_schedules[$processNK]['running']){
             if($this->report) echo 'exec process '.$processNK.'<br/>';
-            $this->wysija_exec_process($processNK);
+            $this->run_scheduled_task($processNK);
         }else{
            if($this->report){
                if($timepassed) $texttime=' running since : '.$timepassed;
@@ -72,7 +72,9 @@ class WYSIJA_help_cron extends WYSIJA_object{
            }
         }
     }
-    function wysija_exec_process($process='queue'){
+    
+    function run_scheduled_task($process='queue'){
+
         $scheduled_times=WYSIJA::get_cron_schedule($process);
         if(isset($scheduled_times['running']) && $scheduled_times['running'] && $scheduled_times['running']+900>time()){
             if($this->report)   echo 'already running : '.$process.'<br/>';
@@ -83,13 +85,16 @@ class WYSIJA_help_cron extends WYSIJA_object{
 
         switch($process){
             case 'queue':
+
                 WYSIJA::croned_queue($process);
+
                 if(defined('WYSIJANLP')){
                     $hPremium =& WYSIJA::get('premium', 'helper', false, WYSIJANLP);
-                    $hPremium->splitVersion_croned_queue_process();
+                    $hPremium->croned_queue_process();
                 }
                 break;
             case 'bounce':
+
                 if(defined('WYSIJANLP')){
                     $hPremium =& WYSIJA::get('premium', 'helper', false, WYSIJANLP);
                     $hPremium->croned_bounce();
@@ -103,6 +108,7 @@ class WYSIJA_help_cron extends WYSIJA_object{
                     $hPremium =& WYSIJA::get('premium', 'helper', false, WYSIJANLP);
                     $hPremium->croned_weekly();
                 }
+                WYSIJA::croned_weekly();
                 break;
             case 'monthly':
                 WYSIJA::croned_monthly();

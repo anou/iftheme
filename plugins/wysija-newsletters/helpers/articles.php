@@ -14,6 +14,11 @@ class WYSIJA_help_articles extends WYSIJA_object {
         } else {
             $include = NULL;
         }
+        if(!empty($params['includeonly'])) {
+            $includeonly = $params['includeonly'];
+        } else {
+            $includeonly = NULL;
+        }
 
         if(strlen($params['category_ids']) === 0) {
             $categories = NULL;
@@ -28,6 +33,7 @@ class WYSIJA_help_articles extends WYSIJA_object {
             'orderby'         => 'post_date',
             'order'           => 'DESC',
             'include'         => $include,
+            'includeonly'         => $includeonly,
             'exclude'         => $exclude,
             'meta_key'        => NULL,
             'meta_value'      => NULL,
@@ -68,7 +74,7 @@ class WYSIJA_help_articles extends WYSIJA_object {
                 $content = $post['post_excerpt'];
             } else {
 
-                $post['post_content'] = preg_replace('/\[.*\]/', '', $post['post_content']);
+                $post['post_content'] = preg_replace('/\[[^\[\]]*\]/', '', $post['post_content']);
 
                 $excerpts = explode('<!--more-->', $post['post_content']);
                 if(count($excerpts) > 1){
@@ -87,7 +93,7 @@ class WYSIJA_help_articles extends WYSIJA_object {
 
         $content = preg_replace('/<img[^>]+./','', $content);
 
-        $content = preg_replace('/\[.*\]/', '', $content);
+        $content = preg_replace('/\[[^\[\]]*\]/', '', $content);
 
         $content= preg_replace('/\<div class="wysija-register">(.*?)\<\/div>/','',$content);
 

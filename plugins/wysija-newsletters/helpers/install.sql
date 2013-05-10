@@ -167,4 +167,13 @@ CREATE TABLE IF NOT EXISTS `url_mail` (
   PRIMARY KEY (`email_id`,`url_id`)
 ) ENGINE=MyISAM /*!40100 DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci*/;
 
+-- QUERY ---
 
+CREATE TABLE IF NOT EXISTS `form` (
+  `form_id` INT unsigned AUTO_INCREMENT NOT NULL,
+  `name` tinytext COLLATE utf8_bin,
+  `data` longtext COLLATE utf8_bin,
+  `styles` longtext COLLATE utf8_bin,
+  `subscribed` int(10) unsigned NOT NULL DEFAULT '0',
+  PRIMARY KEY (`form_id`)
+) ENGINE=MyISAM /*!40100 DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci*/;

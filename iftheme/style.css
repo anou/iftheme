@@ -311,7 +311,7 @@ input.wysija-email { border: 1px solid #ababac; padding: 0; width: 150px; height
 		#sidebar .ifworldlinks ul li a {color: #fff; }
 		
 	#sidebar .widget-sidebar ul,
-	#sidebar .widget-sidebar div {padding: 10px }
+	#sidebar .widget-sidebar div {padding: 10px; display: inline-block;}
 		#sidebar-search {}
 		#sidebar-nav {}
 		#sidebar-archives {}

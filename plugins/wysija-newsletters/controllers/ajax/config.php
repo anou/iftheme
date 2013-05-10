@@ -22,53 +22,43 @@ class WYSIJA_control_back_config extends WYSIJA_control{
        @ini_set('display_errors', '0');
     }
 
-    function form_delete(){
-        /*delete an element from wysija_forms option*/
-        $wysija_forms=json_decode(get_option('wysija_forms'),true);
-        unset($wysija_forms[$_POST['formid']]);
-        WYSIJA::update_option('wysija_forms', json_encode($wysija_forms));
-        $this->notice('Form deleted');
-        return true;
-    }
-
-    function form_save(){
-        /*add modify an element in the wysija_forms option*/
-        $arrayData=json_decode(stripslashes($_POST['data']),true);
-        $wysija_forms=json_decode(get_option('wysija_forms'),true);
-        if(isset($wysija_forms[$_POST['formid']]))    unset($wysija_forms[$_POST['formid']]);
-        $wysija_forms[$arrayData['id']]=$arrayData;
-        WYSIJA::update_option('wysija_forms', json_encode($wysija_forms));
-        $this->notice('Form added/modified');
-
-        return json_decode(stripslashes($_POST['data']),true);
-    }
-
     function send_test_mail(){
         $this->_displayErrors();
         /*switch the send method*/
         $configVal=$this->_convertPostedInarray();
 
         /*send a test mail*/
-        $toolbox=&WYSIJA::get('email','helper');
-        $res['result']=$toolbox->send_test_mail($configVal);
+        $hEmail=&WYSIJA::get('email','helper');
+        $res['result']=$hEmail->send_test_mail($configVal);
 
         if($res['result']){
-            $modelConf=&WYSIJA::get("config","model");
+            $modelConf=&WYSIJA::get('config','model');
             $modelConf->save(array('sending_emails_ok'=>$res['result']));
         }
         $this->_hideErrors();
         return $res;
     }
 
-    function bounce_connect(){
-
-
+    function send_test_mail_ms(){
+        $this->_displayErrors();
+        /*switch the send method*/
         $configVal=$this->_convertPostedInarray();
 
+        /*send a test mail*/
+        $hEmail=&WYSIJA::get('email','helper');
+        $res['result']=$hEmail->send_test_mail($configVal,true);
+        if($res['result']){
+            $modelConf=&WYSIJA::get('config','model');
+            $modelConf->save(array('ms_sending_emails_ok'=>$res['result']));
+        }
+        //$this->_hideErrors();
+        return $res;
+    }
 
-
+    function bounce_connect(){
+        $configVal=$this->_convertPostedInarray();
         /*try to connect to thebounce server*/
-        $bounceClass=&WYSIJA::get("bounce","helper");
+        $bounceClass=&WYSIJA::get('bounce','helper');
         $bounceClass->report = true;
         $res['result']=false;
         if($bounceClass->init($configVal)){
@@ -139,17 +129,6 @@ class WYSIJA_control_back_config extends WYSIJA_control{
         return $res;
     }
 
-    function linkshareme(){
-        $this->_displayErrors();
-
-        $modelConf=&WYSIJA::get('config','model');
-        $modelConf->save(array('sharedata'=>true));
-
-        $res['result']=true;
-        $this->_hideErrors();
-        return $res;
-    }
-
     function linkignore(){
         $this->_displayErrors();
 
@@ -166,9 +145,19 @@ class WYSIJA_control_back_config extends WYSIJA_control{
         return $res;
     }
 
+    // Ajax called function to enable analytics sharing from welcome page.
+    function share_analytics() {
+        $this->_displayErrors();
+
+        $model_config =& WYSIJA::get('config','model');
+        $model_config->save(array('analytics' => 1));
+
+        $res['result'] = true;
+        $this->_hideErrors();
+        return $res;
+    }
 
     function validate(){
-
         $helpLic=&WYSIJA::get('licence','helper');
         $res=$helpLic->check();
 
@@ -200,4 +189,154 @@ class WYSIJA_control_back_config extends WYSIJA_control{
         return $configVal;
     }
 
+    // WYSIJA Form Editor
+    function wysija_form_generate_template() {
+        $field = array();
+
+        if(isset($_POST['wysijaData'])) {
+            // decode the data string
+            $decoded_data = base64_decode($_POST['wysijaData']);
+
+            // avoid using stripslashes as it's not reliable depending on the magic quotes settings
+            $json_data = str_replace('\"', '"', $decoded_data);
+            $field = json_decode($json_data, true);
+
+            $helper_form_engine =& WYSIJA::get('form_engine', 'helper');
+            return base64_encode($helper_form_engine->render_editor_template($field));
+        }
+    }
+
+    function form_name_save() {
+        // get name from post and stripslashes it
+        $form_name = trim(stripslashes($_POST['name']));
+        // get form_id from post
+        $form_id = (int)$_POST['form_id'];
+
+        if(strlen($form_name) > 0 && $form_id > 0) {
+            // update the form name within the database
+            $model_forms =& WYSIJA::get('forms', 'model');
+            $model_forms->update(array('name' => $form_name), array('form_id' => $form_id));
+        }
+        return array('name' => $form_name);
+    }
+
+    function form_save() {
+        // get form id
+        $form_id = null;
+        if(isset($_POST['form_id']) && (int)$_POST['form_id'] > 0) {
+            $form_id = (int)$_POST['form_id'];
+        }
+
+        // decode json data and convert to array
+        $raw_data = null;
+        if(isset($_POST['wysijaData'])) {
+            // decode the data string
+            $decoded_data = base64_decode($_POST['wysijaData']);
+
+            // avoid using stripslashes as it's not reliable depending on the magic quotes settings
+            $json_data = str_replace('\"', '"', $decoded_data);
+            // decode JSON data
+            $raw_data = json_decode($json_data, true);
+        }
+
+        if($form_id === null or $raw_data === null) {
+            $this->error('Error saving', false);
+            return array('result' => false);
+        } else {
+
+            // flag to see if the user can select his own lists
+            $has_list_selection = false;
+            $raw_data['settings']['lists_selected_by'] = 'admin';
+
+            // special case for block params, as we base64_encode the values and serialize arrays, so let's decode it before saving it
+            foreach($raw_data['body'] as $block_id => $block) {
+                if(isset($block['params']) && !empty($block['params'])) {
+                    $params = array();
+
+                    foreach($block['params'] as $key => $value) {
+                        $value = base64_decode($value);
+                        if(is_serialized($value) === true) {
+                            $value = unserialize($value);
+                        }
+                        $params[$key] = $value;
+                    }
+
+                    if(!empty($params)) {
+                        $raw_data['body'][$block_id]['params'] = $params;
+                    }
+                }
+                // special case when the list selection widget is present
+                if($block['type'] === 'list') {
+                    $has_list_selection = true;
+
+                    $lists = array();
+                    foreach($params['values'] as $list) {
+                        $lists[] = (int)$list['list_id'];
+                    }
+
+                    // override lists in form settings
+                    $raw_data['settings']['lists'] = $lists;
+                    $raw_data['settings']['lists_selected_by'] = 'user';
+                }
+            }
+
+            // make sure the lists parameter is an array, otherwise it's not gonna work for a single list
+            if($has_list_selection === false) {
+                if(!is_array($raw_data['settings']['lists'])) {
+                    $raw_data['settings']['lists'] = array((int)$raw_data['settings']['lists']);
+                }
+            }
+
+            // set form id into data so we can track who subscribed through it
+            $raw_data['form_id'] = $form_id;
+
+            // set data in form engine so we can generate the render the web version
+            $helper_form_engine =& WYSIJA::get('form_engine', 'helper');
+            $helper_form_engine->set_data($raw_data);
+
+            // check if the form has already been inserted in a widget and therefore display different success message
+            $widgets = get_option('widget_wysija');
+            $is_form_added_as_widget = false;
+            if($widgets !== false) {
+                foreach($widgets as $widget) {
+                    if(is_array($widget) && isset($widget['form']) && (int)$widget['form'] === $form_id) {
+                        $is_form_added_as_widget = true;
+                    }
+
+                }
+            }
+            if($is_form_added_as_widget === true) {
+                $save_message = __('Saved! The changes are already active in your widget.', WYSIJA);
+            } else {
+                $save_message = str_replace(array(
+                       '[link_widget]',
+                       '[/link_widget]'
+                    ), array(
+                        '<a href="'.admin_url('widgets.php').'" target="_blank">',
+                        '</a>'
+                    ),
+                    __('Saved! Add this form to [link_widget]a widget[/link_widget]', WYSIJA)
+                );
+            }
+
+            // update form data in DB
+            $model_forms =& WYSIJA::get('forms', 'model');
+            $model_forms->reset();
+            $result = $model_forms->update(array(
+                // get encoded data to store it in the database
+                'data' => $helper_form_engine->get_encoded('data')
+            ), array('form_id' => $form_id));
+
+            // return response depending on db save result
+            if(!$result) {
+                // throw error
+                $this->error(__('Your form could not be saved', WYSIJA));
+            } else {
+                // save successful
+                $this->notice(__('Your form has been saved', WYSIJA));
+            }
+        }
+
+        return array('result' => $result, 'save_message' => base64_encode($save_message), 'exports' => base64_encode($helper_form_engine->render_editor_export($form_id)));
+    }
 }

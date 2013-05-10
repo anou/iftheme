@@ -3,7 +3,7 @@ defined('WYSIJA') or die('Restricted access');
 class WYSIJA_help_import extends WYSIJA_object{
     function WYSIJA_help_import(){
     }
-    
+
     function getPluginsInfo($table=false){
         $pluginsTest=array(
             'newsletter'=>array(
@@ -197,24 +197,25 @@ class WYSIJA_help_import extends WYSIJA_object{
         
         global $wpdb;
         
-        $model=&WYSIJA::get("list","model");
+        $model=&WYSIJA::get('list','model');
         
         if(!$isSynch){
-            if($issyncwp)   $listname="<b><i>".__("Synched",WYSIJA)."</i></b> ".$plugInfo["name"];
+            if($issyncwp)   $listname=__('WordPress Users',WYSIJA);
             else $listname=sprintf(__('%1$s\'s import list',WYSIJA),$plugInfo["name"]);
             $descriptionList=sprintf(__('The list created automatically on import of the plugin\'s subscribers : "%1$s',WYSIJA),$plugInfo["name"]);
             
             $defaultListId=$model->insert(array(
-                "name"=>$listname,
-                "description"=>$descriptionList,
-                "is_enabled"=>0,
-                "namekey"=>$tablename));
-        }else $defaultListId=$isSynch["wysija_list_main_id"];
+                'name'=>$listname,
+                'description'=>$descriptionList,
+                'is_enabled'=>0,
+                'namekey'=>$tablename));
+        }else $defaultListId=$isSynch['wysija_list_main_id'];
 
         $mktime=time();
         $mktimeConfirmed=$mktime+1;
         if(strpos($tablename, 'query-')!==false){
             $lowertbname=str_replace('-', '_', $tablename);
+
             $matches=apply_filters('wysija_fields_'.$lowertbname);
             $querySelect=apply_filters('wysija_select_'.$lowertbname);
             $querySelect=str_replace('[created_at]', $mktime, $querySelect);
@@ -223,14 +224,14 @@ class WYSIJA_help_import extends WYSIJA_object{
         }else{
             
             
-            $colsPlugin=array_keys($plugInfo["matches"]);
+            $colsPlugin=array_keys($plugInfo['matches']);
             $extracols=$extravals="";
-            if(isset($plugInfo["matchesvar"])){
+            if(isset($plugInfo['matchesvar'])){
                 $extracols=",`".implode("`,`",array_keys($plugInfo["matchesvar"]))."`";
                 $extravals=",".implode(",",$plugInfo["matchesvar"]);
             }
             
-            if(isset($plugInfo["whereunconfirmed"])){
+            if(isset($plugInfo['whereunconfirmed'])){
                 $fields="(`".implode("`,`",$plugInfo["matches"])."`,`created_at` ".$extracols." )";
                 $values="`".implode("`,`",$colsPlugin)."`,".$mktime.$extravals;
                 

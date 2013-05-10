@@ -3,7 +3,7 @@
 Plugin Name: Category Order and Taxonomy Terms Order
 Plugin URI: http://www.nsp-code.com
 Description: Category Order and Taxonomy Terms Order
-Version: 1.2.9
+Version: 1.3.0
 Author: Nsp-Code
 Author URI: http://www.nsp-code.com
 Author Email: electronice_delphi@yahoo.com
@@ -107,9 +107,9 @@ function TOPluginMenu()
                     continue;                
                 
                 if ($post_type == 'post')
-                            add_submenu_page('edit.php', 'Taxonomy Order', __('Taxonomy Order','to'), 'level_'.$options['level'], 'to-interface-'.$post_type, 'TOPluginInterface' );
+                            add_submenu_page('edit.php', 'Taxonomy Order', 'Taxonomy Order', 'level_'.$options['level'], 'to-interface-'.$post_type, 'TOPluginInterface' );
                             else
-                            add_submenu_page('edit.php?post_type='.$post_type, 'Taxonomy Order', __('Taxonomy Order','to'), 'level_'.$options['level'], 'to-interface-'.$post_type, 'TOPluginInterface' );
+                            add_submenu_page('edit.php?post_type='.$post_type, 'Taxonomy Order', 'Taxonomy Order', 'level_'.$options['level'], 'to-interface-'.$post_type, 'TOPluginInterface' );
             }
     }
     

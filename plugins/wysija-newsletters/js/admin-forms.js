@@ -1,0 +1,1 @@
+$(document).observe("dom:loaded",function(){$("wysija-form-editor").observe("click",function(){console.log("clicked!");return false})});

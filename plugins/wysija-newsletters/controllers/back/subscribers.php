@@ -5,6 +5,7 @@ class WYSIJA_control_back_subscribers extends WYSIJA_control_back{
     var $view="subscribers";
     var $list_columns=array("user_id","firstname", "lastname","email","created_at");
     var $searchable=array('email',"firstname", "lastname");
+    var $_export_batch = 2000; //set batch of records, useful when retrieving the list of user Ids to export
 
     function WYSIJA_control_back_subscribers(){
 
@@ -34,27 +35,37 @@ class WYSIJA_control_back_subscribers extends WYSIJA_control_back{
             }
 
             //0 - get current lists of the user
-            $userlists=$modelUL->get(array('list_id'),array('user_id'=>$id));
+            $userlists=$modelUL->get(array('list_id','unsub_date'),array('user_id'=>$id));
 
             $oldlistids=$newlistids=array();
-            foreach($userlists as $listdata)    $oldlistids[]=$listdata['list_id'];
+            foreach($userlists as $listdata)    $oldlistids[$listdata['list_id']]=$listdata['unsub_date'];
 
             $config=&WYSIJA::get('config','model');
             $dbloptin=$config->getValue('confirm_dbleoptin');
             //1 - insert new user_list
             if(isset($_POST['wysija']['user_list']) && $_POST['wysija']['user_list']){
-                foreach($_POST['wysija']['user_list']['list_id'] as $list_id){
-                    if(!in_array($list_id, $oldlistids)){
-                        $modelUL->reset();
-                        $newlistids[]=$list_id;
-                        $dataul=array('user_id'=>$id,'list_id'=>$list_id,'sub_date'=>time());
-                        if($dbloptin && (int)$_POST['wysija']['user']['status']<1)  unset($dataul['sub_date']);
-                        $modelUL->insert($dataul);
-
-                    }else{
-                        $alreadysubscribelistids[]=$list_id;
+                $modelUL->reset();
+                $modelUL->update(array('sub_date'=>time()),array('user_id'=>$id));
+                if(!empty($_POST['wysija']['user_list']['list_id'])){
+                    foreach($_POST['wysija']['user_list']['list_id'] as $list_id){
+                        //if the list is not already recorded for the user then we will need to insert it
+                        if(!isset($oldlistids[$list_id])){
+                            $modelUL->reset();
+                            $newlistids[]=$list_id;
+                            $dataul=array('user_id'=>$id,'list_id'=>$list_id,'sub_date'=>time());
+                            //if double optin is on and user is unconfirmed or unsubscribed, then we need to set it as unconfirmed subscription
+                            if($dbloptin && (int)$_POST['wysija']['user']['status']<1)  unset($dataul['sub_date']);
+                            $modelUL->insert($dataul);
+                        //if the list is recorded already then let's check the status, if it is an unsubed one then we update it
+                        }else{
+                            if($oldlistids[$list_id]>0){
+                                $modelUL->reset();
+                                $modelUL->update(array('unsub_date'=>0,'sub_date'=>time()),array('user_id'=>$id,'list_id'=>$list_id));
+                            }
+                        }
                     }
                 }
+
             }
 
             //if a confirmation email needs to be sent then we send it
@@ -63,9 +74,16 @@ class WYSIJA_control_back_subscribers extends WYSIJA_control_back{
                 $hUser->sendConfirmationEmail($id,true,$newlistids);
             }
 
-            $notEqual=array_merge($core_listids, $_POST['wysija']['user_list']['list_id']);
+            if((int)$_POST['wysija']['user']['status']==0 || (int)$_POST['wysija']['user']['status']==1){
+                $modelUL->reset();
+                $modelUL->update(array('unsub_date'=>0,'sub_date'=>time()),array('user_id'=>$id,'list_id'=>$core_listids));
+            }
 
-            //delete the lists to which you've unsubscribed
+            $arrayLists=array();
+            if(isset($_POST['wysija']['user_list']['list_id'])) $arrayLists=$_POST['wysija']['user_list']['list_id'];
+            $notEqual=array_merge($core_listids, $arrayLists);
+
+            //delete the lists to which you've unsubscribed except the core ones
             $condiFirst=array('notequal'=>array('list_id'=> $notEqual ),'equal'=>array('user_id'=>$id,'unsub_date'=>0));
             $modelUL=&WYSIJA::get('user_list','model');
             $modelUL->delete($condiFirst);
@@ -84,9 +102,6 @@ class WYSIJA_control_back_subscribers extends WYSIJA_control_back{
                 return $this->add($data);
             }
         }
-
-
-        //$this->notice(__("Subscriber's details saved.",WYSIJA));
         $this->redirect();
         return true;
     }
@@ -96,33 +111,40 @@ class WYSIJA_control_back_subscribers extends WYSIJA_control_back{
         $this->js[]='wysija-admin-list';
         $this->viewObj->msgPerPage=__('Subscribers per page:',WYSIJA);
 
-        $this->jsTrans["selecmiss"]=__('Please select some users first!',WYSIJA);
-        $filterJoin=false;
-        /*get the filters*/
+        $this->jsTrans['selecmiss']=__('Select at least 1 subscriber!',WYSIJA);
+        $orphaned=$filterJoin=false;
+        //get the filters
         if(isset($_REQUEST['search']) && $_REQUEST['search']){
-            $this->filters["like"]=array();
+            $this->filters['like']=array();
             $_REQUEST['search']=trim($_REQUEST['search']);
             foreach($this->searchable as $field)
-                $this->filters["like"][$field]=trim($_REQUEST['search']);
+                $this->filters['like'][$field]=trim($_REQUEST['search']);
         }
 
+        // Lists filters
         if(isset($_REQUEST['filter-list']) && $_REQUEST['filter-list']){
-            $this->filters["equal"]=array('list_id'=>$_REQUEST['filter-list']);
-            $filterJoin=true;
+            if ($_REQUEST['filter-list'] == 'orphaned') {
+                $this->filters['equal']=array('list_id' => null);
+                $orphaned = true;
+            } else {
+                //we only get subscribed or unconfirmed users
+                $this->filters['equal']=array('list_id' => $_REQUEST['filter-list']);
+                $filterJoin=true;
+            }
         }
+
         $config=&WYSIJA::get('config','model');
         if(isset($_REQUEST['link_filter']) && $_REQUEST['link_filter']){
             switch($_REQUEST['link_filter']){
-                case "unconfirmed":
-                    $this->filters["equal"]=array('status'=>0);
+                case 'unconfirmed':
+                    $this->filters['equal']=array('status'=>0);
                     break;
-                case "unsubscribed":
-                    $this->filters["equal"]=array('status'=>-1);
+                case 'unsubscribed':
+                    $this->filters['equal']=array('status'=>-1);
                     break;
-                case "subscribed":
-
-                    if($config->getValue("confirm_dbleoptin"))  $this->filters["equal"]=array('status'=>1);
-                    else $this->filters["greater_eq"]=array('status'=>0);
+                case 'subscribed':
+                    if($config->getValue('confirm_dbleoptin'))  $this->filters['equal']=array('status'=>1);
+                    else $this->filters['greater_eq']=array('status'=>0);
                     break;
             }
         }
@@ -130,32 +152,38 @@ class WYSIJA_control_back_subscribers extends WYSIJA_control_back{
         $this->modelObj->noCheck=true;
 
 
-        /* 0 - counting request */
-
+        //0 - counting request */
         if($filterJoin){
-            $queryCmmonStart="SELECT count(distinct A.user_id) as users FROM `[wysija]user_list` as B";
-            $queryCmmonStart.=" JOIN `[wysija]".$this->modelObj->table_name."` as A on A.user_id=B.user_id";
-        }else{
-            $queryCmmonStart="SELECT count(distinct A.user_id) as users FROM `[wysija]".$this->modelObj->table_name."` as A";
+
+            $queryCmmonStart='SELECT count(distinct A.user_id) as users FROM `[wysija]user_list` as B';
+            $queryCmmonStart.=' JOIN `[wysija]'.$this->modelObj->table_name.'` as A on A.user_id=B.user_id';
+
+        } elseif($orphaned) {
+
+            $queryCmmonStart='SELECT count(distinct A.user_id) as users FROM `[wysija]user` as B';
+            $queryCmmonStart.=' JOIN `[wysija]user_list` as A on A.user_id=B.user_id';
+
+        } else {
+            $queryCmmonStart='SELECT count(distinct A.user_id) as users FROM `[wysija]'.$this->modelObj->table_name.'` as A';
         }
 
 
-        /* all the counts query */
+        //all the counts query */
 
-        $query="SELECT count(user_id) as users, status FROM `[wysija]".$this->modelObj->table_name."` GROUP BY status";
-        $countss=$this->modelObj->query("get_res",$query,ARRAY_A);
+        $query='SELECT count(user_id) as users, status FROM `[wysija]'.$this->modelObj->table_name.'` GROUP BY status';
+        $countss=$this->modelObj->query('get_res',$query,ARRAY_A);
         $counts=array();
         $total=0;
 
         foreach($countss as $count){
             switch($count['status']){
-                case "0":
+                case '0':
                     $type='unconfirmed';
                     break;
-                case "-1":
+                case '-1':
                     $type='unsubscribed';
                     break;
-                case "1":
+                case '1':
                     $type='subscribed';
                     break;
             }
@@ -163,15 +191,15 @@ class WYSIJA_control_back_subscribers extends WYSIJA_control_back{
             $counts[$type]=$count['users'];
         }
         //if(!isset($counts["unconfirmed"])) $counts["unconfirmed"]=0;
-        if(!$config->getValue("confirm_dbleoptin"))  {
-            if(isset($counts["subscribed"])) {
-                if(isset($counts["unconfirmed"]))   $counts["subscribed"]=$counts["subscribed"]+$counts["unconfirmed"];
-                else $counts["subscribed"]=$counts["subscribed"];
+        if(!$config->getValue('confirm_dbleoptin'))  {
+            if(isset($counts['subscribed'])) {
+                if(isset($counts['unconfirmed']))   $counts['subscribed']=$counts['subscribed']+$counts['unconfirmed'];
+                else $counts['subscribed']=$counts['subscribed'];
 
             }else{
-                $counts["subscribed"]=$counts["unconfirmed"];
+                $counts['subscribed']=$counts['unconfirmed'];
             }
-            unset($counts["unconfirmed"]);
+            unset($counts['unconfirmed']);
 
         }
 
@@ -182,26 +210,34 @@ class WYSIJA_control_back_subscribers extends WYSIJA_control_back{
         if($this->filters)  $this->modelObj->setConditions($this->filters);
 
 
-        /* 1 - user request */
+        //1 - user request
 
         if($filterJoin){
-            $query="SELECT A.user_id, A.firstname, A.lastname,A.status , A.email, A.created_at FROM `[wysija]user_list` as B";
+
+            $query="SELECT distinct(A.user_id), A.firstname, A.lastname,A.status , A.email, A.created_at FROM `[wysija]user_list` as B";
             $query.=" JOIN `[wysija]".$this->modelObj->table_name."` as A on A.user_id=B.user_id";
-        }else{
-            $query="SELECT A.user_id, A.firstname, A.lastname,A.status , A.email, A.created_at FROM `[wysija]".$this->modelObj->table_name."` as A";
+
+        }elseif($orphaned) {
+
+            $query="SELECT distinct(A.user_id), A.firstname, A.lastname,A.status , A.email, A.created_at FROM `[wysija]user` as A";
+            $query.=" LEFT JOIN `[wysija]user_list` as B on B.user_id=A.user_id";
+
+        } else {
+            $query="SELECT distinct(A.user_id), A.firstname, A.lastname,A.status , A.email, A.created_at FROM `[wysija]".$this->modelObj->table_name."` as A";
         }
 
         $queryFinal=$this->modelObj->makeWhere();
 
         /* without filter we already have the total number of subscribers */
         if($this->filters)  $this->modelObj->countRows=$this->modelObj->count($queryCmmonStart.$queryFinal,'users');
+
         else $this->modelObj->countRows=$counts['all'];
 
-        $orderby=" ORDER BY ";
+        $orderby=' ORDER BY ';
         if(isset($_REQUEST['orderby'])){
-            $orderby.=$_REQUEST['orderby']." ".$_REQUEST['ordert'];
+            $orderby.=$_REQUEST['orderby'].' '.$_REQUEST['ordert'];
         }else{
-            $orderby.=$this->modelObj->pk." desc";
+            $orderby.=$this->modelObj->pk.' desc';
         }
 
         $this->data['subscribers']=$this->modelObj->getResults($query.$queryFinal." ".$orderby.$this->modelObj->setLimit());
@@ -240,7 +276,7 @@ class WYSIJA_control_back_subscribers extends WYSIJA_control_back{
         /* 3 - user_list request */
         if($user_ids){
             $modeluList=&WYSIJA::get('user_list','model');
-            $userlists=$modeluList->get(array('list_id','user_id'),array('user_id'=>$user_ids,'unsub_date'=>0));
+            $userlists=$modeluList->get(array('list_id','user_id','unsub_date'),array('user_id'=>$user_ids));
         }
 
 
@@ -258,39 +294,51 @@ class WYSIJA_control_back_subscribers extends WYSIJA_control_back{
             if($userlists){
                 foreach($userlists as $key=>$userlist){
                     if($subscriber['user_id']==$userlist['user_id'] && isset($lists[$userlist['list_id']])){
-                        if(!isset($this->data['subscribers'][$keysus]['lists']) ){
+                        //what kind of list ist it ? unsubscribed ? or not
 
-                            $this->data['subscribers'][$keysus]['lists']=$this->data['lists'][$userlist['list_id']]['name'];
+                        if($userlist['unsub_date']>0){
+                            if(!isset($this->data['subscribers'][$keysus]['unsub_lists']) ){
+                                $this->data['subscribers'][$keysus]['unsub_lists']=$this->data['lists'][$userlist['list_id']]['name'];
+                            }else{
+                                $this->data['subscribers'][$keysus]['unsub_lists'].=', '.$this->data['lists'][$userlist['list_id']]['name'];
+                            }
+                       }else{
+                            if(!isset($this->data['subscribers'][$keysus]['lists']) ){
+                                $this->data['subscribers'][$keysus]['lists']=$this->data['lists'][$userlist['list_id']]['name'];
+                            }else{
+                                $this->data['subscribers'][$keysus]['lists'].=', '.$this->data['lists'][$userlist['list_id']]['name'];
+                            }
+
                         }
-                        else $this->data['subscribers'][$keysus]['lists'].=', '.$lists[$userlist['list_id']]['name'];
+
                     }
                 }
             }
         }
 
         if(!$this->data['subscribers']){
-            $this->notice(__("Yikes! Couldn't find any subscribers.",WYSIJA));
+            $this->notice(__('Yikes! Couldn\'t find any subscribers.',WYSIJA));
         }
 
     }
 
     function main(){
-         $this->messages['insert'][true]=__("Subscriber has been saved.",WYSIJA);
-        $this->messages['insert'][false]=__("Subscriber has not been saved.",WYSIJA);
-        $this->messages['update'][true]=__("Subscriber has been modified.",WYSIJA);
-        $this->messages['update'][false]=__("Subscriber has not been modified.",WYSIJA);
+         $this->messages['insert'][true]=__('Subscriber has been saved.',WYSIJA);
+        $this->messages['insert'][false]=__('Subscriber has not been saved.',WYSIJA);
+        $this->messages['update'][true]=__('Subscriber has been modified. [link]Edit again[/link].',WYSIJA);
+        $this->messages['update'][false]=__('Subscriber has not been modified.',WYSIJA);
         parent::WYSIJA_control_back();
 
-        /*we change the default model of the controller based on the action*/
+        //we change the default model of the controller based on the action
         if(isset($_REQUEST['action'])){
             switch($_REQUEST['action']){
-                case "listsedit":
-                case "savelist":
-                case "lists":
-                    $this->model="list";
+                case 'listsedit':
+                case 'savelist':
+                case 'lists':
+                    $this->model='list';
                     break;
                 default:
-                    $this->model="user";
+                    $this->model='user';
             }
         }
 
@@ -337,6 +385,7 @@ class WYSIJA_control_back_subscribers extends WYSIJA_control_back{
     function lists(){
         $this->js[]='wysija-admin-list';
         $this->_commonlists();
+
         $this->modelObj=&WYSIJA::get('list','model');
         $this->viewObj->title=__('Edit lists',WYSIJA);
         $this->modelObj->countRows=$this->modelObj->count();
@@ -349,7 +398,7 @@ class WYSIJA_control_back_subscribers extends WYSIJA_control_back{
         $this->_commonlists();
         $this->data['form']=$this->_getForm($_REQUEST['id']);
 
-        $this->viewObj->title=sprintf(__('Editing list %1$s',WYSIJA), "<b><i>".$this->data['form']['name']."</i></b>");
+        $this->viewObj->title=sprintf(__('Editing list %1$s',WYSIJA), '<b><i>'.$this->data['form']['name'].'</i></b>');
     }
 
     function addlist(){
@@ -365,30 +414,30 @@ class WYSIJA_control_back_subscribers extends WYSIJA_control_back{
          * 1 duplicate the list
          * 2 duplicate the list's subscribers
          */
-        $model=&WYSIJA::get("list","model");
-        $data=$model->getOne(array("name","welcome_mail_id","unsub_mail_id"),array("list_id"=>(int)$_REQUEST['id']));
+        $model=&WYSIJA::get('list','model');
+        $data=$model->getOne(array('name','namekey','welcome_mail_id','unsub_mail_id'),array('list_id'=>(int)$_REQUEST['id']));
 
-        $query="INSERT INTO `[wysija]email` (`created_at`,`campaign_id`,`subject`,`body`,`from_email`,`from_name`,`replyto_email`,`replyto_name`,`attachments`,`status`)
-            SELECT ".time().",`campaign_id`,`subject`,`body`,`from_email`,`from_name`,`replyto_email`,`replyto_name`,`attachments`,`status` FROM [wysija]email
-            WHERE email_id=".(int)$data['welcome_mail_id'];
+        $query='INSERT INTO `[wysija]email` (`created_at`,`campaign_id`,`subject`,`body`,`from_email`,`from_name`,`replyto_email`,`replyto_name`,`attachments`,`status`)
+            SELECT '.time().',`campaign_id`,`subject`,`body`,`from_email`,`from_name`,`replyto_email`,`replyto_name`,`attachments`,`status` FROM [wysija]email
+            WHERE email_id='.(int)$data['welcome_mail_id'];
         $emailWelcomeid=$model->query($query);
 
 
-        $query="INSERT INTO `[wysija]email` (`created_at`,`campaign_id`,`subject`,`body`,`from_email`,`from_name`,`replyto_email`,`replyto_name`,`attachments`,`status`)
-            SELECT ".time().",`campaign_id`,`subject`,`body`,`from_email`,`from_name`,`replyto_email`,`replyto_name`,`attachments`,`status` FROM [wysija]email
-            WHERE email_id=".(int)$data['unsub_mail_id'];
+        $query='INSERT INTO `[wysija]email` (`created_at`,`campaign_id`,`subject`,`body`,`from_email`,`from_name`,`replyto_email`,`replyto_name`,`attachments`,`status`)
+            SELECT '.time().',`campaign_id`,`subject`,`body`,`from_email`,`from_name`,`replyto_email`,`replyto_name`,`attachments`,`status` FROM [wysija]email
+            WHERE email_id='.(int)$data['unsub_mail_id'];
         $emailUnsubid=$model->query($query);
 
 
-        $query='INSERT INTO `[wysija]list` (`created_at`,`name`,`description`,`welcome_mail_id`,`unsub_mail_id`,`is_enabled`,`ordering`)
-            SELECT '.time().',"'.stripslashes(__("Copy of ",WYSIJA)).$data['name'].'" ,`description`,'.$emailWelcomeid.','.$emailUnsubid.' ,1,`ordering` FROM [wysija]list
+        $query='INSERT INTO `[wysija]list` (`created_at`,`name`,`namekey`,`description`,`welcome_mail_id`,`unsub_mail_id`,`is_enabled`,`ordering`)
+            SELECT '.time().',"'.stripslashes(__('Copy of ',WYSIJA)).$data['name'].'" ,"copy_'.$data['namekey'].time().'" ,`description`,'.$emailWelcomeid.','.$emailUnsubid.' ,1,`ordering` FROM [wysija]list
             WHERE list_id='.(int)$_REQUEST['id'];
 
         $listid=$model->query($query);
 
-        $query="INSERT INTO `[wysija]user_list` (`list_id`,`user_id`,`sub_date`,`unsub_date`)
-            SELECT ".$listid.",`user_id`,`sub_date`,`unsub_date` FROM [wysija]user_list
-            WHERE list_id=".(int)$_REQUEST['id'];
+        $query='INSERT INTO `[wysija]user_list` (`list_id`,`user_id`,`sub_date`,`unsub_date`)
+            SELECT '.$listid.',`user_id`,`sub_date`,`unsub_date` FROM [wysija]user_list
+            WHERE list_id='.(int)$_REQUEST['id'];
 
         $model->query($query);
 
@@ -406,10 +455,9 @@ class WYSIJA_control_back_subscribers extends WYSIJA_control_back{
         $this->data=array();
         $this->data['user']=false;
         if($data)$this->data['user']=$data;
-        $modelList=&WYSIJA::get("list","model");
+        $modelList=&WYSIJA::get('list','model');
         $modelList->limitON=false;
-        $this->data['list']=$modelList->get(false,array("greater"=>array("is_enabled"=>"0") ));
-
+        $this->data['list']=$modelList->get(false,array('greater'=>array('is_enabled'=>'0') ));
 
     }
 
@@ -430,32 +478,33 @@ class WYSIJA_control_back_subscribers extends WYSIJA_control_back{
             $this->js[]='wysija-charts';
 
             $this->data=array();
-            $this->data['user']=$this->modelObj->getDetails(array("user_id"=>$id),true);
+            $this->data['user']=$this->modelObj->getDetails(array('user_id'=>$id),true);
             if(!$this->data['user']){
-                $this->notice(__("No subscriber found, most probably because he was deleted.",WYSIJA));
+                $this->notice(__('No subscriber found, most probably because he was deleted.',WYSIJA));
                 return $this->redirect();
             }
-            $modelList=&WYSIJA::get("list","model");
+            $modelList=&WYSIJA::get('list','model');
             $modelList->limitON=false;
-            $this->data['list']=$modelList->get(false,array("greater"=>array("is_enabled"=>"0") ));
+            $modelList->orderBy('is_enabled','DESC');
+            $this->data['list']=$modelList->get(false,array('greater'=>array('is_enabled'=>'-1') ));
 
-            /* we prepare the data to be pased to the charts script*/
-            $this->data['charts']['title']=" ";
+            //we prepare the data to be pased to the charts script
+            $this->data['charts']['title']=' ';
             $this->data['charts']['stats']=array();
 
             //group email user stats by status where userid
-            $modelEUS=&WYSIJA::get('email_user_stat',"model");
-            $modelEUS->setConditions(array("equal"=>array("user_id"=>$id)));
-            $query="SELECT count(email_id) as emails, status FROM `[wysija]".$modelEUS->table_name."`";
+            $modelEUS=&WYSIJA::get('email_user_stat','model');
+            $modelEUS->setConditions(array('equal'=>array('user_id'=>$id)));
+            $query='SELECT count(email_id) as emails, status FROM `[wysija]'.$modelEUS->table_name."`";
             $query.=$modelEUS->makeWhere();
-            $query.=" GROUP BY status";
-            $countss=$modelEUS->query("get_res",$query,ARRAY_A);
+            $query.=' GROUP BY status';
+            $countss=$modelEUS->query('get_res',$query,ARRAY_A);
 
-            $statuses=array('-1'=>__('Bounced',WYSIJA),'0'=>__('Unopened',WYSIJA),'1'=>__('Opened',WYSIJA),'2'=>__('Clicked',WYSIJA),'3'=>__('Unsubscribed',WYSIJA));
+            //-2 is an automatic unsubscribed made through bounce processing
+            $statuses=array('-1'=>__('Bounced',WYSIJA),'0'=>__('Unopened',WYSIJA),'1'=>__('Opened',WYSIJA),'2'=>__('Clicked',WYSIJA),'3'=>__('Unsubscribed',WYSIJA) ,'-2'=>__('Unsubscribed',WYSIJA));
             foreach($countss as $count){
-                $this->data['charts']['stats'][]=array("name"=>$statuses[$count['status']],"number"=>$count['emails']);
+                $this->data['charts']['stats'][]=array('name'=>$statuses[$count['status']],'number'=>$count['emails']);
             }
-
 
             //email_user_url
             $modelEUU=&WYSIJA::get('email_user_url','model');
@@ -469,15 +518,13 @@ class WYSIJA_control_back_subscribers extends WYSIJA_control_back{
                 $v['url']=urldecode(utf8_encode($v['url']));
             }
 
-
             $chartsencoded=base64_encode(json_encode($this->data['charts']));
-            wp_enqueue_script('wysija-admin-subscribers-edit-manual', WYSIJA_URL."js/admin-subscribers-edit-manual.php?data=".$chartsencoded, array( 'wysija-charts' ), true);
+            wp_enqueue_script('wysija-admin-subscribers-edit-manual', WYSIJA_URL.'js/admin-subscribers-edit-manual.php?data='.$chartsencoded, array( 'wysija-charts' ), true);
 
-            $this->viewObj->title=__('Edit',WYSIJA)." ".$this->data['user']['details']['email'];
-
+            $this->viewObj->title=__('Edit',WYSIJA).' '.$this->data['user']['details']['email'];
 
         }else{
-            $this->error("Cannot edit element primary key is missing : ". get_class($this));
+            $this->error('Cannot edit element primary key is missing : '. get_class($this));
         }
 
     }
@@ -492,11 +539,13 @@ class WYSIJA_control_back_subscribers extends WYSIJA_control_back{
          * 4 delete the list
          */
         $model=&WYSIJA::get('list','model');
-        $data=$model->getOne(array('name','welcome_mail_id'),array('list_id'=>(int)$_REQUEST['id']));
+        $data=$model->getOne(array('name','namekey','welcome_mail_id'),array('list_id'=>(int)$_REQUEST['id']));
 
-        if($data && ($data['namekey']!='users')){
-            $modelRECYCLE=&WYSIJA::get('email','model');
-            $modelRECYCLE->delete(array('email_id'=>$data['welcome_mail_id']));
+        if($data && isset($data['namekey']) && ($data['namekey']!='users')){
+
+            //there is no welcome email per list that's old stuff
+            //$modelRECYCLE=&WYSIJA::get('email','model');
+            //$modelRECYCLE->delete(array('email_id'=>$data['welcome_mail_id']));
 
             $modelRECYCLE=&WYSIJA::get('user_list','model');
             $modelRECYCLE->delete(array('list_id'=>$_REQUEST['id']));
@@ -505,9 +554,7 @@ class WYSIJA_control_back_subscribers extends WYSIJA_control_back{
             $modelRECYCLE->delete(array('list_id'=>$_REQUEST['id']));
 
             $model->reset();
-            $model->delete(array("list_id"=>$_REQUEST['id']));
-
-
+            $model->delete(array('list_id'=>$_REQUEST['id']));
 
             $this->notice(sprintf(__('List "%1$s" has been deleted.',WYSIJA),$data['name']));
         }else{
@@ -670,7 +717,7 @@ class WYSIJA_control_back_subscribers extends WYSIJA_control_back{
 
         $this->data=array();
 
-        /*is it a text import or a file import?*/
+        //is it a text import or a file import?*/
         if($_POST['wysija']['import']['type']=="copy"){
             if(!isset($_POST['wysija']['user_list']['csv'])){
                 /* memory limit has been reached*/
@@ -707,7 +754,7 @@ class WYSIJA_control_back_subscribers extends WYSIJA_control_back{
          }
 
 
-        /* try different set of enclosure and separator for the csv which can have different look depending on the data carried */
+        // try different set of enclosure and separator for the csv which can have different look depending on the data carried
         $fieldseparatorToTry=array(',',';',"\t");
         $fieldenclosurToTry=array('"','');
         $foundtheseparator=false;
@@ -728,7 +775,7 @@ class WYSIJA_control_back_subscribers extends WYSIJA_control_back{
             }
         }
 
-         /*if it is not a csv file we come out*/
+         //if it is not a csv file we come out
         if(!$foundtheseparator){
             $this->notice(str_replace(array('[link]','[/link]'),array('<a href="#">','</a>'),__("The data you are trying to import doesn't appear to be in the CSV format (Comma Separated Values). [link]Read more[/link].",WYSIJA)));
             $this->notice(__('The first line of a CSV file should be the column headers : "email","lastname","firstname".',WYSIJA));
@@ -760,16 +807,16 @@ class WYSIJA_control_back_subscribers extends WYSIJA_control_back{
 
         $upload_dir = wp_upload_dir();
 
-        /*try to make a wysija dir to save the import file */
-        $fileHelp=&WYSIJA::get("file","helper");
-        $resultdir=$fileHelp->makeDir("import");
+        //try to make a wysija dir to save the import file
+        $fileHelp=&WYSIJA::get('file','helper');
+        $resultdir=$fileHelp->makeDir('import');
         if(!$resultdir) {
             $this->redirect('admin.php?page=wysija_subscribers&action=import');
             return false;
         }
 
-        $filename="import-".time().".csv";
-        $handle=fopen($resultdir.$filename, "w");
+        $filename='import-'.time().'.csv';
+        $handle=fopen($resultdir.$filename, 'w');
         fwrite($handle, $csv);
         fclose($handle);
 
@@ -790,8 +837,6 @@ class WYSIJA_control_back_subscribers extends WYSIJA_control_back{
         if((count($csvArr)<2) || ((count($csvArr) -1) > $foundEmail)){
             $this->error(sprintf(__('There might be a problem with the list you are trying to import. We have identified %1$s emails out of %2$s rows.',WYSIJA),$foundEmail,count($csvArr)),true);
              $this->data['errormatch'] = true;
-        }else{
-            $this->notice(sprintf(__('We have identified email addresses in the column(s) named "%1$s".',WYSIJA),implode(",",$keyemail)));
         }
 
         $this->data['csv'] = $csvArr;
@@ -821,17 +866,22 @@ class WYSIJA_control_back_subscribers extends WYSIJA_control_back{
     }
 
 
-    function importsave(){
+    function import_save(){
+        @ini_set('max_execution_time',0);
 
         $this->requireSecurity();
         $this->_resetGlobMsg();
 
-        /* import the contacts */
-        /* 1-check that a list is selected and that there is a csv file pasted*/
-        /* 2-save the list if necessary*/
-        /* 3-save the contacts and record them for each list selected*/
+        //to avoid timeout when importing a lot of data apparently.
+        global $wpdb;
+        $wpdb->query('set session wait_timeout=600');
 
-        /* we need to save a new list in that situation*/
+        //import the contacts
+        //1-check that a list is selected and that there is a csv file pasted
+        //2-save the list if necessary
+        //3-save the contacts and record them for each list selected
+
+        //we need to save a new list in that situation
         if(isset($_REQUEST['wysija']['list'])){
             $model=&WYSIJA::get('list','model');
             $data=array();
@@ -845,21 +895,20 @@ class WYSIJA_control_back_subscribers extends WYSIJA_control_back{
             return $this->importmatch();
         }
 
-        /* is it a new list or not */
-        /* try to make a wysija dir */
-
+        //is it a new list or not
+        //try to make a wysija dir
         $csvData=unserialize(base64_decode($_REQUEST['wysija']['dataImport']));
         $csvfilename=$csvData['csv'];
 
-        $fileHelp=&WYSIJA::get("file","helper");
-        $resultFile=$fileHelp->get($csvfilename,"import");
+        $fileHelp=&WYSIJA::get('file','helper');
+        $resultFile=$fileHelp->get($csvfilename,'import');
         if(!$resultFile){
             $upload_dir = wp_upload_dir();
             $this->error(sprintf(__('Cannot access CSV file. Verify access rights to this directory "%1$s"',WYSIJA),$upload_dir['basedir']),true);
             return $this->import();
         }
 
-        /*get the temp csv file*/
+        //get the temp csv file
         $csvdata=file_get_contents($resultFile);
 
         $csvArr = $this->_csvToArray($csvdata,0,$csvData['fsep'],$csvData['fenc']);
@@ -878,29 +927,35 @@ class WYSIJA_control_back_subscribers extends WYSIJA_control_back{
             $datatoinsert['status']='status';
         }
 
-        $queryStart="INSERT IGNORE INTO [wysija]user (`".implode("` ,`",$datatoinsert)."`,`created_at`) VALUES ";
+        $queryStart='INSERT IGNORE INTO [wysija]user (`'.implode('` ,`',$datatoinsert).'`,`created_at`) VALUES ';
 
         //$linescount=count($csvArr);
-        /* detect the emails that are duplicate in the import file */
+        //detect the emails that are duplicate in the import file
         $emailsCount=array();
 
-
-        /* we process the sql insertion 200 by 200 so that we are safe with the server */
+        $header_row=$csvArr[0];
+        //we process the sql insertion 200 by 200 so that we are safe with the server
         $csvChunks=array_chunk($csvArr, 200);
+        $csvArr=null;
         $j=0;
         $linescount=0;
-        $dataNumbers=array('invalid'=>array(),'inserted'=>0,'outof'=>0,'list_added'=>0,'list_user_ids'=>0,'list_list_ids'=>count($_REQUEST['wysija']['user_list']['list']));
-        $allemailsinvalid=array();
+        $dataNumbers=array('invalid'=>array(),'inserted'=>0,'outof'=>0,'list_added'=>0,'list_user_ids'=>0,'list_list_ids'=>count($_REQUEST['wysija']['user_list']['list']),'emails_queued'=>0);
+        $ignored_row_count=0;
         foreach($csvChunks as $keyChunk =>$arra){
-
             foreach($arra as $keyline=> $emailline){
-                if(isset($emailsCount[$emailline[$emailKey]])) {
-                    $emailsCount[$emailline[$emailKey]]++;
-                    //$arra[$keyline]
+                if(isset($emailline[$emailKey])){
+                   if(isset($emailsCount[$emailline[$emailKey]])) {
+                        $emailsCount[$emailline[$emailKey]]++;
+                        //$arra[$keyline]
+                    }else{
+                        $emailsCount[$emailline[$emailKey]]=1;
+                    }
+                }else{
+                    //if the record doesn't have the attribute email then we just ignore it
+                    $ignored_row_count++;
+                    unset($arra[$keyline]);
                 }
-                else $emailsCount[$emailline[$emailKey]]=1;
             }
-
 
             $result=$this->_importRows($queryStart,$arra,$j,$datatoinsert,$emailKey,$dataNumbers);
 
@@ -915,30 +970,26 @@ class WYSIJA_control_back_subscribers extends WYSIJA_control_back{
                     $j++;
                 }else{
 
-                    $this->error(__("There seems to be an error with the list you're trying to import.",WYSIJA),true);
+                    $this->error(__('There seems to be an error with the list you\'re trying to import.',WYSIJA),true);
                     $this->redirect('admin.php?page=wysija_subscribers&action=import');
                     return false;
                 }
-
             }
-
             $linescount=$linescount+$result;
         }
 
         if(!isset($_POST['firstrowisdata'])) {
-            //$linescount--;
-
-            /* save the importing fields to be able to match them the next time */
-            $importfields=get_option("wysija_import_fields");
+            //save the importing fields to be able to match them the next time
+            $importfields=get_option('wysija_import_fields');
             foreach($_POST['wysija']['match'] as $key=> $val){
                 if($val!='nomatch') {
-                    $importfields[$csvArr[0][$key]]=$val;
+                    $importfields[$header_row[$key]]=$val;
                 }
             }
             WYSIJA::update_option('wysija_import_fields',$importfields);
         }
 
-                /* get a list of list name */
+        //get a list of list name
         $model=&WYSIJA::get('list','model');
         $results=$model->get(array('name'),array('list_id'=>$_REQUEST['wysija']['user_list']['list']));
 
@@ -948,19 +999,22 @@ class WYSIJA_control_back_subscribers extends WYSIJA_control_back{
         $helperU=&WYSIJA::get('user','helper');
         $helperU->refreshUsers();
 
-
         foreach($emailsCount as $emailkeycount =>$countemailfile){
             if($countemailfile==1) unset($emailsCount[$emailkeycount]);
         }
-
 
         if($linescount<0)  $linescount=0;
 
         $dataNumbers['ignored']=($dataNumbers['outof']-$dataNumbers['inserted']);
         $dataNumbers['ignored_list']=(($dataNumbers['list_user_ids']*$dataNumbers['list_list_ids'])-$dataNumbers['list_added']);
-        $this->notice(sprintf(__('%1$s subscribers have been added to database. (%2$s were ignored)',WYSIJA),$dataNumbers['inserted'],$dataNumbers['ignored']));
+        // $this->notice(sprintf(__('%1$s subscribers have been added to database. (%2$s were ignored)',WYSIJA),$dataNumbers['inserted'],$dataNumbers['ignored']));
 
-        $this->notice(sprintf(__('%1$s subscribers have been added to %2$s. (%3$s insertions were ignored out of %4$s)',WYSIJA),$dataNumbers['list_user_ids'],'"'.implode('", "',$listnames).'"',$dataNumbers['ignored_list'],$dataNumbers['list_user_ids']*$dataNumbers['list_list_ids']));
+        $ignored_row_count;//this contain some ignored row because the email attribute was not detected. I say there should be a message for those
+
+        $this->notice(sprintf(__('%1$s subscribers added to %2$s.', WYSIJA),
+                    $dataNumbers['list_user_ids'],
+                    '"'.implode('", "',$listnames).'"'
+                    ));
 
         if(count($emailsCount)>0){
             $listemails='';
@@ -977,6 +1031,7 @@ class WYSIJA_control_back_subscribers extends WYSIJA_control_back{
         if(count($dataNumbers['invalid'])>0){
             $this->notice(sprintf(__('%1$s emails are not valid : %2$s.',WYSIJA),count($dataNumbers['invalid']),implode(', ',$dataNumbers['invalid'])),0);
         }
+
         $this->redirect();
     }
 
@@ -996,7 +1051,7 @@ class WYSIJA_control_back_subscribers extends WYSIJA_control_back{
 
         $outof=0;
         $j=1;
-        $helperUser=&WYSIJA::get("user","helper");
+        $helperUser=&WYSIJA::get('user','helper');
         global $wpdb;
         foreach($csvArr as $kline=> $line){
             //dbg($csvArr,0);
@@ -1023,19 +1078,19 @@ class WYSIJA_control_back_subscribers extends WYSIJA_control_back{
                         }
                     }
                     $values.="'".  mysql_real_escape_string($vl,$wpdb->dbh)."'";
-                    if($nbfields>$i) $values.=",";
-                    else $values.=",".$time;
+                    if($nbfields>$i) $values.=',';
+                    else $values.=','.$time;
                     $i++;
                 }
             }
 
             $query.=" ($values) ";
-            if($linescount>$j) $query.=",";
+            if($linescount>$j) $query.=',';
             $j++;
 
         }
 
-        /*replace query to import the subscribers*/
+        //replace query to import the subscribers
         $modelWysija=new WYSIJA_model();
         $resultqry=$modelWysija->query($query);
 
@@ -1046,38 +1101,74 @@ class WYSIJA_control_back_subscribers extends WYSIJA_control_back{
         $dataNumbers['inserted']+=$wpdb->rows_affected;
         $dataNumbers['outof']+=$outof;
 
-
-
         if($resultqry===false) {
-            $this->error(__("Error when inserting emails.",WYSIJA),true);
+            $this->error(__('Error when inserting emails.',WYSIJA),true);
             return false;
         }
 
 
-        /* select query to get all of there ids */
+        //select query to get all of there ids
         $user_ids=$this->modelObj->get(array('user_id'),array('email'=>$allEmails));
         $wpdb->rows_affected=0;
-        $modelUL=&WYSIJA::get('user_list','model');
-        $query="INSERT IGNORE INTO [wysija]user_list (`list_id` ,`user_id`,`sub_date`) VALUES ";
-        $timenow=time();
-        foreach($_REQUEST['wysija']['user_list']['list'] as $keyl=> $listid){
+
+        //insert query per list
+        $query='INSERT IGNORE INTO [wysija]user_list (`list_id` ,`user_id`,`sub_date`) VALUES ';
+        $time_now=time();
+        foreach($_REQUEST['wysija']['user_list']['list'] as $keyl=> $list_id){
+
+            //for each list pre selected go through that process
             foreach($user_ids as $key=> $userid){
-                $query.="($listid,".$userid['user_id'].", ".$timenow.")";
-                if(count($user_ids)>($key+1)) $query.=",";
+
+                //inserting each user id to this list
+                $query.="($list_id,".$userid['user_id'].', '.$time_now.')';
+
+                //if this is not the last row we put a comma for the next row
+                if(count($user_ids)>($key+1)){
+                    $query.=',';
+                }
             }
-            if(count($_REQUEST['wysija']['user_list']['list'])>($keyl+1)) $query.=",";
+
+            //if this is not the last row we put a comma for the next row
+            if(count($_REQUEST['wysija']['user_list']['list'])>($keyl+1)){
+                $query.=',';
+                $query_queue.=',';
+            }
         }
         $resultqry2=$modelWysija->query($query);
 
         $dataNumbers['list_added']+=$wpdb->rows_affected;
         $dataNumbers['list_user_ids']+=count($user_ids);
 
+        // take care of active follow ups retro-activity
+        $helper_email=&WYSIJA::get('email','helper');
+        $follow_ups_per_list=$helper_email->get_active_follow_ups(array('email_id','params'),true);
+
+        if(!empty($follow_ups_per_list)){
+            foreach($_REQUEST['wysija']['user_list']['list'] as $list_id){
+                //checking if this list has a list of follow ups
+                if(isset($follow_ups_per_list[$list_id])){
+
+                    //for each follow up of that list we queu an email
+                    foreach($follow_ups_per_list[$list_id] as $key_queue=>$follow_up){
+                        //insert query per active followup
+                        $query_queue='INSERT IGNORE INTO [wysija]queue (`email_id` ,`user_id`,`send_at`) ';
+                        $query_queue.=' SELECT '.$follow_up['email_id'].' , B.user_id , '.($time_now+$follow_up['delay']);
+                        $query_queue.=' FROM [wysija]user_list as B';
+                        $query_queue.=' WHERE B.list_id='.(int)$list_id.' AND sub_date='.$time_now;
+
+                        $resultqry3=$modelWysija->query($query_queue);
+
+                        $dataNumbers['emails_queued']+=$wpdb->rows_affected;
+                    }
+                }
+            }
+        }
 
         if($resultqry2===false) {
             $this->error(__('Error when inserting list.',WYSIJA),true);
             return false;
         }
-        if($resultqry==0) return "0";
+        if($resultqry==0) return '0';
         return $linescount;
     }
 
@@ -1112,7 +1203,7 @@ class WYSIJA_control_back_subscribers extends WYSIJA_control_back{
 
 
     function sendconfirmation(){
-        $helperUser=&WYSIJA::get("user","helper");
+        $helperUser=&WYSIJA::get('user','helper');
         $helperUser->sendConfirmationEmail($_POST['wysija']['user']['user_id']);
 
         $this->redirect();
@@ -1120,81 +1211,118 @@ class WYSIJA_control_back_subscribers extends WYSIJA_control_back{
 
 
      function deleteusers(){
-        $helperUser=&WYSIJA::get("user","helper");
+        $helperUser=&WYSIJA::get('user','helper');
         $helperUser->delete($_POST['wysija']['user']['user_id']);
 
         $this->redirect();
     }
 
 
-    function exportget(){
-        /* generate content */
 
-        if(isset($_POST['wysija']['export']['user_ids']) && $_POST['wysija']['export']['user_ids']) $userids=unserialize(base64_decode($_POST['wysija']['export']['user_ids']));
+    /**
+     * function generating an export file based on an array of user_ids
+     */
+    function export_get(){
+        @ini_set('max_execution_time',0);
+        //get a list of user_ids to export
+        if(isset($_POST['wysija']['export']['user_ids']) && $_POST['wysija']['export']['user_ids'])
+            $userids=unserialize(base64_decode($_POST['wysija']['export']['user_ids']));
         else{
-            /* based on filters get a list of user_ids */
+            //based on filters get a list of user_ids
             $userids=array();
             if(isset($_POST['wysija']['export']['filter']['list']) && $_POST['wysija']['export']['filter']['list']){
                 $where='';
                 if(isset($_POST['wysija']['export']['filter']['confirmed'])){
-                    $where=" AND B.status>0 ";
+                    $where=' AND B.status>0 ';
                 }
-                $qry="SELECT A.user_id FROM `[wysija]user_list` as A
-                    JOIN `[wysija]user` as B on A.user_id=B.user_id
-                        WHERE A.list_id = ".(int)$_POST['wysija']['export']['filter']['list'].$where;
+                $from = ' `[wysija]user_list` as A
+                    JOIN `[wysija]user` as B on A.user_id=B.user_id';
+                $where = ' A.list_id = '.(int)$_POST['wysija']['export']['filter']['list'].$where;
+                $qry='SELECT B.user_id FROM '.$from . ' WHERE ' .$where;
+                $qry_count='SELECT COUNT(A.user_id) FROM '.$from . ' WHERE ' .$where;
             }else{
-                $qry="SELECT A.user_id FROM `[wysija]user` as A";
+                $from = '`[wysija]user` as A';
+                $where = '1';
                 if(isset($_POST['wysija']['export']['filter']['confirmed'])){
-                    $qry.=" WHERE A.status>0";
+                    $where ='A.status>0';
+                }
+                $qry='SELECT A.user_id FROM '. $from . ' WHERE '. $where;
+                $qry_count='SELECT COUNT(A.user_id) FROM '. $from . ' WHERE '. $where . ' ';
+            }
+
+            $user_ids_chunks = array(); // chunk rows into separated batchs, limit by $this->_export_batch
+            $qry_batchs = array(); // store all batched queries
+            $useridsrows=$this->modelObj->getResults($qry_count, ARRAY_N);
+            $useridsrows = (int)$useridsrows[0][0];
+
+            if($useridsrows <= $this->_export_batch){
+                $useridsdb=$this->modelObj->getResults($qry,ARRAY_N);
+                foreach($useridsdb as $uarr){
+                    $userids[]=$uarr[0];
                 }
             }
-
-
-            $useridsdb=$this->modelObj->getResults($qry,ARRAY_N);
-
-            foreach($useridsdb as $uarr){
-                $userids[]=$uarr[0];
-            }
-
-        }
-
-        $modelUser=&WYSIJA::get("user","model");
-        $data=$modelUser->get($_POST['wysija']['export']['fields'],array("user_id"=>$userids));
-
-        if(in_array('created_at', $_POST['wysija']['export']['fields'])){
-            foreach($data as $key=>$row){
-                $data[$key]['created_at']=date_i18n(get_option('date_format'),$row['created_at']);
+            else{
+                $pages = ceil($useridsrows / $this->_export_batch);//pagination
+                for ($i = 0; $i < $pages; $i++) {
+                    $qrybatch = $qry. ' LIMIT '.($i*$this->_export_batch) . ',' . $this->_export_batch;
+                    $useridsdb=$this->modelObj->getResults($qrybatch,ARRAY_N);
+                    foreach($useridsdb as $uarr){
+                        $userids[]=$uarr[0];
+                    }
+                    $useridsdb=null;//free memory
+                }
             }
         }
+        $user_ids_chunks=array_chunk($userids, 200);
+	$userids = null;// free memory
 
-        $model=&WYSIJA::get("user_field","model");
+        //prepare the columns that need to be exported
+        $model=&WYSIJA::get('user_field','model');
         $fields=$model->getFields();
-
         $namefields=array();
         foreach($_POST['wysija']['export']['fields'] as $keyfield){
             $namefields[]=$fields[$keyfield];
         }
 
-        $content=implode(";",$namefields)."\n";
-        foreach($data as $row){
-            $content.=implode(';',$row)."\n";
+        //create the export file step by step
+        $file_header=implode(';',$namefields)."\n";
+         //generate temp file
+        $fileHelp=&WYSIJA::get('file','helper');
+        $resultFile=$fileHelp->temp($file_header,'export','.csv');
+
+        //open the created file in append mode
+        $handle=fopen($resultFile['path'], 'a');
+
+        $modelUser=&WYSIJA::get('user','model');
+        foreach($user_ids_chunks as $userid_chunk){
+            //get the full data for that specific chunk of ids
+            $data=$modelUser->get($_POST['wysija']['export']['fields'],array('user_id'=>$userid_chunk));
+
+            if(in_array('created_at', $_POST['wysija']['export']['fields'])){
+                foreach($data as $key=>$row){
+                    $data[$key]['created_at']=date_i18n(get_option('date_format'),$row['created_at']);
+                }
+            }
+
+            //append content to the file
+            foreach($data as $row){
+                fwrite($handle, implode(';',$row)."\n");
+            }
         }
 
-        /* generate temp file */
-        $fileHelp=&WYSIJA::get("file","helper");
-        $resultFile=$fileHelp->temp($content,"export",".csv");
+        fclose($handle);
 
         $url=get_bloginfo('wpurl').'/wp-admin/admin.php?page=wysija_subscribers&action=exportedFileGet&file='.base64_encode($resultFile['path']);
-        $this->notice(str_replace(array('[link]','[/link]'),array('<a href="'.$url.'" target="_blank" class="exported-file" >','</a>'),sprintf(__('%1$s subscribers were exported. Get the exported file [link]here[/link].',WYSIJA),count($userids))));
-
+        $this->notice(str_replace(
+                array('[link]','[/link]'),
+                array('<a href="'.$url.'" target="_blank" class="exported-file" >','</a>'),
+                sprintf(__('%1$s subscribers were exported. Get the exported file [link]here[/link].',WYSIJA),count($userids))));
 
         if(isset($_REQUEST['camp_id'])){
-            $this->redirect("admin.php?page=wysija_campaigns&action=viewstats&id=".$_REQUEST['camp_id']);
+            $this->redirect('admin.php?page=wysija_campaigns&action=viewstats&id='.$_REQUEST['camp_id']);
         }else{
            $this->redirect();
         }
-
-
     }
 
 
@@ -1272,7 +1400,7 @@ class WYSIJA_control_back_subscribers extends WYSIJA_control_back{
 
     function _getLists($limit=false){
 
-        $modelList=&WYSIJA::get("list","model");
+        $modelList=&WYSIJA::get('list','model');
         $modelList->escapingOn=true;
         $modelList->_limitison=$limit;
         return $modelList->getLists();
@@ -1280,7 +1408,7 @@ class WYSIJA_control_back_subscribers extends WYSIJA_control_back{
 
     function _getForm($id=false){
         if($id){
-            $modelList=&WYSIJA::get("list","model");
+            $modelList=&WYSIJA::get('list','model');
 
             return $modelList->getLists($id);
         }else{
@@ -1288,6 +1416,33 @@ class WYSIJA_control_back_subscribers extends WYSIJA_control_back{
             return $array;
         }
 
+    }
+
+    function cleanQueueFromAlreadySent(){
+        $model_queue=&WYSIJA::get('queue','model');
+        $model_email=&WYSIJA::get('email','model');
+        $model_email->setConditions(array('type'=>2));
+        $autonewsletter=$model_email->getRows(array('email_id','params'));
+        $rows_affected=0;
+        foreach ($autonewsletter as $data){
+            $model_email->getParams($data);
+            global $wpdb;
+            if(isset($data['params']['autonl']['event']) && $data['params']['autonl']['event']=='subs-2-nl'){
+                $query_queue='DELETE FROM [wysija]queue';
+                $query_queue.=' WHERE email_id='.(int)$data['email_id'].' AND user_id ';
+                $query_queue.='IN (SELECT B.user_id FROM [wysija]email_user_stat as B WHERE B.email_id='.(int)$data['email_id'].')';
+                $result=$model_queue->query($query_queue);
+                $rows_affected+=$wpdb->rows_affected;
+            }
+
+        }
+
+        if($result){
+
+            echo 'query successfully run<br/>';
+            echo $rows_affected.' rows in the queue table have been deleted';
+        }
+        exit;
     }
 
 

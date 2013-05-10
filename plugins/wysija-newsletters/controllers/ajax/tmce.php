@@ -3,21 +3,21 @@ defined('WYSIJA') or die('Restricted access');
 class WYSIJA_control_back_tmce extends WYSIJA_control{
 
     function WYSIJA_control_back_tmce(){
-        if(!WYSIJA::current_user_can('wysija_subscriwidget')) die("Action is forbidden.");
+        if(!WYSIJA::current_user_can('wysija_subscriwidget')) die('Action is forbidden.');
         parent::WYSIJA_control();
         $this->viewObj=&WYSIJA::get('tmce','view');
     }
 
 
     function registerAdd(){
-        $this->viewObj->title=__("Insert Newsletter Registration Form",WYSIJA);
+        $this->viewObj->title=__('Insert Subscription Form',WYSIJA);
 
         $this->viewObj->registerAdd($this->getData());
         exit;
     }
 
     function registerEdit(){
-        $this->viewObj->title=__("Edit Newsletter Registration Form",WYSIJA);
+        $this->viewObj->title=__('Insert Subscription Form',WYSIJA);
 
         $this->viewObj->registerAdd($this->getData(),true);
         exit;
@@ -25,83 +25,101 @@ class WYSIJA_control_back_tmce extends WYSIJA_control{
 
 
     function getData(){
-        $datawidget=array();
+        $data_widget=array();
+
+        // if this parameter is passed that means we have an old widget let's import it and select
         if(isset($_REQUEST['widget-data64'])){
-            $datawidget=unserialize(base64_decode($_REQUEST['widget-data64']));
-            $datawidget['preview']=true;
+            $data_widget=unserialize(base64_decode($_REQUEST['widget-data64']));
+            $post=get_post($_REQUEST['post_id']);
+
+            // we need a title to identify the form
+            $data_widget['title'] = 'Form on '.$post->post_type.': '.$post->post_title;
+
+            $model_forms =& WYSIJA::get('forms', 'model');
+            $model_forms->reset();
+            $form = $model_forms->getOne(false,array('name' => $data_widget['title']));
+
+            // this form doesn't exist yet in the new format so let's try to import it
+            if(empty($form)){
+                $helper_update=&WYSIJA::get('update','helper');
+
+                $form_id = $helper_update->convert_widget_to_form($data_widget);
+                if($form_id!==false) {
+                    $data_widget['default_form'] = $form_id;
+                }
+            }
         }
 
         if(isset($_POST['widget-wysija'])){
-            $datawidget=array('widget_id'=>$_POST['widget_id'],'preview'=>true);
-            $customfields=array();
+            $data_widget=array('widget_id'=>$_POST['widget_id'],'preview'=>true);
+            $custom_fields=array();
 
             foreach($_POST['widget-wysija'] as $arra){
                 foreach($arra as $k => $v) {
                     switch($k){
                         case 'lists':
-                            if(isset($datawidget[$k]))  $datawidget[$k][]=$v[0];
-                            else    $datawidget[$k]=array($v[0]);
+                            if(isset($data_widget[$k]))  $data_widget[$k][]=$v[0];
+                            else    $data_widget[$k]=array($v[0]);
                             break;
                         case 'lists_name':
                             foreach($v as $kv=>$vv){
-                                if(isset($datawidget[$k]))  $datawidget[$k][$kv]=$vv;
-                                else    $datawidget[$k]=array($kv=>$vv);
+                                if(isset($data_widget[$k]))  $data_widget[$k][$kv]=$vv;
+                                else    $data_widget[$k]=array($kv=>$vv);
                             }
 
                             break;
                         case 'customfields':
 
                             $found=false;
-                            foreach($customfields as $keycol => $params){
+                            foreach($custom_fields as $keycol => $params){
                                 if(isset($v[$keycol])){
-                                    $customfields[$keycol]=  array_merge($customfields[$keycol],$v[$keycol]);
+                                    $custom_fields[$keycol]=  array_merge($custom_fields[$keycol],$v[$keycol]);
                                     $found=true;
                                 }
                             }
 
-                            if(!$found) $customfields=array_merge($customfields,$v);
-
+                            if(!$found) $custom_fields=array_merge($custom_fields,$v);
                             break;
 
                         default:
-                            $datawidget[$k]=stripslashes($v);
+                            $data_widget[$k]=stripslashes($v);
                     }
 
                 }
             }
 
 
-            $count=count($customfields);
+            $count=count($custom_fields);
             if($count>1){
-                foreach($customfields as $keycol=>$paraval){
-                    if($keycol!='email' && !isset($paraval['column_name'])) unset($customfields[$keycol]);
+                foreach($custom_fields as $keycol=>$paraval){
+                    if($keycol!='email' && !isset($paraval['column_name'])) unset($custom_fields[$keycol]);
                 }
             }
 
-            $count=count($customfields);
+            $count=count($custom_fields);
             if($count>0){
-                if(!isset($customfields['email'])){
-                    $customfields['email']['column_name']='email';
-                    $customfields['email']['label']=__('Email',WYSIJA);
+                if(!isset($custom_fields['email'])){
+                    $custom_fields['email']['column_name']='email';
+                    $custom_fields['email']['label']=__('Email',WYSIJA);
                 }
             }
 
-            $count=count($customfields);
-            if($count==1 && isset($customfields['email'])){
+            $count=count($custom_fields);
+            if($count==1 && isset($custom_fields['email'])){
 
-                $customfields=array();
+                $custom_fields=array();
             }
 
-            if($customfields)   $datawidget['customfields']=$customfields;
+            if($custom_fields)   $data_widget['customfields']=$custom_fields;
 
         }
 
         //dbg($datawidget,0);
-        if(!isset($datawidget['customfields']) && isset($datawidget['labelswithin']) && $datawidget['labelswithin']=='labels_within'){
-            $datawidget['customfields']=array('email'=>array('label'=>__('Email',WYSIJA)));
+        if(!isset($data_widget['customfields']) && isset($data_widget['labelswithin']) && $data_widget['labelswithin']=='labels_within'){
+            $data_widget['customfields']=array('email'=>array('label'=>__('Email',WYSIJA)));
         }
 
-        return $datawidget;
+        return $data_widget;
     }
 
 }

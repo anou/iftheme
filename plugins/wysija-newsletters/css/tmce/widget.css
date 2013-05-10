@@ -1,43 +1,37 @@
 #widget-form{
-    width: 430px;
+    width: 180px;
     float:left;
     margin: 5px;
     padding: 20px;
 }
-#widget-prev{
-   float: left;
-    width: 240px; 
-}
-#widget-preview{
-    border-color: #555555;
-    
-    margin: 5px;
-    padding: 20px;
-    position: relative;
-    
-    border-style: dashed;
-}
-
-#preview-label{
-    display: block;
-    float: left;
-    margin: 0;
-    padding: 3px;
-    position: absolute;
-    right: 3px;
-    top: 3px;
-    color:#a10b0b;
-    border-color: #a10b0b;
-    border-style: dashed;
-}
 
 body,html{
-    min-width:725px;
-    width:725px;
     margin:0 !important;
+    overflow: hidden;
+        font-family: sans-serif;
+    font-size: 12px !important;
+    line-height: 1.4em;
 }
 
 #formTable{
     padding-top: 10px;
 }
 
+.wysija-widget-form .divblocks {
+    margin:0 0 10px 0;
+}
+
+.wysija-widget-form .divblocks div {
+    margin:0 0 5px 0;
+}
+.wysija-widget-form .divblocks select {
+    margin:0 !important;
+}
+
+.wysija-widget-form{
+    margin-bottom: 10px;
+}
+
+#widget-form select {
+    width:180px;
+}

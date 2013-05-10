@@ -159,6 +159,15 @@ function remove_my_category_fields($term_id) {
 }
 add_filter('deleted_term_taxonomy', 'remove_my_category_fields');
 
+//get site language in short code
+function get_site_lang() {
+  $lg = strstr(get_bloginfo('language'), '-', TRUE);
+  
+  $lg = $lg ? $lg : 'fr'; //if nothing is returned best to return at least 'fr'. We're assuming that default language is french...
+
+  return $lg;
+}
+
 
 //get level 1 (key=0) categories.
 function get_if_top_categ($args=array()){
@@ -667,9 +676,9 @@ function if_display_posts_listing ( $query ) {
 			array(
 			   'key' => 'if_events_enddate',
 			   'value' => $value,
-			   'compare' => $compare2
+			   'compare' => $compare2,
 			  );
-		$meta_query['relation'] = 'OR';
+		$meta_query['relation'] = 'AND';
 
 		$query->set( 'meta_query', $meta_query );
 		$query->set( 'orderby', 'meta_value_num' );
@@ -769,9 +778,9 @@ function get_meta_if_post($pid=''){
 
 	$end = !empty($end) ? utf8_encode(strftime('%d %b',$end)) : NULL;
 	$time = $meta['if_events_time'][0];
-	
+
 	$data['start'] = !empty($start) ? utf8_encode(strftime('%d %b',$start)) : NULL;
-	$data['end'] = !$end ? ' / '.$time : ' / '.$end;  
+	$data['end'] = !$end ? ($time ? ' / '.$time : '') : ' / '.$end;  
 	$data['time'] = $time;  
 	
 	//add featured img id if exist
@@ -1475,8 +1484,8 @@ function iftheme_content_nav( $html_id ) {
 	if ( $wp_query->max_num_pages > 1 ) : ?>
 		<nav id="<?php echo $html_id; ?>" class="navigation" role="navigation">
 			<h3 class="assistive-text"><?php _e( 'Post navigation', 'twentytwelve' ); ?></h3>
-			<div class="nav-next alignleft"><?php previous_posts_link( __( '<span class="meta-nav">&larr;</span> Previous', 'iftheme' ) ); ?></div>
-			<div class="nav-previous alignright"><?php next_posts_link( __( 'Next <span class="meta-nav">&rarr;</span>', 'iftheme' ) ); ?></div>
+			<div class="nav-next alignleft"><span class="meta-nav">&larr;</span> <?php previous_posts_link( __( 'Previous', 'iftheme' ) ); ?></div>
+			<div class="nav-previous alignright"><?php next_posts_link( __( 'Next', 'iftheme' ) ); ?> <span class="meta-nav">&rarr;</span></div>
 		</nav><!-- #<?php echo $html_id; ?> .navigation -->
 	<?php endif;
 }

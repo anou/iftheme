@@ -4,30 +4,33 @@ global $wysija_queries;
 $wysija_queries=array();
 
 include_once('dBug.php');
-function dbg($mixed,$exit=true){
-    if(!function_exists('is_user_logged_in')) include(ABSPATH.'wp-includes'.DS.'pluggable.php');
-    if(is_user_logged_in() || isset($_GET['dbg'])){
-        new dBug ( $mixed );
-        if($exit) {
-            global $wysija_msg,$wysija_queries,$wysija_queries_errors;
-            echo '<h2>WYSIJA MSG</h2>';
-            echo '<pre>';
-            dbg($wysija_msg,0);
-            echo '</pre>';
+if(!function_exists('dbg')) {
+    function dbg($mixed,$exit=true){
+        if(!function_exists('is_user_logged_in')) include(ABSPATH.'wp-includes'.DS.'pluggable.php');
+        if(is_user_logged_in() || isset($_GET['dbg'])){
+            new dBug ( $mixed );
+            if($exit) {
+                global $wysija_msg,$wysija_queries,$wysija_queries_errors;
+                echo '<h2>WYSIJA MSG</h2>';
+                echo '<pre>';
+                dbg($wysija_msg,0);
+                echo '</pre>';
 
-            echo '<h2>WYSIJA QUERIES</h2>';
-            echo '<pre>';
-            dbg($wysija_queries,0);
-            echo '</pre>';
+                echo '<h2>WYSIJA QUERIES</h2>';
+                echo '<pre>';
+                dbg($wysija_queries,0);
+                echo '</pre>';
 
-            echo '<h2>WYSIJA QUERIES ERRORS</h2>';
-            echo '<pre>';
-            dbg($wysija_queries_errors,0);
-            echo '</pre>';
-            exit;
+                echo '<h2>WYSIJA QUERIES ERRORS</h2>';
+                echo '<pre>';
+                dbg($wysija_queries_errors,0);
+                echo '</pre>';
+                exit;
+            }
         }
     }
 }
+
 $debugok=false;
 $pageisconfig=false;
 //dbg(WYSIJA_DBG);
@@ -37,11 +40,8 @@ if(WYSIJA_DBG==3){
         $debugok=true;
     }
 }
-if(WYSIJA_DBG==4 && !$pageisconfig){
-    $debugok=true;
-}
 
-if($debugok || WYSIJA_DBG==99){
+if($debugok){
     error_reporting(E_ALL);
     ini_set('display_errors', '1');
 }
@@ -62,15 +62,6 @@ function wysija_queries(){
             echo '</pre></div>';
         }
 
-
-
-        /*echo "<h2>WYSIJA QUEUE</h2>";
-        $modelQ=&WYSIJA::get('queue','model');
-        $wysija_queue=$modelQ->getReady();
-        echo "<pre>";
-        print_r($wysija_queue);
-        echo "</pre>";*/
-
         echo '</div>';
     }
 }
@@ -80,4 +71,3 @@ if(defined('WP_ADMIN')){
 }else{
    add_action('get_footer','wysija_queries');
 }
-

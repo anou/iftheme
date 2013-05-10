@@ -1,11 +1,10 @@
 === Wysija Newsletters ===
 Contributors: wysija, benheu
 Tags: newsletter, newsletters, newsletter signup, newsletter widget, subscribers, post notification, email subscription, email alerts, automatic newsletter, auto newsletter, autoresponder, follow up, email marketing, email, emailing, subscription
-Requires at least: 3.1
+Requires at least: 3.3
 Tested up to: 3.5
-Stable tag: 2.1.9
-
-Send your post notifications or newsletters from WordPress easily, and beautifully.
+Stable tag: 2.4.4
+Send newsletters, post notifications or autoresponders from WordPress easily, and beautifully.
 
 == Description ==
 
@@ -25,25 +24,25 @@ http://vimeo.com/46247528
 
 * Drag & drop visual editor, an HTML-free experience
 * Post notifications, like Feedburner, Subscribe2 or MailChimp's RSS-to-Email
-* [Selection of over 20 themes](http://www.wysija.com/newsletter-templates-wordpress/). Photoshop files included
+* [Selection of over 30 themes](http://www.wysija.com/newsletter-templates-wordpress/). Photoshop files included
 * Get stats for each newsletter: opens, clicks, unreads, unsubscribes
 * Add a subscription form in your sidebar or pages
 * Your newsletters look the same in Gmail, iPhone, Android, Outlook, Yahoo, Hotmail, etc.
 * Your WordPress users have their own list
 * Import subscribers from MailChimp, Aweber, etc.
-* One click import from MailPress, Tribulant, Satollo, Subscribe2, etc.
+* One click import from Tribulant, Satollo, Subscribe2, etc.
 * Single or double opt-in, your choice
 * Send with your web host, Gmail or SMTP
 * Segment your lists based on opened, clicked & bounced
 * Autoresponders, i.e. "Send email 3 days after someone subscribes"
 * Unlimited number of lists
-* Free version is limited to 2000 subscribers
+* Sending in free version is limited to 2000 subscribers
 
 = Premium version =
 
 [Wysija Premium](http://www.wysija.com/wordpress-newsletter-plugin-premium/) offers these nifty extra features:
 
-* Unlimited number of subscribers
+* Send to more than 2000 subscribers
 * Stats for individual subscribers (opened, clicked)
 * Total clicks for each link in your newsletter
 * Access to Premium themes
@@ -56,16 +55,10 @@ http://vimeo.com/46247528
 
 [Visit our Premium page](http://www.wysija.com/wordpress-newsletter-plugin-premium/).
 
-= Upcoming major release =
-
-* Subscriber profiles, ie. gender, city, or whatever you want
-* Dozens of mini improvements based on user feedback
-* Possibility to insert your own HTML in newsletter
-
 = Future releases =
 
-* New stats page
-* Custom post types support
+* Subscriber profiles, ie. gender, city, or whatever you want
+* Possibility to insert your own HTML in newsletter
 * Display a list of past newsletters sent in a page of your site (shortcode)
 
 = Support =
@@ -76,9 +69,8 @@ We got a dedicated website just to help you out. And we're quite quick to reply.
 
 = Translations in your language =
 
-Translations are included in the plugin. Join the translation teams on [our Transifex page](https://www.transifex.com/projects/p/wysija/).
+[Get a Premium license in exchange for your translation](http://support.wysija.com/knowledgebase/translations-in-your-language/)
 
-* Your language: [get a Premium license in exchange for your translation](http://support.wysija.com/knowledgebase/translations-in-your-language/)
 * Arabic
 * Catalan
 * Chinese
@@ -90,6 +82,7 @@ Translations are included in the plugin. Join the translation teams on [our Tran
 * German
 * Greek
 * Hungarian
+* Indonesian
 * Italian
 * Japanese
 * Norwegian
@@ -98,8 +91,8 @@ Translations are included in the plugin. Join the translation teams on [our Tran
 * Portuguese BR
 * Romanian
 * Russian
+* Serbian
 * Slovak
-* Slovenian
 * Spanish
 * Swedish
 * Turkish
@@ -150,9 +143,157 @@ We got a User Voice page where you can [add or vote for new features](http://wys
 
 == Changelog ==
 
+= 2.4.4 - 2013-04-22 =
+* added translations of the "loading..." message in forms
+* added download link to theme's .zip file in theme detail pages
+* added possibility to hide our update page's kitten. It hurt some feelings
+* added protection on looping install process resulting in duplication of default list or newsletter
+* fixed sending autoresponders twice after importing same csv file
+
+= 2.4.3 - 2013-04-03 =
+* improved subscription form rendering and support of unicode/special characters
+* improved security on queueing emails
+* fixed missing confirmation message when subscribing to forms (introduced in 2.4.2)
+* fixed scheduling issue when sending every month on a given day
+* fixed form editor issues related to data encoding/decoding
+* fixed post notification will not activate on step3 of the newsletter edition
+* fixed scheduled emails generating a queueing error on step3 of the newsletter edition
+* fixed import into a list associated with a retro-active autoresponder was not put into the queue
+* fixed retro-active autoresponder delay calculation
+
+= 2.4.2 - 2013-03-27 =
+
+* fixed issue in form editor. Using quotes in confirmation message prevented Form from being saved.
+* fixed autoresponders being automatically queued if modified and saved on step3 of the newsletter edition this resulting in a sql error
+
+= 2.4.1 - 2013-03-26 =
+
+* fixed post notification being queued immediately after changes being saved on step3 related to retroactive autoresponders.
+
+= 2.4 - 2013-03-25 =
+
+* added ability to edit HTML in text blocks of visual editor (beta)
+* added a form manager in settings, with a drag and drop interface
+* added ability for users to share their usage data with Wysija's team
+* added a dozen newsletter themes
+* added image resizing of images uploaded in previous versions
+* added autosave on browser back button. No more lost changes
+* improved sending status with progress bar
+* improved translations
+* improved autoresponders: now retroactive and will be sent to newly imported subscribers too
+* fixed when sending directly a newsletter which was set as scheduled in step 3
+* fixed dozens of small bugs
+* impressed by your determination in reading the full change log
+
+= 2.3.5 - 2013-03-15 =
+
+* fixed unsubscribe and subscriptions links lead now to view in browser version if the subscriber doesn't exists in the DB anymore (instead of a white screen)
+* fixed error when trying to delete a duplicated list
+* fixed view in browser link
+* fixed how spammy is your newsletter and Mandrill
+* fixed variable type issue leading in some case scenario to a Fatal Error in the frontend subscription widget
+* fixed removed autofill value in HTML version of subscription form
+* improved memory usage on subscribers import and export processes
+
+= 2.3.4 - 2013-03-07 =
+
+* added default value from WordPress' logged in user in the subscription form
+* added dropdown selection of statuses (publish, private, scheduled, draft) for WordPress' Posts to be dropped into the visual editor
+* added option to Wysija's CRON (task scheduler) to deactivate the schedule tasks checks on any page view
+* fixed unsubscribe date in the frontend subscriptions management is now translated with date_i18n (thanks Anna :))
+* fixed unsubscribe link in preview emails
+* fixed subscribers count when double optin is deactivated
+* fixed unsubscribe link with Google Analytics
+
+= 2.3.3 - 2013-03-04 =
+
+* added drag and drop private or scheduled posts in the visual editor
+* fixed more than one post notification going out monthly, weekly or daily
+* fixed warning in MS settings
+* fixed translation issues for comments checkbox for instance
+* fixed little notice when deleting list
+* fixed buddypress multiple checkbox on registration form
+* fixed on duplicate of a post notification reset the articles already sent in the original so that it starts from scratch
+* fixed import ignoring rows with invalid data to avoid import failure
+* fixed missing title and description of widget
+* fixed multisite only you'll see once the update screen as a network admin
+* improved logging options
+
+= 2.3.2 - 2013-02-20 =
+
+* fixed scheduling issue for automatic newsletters
+* fixed message output in case of cron problems
+* fixed wordpress images gallery pagination
+* fixed occasional internal server error on some users with PHP running as FastCGI
+
+= 2.3.1 - 2013-02-07 =
+
+* added correction of our commit through svn some files were missing
+* added "shortcodes" for newsletter. Add more than first and last name, like dates, links Supported in subject line too.
+* added custom roles to autoresponders so you can send to more than just the default roles (admin, editor, author, etc.)
+* added single sending method for all sites in Multisite. See new "MS" tab in settings for more
+* added DKIM optional upgrade to 1024 bits to comply with Gmail (Premium feature)
+* added support for Premium behind firewall with no possible requests to wysija.com
+* fixed images uploaded in Wysija are now resized to 600px. Next release will include images from media library.
+* fixed lightbox (popups) width for right to left languages
+* fixed subscription form on WordPress user registration
+* fixed load translation error on Windows server
+* fixed wrong count for the issue number tag [number] in daily, weekly and monthly post notification
+* fixed immediate custom post notification wrongly triggered
+* fixed browser view error for rare scenarios
+* fixed SendGrid web API not able to send newsletters to subscribers with first name and/or last name
+* fixed WordPress' images browser
+* fixed breakfast, with a buttered toast and nice latte
+
+= 2.3 - 2013-02-07 =
+
+* svn error please update your version to the latest one
+
+= 2.2.3 - 2013-01-19 =
+
+* fixed weekly post notifications not having all of the articles of the week, but just of the day
+
+= 2.2.2 - 2013-01-18 =
+
+* fixed immediate single post notification not being triggerred
+
+= 2.2.1 - 2013-01-18 =
+
+* fixed translation issue in confirmation page, message was forced in English
+* fixed display bug in settings, SMTP fields (port, authentication, secure connection) showing where not needed
+* fixed manual bounce processing button not working
+* fixed issue number [number] tag not having the right value
+* fixed small frontend conflict with jquery 1.9.0 and above
+* fixed missing filter in newsletters statistic for the Not Sent status
+* fixed post notification could send some past articles in one specific case scenario
+* fixed wrong count of subscribers in backend interfaces
+* fixed still sending to subscribers manually removed from a list in the backend
+* fixed number of WordPress users don't match with the number in our WordPress Users list
+* added support for German umlaut in email addresses
+
+= 2.2 - 2013-01-11 =
+
+* added script detector in debug mode to help resolve plugin & theme conflicts
+* added checkbox option in WordPress registration form. See Advanced Settings.
+* added on auto newsletter duplication reset the [number] tag
+* added a safeguard for manually deleted activation email in database
+* added support for SendGrid's web API to avoid blocked SMTP ports
+* added a sending status load bar for currently sending newsletter
+* improved "subscribe in comments" option for better Akismet integration
+* improved iframe.css inclusion for MS. All child sites take the main site's styles by default
+* renamed list "WordPress Synched" to "WordPress users" for clarity
+* fixed "HTML version" which was not working for visitors
+* fixed subscription form "HTML version" missing hidden fields in post/page widget
+* fixed newsletters themes installation with unsafe paths
+* fixed missing page/post title when subscribing without ajax
+* fixed encoding issue in HTML and PHP version of the subscription form in the widget
+* fixed save issue of subscriber's status in Subscriber's detail page in admin
+* fixed over 25 mini bugs
+* fixed lunch and went for a well deserved beer
+
 = 2.1.9 - 2012-12-11 =
 * added checkbox to comments in post for visitors to optin. Activate in Settings > Advanced
-* improved default newsletter into simple 5 min. guide 
+* improved default newsletter into simple 5 min. guide
 * improved over a dozen confusing labels and strings
 * improved compatibility with domain mapping
 * added hook wysija_preview to browser version of newsletter (thx to Matt)
@@ -160,7 +301,7 @@ We got a User Voice page where you can [add or vote for new features](http://wys
 * fixed missing total click stats in newsletter stats
 * fixed saving changes when going back to Step 2 from Step 3
 * added sending autoresponders to subscribers added via the admin
-* removed 3 messages after installation. Nobody reads them.
+* removed 3 messages after installation. Nobody reads them
 * removed bulk add to synch list
 * removed bulk unsubscribe to all. Too dangerous.
 * went for a walk in the park with friends to celebrate this new version
@@ -473,7 +614,7 @@ We got a User Voice page where you can [add or vote for new features](http://wys
 * improved line-height for titles in text editor
 * fixed Outlook and Hotmail padding issue with images
 * improved speed of editor
-* possibility to import automatically and keep in Sync lists from all major plugins: MailPress, Satollo, WP-Autoresponder, Tribulant, Subscribe2, etc.
+* possibility to import automatically and keep in sync lists from all major plugins: MailPress, Satollo, WP-Autoresponder, Tribulant, Subscribe2, etc.
 * possibility to change "Unsubscribe" link text in footer
 * choose which role can edit subscribers
 * preview of newsletter in new window and not in popup

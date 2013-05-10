@@ -1,0 +1,10 @@
+<p>
+    {foreach name="#types" key="type" value="output"}
+        {set var="#label" value="#type"}
+        {if #type == 'php' || #type == 'html'}{set var="#label" value="#label|upper"}{/if}
+        <label><input type="radio" name="format" value="{#type}" />{#label}</label>
+    {/foreach}
+</p>
+{foreach name="#types" key="type" value="output"}
+    <textarea id="export-{#type}" onClick="this.focus();this.select();" readonly="readonly">{#output|htmlentities}</textarea>
+{/foreach}

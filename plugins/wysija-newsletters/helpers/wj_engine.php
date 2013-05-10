@@ -9,6 +9,9 @@ class WYSIJA_help_wj_engine extends WYSIJA_object {
 
     var $_context = 'editor';
 
+    var $_hide_viewbrowser = false;
+    var $_hide_unsubscribe = false;
+
     var $_data = null;
     var $_styles = null;
 
@@ -60,10 +63,33 @@ class WYSIJA_help_wj_engine extends WYSIJA_object {
             'styleTransparent' => __('Check this box if you want transparency', WYSIJA),
             'ajaxLoading' => __('Loading...', WYSIJA),
             'customFieldsLabel' => __('Add first or last name of subscriber', WYSIJA),
-            'autoPostSettingsTitle' => __('Post selection options', WYSIJA),
-            'autoPostEditSettings' => __('Edit Automatic latest posts', WYSIJA),
+            'autoPostSettingsTitle' => __('Selection options', WYSIJA),
+            'autoPostEditSettings' => __('Edit Automatic latest content', WYSIJA),
             'autoPostImmediateNotice' => __('You can only add one widget when designing a post notification sent immediately after an article is published', WYSIJA),
-            'toggleImagesTitle' => __('Preview without images', WYSIJA)
+            'toggleImagesTitle' => __('Preview without images', WYSIJA),
+
+            'tags_user' => __('Subscriber', WYSIJA),
+            'tags_user_firstname' => __('First Name', WYSIJA),
+            'tags_user_lastname' => __('Last Name', WYSIJA),
+            'tags_user_email' => __('Email Address', WYSIJA),
+            'tags_user_displayname' => __('Wordpress user display name', WYSIJA),
+            'tags_newsletter' => __('Newsletter', WYSIJA),
+            'tags_newsletter_subject' => __('Newsletter Subject', WYSIJA),
+            'tags_newsletter_autonl' => __('Post Notifications', WYSIJA),
+            'tags_newsletter_total' => __('Total number of posts or pages', WYSIJA),
+            'tags_newsletter_post_title' => __('Latest post title', WYSIJA),
+            'tags_newsletter_number' => __('Issue number', WYSIJA),
+            'tags_date' => __('Date', WYSIJA),
+            'tags_date_d' => __('Current day of the month number', WYSIJA),
+            'tags_date_dordinal' => __('Current day of the month in ordinal, ie. 2nd, 3rd, etc.', WYSIJA),
+            'tags_date_dtext' => __('Full name of current day', WYSIJA),
+            'tags_date_m' => __('Current month number', WYSIJA),
+            'tags_date_mtext' => __('Full name of current month', WYSIJA),
+            'tags_date_y' => __('Year', WYSIJA),
+            'tags_global' => __('Links', WYSIJA),
+            'tags_global_unsubscribe' => __('Unsubscribe link', WYSIJA),
+            'tags_global_manage' => __('Edit subscription page link', WYSIJA),
+            'tags_global_browser' => __('View in browser link', WYSIJA)
         );
     }
     
@@ -214,7 +240,7 @@ class WYSIJA_help_wj_engine extends WYSIJA_object {
             'viewbrowser' => array(
                 'color' => '000000',
                 'family' => 'Arial',
-                'size' => $this->VIEWBROWSER_SIZES[3]
+                'size' => $this->VIEWBROWSER_SIZES[4]
             )
         );
     }
@@ -224,8 +250,8 @@ class WYSIJA_help_wj_engine extends WYSIJA_object {
         if($this->isDataValid() === false) {
             throw new Exception('data is not valid');
         } else {
-            $wjParser =& WYSIJA::get('wj_parser', 'helper');
-            $wjParser->setTemplatePath(WYSIJA_EDITOR_TOOLS);
+            $helper_render_engine =& WYSIJA::get('render_engine', 'helper');
+            $helper_render_engine->setTemplatePath(WYSIJA_EDITOR_TOOLS);
 
             $config=&WYSIJA::get("config","model");
             $data = array(
@@ -241,58 +267,58 @@ class WYSIJA_help_wj_engine extends WYSIJA_object {
             if($viewbrowser) {
                 $data['viewbrowser'] = $viewbrowser;
             }
-            return $wjParser->render($data, 'templates/editor/editor_template.html');
+            return $helper_render_engine->render($data, 'templates/editor/editor_template.html');
         }
     }
     function renderEditorHeader($data = null) {
-        $wjParser =& WYSIJA::get('wj_parser', 'helper');
-        $wjParser->setTemplatePath(WYSIJA_EDITOR_TOOLS);
-        $wjParser->setStripSpecialchars(true);
+        $helper_render_engine =& WYSIJA::get('render_engine', 'helper');
+        $helper_render_engine->setTemplatePath(WYSIJA_EDITOR_TOOLS);
+        $helper_render_engine->setStripSpecialchars(true);
         if($data !== null) {
             $block = $data;
         } else {
             $block = $this->getData('header');
         }
         $data = array_merge($block, array('i18n' => $this->getTranslations()));
-        return $wjParser->render($data, 'templates/editor/header_template.html');
+        return $helper_render_engine->render($data, 'templates/editor/header_template.html');
     }
     function renderEditorBody() {
-        $wjParser =& WYSIJA::get('wj_parser', 'helper');
-        $wjParser->setTemplatePath(WYSIJA_EDITOR_TOOLS);
+        $helper_render_engine =& WYSIJA::get('render_engine', 'helper');
+        $helper_render_engine->setTemplatePath(WYSIJA_EDITOR_TOOLS);
         $blocks = $this->getData('body');
         if(empty($blocks)) return '';
         $body = '';
         foreach($blocks as $key => $block) {
 
             $data = array_merge($block, array('i18n' => $this->getTranslations()));
-            $body .= $wjParser->render($data, 'templates/editor/block_template.html');
+            $body .= $helper_render_engine->render($data, 'templates/editor/block_template.html');
         }
         return $body;
     }
     function renderEditorFooter($data = null)
     {
-        $wjParser =& WYSIJA::get('wj_parser', 'helper');
-        $wjParser->setTemplatePath(WYSIJA_EDITOR_TOOLS);
+        $helper_render_engine =& WYSIJA::get('render_engine', 'helper');
+        $helper_render_engine->setTemplatePath(WYSIJA_EDITOR_TOOLS);
         if($data !== null) {
             $block = $data;
         } else {
             $block = $this->getData('footer');
         }
         $data = array_merge($block, array('i18n' => $this->getTranslations()));
-        return $wjParser->render($data, 'templates/editor/footer_template.html');
+        return $helper_render_engine->render($data, 'templates/editor/footer_template.html');
     }
     function renderEditorBlock($block = array()) {
-        $wjParser =& WYSIJA::get('wj_parser', 'helper');
-        $wjParser->setTemplatePath(WYSIJA_EDITOR_TOOLS);
-        $wjParser->setStripSpecialchars(true);
+        $helper_render_engine =& WYSIJA::get('render_engine', 'helper');
+        $helper_render_engine->setTemplatePath(WYSIJA_EDITOR_TOOLS);
+        $helper_render_engine->setStripSpecialchars(true);
         $block['i18n'] = $this->getTranslations();
-        return $wjParser->render($block, 'templates/editor/block_'.$block['type'].'.html');
+        return $helper_render_engine->render($block, 'templates/editor/block_'.$block['type'].'.html');
     }
     
     function renderEditorAutoPost($posts = array(), $params = array()) {
-        $wjParser =& WYSIJA::get('wj_parser', 'helper');
-        $wjParser->setTemplatePath(WYSIJA_EDITOR_TOOLS);
-        $wjParser->setStripSpecialchars(true);
+        $helper_render_engine =& WYSIJA::get('render_engine', 'helper');
+        $helper_render_engine->setTemplatePath(WYSIJA_EDITOR_TOOLS);
+        $helper_render_engine->setStripSpecialchars(true);
         if(isset($params['bgcolor1']) && strlen($params['bgcolor1']) === 0) {
             $params['bgcolor1'] = 'transparent';
         }
@@ -303,35 +329,35 @@ class WYSIJA_help_wj_engine extends WYSIJA_object {
             'posts' => $posts,
             'params' => $params
         );
-        $html = $wjParser->render($data, 'templates/editor/block_auto-post_content.html');
+        $html = $helper_render_engine->render($data, 'templates/editor/block_auto-post_content.html');
         return $html;
     }
     
     function renderImages($data = array()) {
-        $wjParser =& WYSIJA::get('wj_parser', 'helper');
-        $wjParser->setTemplatePath(WYSIJA_EDITOR_TOOLS);
-        return $wjParser->render(array('images' => $data), 'templates/toolbar/images.html');
+        $helper_render_engine =& WYSIJA::get('render_engine', 'helper');
+        $helper_render_engine->setTemplatePath(WYSIJA_EDITOR_TOOLS);
+        return $helper_render_engine->render(array('images' => $data), 'templates/toolbar/images.html');
     }
     
     function renderThemes() {
         $themes = array();
-        $themeHelper =& WYSIJA::get('themes', 'helper');
-        $installed = $themeHelper->getInstalled();
+        $hThemes =& WYSIJA::get('themes', 'helper');
+        $installed = $hThemes->getInstalled();
         if(empty($installed)) {
             return '';
         } else {
             foreach($installed as $theme) {
-                $themes[] = $themeHelper->getInformation($theme);
+                $themes[] = $hThemes->getInformation($theme);
             }
         }
-        $wjParser =& WYSIJA::get('wj_parser', 'helper');
-        $wjParser->setTemplatePath(WYSIJA_EDITOR_TOOLS);
-        return $wjParser->render(array('themes' => $themes), 'templates/toolbar/themes.html');
+        $helper_render_engine =& WYSIJA::get('render_engine', 'helper');
+        $helper_render_engine->setTemplatePath(WYSIJA_EDITOR_TOOLS);
+        return $helper_render_engine->render(array('themes' => $themes), 'templates/toolbar/themes.html');
     }
     function renderThemeStyles($theme = 'default') {
         $this->setContext('editor');
-        $themeHelper =& WYSIJA::get('themes', 'helper');
-        $stylesheet = $themeHelper->getStylesheet($theme);
+        $hThemes =& WYSIJA::get('themes', 'helper');
+        $stylesheet = $hThemes->getStylesheet($theme);
         if($stylesheet === NULL) {
 
             $this->setStyles(null);
@@ -428,8 +454,8 @@ class WYSIJA_help_wj_engine extends WYSIJA_object {
             'footer' => null,
             'divider' => null
         );
-        $themeHelper =& WYSIJA::get('themes', 'helper');
-        $data = $themeHelper->getData($theme);
+        $hThemes =& WYSIJA::get('themes', 'helper');
+        $data = $hThemes->getData($theme);
         if($data['header'] !== NULL) {
             $output['header'] = $this->renderEditorHeader($data['header']);
         }
@@ -445,16 +471,16 @@ class WYSIJA_help_wj_engine extends WYSIJA_object {
     
     function renderStylesBar() {
         $this->setContext('editor');
-        $wjParser =& WYSIJA::get('wj_parser', 'helper');
-        $wjParser->setTemplatePath(WYSIJA_EDITOR_TOOLS);
-        $wjParser->setStripSpecialchars(true);
+        $helper_render_engine =& WYSIJA::get('render_engine', 'helper');
+        $helper_render_engine->setTemplatePath(WYSIJA_EDITOR_TOOLS);
+        $helper_render_engine->setStripSpecialchars(true);
         $data = $this->getStyles();
         $data['i18n'] = $this->getTranslations();
         $data['TEXT_SIZES'] = $this->TEXT_SIZES;
         $data['VIEWBROWSER_SIZES'] = $this->VIEWBROWSER_SIZES;
         $data['TITLE_SIZES'] = $this->TITLE_SIZES;
         $data['FONTS'] = $this->FONTS;
-        return $wjParser->render($data, 'templates/toolbar/styles.html');
+        return $helper_render_engine->render($data, 'templates/toolbar/styles.html');
     }
     function formatStyles($styles = array()) {
         if(empty($styles)) return;
@@ -495,15 +521,15 @@ class WYSIJA_help_wj_engine extends WYSIJA_object {
     }
     
     function renderStyles() {
-        $wjParser =& WYSIJA::get('wj_parser', 'helper');
-        $wjParser->setTemplatePath(WYSIJA_EDITOR_TOOLS);
-        $wjParser->setStripSpecialchars(true);
-        $wjParser->setInline(true);
+        $helper_render_engine =& WYSIJA::get('render_engine', 'helper');
+        $helper_render_engine->setTemplatePath(WYSIJA_EDITOR_TOOLS);
+        $helper_render_engine->setStripSpecialchars(true);
+        $helper_render_engine->setInline(true);
         $data = $this->getStyles();
         $data['context'] = $this->getContext();
         switch($data['context']) {
             case 'editor':
-                $wjParser->setStripSpecialchars(false);
+                $helper_render_engine->setStripSpecialchars(false);
                 $data['viewbrowser_container'] = '#wysija_viewbrowser';
                 $data['wysija_container'] = '#wysija_wrapper';
                 $data['header_container'] = '#wysija_header';
@@ -514,7 +540,7 @@ class WYSIJA_help_wj_engine extends WYSIJA_object {
                 $data['unsubscribe_container'] = '#wysija_unsubscribe';
             break;
             case 'email':
-                $wjParser->setStripSpecialchars(true);
+                $helper_render_engine->setStripSpecialchars(true);
                 $data['viewbrowser_container'] = '#wysija_viewbrowser';
                 $data['wysija_container'] = '#wysija_wrapper';
                 $data['header_container'] = '#wysija_header_content';
@@ -523,12 +549,21 @@ class WYSIJA_help_wj_engine extends WYSIJA_object {
                 $data['text_container'] = '.wysija-text-container';
                 $data['unsubscribe_container'] = '#wysija_unsubscribe';
 
-                $data['is_rtl'] = is_rtl();
+                if(function_exists('is_rtl')) {
+                    $data['is_rtl'] = is_rtl();
+                } else {
+                    $data['is_rtl'] = false;
+                }
             break;
         }
-        return $wjParser->render($data, 'styles/css-'.$data['context'].'.html');
+        return $helper_render_engine->render($data, 'styles/css-'.$data['context'].'.html');
     }
     
+    function renderNotification($email = NULL) {
+        $this->_hide_viewbrowser = true;
+        $this->_hide_unsubscribe = true;
+        return $this->renderEmail($email);
+    }
     function renderEmail($email = NULL) {
 
         @ini_set('pcre.backtrack_limit', 1000000);
@@ -546,16 +581,24 @@ class WYSIJA_help_wj_engine extends WYSIJA_object {
                 'footer' => $this->renderEmailFooter(),
                 'unsubscribe' => $this->renderEmailUnsubscribe(),
                 'css' => $this->renderStyles(),
-                'styles' => $this->getStyles()
+                'styles' => $this->getStyles(),
+                'hide_viewbrowser' => $this->_hide_viewbrowser,
+                'hide_unsubscribe' => $this->_hide_unsubscribe
             );
 
+            if(function_exists('is_rtl')) {
+                $data['is_rtl'] = is_rtl();
+            } else {
+                $data['is_rtl'] = false;
+            }
+
             $data['subject'] = $this->getEmailData('subject');
-            $wjParser =& WYSIJA::get('wj_parser', 'helper');
-            $wjParser->setTemplatePath(WYSIJA_EDITOR_TOOLS);
-            $wjParser->setStripSpecialchars(true);
-            $wjParser->setInline(true);
+            $helper_render_engine =& WYSIJA::get('render_engine', 'helper');
+            $helper_render_engine->setTemplatePath(WYSIJA_EDITOR_TOOLS);
+            $helper_render_engine->setStripSpecialchars(true);
+            $helper_render_engine->setInline(true);
             try {
-                $template = $wjParser->render($data, 'templates/email_v2/email_template.html');
+                $template = $helper_render_engine->render($data, 'templates/email_v2/email_template.html');
                 return $template;
             } catch(Exception $e) {
                 return '';
@@ -563,40 +606,40 @@ class WYSIJA_help_wj_engine extends WYSIJA_object {
         }
     }
     function renderEmailViewBrowser() {
-        $wjParser =& WYSIJA::get('wj_parser', 'helper');
-        $wjParser->setTemplatePath(WYSIJA_EDITOR_TOOLS);
-        $wjParser->setStripSpecialchars(true);
+        $helper_render_engine =& WYSIJA::get('render_engine', 'helper');
+        $helper_render_engine->setTemplatePath(WYSIJA_EDITOR_TOOLS);
+        $helper_render_engine->setStripSpecialchars(true);
         $config=&WYSIJA::get('config','model');
         $data = $config->viewInBrowserLink();
         if(!isset($data['link'])) {
             return '';
         } else {
 
-            $viewbrowser = $wjParser->render($data, 'templates/email_v2/viewbrowser_template.html');
+            $viewbrowser = $helper_render_engine->render($data, 'templates/email_v2/viewbrowser_template.html');
 
             $viewbrowser = $this->applyInlineStyles('viewbrowser', $viewbrowser);
             return $viewbrowser;
         }
     }
     function renderEmailUnsubscribe() {
-        $wjParser =& WYSIJA::get('wj_parser', 'helper');
-        $wjParser->setTemplatePath(WYSIJA_EDITOR_TOOLS);
-        $wjParser->setStripSpecialchars(true);
+        $helper_render_engine =& WYSIJA::get('render_engine', 'helper');
+        $helper_render_engine->setTemplatePath(WYSIJA_EDITOR_TOOLS);
+        $helper_render_engine->setStripSpecialchars(true);
         $config =& WYSIJA::get('config','model');
         $data = array(
             'unsubscribe' => $config->emailFooterLinks(),
             'company_address' => nl2br($config->getValue('company_address'))
         );
 
-        $unsubscribe = $wjParser->render($data, 'templates/email_v2/unsubscribe_template.html');
+        $unsubscribe = $helper_render_engine->render($data, 'templates/email_v2/unsubscribe_template.html');
 
         $unsubscribe = $this->applyInlineStyles('unsubscribe', $unsubscribe);
         return $unsubscribe;
     }
     function renderEmailHeader() {
-        $wjParser =& WYSIJA::get('wj_parser', 'helper');
-        $wjParser->setTemplatePath(WYSIJA_EDITOR_TOOLS);
-        $wjParser->setStripSpecialchars(true);
+        $helper_render_engine =& WYSIJA::get('render_engine', 'helper');
+        $helper_render_engine->setTemplatePath(WYSIJA_EDITOR_TOOLS);
+        $helper_render_engine->setStripSpecialchars(true);
         $data = $this->getData('header');
         $data['styles'] = array('header' => $this->getStyles('header'));
 
@@ -606,15 +649,15 @@ class WYSIJA_help_wj_engine extends WYSIJA_object {
 
         $data['block_width'] = 600;
 
-        $header = $wjParser->render($data, 'templates/email_v2/header_template.html');
+        $header = $helper_render_engine->render($data, 'templates/email_v2/header_template.html');
 
         $header = $this->applyInlineStyles('header', $header);
         return $header;
     }
     function renderEmailBody() {
-        $wjParser =& WYSIJA::get('wj_parser', 'helper');
-        $wjParser->setTemplatePath(WYSIJA_EDITOR_TOOLS);
-        $wjParser->setStripSpecialchars(true);
+        $helper_render_engine =& WYSIJA::get('render_engine', 'helper');
+        $helper_render_engine->setTemplatePath(WYSIJA_EDITOR_TOOLS);
+        $helper_render_engine->setStripSpecialchars(true);
         $blocks = $this->getData('body');
         $styles = array('body' => $this->getStyles('body'));
         $body = '';
@@ -661,18 +704,33 @@ class WYSIJA_help_wj_engine extends WYSIJA_object {
                     }
                 }
 
-                if(isset($email['params']['autonl']['articles']['immediatepostid'])){
-                    $params['include'] = $email['params']['autonl']['articles']['immediatepostid'];
-                    $params['post_limit'] = 1;
-                }
                 if(isset($email['params']['autonl']['firstSend'])){
                     $params['post_date'] = $email['params']['autonl']['firstSend'];
                 }
 
+                if(isset($email['params']['autonl']['articles']['immediatepostid'])){
+                    $params['includeonly'] = $email['params']['autonl']['articles']['immediatepostid'];
+                    $params['post_limit'] = 1;
+                }else{
+
+                    if(isset($email['params']['autonl']['lastSend'])){
+                        $params['post_date'] = $email['params']['autonl']['lastSend'];
+                    }else{
+
+                        $mEmail=&WYSIJA::get('email','model');
+                        $mEmail->reset();
+                        $mEmail->orderBy('email_id','DESC');
+                        $lastEmailSent=$mEmail->getOne(false,array('campaign_id'=>$email['campaign_id'],'type'=>'1'));
+                        if(isset($data['sent_at'])) $params['post_date'] = $lastEmailSent['sent_at'];
+                    }
+                }
+
+
+
                 $params['readmore'] = trim(base64_decode($params['readmore']));
 
-                $articlesHelper =& WYSIJA::get('articles', 'helper');
-                $posts = $articlesHelper->getPosts($params);
+                $hArticles =& WYSIJA::get('articles', 'helper');
+                $posts = $hArticles->getPosts($params);
 
                 $postIds = array();
                 $postCount = 0;
@@ -682,7 +740,7 @@ class WYSIJA_help_wj_engine extends WYSIJA_object {
                         $blockHTML = '';
                     } else {
                         $data = array('text' => array('value' => $params['nopost_message']), 'block_width' => $block['block_width']);
-                        $blockHTML = $wjParser->render($data, 'templates/email_v2/block_content.html');
+                        $blockHTML = $helper_render_engine->render($data, 'templates/email_v2/block_content.html');
                     }
                 } else {
                     $blockHTML = '';
@@ -706,7 +764,7 @@ class WYSIJA_help_wj_engine extends WYSIJA_object {
                         }
                         if($params['image_alignment'] !== 'none') {
 
-                            $posts[$key]['post_image'] = $articlesHelper->getImage($posts[$key]);
+                            $posts[$key]['post_image'] = $hArticles->getImage($posts[$key]);
 
                             if($params['image_alignment'] === 'alternate') {
                                 $image_alignment = ($postIterator > 0) ? 'left' : 'right';
@@ -720,7 +778,7 @@ class WYSIJA_help_wj_engine extends WYSIJA_object {
 
                         $post_params = array_merge($params, array('image_alignment' => $image_alignment));
 
-                        $posts[$key] = $articlesHelper->convertPostToBlock($posts[$key], $post_params);
+                        $posts[$key] = $hArticles->convertPostToBlock($posts[$key], $post_params);
 
                         $posts[$key]['background_color'] = 'transparent';
 
@@ -734,10 +792,10 @@ class WYSIJA_help_wj_engine extends WYSIJA_object {
 
                         $data = array_merge($posts[$key], array('styles' => $styles, 'block_width' => $block['block_width']));
 
-                        $blockHTML .= $this->applyInlineStyles('body', $wjParser->render($data, 'templates/email_v2/block_content.html'), array('background_color' => $posts[$key]['background_color']));
+                        $blockHTML .= $this->applyInlineStyles('body', $helper_render_engine->render($data, 'templates/email_v2/block_content.html'), array('background_color' => $posts[$key]['background_color']));
 
                         if($divider !== null and $key !== ($postCount - 1)) {
-                            $blockHTML .= $wjParser->render(array_merge($divider, array('block_width' => $block['block_width'])), 'templates/email_v2/block_divider.html');
+                            $blockHTML .= $helper_render_engine->render(array_merge($divider, array('block_width' => $block['block_width'])), 'templates/email_v2/block_divider.html');
                         }
                     }
                 }
@@ -751,7 +809,7 @@ class WYSIJA_help_wj_engine extends WYSIJA_object {
 
                 $block['styles'] = $styles;
 
-                $blockHTML = $wjParser->render($block, 'templates/email_v2/block_template.html');
+                $blockHTML = $helper_render_engine->render($block, 'templates/email_v2/block_template.html');
                 if($block['type'] !== 'raw') {
 
                     $blockHTML = $this->applyInlineStyles('body', $blockHTML, array('background_color' => $block_background_color));
@@ -766,9 +824,9 @@ class WYSIJA_help_wj_engine extends WYSIJA_object {
         return $body;
     }
     function renderEmailFooter() {
-        $wjParser =& WYSIJA::get('wj_parser', 'helper');
-        $wjParser->setTemplatePath(WYSIJA_EDITOR_TOOLS);
-        $wjParser->setStripSpecialchars(true);
+        $helper_render_engine =& WYSIJA::get('render_engine', 'helper');
+        $helper_render_engine->setTemplatePath(WYSIJA_EDITOR_TOOLS);
+        $helper_render_engine->setStripSpecialchars(true);
         $data = $this->getData('footer');
         $data['styles'] = array('footer' => $this->getStyles('footer'));
 
@@ -778,16 +836,16 @@ class WYSIJA_help_wj_engine extends WYSIJA_object {
 
         $data['block_width'] = 600;
 
-        $footer = $wjParser->render($data, 'templates/email_v2/footer_template.html');
+        $footer = $helper_render_engine->render($data, 'templates/email_v2/footer_template.html');
 
         $footer = $this->applyInlineStyles('footer', $footer);
         return $footer;
     }
     
     function applyInlineStyles($area, $block, $extra = array()) {
-        $wjParser =& WYSIJA::get('wj_parser', 'helper');
-        $wjParser->setTemplatePath(WYSIJA_EDITOR_TOOLS);
-        $wjParser->setInline(true);
+        $helper_render_engine =& WYSIJA::get('render_engine', 'helper');
+        $helper_render_engine->setTemplatePath(WYSIJA_EDITOR_TOOLS);
+        $helper_render_engine->setInline(true);
         $tags = array();
         $classes = array();
         switch($area) {
@@ -855,7 +913,7 @@ class WYSIJA_help_wj_engine extends WYSIJA_object {
         if(empty($tags) === FALSE) {
             foreach($tags as $tag => $styles) {
                 $styles = $this->splitSpacing($styles);
-                $inlineStyles = $wjParser->render(array_merge($styles, array('tag' => $tag)), 'styles/inline.html');
+                $inlineStyles = $helper_render_engine->render(array_merge($styles, array('tag' => $tag)), 'styles/inline.html');
                 $inlineStyles = preg_replace('/(\n*)/', '', $inlineStyles);
                 $tags['#< *'.$tag.'((?:(?!style).)*)>#Ui'] = '<'.$tag.' style="'.$inlineStyles.'"$1>';
                 unset($tags[$tag]);
@@ -866,7 +924,7 @@ class WYSIJA_help_wj_engine extends WYSIJA_object {
             foreach($classes as $class => $styles) {
 
                 $styles = $this->splitSpacing($styles);
-                $inlineStyles = $wjParser->render($styles, 'styles/inline.html');
+                $inlineStyles = $helper_render_engine->render($styles, 'styles/inline.html');
                 $inlineStyles = preg_replace('/(\n*)/', '', $inlineStyles);
                 if(in_array($class, array('h1-link', 'h2-link', 'h3-link'))) {
                     $classes['#<([^ /]+) ((?:(?!>|style).)*)(?:style="([^"]*)")?((?:(?!>|style).)*)class="[^"]*'.$class.'[^"]*"((?:(?!>|style).)*)(?:style="([^"]*)")?((?:(?!>|style).)*)>#Ui'] = '<$1 $2$4$5$7 style="'.$inlineStyles.'">';

@@ -13,7 +13,6 @@ class WYSIJA_control_front extends WYSIJA_control{
     }
 
     function save(){
-
         $this->requireSecurity();
         /* see if it's an update or an insert */
         /*get the pk and its value as a conditions where pk = pkval*/

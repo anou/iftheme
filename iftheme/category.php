@@ -1,12 +1,10 @@
-	<?php get_header(); ?>
-
-
-<div id="content"><span style="color:#ccc" class="none"> Home Page ONE ANTENNA </span>
-	
-	<?php //if(get_query_var('cat') === get_current_antenna() && $multi): //HOME PAGE Antennas ?>
+<?php get_header(); ?>
+<div id="content"><span style="color:#ccc" class=""> Home Page ONE ANTENNA </span>
 <?php 
   	  global $sitepress;
-  	  $default_lg = isset($sitepress) ? $sitepress->get_default_language() : 'fr';//assuming that 'fr' should be default language
+  	  //$default_lg = isset($sitepress) ? $sitepress->get_default_language() : 'fr';//assuming that 'fr' should be default language
+  	  $default_lg = isset($sitepress) ? $sitepress->get_default_language() : get_site_lang();
+  	  d(get_site_lang());
   	  //$currenta = get_current_antenna();
   	  $currenta = get_current_parent_categ();
 	    $original = function_exists('icl_object_id') ? icl_object_id($currenta, 'category', true, $default_lg) : $currenta;

@@ -156,33 +156,56 @@ function WYSIJAsetParams(result,fileObj){
     wpid=jQuery('#media-item-'+fileObj.id).attr('alt');
     dims=jQuery('#media-dims-'+wpid).html();
     imgdimensions=dims.split('&nbsp;×&nbsp;');
-    /*if(parseInt(imgdimensions[0])>1024){//if the image is bigger than 1024 we will use the 1024 image as original
 
-        var dimsstring=jQuery('#image-size-large-'+wpid).siblings('label.help').html();
-        dimsstring=dimsstring.replace("(","").replace(")","");
+    var elementUrl = jQuery('#media-item-'+fileObj.id+' tbody button.urlfile');
 
-        imgdimensions=dimsstring.split('&nbsp;×&nbsp;');
-        var fullurl=jQuery('#media-item-'+fileObj.id+' tbody button.urlfile').attr('title').replace(fileObj.type.toLowerCase(),"-"+imgdimensions[0]+"x"+imgdimensions[1]+fileObj.type.toLowerCase());
-        var insertArray={
-            identifier:"wp-"+wpid,
-            width:imgdimensions[0],
-            height:imgdimensions[1],
-            url:fullurl,
-            thumb_url:jQuery('#thumbnail-head-'+wpid+' img.thumbnail').attr('src')
-        };
-    }else{*/
+    if(elementUrl.attr('title')=== undefined) {
+    	var fullUrl = elementUrl.attr('data-link-url');
+    } else {
+	    var fullUrl = elementUrl.attr('title');
+    }
 
-        var insertArray={
-            identifier:"wp-"+wpid,
-            width:imgdimensions[0],
-            height:imgdimensions[1],
-            thumb_url:jQuery('#thumbnail-head-'+wpid+' img.thumbnail').attr('src')
-        };
-    /*}*/
-    var elementUrl=jQuery('#media-item-'+fileObj.id+' tbody button.urlfile');
+    // If the image is bigger that 600px width, let's try to load our generated image size.
+    // If our image size is not present, it's probably an old image uploaded before Wysija install,
+    // So we load the full url.
+    if(parseInt(imgdimensions[0])>600) {
 
-    if(elementUrl.attr('title')=== undefined)   insertArray.url=elementUrl.attr('data-link-url');
-    else insertArray.url=elementUrl.attr('title');
+    		// Calculate 600px image size from our big image.
+    		var currentWidth = imgdimensions[0];
+    		var currentHeight = imgdimensions[1];
+    		var aspectRatio = currentHeight / currentWidth;
+    		var newWidth = 600;
+    		var newHeight = parseInt(newWidth * aspectRatio);
+
+    		// Generate full url.
+        var newDimensions = '-' + newWidth + 'x' + newHeight;
+        var ind1 = fullUrl.lastIndexOf('/');
+        var ind2 = fullUrl.lastIndexOf('.');
+        var newUrl = fullUrl.substring(0, ind2) + newDimensions + fullUrl.substring(ind2);
+
+        // Check if our 600px cropped image size exists.
+        jQuery.ajax({
+            url:newUrl,
+            type:'HEAD',
+            async: false,
+            success: function()
+            {
+                fullUrl = newUrl;
+            }
+        });
+
+        imgdimensions[0] = newWidth;
+        imgdimensions[1] = newHeight;
+
+    }
+
+  	var insertArray={
+  	    identifier:"wp-"+wpid,
+  	    width:imgdimensions[0],
+  	    height:imgdimensions[1],
+  	    url:fullUrl,
+  	    thumb_url:jQuery('#thumbnail-head-'+wpid+' img.thumbnail').attr('src')
+  	};
 
     insert(insertArray);
 

@@ -95,6 +95,7 @@ class WYSIJA_help_forms{
             $data['type'] = 'radio';
             return $this->checkbox($data, $value, $checked, $extra);
     }
+
     function the_editor($content, $id = 'content', $prev_id = 'title', $media_buttons = true, $tab_index = 2){
       $rows = get_option('default_post_edit_rows');
             if (($rows < 3) || ($rows > 100))

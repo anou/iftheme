@@ -83,6 +83,7 @@ function iftheme_theme_options_init() {
 	);
 
 	add_settings_field( 'theme_home_categ', __( 'Displayed home categories', 'iftheme' ), 'iftheme_settings_field_home_categories', 'theme_options', 'general' );//categories on homepage
+	add_settings_field( 'theme_home_nb_events', __( 'Number of events for each category displayed on homepage:', 'iftheme' ), 'iftheme_settings_field_nb_events', 'theme_options', 'general' );//number of posts on homepage
 	add_settings_field('background_img', __('Background image','iftheme'), 'iftheme_settings_field_background_img', 'theme_options', 'general'); // Background image
 
 
@@ -96,11 +97,13 @@ function iftheme_theme_options_init() {
 	
 	add_settings_field('theme_options_setting_twitter', __('Twitter Account','iftheme'),'theme_options_setting_twitter_callback_function','theme_options','social_setting_section');
 	add_settings_field('theme_options_setting_googleplus', __('Google Plus Page','iftheme'),'theme_options_setting_googleplus_callback_function','theme_options','social_setting_section');
+	add_settings_field('theme_options_setting_iftv', __('Your IF TV Page','iftheme'),'theme_options_setting_iftv_callback_function','theme_options','social_setting_section');
 
 	// Register our individual settings fields for country hompage if multi-antenna site
 	if($multi && $current_user->ID === 1) {
 		add_settings_field('bg_frame_country', __( "Country's background frame", 'iftheme' ), 'iftheme_settings_field_bg_frames_country', 'theme_options', 'homepage' );
 		add_settings_field( 'theme_home_categ_country', __( "Displayed country's homepage categories", 'iftheme' ), 'iftheme_settings_field_home_categories_country', 'theme_options', 'homepage' );//categories on homepage
+	add_settings_field( 'theme_home_nb_events_country', __( "Number of events for each category displayed on country's homepage:", 'iftheme' ), 'iftheme_settings_field_nb_events_country', 'theme_options', 'homepage' );//number of posts on homepage
 		add_settings_field('background_img_country', __("Country's background image",'iftheme'), 'iftheme_settings_field_background_img_country', 'theme_options', 'homepage'); // Background image
 	}
 }
@@ -197,13 +200,14 @@ function iftheme_home_categories($pays=NULL) {
 	$antenna_id = get_cat_if_user($current_user->ID);
 	$antenna_id = function_exists('icl_object_id') ? icl_object_id($antenna_id, 'category', TRUE) : $antenna_id; //icl_object_id(ID, type, return_original_if_missing,language_code)
 	$args = $pays ? array( 'hide_empty' => 0) : array('child_of' => $antenna_id, 'hide_empty' => 0);
-	
+
 	//$home_categ_options = new array;
 	$categories = get_categories( $args );
+
 	foreach($categories as $category) { 
 	  $level = get_level($category->cat_ID);
 	  //get only second level categories
-	  if($level == 1){
+	  //if($level == 1){
     	$home_categ_options[$category->term_id] = array(
     		'value' => function_exists('icl_object_id') ? icl_object_id($category->term_id, 'category', TRUE, $default_lg) : $category->term_id,
     		'label' => $category->name,
@@ -213,7 +217,7 @@ function iftheme_home_categories($pays=NULL) {
     	
     	if($pays) $root_categ[get_root_category($category->term_id)] = get_root_category($category->term_id);
       }
-    }
+    //}
     
     if($pays) foreach($root_categ as $k => $id){ unset($home_categ_options[$k]); }
     
@@ -227,6 +231,8 @@ function iftheme_home_categories($pays=NULL) {
  * Returns the default options for Institut Français.
  */
 function iftheme_get_default_theme_options() {
+	global $pays;
+	
 	$default_theme_options = array(
 		'bg_frame' => 'f1',
 		'bg_frame_country' => 'f1',
@@ -235,7 +241,13 @@ function iftheme_get_default_theme_options() {
 		'theme_options_setting_facebook' => '',
 		'theme_options_setting_twitter' => '',
 		'theme_options_setting_googleplus' => '',
+		'theme_options_setting_iftv' => 'http://institutfrancais.tv',
+		'theme_home_nb_events' => '5',
 	);
+	
+	if ($pays) {
+    $default_theme_options['theme_home_nb_events_country'] = '5';
+	}
 
 	return apply_filters( 'iftheme_default_theme_options', $default_theme_options );
 }
@@ -275,7 +287,6 @@ function iftheme_settings_field_bg_frames_country() {
 	iftheme_settings_field_bg_frames($pays);
 }
 
-
 /**
  * Renders the homepage categories setting fields.
  */
@@ -285,8 +296,8 @@ function iftheme_settings_field_home_categories($pays=NULL) {
 	
 	$categz = $pays ? iftheme_home_categories($pays) : iftheme_home_categories();
 
-  if(!empty($categz)){
-	foreach ( $categz as $home_categ ) {
+  if (!empty($categz)) { 
+   foreach ( $categz as $home_categ ) {
 	  $keyCateg = $pays ? 'theme_home_categ_country' : 'theme_home_categ';
 	  $checked = isset($options[$keyCateg][0][$home_categ['value']]) ? $options[$keyCateg][0][$home_categ['value']] : '';
 		?>
@@ -297,7 +308,7 @@ function iftheme_settings_field_home_categories($pays=NULL) {
 		</label>
 		</div>
 		<?php
-	}
+    } 
   } else { echo '<span class="warning">'.__('You must create some child categories','iftheme').' > <a href="/wp-admin/edit-tags.php?taxonomy=category">'.__('Categories').'</a></span>';}
 }
 function iftheme_settings_field_home_categories_country() {
@@ -305,6 +316,30 @@ function iftheme_settings_field_home_categories_country() {
 	iftheme_settings_field_home_categories($pays);
 }
 
+/**
+ * Renders the number of event displayed on homepage settings
+ */
+
+function iftheme_settings_field_nb_events($pays=NULL) {
+  $antenna = get_antenna();
+	$options = iftheme_get_theme_options(); 
+	$nb_events = $pays ?  $options['theme_home_nb_events_' . $pays] : $options['theme_home_nb_events'];
+	
+	if(!$nb_events) { 
+	 $defaults = iftheme_get_default_theme_options();
+	 $nb_events = $pays ?  $defaults['theme_home_nb_events_' . $pays] : $defaults['theme_home_nb_events'];
+	}
+	
+	?>
+		<div class="layout image-checkbox-option theme-home-categ">
+			<input name="iftheme_theme_options_<?php echo $antenna;?>[theme_home_nb_events<?php echo $pays ? '_'.$pays : '';?>]" type="number" step="1" min="1" id="theme_home_nb_events<?php echo $pays ? '_'.$pays : '';?>" value="<?php echo $nb_events;?>" class="small-text" />
+		</div>
+<?php }
+
+function iftheme_settings_field_nb_events_country() {
+	global $pays;
+	iftheme_settings_field_nb_events($pays);
+}
 
 /**
  * Renders the background_img image setting fields.
@@ -349,12 +384,20 @@ function theme_options_setting_facebook_callback_function() {
 function theme_options_setting_twitter_callback_function() {
 	$antenna = get_antenna();
 	$options = iftheme_get_theme_options(); ?>
-	<input name="iftheme_theme_options_<?php echo $antenna;?>[theme_options_setting_twitter]" id="theme_options_setting_facebook" type="text" value="<?php echo $options['theme_options_setting_twitter'] ;?>" />
+	<input name="iftheme_theme_options_<?php echo $antenna;?>[theme_options_setting_twitter]" id="theme_options_setting_twitter" type="text" value="<?php echo $options['theme_options_setting_twitter'] ;?>" />
 <?php }
 function theme_options_setting_googleplus_callback_function() {
 	$antenna = get_antenna();
 	$options = iftheme_get_theme_options(); ?>
-	<input name="iftheme_theme_options_<?php echo $antenna;?>[theme_options_setting_googleplus]" id="theme_options_setting_facebook" type="text" value="<?php echo $options['theme_options_setting_googleplus'] ;?>" />
+	<input name="iftheme_theme_options_<?php echo $antenna;?>[theme_options_setting_googleplus]" id="theme_options_setting_googleplus" type="text" value="<?php echo $options['theme_options_setting_googleplus'] ;?>" />
+<?php }
+function theme_options_setting_iftv_callback_function() {
+	$antenna = get_antenna();
+	$options = iftheme_get_theme_options();
+	$defaults = iftheme_get_default_theme_options();
+	$value = (isset($options['theme_options_setting_iftv']) && !empty($options['theme_options_setting_iftv'])) ? $options['theme_options_setting_iftv'] : $defaults['theme_options_setting_iftv'];
+	?>
+	<input name="iftheme_theme_options_<?php echo $antenna;?>[theme_options_setting_iftv]" id="theme_options_setting_iftv" type="text" value="<?php echo $value;?>" />
 <?php }
 
 /**
@@ -366,9 +409,7 @@ function iftheme_theme_options_render_page() { ?>
 		<?php $theme_name = function_exists( 'wp_get_theme' ) ? wp_get_theme() : get_current_theme(); ?>
 		<h2><?php printf( __( '%s Theme Options', 'iftheme' ), $theme_name ); ?></h2>
 		<?php settings_errors(); ?>
-	<?php $opt = iftheme_get_theme_options();
-		 //echo '<pre>';print_r($opt);echo '</pre>';
-		 //d($opt);?>
+	<?php $opt = iftheme_get_theme_options();?>
 
 		<form method="post" action="options.php" enctype="multipart/form-data">
 			<?php
@@ -402,9 +443,16 @@ function iftheme_theme_options_validate( $input ) {
 	// Home categories 
 	if ( isset( $input['theme_home_categ'] ) && is_array( $input['theme_home_categ'] ) )
 		$output['theme_home_categ'][] = $input['theme_home_categ'];
+	//nb of events homepage
+	if ( isset( $input['theme_home_nb_events'] ) && strlen($input['theme_home_nb_events']))
+		$output['theme_home_nb_events'] = $input['theme_home_nb_events'];
+
 	// Country Home categories 
 	if ( isset( $input['theme_home_categ_country'] ) && is_array( $input['theme_home_categ_country'] ) )
 		$output['theme_home_categ_country'][] = $input['theme_home_categ_country'];
+	//nb of events country's homepage
+	if ( isset( $input['theme_home_nb_events_country'] ) && strlen($input['theme_home_nb_events_country']) )
+		$output['theme_home_nb_events_country'] = $input['theme_home_nb_events_country'];
 
 	// Background image 
 	if ( isset( $input['background_img'] ) )
@@ -419,6 +467,8 @@ function iftheme_theme_options_validate( $input ) {
 		$output['theme_options_setting_twitter'] = $input['theme_options_setting_twitter'];
 	if ( isset( $input['theme_options_setting_googleplus'] ) )
 		$output['theme_options_setting_googleplus'] = $input['theme_options_setting_googleplus'];
+	if ( isset( $input['theme_options_setting_iftv'] ) && strlen($input['theme_options_setting_iftv']) )
+		$output['theme_options_setting_iftv'] = $input['theme_options_setting_iftv'];
 		
 	return apply_filters( 'iftheme_theme_options_validate', $output, $input, $defaults );
 }

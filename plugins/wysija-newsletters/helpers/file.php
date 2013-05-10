@@ -5,34 +5,32 @@ class WYSIJA_help_file extends WYSIJA_object{
     }
     
     function exists($fileFolder=false){
-        $upload_dir = wp_upload_dir();
-        $filename=str_replace("/",DS,$upload_dir['basedir']).DS."wysija".DS.$fileFolder;
+        $upload_base_dir = $this->getUploadBaseDir();
+        $filename=str_replace('/',DS,$upload_base_dir).DS.'wysija'.DS.$fileFolder;
         if(!file_exists($filename)){
             return array('result'=>false,'file'=>$filename);
         }
         return array('result'=>true,'file'=>$filename);
     }
     
-    function get($csvfilename,$folder="temp"){
-        $upload_dir = wp_upload_dir();
-        $filename=$upload_dir['basedir'].DS."wysija".DS.$folder.DS.$csvfilename;
+    function get($csvfilename,$folder='temp'){
+        $upload_base_dir = $this->getUploadBaseDir();
+        $filename=$upload_base_dir.DS.'wysija'.DS.$folder.DS.$csvfilename;
         if(!file_exists($filename)){
-            $filename=$upload_dir['basedir'].DS.$csvfilename;
+            $filename=$upload_base_dir.DS.$csvfilename;
             if(!file_exists($filename)) $filename=false;
         }
         return $filename;
     }
-    
-    function makeDir($folder="temp",$mode=0755){
-        $upload_dir = wp_upload_dir();
-        if(!isset($upload_dir['basedir'])){
-            if(isset($upload_dir['error'])) $this->wp_error("<b>WordPress error</b> : ".$upload_dir['error'],1);
-            return false;
-        }
-        if(strpos(str_replace("/",DS,$folder),str_replace("/",DS,$upload_dir['basedir']))!==false){
+
+
+
+    function makeDir($folder='temp',$mode=0755){
+        $upload_base_dir = $this->getUploadBaseDir();
+        if(strpos(str_replace('/',DS,$folder),str_replace('/',DS,$upload_base_dir))!==false){
             $dirname=$folder;
         }else{
-            $dirname=$upload_dir['basedir'].DS."wysija".DS.$folder.DS;
+            $dirname=$upload_base_dir.DS.'wysija'.DS.$folder.DS;
         }
         if(!file_exists($dirname)){
             if(!mkdir($dirname, $mode,true)){
@@ -44,33 +42,58 @@ class WYSIJA_help_file extends WYSIJA_object{
     }
 
     function getUploadDir($folder=false){
-        $upload_dir = wp_upload_dir();
-        $dirname=$upload_dir['basedir'].DS."wysija".DS;
+        $upload_base_dir = $this->getUploadBaseDir();
+        $dirname=$upload_base_dir.DS.'wysija'.DS;
         if($folder) $dirname.=$folder.DS;
         if(file_exists($dirname))    return $dirname;
         return false;
-        
+    }
+    function getUploadBaseDir(){
+        $upload_dir = wp_upload_dir();
+        if(!isset($upload_dir['basedir'])){
+            if(isset($upload_dir['error'])) $this->wp_error('<b>WordPress error</b> : '.$upload_dir['error'],1);
+            return false;
+        }
+
+        if(strpos($upload_dir['basedir'], '..')!==false){
+            $pathsections=$pathsectionsc=explode(DS, $upload_dir['basedir']);
+            while($key = array_search('..', $pathsections)){
+                unset($pathsections[$key]);
+                unset($pathsections[$key-1]);
+                $newpatharray=array();
+                foreach($pathsections as $ky=>$vy){
+                    $newpatharray[]=$vy;
+                }
+                $pathsections=$newpatharray;
+            }
+            $cleanBaseDir=implode(DS, $pathsections);
+            if(file_exists($cleanBaseDir)){
+                $upload_dir['basedir']=$cleanBaseDir;
+            }
+        }
+
+        return $upload_dir['basedir'];
     }
     
-    function temp($content,$key="temp",$format=".tmp"){
+    function temp($content,$key='temp',$format='.tmp'){
         $tempDir=$this->makeDir();
         if(!$tempDir)   return false;
 
-        $filename=$key."-".time().$format;
-        $handle=fopen($tempDir.$filename, "w");
+        $filename=$key.'-'.time().$format;
+        $handle=fopen($tempDir.$filename, 'w');
         fwrite($handle, $content);
         fclose($handle);
-        return array('path'=>$tempDir.$filename,'name'=>$filename, 'url'=>$this->url($filename,"temp"));
+        return array('path'=>$tempDir.$filename,'name'=>$filename, 'url'=>$this->url($filename,'temp'));
     }
     
-    function url($filename,$folder="temp"){
+    function url($filename,$folder='temp'){
         $upload_dir = wp_upload_dir();
-        if(file_exists($upload_dir['basedir'].DS."wysija")){
-            $url=$upload_dir['baseurl']."/wysija/".$folder."/".$filename;
+        if(file_exists($upload_dir['basedir'].DS.'wysija')){
+            $url=$upload_dir['baseurl'].'/wysija/'.$folder.'/'.$filename;
         }else{
-            $url=$upload_dir['baseurl']."/".$filename;
+            $url=$upload_dir['baseurl'].'/'.$filename;
         }
-        return str_replace(DS,"/",$url);
+        return str_replace(DS,'/',$url);
     }
     
     function send($path){
@@ -80,7 +103,7 @@ class WYSIJA_help_file extends WYSIJA_object{
             header('Content-Disposition: attachment; filename="export_wysija.csv"');
             readfile($path);
             exit();
-        }else $this->error(__('Yikes! We couldn\'t export. Make sure that your folder permissions for /wp-content/upload/wysija/temp is set to 755.',WYSIJA),true);
+        }else $this->error(__('Yikes! We couldn\'t export. Make sure that your folder permissions for /wp-content/uploads/wysija/temp is set to 755.',WYSIJA),true);
     }
     
     function clear(){

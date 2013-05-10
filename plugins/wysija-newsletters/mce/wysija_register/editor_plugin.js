@@ -1,19 +1,28 @@
+
 (function() {
-	tinymce.create('tinymce.plugins.WYSIJA_register', {
+	function getUrlVars() {
+            var vars = {};
+            var parts = window.location.href.replace(/[?&]+([^=&]+)=([^&]*)/gi, function(m,key,value) {
+                vars[key] = value;
+            });
+            return vars;
+        }
+        tinymce.create('tinymce.plugins.WYSIJA_register', {
 
                 init : function(ed, url) {
                     var t = this;
                     t.url = url;
                     t._createButtons();
                     t.editValue="";
+                    t.post_id=getUrlVars()["post"];
                     // Register commands
 
                     ed.addCommand('wysijaRegister', function() {
                        ed.windowManager.open({
                            /*file : url + '/wysija_register.php',*/
                             file : ajaxurl+"?action=wysija_ajax&wysilog=1&controller=tmce&task=registerAdd",
-                            width : 780,
-                            height : 420 ,
+                            width : 240,
+                            height : 185 ,
                             inline : 1
                         }, {
                             plugin_url : url
@@ -24,9 +33,9 @@
                             ed.plugins.wysija_register._hideButtons();
                             ed.windowManager.open({
                                /*file : url + '/wysija_register.php?'+t.editValue,*/
-                               file : ajaxurl+"?action=wysija_ajax&wysilog=1&controller=tmce&task=registerEdit&widget-data64="+t.editValue,
-                                width : 780 ,
-                                height : 420,
+                               file : ajaxurl+"?action=wysija_ajax&wysilog=1&controller=tmce&task=registerEdit&widget-data64="+t.editValue+'&post_id='+t.post_id,
+                                width : 240 ,
+                                height : 185,
                                 inline : 1
                             }, {
                                 plugin_url : url
@@ -138,7 +147,7 @@
 			tinymce.dom.Event.add(editButton, 'mousedown', function(e) {
 				var ed = tinyMCE.activeEditor;
 				ed.execCommand("wysijaRegisterEdit");
-			}); 
+			});
 
 			dellButton = DOM.add('wp_wysijaregister', 'img', {
 				src : t.url+'/delete.png',

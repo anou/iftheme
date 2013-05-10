@@ -50,7 +50,7 @@ class WYSIJA_view_back extends WYSIJA_view{
      * to help reproduce the standard view of wordpress admin view here is the header part
      * @param type $methodView
      */
-    function header($data){
+    function header($data=''){
         echo '<div id="wysija-app" class="wrap">';/*start div class wrap*/
 
         if($this->skip_header === true) return;
@@ -96,8 +96,16 @@ class WYSIJA_view_back extends WYSIJA_view{
 
                         foreach($this->statuses as $keyst=>$status){
                             $class='';
-                            if(isset($_REQUEST['link_filter']) && $_REQUEST['link_filter']==$status['key']) $class='current';
-                            echo '<li><a class="'.$class.'" href="'.$status['uri'].'">'.$status['title'].' <span class="count">('.$status['count'].')</span></a>';
+                            if(isset($_REQUEST['link_filter']) && $_REQUEST['link_filter'] === $status['key']) $class='current';
+
+                            // set item count: defaults to 0
+                            $count = (isset($status['count'])) ? (int)$status['count'] : 0;
+
+                            if(isset($status['uri'])) {
+                                echo '<li><a class="'.$class.'" href="'.$status['uri'].'">'.$status['title'].' <span class="count">('.$count.')</span></a>';
+                            } else {
+                                echo '<li><a class="'.$class.'" href="javascript:;">'.$status['title'].' <span class="count">('.$count.')</span></a>';
+                            }
                             if($last_key!=$keyst) echo ' | ';
                             echo '</li>';
 
@@ -207,99 +215,59 @@ class WYSIJA_view_back extends WYSIJA_view{
 
     }
 
-    /**
-     * helping function for listing management here is the pagination function
-     */
-    function pagination($paramsurl='',$second=false){
-        $numperofpages=1;
-        $numperofpages=ceil($this->model->countRows/$this->model->limit);
+    // Pagination for listing pages.
+    function pagination($paramsurl='', $second=false) {
 
-            ?>
-            <div class="tablenav-pages">
-                <span class="displaying-num"><?php
-                $limitend=$this->model->limit_end;
-                if($this->model->limit_end>$this->model->countRows) $limitend=$this->model->countRows;
-                if($numperofpages>1) echo sprintf(__('Displaying %1$d-%2$d of %3$d.',WYSIJA), $this->model->limit_start+1,$limitend,$this->model->countRows);
-                else echo sprintf(__('%1$d Items',WYSIJA), $this->model->countRows);
+        $number_of_pages = 1;
+        $number_of_pages = ceil($this->model->countRows/$this->model->limit);
 
-                        ?></span>
-                <?php
-                $pagiNUM=1;
-                if(isset($_REQUEST['pagi'])) $pagiNUM=$_REQUEST['pagi'];
-                if($numperofpages>1){
-                    $textBoxPagi="";
-                    $sufix="";
-                    if($second) $sufix="-2";
+        echo '<div class="tablenav-pages">';
 
-                    $textBoxPagi='<input id="wysija-pagination'.$sufix.'" type="text" name="pagi'.$sufix.'" size="4" value="'.$pagiNUM.'" />';
-                    $textBoxPagi.='<input id="wysija-pagination-max'.$sufix.'" type="hidden" name="pagimax'.$sufix.'" value="'.$numperofpages.'" />';
+        $current_page = 1;
+        if (isset($_REQUEST['pagi'])) {
+            $current_page = $_REQUEST['pagi'];
+        }
 
-                    $pagi='';
-                    if($pagiNUM!=1){
-                        $pagi.='<a class="prev page-numbers" href="admin.php?page='.$_REQUEST['page'].'&pagi=1'.$paramsurl.'" alt="1" title="'.sprintf(__('Page %1$s',WYSIJA),1).'">«</a>';
-                        if($pagiNUM>2) $pagi.='<a class="prev page-numbers" href="admin.php?page='.$_REQUEST['page'].'&pagi='.($pagiNUM-1).$paramsurl.'" alt="'.($pagiNUM-1).'" title="'.sprintf(__('Page %1$s',WYSIJA),($pagiNUM-1)).'" ><</a>';
-                    }
+        if ($number_of_pages > 1) {
 
-                    if($numperofpages>10){
-                        if($pagiNUM>3){
-                            if($pagiNUM>4)  $pagi.='<span class="dots">...</span>';
-                            for($i=$pagiNUM-3;$i<=$pagiNUM-1;$i++){
-                                if($i-1==$this->model->page){
-                                    $pagi.='<span class="page-numbers current">'.$i.'</span>';
-                                }else $pagi.='<a href="admin.php?page='.$_REQUEST['page'].'&pagi='.$i.$paramsurl.'" class="page-numbers" alt="'.$i.'" >'.$i.'</a>';
-                            }
-                        }else{
-                            for($i=1;$i<=3;$i++){
-                                if($i-1==$this->model->page){
-                                    $pagi.='<span class="page-numbers current">'.$i.'</span>';
-                                }else $pagi.='<a href="admin.php?page='.$_REQUEST['page'].'&pagi='.$i.$paramsurl.'" class="page-numbers" alt="'.$i.'" >'.$i.'</a>';
-                            }
-                            $pagi.='<span class="dots">...</span>';
-                        }
+            // Pagination input box to manually enter the page requested.
+            $pagination_input = "";
+            $suffix = "";
+            if ($second) {
+                $suffix = "-2";
+            }
+            $pagination_input = '<input id="wysija-pagination' . $suffix . '" type="text" name="pagi' . $suffix . '" size="4" value="' . $current_page . '" />';
+            $pagination_input .= '<input id="wysija-pagination-max' . $suffix . '" type="hidden" name="pagimax' . $suffix . '" value="' . $number_of_pages . '" />';
 
-                        $pagi.=$textBoxPagi;
+            // Final pagination container.
+            $pagi = '';
 
-                        if($pagiNUM>3 && $pagiNUM<($numperofpages-3)){
-                            for($i=$pagiNUM+1;$i<=$pagiNUM+3;$i++){
-                                if($i-1==$this->model->page){
-                                    $pagi.='<span class="page-numbers current">'.$i.'</span>';
-                                }else $pagi.='<a href="admin.php?page='.$_REQUEST['page'].'&pagi='.$i.$paramsurl.'" class="page-numbers" alt="'.$i.'" >'.$i.'</a>';
-                            }
-                            $pagi.='<span class="dots">...</span>';
-                        }else{
-                            if($pagiNUM<3){
-                                $pagi.='<span class="dots">...</span>';
-                                for($i=($numperofpages-2);$i<=$numperofpages;$i++){
-                                    if($i-1==$this->model->page){
-                                        $pagi.='<span class="page-numbers current">'.$i.'</span>';
-                                    }else $pagi.='<a href="admin.php?page='.$_REQUEST['page'].'&pagi='.$i.$paramsurl.'" class="page-numbers" alt="'.$i.'" >'.$i.'</a>';
-                                }
-                            }
-
-
-                        }
-
-                    }else{
-                        $pagi.=$textBoxPagi;
-                        for($i=1;$i<=$numperofpages;$i++){
-                            if($i-1==$this->model->page){
-                                $pagi.='<span class="page-numbers current">'.$i.'</span>';
-                            }else $pagi.='<a href="admin.php?page='.$_REQUEST['page'].'&pagi='.$i.$paramsurl.'" class="page-numbers" alt="'.$i.'" >'.$i.'</a>';
-                        }
-                    }
-
-
-                    if($numperofpages >2 && $pagiNUM!=$numperofpages){
-
-                        if(($numperofpages-$pagiNUM)>=2) $pagi.='<a class="next page-numbers" href="admin.php?page='.$_REQUEST['page'].'&pagi='.($pagiNUM+1).$paramsurl.'" alt="'.($pagiNUM+1).'" title="'.sprintf(__('Page %1$s',WYSIJA),($pagiNUM+1)).'">></a>';
-                        $pagi.='<a class="next page-numbers" href="admin.php?page='.$_REQUEST['page'].'&pagi='.$numperofpages.$paramsurl.'" alt="'.$numperofpages.'" title="'.sprintf(__('Page %1$s',WYSIJA),$numperofpages).'" >»</a>';
-
-                    }
-                    echo $pagi;
+            // Pagination Previous Arrows.
+            if ($current_page != 1) {
+                $pagi .= '<a class="prev page-numbers" href="admin.php?page='.$_REQUEST['page'].'&pagi=1'.$paramsurl.'" alt="1" title="'.sprintf(__('Page %1$s',WYSIJA),1).'">&laquo;</a>';
+                if ($current_page>2) {
+                    $pagi .= '<a class="prev page-numbers" href="admin.php?page='.$_REQUEST['page'].'&pagi='.($current_page-1).$paramsurl.'" alt="'.($current_page-1).'" title="'.sprintf(__('Page %1$s',WYSIJA),($current_page-1)).'" >&lsaquo;</a>';
                 }
-                ?>
-            </div>
-            <?php
+            }
+
+            // Input field and total pages.
+            $pagi .= $pagination_input;
+            $pagi.= '<span class="total-pages">' . sprintf(__('of %1$s',WYSIJA), $number_of_pages) . '</span>';
+
+            // Pagination Next arrows.
+            if($number_of_pages > 1 && $current_page != $number_of_pages){
+                if (($number_of_pages - $current_page) >= 2) {
+                    $pagi .= '<a class="next page-numbers" href="admin.php?page='.$_REQUEST['page'].'&pagi='.($current_page+1).$paramsurl.'" alt="'.($current_page+1).'" title="'.sprintf(__('Page %1$s',WYSIJA),($current_page+1)).'">&rsaquo;</a>';
+                }
+                $pagi .= '<a class="next page-numbers" href="admin.php?page='.$_REQUEST['page'].'&pagi='.$number_of_pages.$paramsurl.'" alt="'.$number_of_pages.'" title="'.sprintf(__('Page %1$s',WYSIJA),$number_of_pages).'" >&raquo;</a>';
+            }
+
+            echo $pagi;
+
+        }
+
+        echo '</div>';
+
     }
 
 
@@ -380,26 +348,27 @@ class WYSIJA_view_back extends WYSIJA_view{
      */
     function fieldListHTML($key,$val,$params=array()){
         /*get the params of that field if there is*/
+        $field_type = (isset($params['type']) ? $params['type'] : '');
 
-        switch($params['type']){
-            case "pk":
+        switch($field_type) {
+            case 'pk':
                 return '<th class="check-column" scope="col"><input class="checkboxselec" type="checkbox" value="'.$val.'" id="'.$key.'_'.$val.'" name="wysija['.$this->model->table_name.']['.$key.'][]"></th>';
                 break;
-            case "boolean":
+            case 'boolean':
 
                 $wrap='<td class="'.$key.' column-'.$key.'">';
                 $wrap.=$params['values'][$val];
                 $wrap.='</td>';
 
                 break;
-            case "date":
+            case 'date':
 
                 $wrap='<td class="'.$key.' column-'.$key.'">';
                 $wrap.=$this->fieldListHTML_created_at($val);
                 $wrap.='</td>';
 
                 break;
-            case "time":
+            case 'time':
 
                 if(!isset($params['format']))$params['format']='';
 
@@ -422,8 +391,21 @@ class WYSIJA_view_back extends WYSIJA_view{
          return $wrap;
     }
 
+    /**
+     * central function to return a translated fromated date
+     * @param type $val
+     * @param type $format
+     * @return string
+     */
     function fieldListHTML_created_at($val,$format=''){
         if(!$val) return '---';
+
+        //offset the time to the time of the WP site not the server
+        $hToolbox =& WYSIJA::get('toolbox','helper');
+        // get current time taking timezone into account.
+
+        $val = $hToolbox->servertime_to_localtime($val);
+
         if($format) return date_i18n($format,$val);
         else return date_i18n(get_option('date_format'),$val);
     }
@@ -492,18 +474,17 @@ class WYSIJA_view_back extends WYSIJA_view{
     }
 
     function buildMyForm($step,$data,$model,$required=false){
-        $formFields="";
+        $formFields='';
 
         foreach($step as $row =>$colparams){
-            $class="";
-            $value="";
+            $class=$value='';
             $paramscolumn=false;
             if(isset($colparams['rowclass'])) $class=' class="'.$colparams['rowclass'].'" ';
             $formFields.='<tr '.$class.'>';
-            if($model=="config"){
+            if($model=='config'){
                 $value=$this->model->getValue($row);
             }else{
-                if($row!="lists")   {
+                if($row!='lists')   {
                     if(is_array($model)){
                         foreach($model as $mod){
                             if(isset($data[$mod][$row])){
@@ -511,12 +492,11 @@ class WYSIJA_view_back extends WYSIJA_view{
                                 break;
                             }
                         }
-
                     }else{
                         if(isset($colparams['isparams'])){
                             $params=$data[$model][$colparams['isparams']];
                             //if(!is_array($data[$model][$colparams['isparams']]))    $params=unserialize(base64_decode($data[$model][$colparams['isparams']]));
-                            $value="";
+                            $value='';
                             if(isset($params[$row]))    $value=$params[$row];
                             $paramscolumn=$colparams['isparams'];
                         }
@@ -524,20 +504,20 @@ class WYSIJA_view_back extends WYSIJA_view{
                     }
                     if($value) $value;
                     elseif(isset($_REQUEST['wysija'][$this->model->table_name][$row])) $value=$_REQUEST['wysija'][$this->model->table_name][$row];
-                    elseif(isset($colparams["default"])) $value=$colparams["default"];
-                    else $value="";
+                    elseif(isset($colparams['default'])) $value=$colparams['default'];
+                    else $value='';
                 }elseif(isset($data[$row])) $value=$data[$row];
-                elseif(isset($colparams["default"])) $value=$colparams["default"];
-                else $value="";
+                elseif(isset($colparams['default'])) $value=$colparams['default'];
+                else $value='';
             }
 
-            if($required && !isset($colparams["class"]))   $colparams["class"]=$this->getClassValidate($this->model->columns[$row],true);
+            if($required && !isset($colparams['class']))   $colparams['class']=$this->getClassValidate($this->model->columns[$row],true);
 
             if(isset($colparams['label'])) $label=$colparams['label'];
             else  $label=ucfirst($row);
             $desc='';
             if(isset($colparams['desc'])){
-                if(isset($colparams['link'])) $colparams['desc']=str_replace(array("[link]","[/link]"),array($colparams['link'],"</a>"),$colparams['desc']);
+                if(isset($colparams['link'])) $colparams['desc']=str_replace(array('[link]','[/link]'),array($colparams['link'],'</a>'),$colparams['desc']);
                 $desc='<p class="description">'.$colparams['desc'].'</p>';
             }
             //if(isset($colparams['desc'])) $desc='<p class="description">'.$colparams['desc'].'</p>';
@@ -565,7 +545,7 @@ class WYSIJA_view_back extends WYSIJA_view{
      * @param type $type
      * @return type
      */
-    function fieldHTML($key,$val="",$model="",$params=array(),$paramscolumn=false){
+    function fieldHTML($key,$val='',$model='',$params=array(),$paramscolumn=false){
         $classValidate=$wrap='';
         /*get the params of that field if there is*/
         $type=$params['type'];
@@ -573,53 +553,58 @@ class WYSIJA_view_back extends WYSIJA_view{
         if($params)  $classValidate=$this->getClassValidate($params);
 
         if($paramscolumn){
-            $col=$paramscolumn."][".$key;
+            $col=$paramscolumn.']['.$key;
         }else $col=$key;
 
         switch($type){
-            case "pk":
+            case 'pk':
                 return '<input type="hidden" value="'.$val.'" id="'.$key.'" name="wysija['.$model.']['.$col.']">';
                 break;
-            case "boolean":
-                $formObj=&WYSIJA::get("forms","helper");
+            case 'boolean':
+                $formObj=&WYSIJA::get('forms','helper');
                 $wrap.=$formObj->dropdown(array('id'=>$key, 'name'=>'wysija['.$model.']['.$col.']'),$params['values'],$val,$classValidate);
                 break;
-            case "roles":
+            case 'roles':
                 $wptools=&WYSIJA::get('wp_tools','helper');
                 $editable_roles=$wptools->wp_get_editable_roles();
 
-                $formObj=&WYSIJA::get("forms","helper");
+                $formObj=&WYSIJA::get('forms','helper');
                 $wrap.=$formObj->dropdown(array('id'=>$key, 'name'=>'wysija['.$model.']['.$col.']'),$editable_roles,$val,$classValidate);
                 break;
-            case "password":
+            case 'password':
                 if(!isset($params['size'])){
                     $classValidate.=' size="80"';
                 }
-                $formObj=&WYSIJA::get("forms","helper");
+                $formObj=&WYSIJA::get('forms','helper');
                 $wrap.=$formObj->input(array('type'=>'password','id'=>$key, 'name'=>'wysija['.$model.']['.$col.']'),$val,$classValidate);
                 break;
-            case "radio":
+            case 'disabled_radio':
 
-                $formObj=&WYSIJA::get("forms","helper");
+                $formObj=&WYSIJA::get('forms','helper');
+                $wrap.=$formObj->radios(array('id'=>$key, 'name'=>'wysija['.$model.']['.$col.']', 'disabled'=>'disabled'),$params['values'],$val,$classValidate);
+                break;
+            case 'radio':
+
+                $formObj=&WYSIJA::get('forms','helper');
                 $wrap.=$formObj->radios(array('id'=>$key, 'name'=>'wysija['.$model.']['.$col.']'),$params['values'],$val,$classValidate);
                 break;
-            case "dropdown_keyval":
+            case 'dropdown_keyval':
                 $newoption=array();
                 foreach($params['values'] as $vall){
                     $newoption[$vall]=$vall;
                 }
-                $formObj=&WYSIJA::get("forms","helper");
+                $formObj=&WYSIJA::get('forms','helper');
                 $wrap.=$formObj->dropdown(array('id'=>$key, 'name'=>'wysija['.$model.']['.$key.']'),$newoption,$val,$classValidate);
                 break;
-            case "dropdown":
-                $formObj=&WYSIJA::get("forms","helper");
+            case 'dropdown':
+                $formObj=&WYSIJA::get('forms','helper');
                 $wrap.=$formObj->dropdown(array('id'=>$key, 'name'=>'wysija['.$model.']['.$col.']'),$params['values'],$val,$classValidate);
                 break;
-            case "wysija_pages_list":
+            case 'wysija_pages_list':
                 $wrapd=get_pages( array('post_type'=>"wysijap",'echo'=>0,'name'=>'wysija['.$model.']['.$col.']','id'=>$key,'selected' => $val,'class'=>$classValidate) );
 
                 break;
-            case "pages_list":
+            case 'pages_list':
                 $wrap.=wp_dropdown_pages( array('echo'=>0,'name'=>'wysija['.$model.']['.$col.']','id'=>$key,'selected' => $val,'class'=>$classValidate) );
                 break;
             default:
@@ -632,11 +617,11 @@ class WYSIJA_view_back extends WYSIJA_view{
                     $classValidate.=' class="'.$params['class'].'"';
                 }
 
-                $specialMethod="fieldFormHTML_".$type;
+                $specialMethod='fieldFormHTML_'.$type;
 
                 if(method_exists($this, $specialMethod)) $wrap.=$this->$specialMethod($key,$val,$model,$params);
                 else{
-                    $formObj=&WYSIJA::get("forms","helper");
+                    $formObj=&WYSIJA::get('forms','helper');
                     if(method_exists($formObj, $type)){
                         $dataInput=array('id'=>$key, 'name'=>'wysija['.$model.']['.$col.']');
 
@@ -789,13 +774,14 @@ class WYSIJA_view_back extends WYSIJA_view{
     }
 
     function fieldFormHTML_fromname($key,$val,$model,$params){
-        $formObj=&WYSIJA::get("forms","helper");
+        $formObj=&WYSIJA::get('forms','helper');
         $disableEmail=false;
         if($model!='config') $model='email';
         if($key=='from_name')   $keyemail='from_email';
         else    $keyemail='replyto_email';
 
-        $dataInputEmail=array('class'=>'validate[required]', 'id'=>$keyemail,'name'=>"wysija[$model][$keyemail]", 'size'=>40);
+        //$dataInputEmail=array('class'=>'validate[required]', 'id'=>$keyemail,'name'=>"wysija[$model][$keyemail]", 'size'=>40);
+        $dataInputEmail=array('class'=>'validate[required,custom[email]]', 'id'=>$keyemail,'name'=>"wysija[$model][$keyemail]", 'size'=>40);
 
         if(isset($this->data['email'][$key])){
             $valname=$this->data['email'][$key];
@@ -805,21 +791,35 @@ class WYSIJA_view_back extends WYSIJA_view{
             $valemail=$this->model->getValue($keyemail);
         }
 
-        /*if from email and sending method is gmail then the email is blocked to the smtp_login*/
+        //if from email and sending method is gmail then the email is blocked to the smtp_login
         if($key=='from_name'){
             $modelConfig=&WYSIJA::get('config','model');
-            if($modelConfig->getValue('sending_method')=='gmail')   {
-                $dataInputEmail['readonly']='readonly';
-                $dataInputEmail['class'].=' disabled';
-                $valemail=$modelConfig->getValue('smtp_login');
+            switch($modelConfig->getValue('sending_method')){
+                case 'gmail':
+                    $dataInputEmail['readonly']='readonly';
+                    $dataInputEmail['class']='disabled';
+                    $valemail=$modelConfig->getValue('smtp_login');
+
+                    //if the user didn't enter the email address then we put it ourself
+                    if(strpos($valemail, '@')===false && strpos($valemail, '@gmail.com')===false){
+                        $valemail.='@gmail.com';
+                    }
+                    $from_name_field=$formObj->input($dataInputEmail ,$valemail);
+                    break;
+                case 'network':
+                    $from_name_field='&nbsp;&nbsp;'.$modelConfig->getValue('ms_from_email').$formObj->hidden($dataInputEmail ,$valemail);
+                    break;
+                default :
+                    $from_name_field=$formObj->input($dataInputEmail ,$valemail);
             }
+
+        }else{
+            $from_name_field=$formObj->input($dataInputEmail ,$valemail);
         }
 
 
-
-
         $fieldHtml=$formObj->input( array('class'=>'validate[required]', 'id'=>$key,'name'=>"wysija[$model][$key]"),$valname);
-        $fieldHtml.=$formObj->input($dataInputEmail ,$valemail);
+        $fieldHtml.=$from_name_field;
         return $fieldHtml;
     }
 
@@ -839,6 +839,8 @@ class WYSIJA_view_back extends WYSIJA_view{
             </p>
         <?php
     }
+
+
 
 
 }

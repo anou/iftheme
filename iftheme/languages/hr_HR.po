@@ -1,0 +1,1068 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: Institut Français theme\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2013-05-07 08:32+0100\n"
+"PO-Revision-Date: 2013-05-07 08:33+0100\n"
+"Last-Translator: David Thomas <anou@smol.org>\n"
+"Language-Team: smol <team@smol.org>\n"
+"Language: fr_FR\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Poedit-KeywordsList: __;_e;gettext;gettext_noop\n"
+"X-Poedit-Basepath: .\n"
+"X-Poedit-SourceCharset: UTF-8\n"
+"X-Generator: Poedit 1.5.5\n"
+"X-Poedit-SearchPath-0: ../../iftheme\n"
+
+#: ../../iftheme/404.php:5
+msgid "Error 404 Not Found"
+msgstr "Greška 404 nije pronađeno"
+
+#: ../../iftheme/404.php:7
+msgid "Oops. Fail. The page cannot be found."
+msgstr "Oops. Greška. Nije moguće pronaći stranicu."
+
+#: ../../iftheme/404.php:8
+msgid "Please check your URL or use the search form below."
+msgstr "Molim provjerite URL, ili koristite tražilicu ispod."
+
+#: ../../iftheme/archive.php:81 ../../iftheme/search.php:56
+msgid "No results"
+msgstr "Nema rezultata"
+
+#: ../../iftheme/author.php:11
+msgid "About:"
+msgstr "O:"
+
+#: ../../iftheme/author.php:20
+msgid "Recent Posts by "
+msgstr "Nedavni članci od"
+
+#: ../../iftheme/author.php:32
+msgid "Written on "
+msgstr "Napisano na"
+
+#: ../../iftheme/author.php:32
+msgid " at "
+msgstr " na"
+
+#: ../../iftheme/author.php:33
+msgid "Categories: "
+msgstr "Kategorije:"
+
+#: ../../iftheme/author.php:38
+msgid "No posts by "
+msgstr "Bez članaka od"
+
+#: ../../iftheme/author.php:43
+msgid "Recent Comments by "
+msgstr "Nedavni komentari od"
+
+#: ../../iftheme/author.php:51
+#, php-format
+msgid "%1$s on %2$s"
+msgstr "%1$s na %2$s"
+
+#: ../../iftheme/author.php:53
+msgid "No comments by "
+msgstr "Bez komentara od"
+
+#: ../../iftheme/category.php:151 ../../iftheme/index.php:145
+#: ../../iftheme/multi-front-page.php:137
+msgid "No post for the moment"
+msgstr "Trenutno bez članaka"
+
+#: ../../iftheme/category.php:159
+msgid "No post for the moment and/or no homepage category selected"
+msgstr "Trenutno bez članaka i/ili nije odabrana početna stranica kategorije"
+
+#: ../../iftheme/category.php:179
+msgid "Agenda"
+msgstr "Agenda"
+
+#: ../../iftheme/comments.php:23
+msgid "Your comment is awaiting approval."
+msgstr "Vaš komentar očekuje odobrenje."
+
+#: ../../iftheme/comments.php:51
+msgid "No comments yet. You should be kind and add one!"
+msgstr "Bez komentara. Budite ljubazni i dodajte koji!"
+
+#: ../../iftheme/comments.php:57
+msgid "Our apologies, you must be "
+msgstr "Naše isprike, vi ste sigurno"
+
+#: ../../iftheme/comments.php:57
+msgid "logged in"
+msgstr "prijavljen"
+
+#: ../../iftheme/comments.php:57
+msgid " to post a comment."
+msgstr "napisati komentar."
+
+#: ../../iftheme/comments.php:60
+msgid "Logged in as "
+msgstr "Prijavljen kao"
+
+#: ../../iftheme/comments.php:60
+msgid "Log out"
+msgstr "Odjava"
+
+#: ../../iftheme/comments.php:62
+msgid "Allowed HTML tags:"
+msgstr "Dozvoljene HTML oznake:"
+
+#: ../../iftheme/comments.php:64
+msgid "Name"
+msgstr "Ime"
+
+#: ../../iftheme/comments.php:68
+msgid "Mail (will not be shared)"
+msgstr "ePošta (neće biti prikazana)"
+
+#: ../../iftheme/comments.php:72
+msgid "Website"
+msgstr "Web stranica"
+
+#: ../../iftheme/comments.php:77
+msgid "Comment"
+msgstr "Komentar"
+
+#: ../../iftheme/comments.php:86
+msgid "By submitting a comment you grant "
+msgstr "Objavom komentara dozvoljavate"
+
+#: ../../iftheme/comments.php:86
+msgid ""
+" a perpetual license to reproduce your words and name/web site in "
+"attribution. Inappropriate and irrelevant comments will be removed at an "
+"admin’s discretion. Your email is used for verification purposes only, it "
+"will never be shared."
+msgstr ""
+"trajna licenca. Neprikladni i irelevantni komentari bit će uklonjeni od "
+"strane administratora. Vaša email adresa služi samo u svrhe verifikacije, "
+"neće biti korištena u neke druge svrhe."
+
+#: ../../iftheme/comments.php:89
+msgid "The comments are closed."
+msgstr "Komentari su zatvoreni."
+
+#: ../../iftheme/footer.php:24
+#: ../../iftheme/inc/widgets/if-antennas-widget.php:23
+#: ../../iftheme/inc/widgets/if-antennas-widget.php:28
+msgid "Local antennas"
+msgstr "Lokalne antene"
+
+#: ../../iftheme/functions.php:365
+msgid "You must assign a category to this user : "
+msgstr "Morate korisniku dodjeliti kategoriju:"
+
+#: ../../iftheme/functions.php:583 ../../iftheme/inc/theme-classes.php:39
+msgid "Image"
+msgstr "Slika"
+
+#: ../../iftheme/functions.php:848
+#, php-format
+msgid ""
+"Your content <em>Partner</em> is empty. <a href=\"/wp-admin/post.php?post="
+"%s&action=edit\"> >Edit</a>"
+msgstr ""
+"Sadržaj <em>Partner</em> je prazan. <a href=\"/wp-admin/post.php?post="
+"%s&action=edit\"> >Uredi</a>"
+
+#: ../../iftheme/functions.php:891
+msgid "You must fill in an email !"
+msgstr "Morate upisati email adresu!"
+
+#: ../../iftheme/functions.php:891
+msgid "Edit this post"
+msgstr "Izmjeni članak"
+
+#: ../../iftheme/functions.php:898
+msgid "The <b>Last name</b> field is required."
+msgstr "Polje <b>Prezime</b> je obavezno."
+
+#: ../../iftheme/functions.php:899
+msgid "The <b>First name</b> field is required."
+msgstr "Polje <b>Ime</b> je obavezno."
+
+#: ../../iftheme/functions.php:900
+msgid "The <b>E-mail</b>  field is required."
+msgstr "Polje <b>Email</b> je obavezno."
+
+#: ../../iftheme/functions.php:901
+msgid "The <b>E-mail name</b> field is invalid."
+msgstr "<b>Email ime</b> polje je neispravno ."
+
+#: ../../iftheme/functions.php:904
+msgid "Invalid verification code."
+msgstr "Pogrešan verifikacijski kod."
+
+#: ../../iftheme/functions.php:908
+msgid "Subcription request to: "
+msgstr "Zahtjev za pretplatu:"
+
+#: ../../iftheme/functions.php:910
+msgid "Subcription from IF Website"
+msgstr "Pretplata sa IF webstranice"
+
+#: ../../iftheme/functions.php:911
+msgid "Your request has been sent."
+msgstr "Vaš zahtjev je poslan."
+
+#: ../../iftheme/functions.php:927
+msgid "Last name"
+msgstr "Prezime"
+
+#: ../../iftheme/functions.php:928
+msgid "First name"
+msgstr "Ime"
+
+#: ../../iftheme/functions.php:929
+msgid "E-mail"
+msgstr "Email"
+
+#: ../../iftheme/functions.php:930
+msgid "Copy verification code"
+msgstr "Kopirati verifikacijski kod"
+
+#: ../../iftheme/functions.php:932
+msgid "Submit"
+msgstr "Pošalji"
+
+#: ../../iftheme/functions.php:949
+msgid "Sliders"
+msgstr "Diaporamas"
+
+#: ../../iftheme/functions.php:950
+msgid "Slider"
+msgstr "Diaporama"
+
+#: ../../iftheme/functions.php:951
+msgid "Add new slider"
+msgstr "Dodaj novi slajder"
+
+#: ../../iftheme/functions.php:952
+msgid "Edit slider"
+msgstr "Uredi slajder"
+
+#: ../../iftheme/functions.php:953
+msgid "New slider"
+msgstr "Novi slajder"
+
+#: ../../iftheme/functions.php:954
+msgid "View slider"
+msgstr "Prikaži slajder"
+
+#: ../../iftheme/functions.php:955
+msgid "Search sliders"
+msgstr "Pretraži slajdere"
+
+#: ../../iftheme/functions.php:956
+msgid "No slider found"
+msgstr "Slajder nije pronađen"
+
+#: ../../iftheme/functions.php:957
+msgid "No sliders found in Trash"
+msgstr "Slajder nije pronađen u smeću"
+
+#: ../../iftheme/functions.php:969
+msgid "Partners"
+msgstr "Partneri"
+
+#: ../../iftheme/functions.php:970
+msgid "Partner"
+msgstr "Partner"
+
+#: ../../iftheme/functions.php:971
+msgid "Add new partners"
+msgstr "Dodaj nove partnere"
+
+#: ../../iftheme/functions.php:972
+msgid "Edit partner"
+msgstr "Uredi partnere"
+
+#: ../../iftheme/functions.php:973
+msgid "New partner"
+msgstr "Novi partner"
+
+#: ../../iftheme/functions.php:974
+msgid "View partner"
+msgstr "Prikaži partnere"
+
+#: ../../iftheme/functions.php:975
+msgid "Search partners"
+msgstr "Pretraži partnere"
+
+#: ../../iftheme/functions.php:976
+msgid "No partners found"
+msgstr "Nije pronađen ni jedan partner"
+
+#: ../../iftheme/functions.php:977
+msgid "No partners found in Trash"
+msgstr "Ni jedan partner nije pronađen u smeću"
+
+#: ../../iftheme/functions.php:1128
+msgid "This sidebar is for all antennas only. Only the admin can configure it."
+msgstr ""
+"Ova pomoćna traka je samo za sve antene. Može je urediti samo administrator."
+
+#: ../../iftheme/functions.php:1148
+#, php-format
+msgid "This sidebar is for %s only"
+msgstr "Ova pomoćna traka je samo za %s"
+
+#: ../../iftheme/functions.php:1256
+msgid "Continue Reading"
+msgstr "Nastavi čitati"
+
+#: ../../iftheme/functions.php:1486
+msgid "Post navigation"
+msgstr ""
+
+#: ../../iftheme/functions.php:1487
+msgid "Previous"
+msgstr ""
+
+#: ../../iftheme/functions.php:1488
+msgid "Next"
+msgstr ""
+
+#: ../../iftheme/header.php:122
+msgid "Skip to Content"
+msgstr "Skoči na sadržaj"
+
+#: ../../iftheme/index.php:153
+msgid "No post for the moment & no homepage category selected"
+msgstr "Trenutno bez članaka i bez odabrane početne kategorije"
+
+#: ../../iftheme/multi-front-page.php:49
+msgid ""
+"You don't have any <em>Slider</em> recorded yet. <a href=\"/wp-admin/post-"
+"new.php?post_type=if_slider\">Add one now ?</a>"
+msgstr ""
+"Još nemate snimljen ni jedan <em>Slajder</em>. <a href=\"/wp-admin/post-new."
+"php?post_type=if_slider\">Dodati sada?</a>"
+
+#: ../../iftheme/multi-front-page.php:145
+msgid "No post for the moment & no configuration options"
+msgstr "Trenutno bez članaka i bez opcija u postavkama"
+
+#: ../../iftheme/multi-front-page.php:162
+msgid "Coming soon"
+msgstr "Dolazi uskoro"
+
+#: ../../iftheme/page.php:8 ../../iftheme/single.php:48
+msgid "Edit this entry"
+msgstr "Izmjeni ovaj unos"
+
+#: ../../iftheme/sidebar.php:26
+msgid "Newsletter"
+msgstr "Newsletter"
+
+#: ../../iftheme/sidebar.php:27
+msgid "Subscribe"
+msgstr "Pretplati se"
+
+#: ../../iftheme/sidebar.php:30
+msgid "OK"
+msgstr "Traži"
+
+#: ../../iftheme/sidebar.php:31
+msgid ""
+"You’ve successfully subscribed. Check your inbox now to confirm your "
+"subscription."
+msgstr ""
+"Uspješno ste se registrirali. Provjerite email sandučić za potvrdu "
+"registracije."
+
+#: ../../iftheme/sidebar.php:35
+msgid "Your Email"
+msgstr "Vaša email adresa"
+
+#: ../../iftheme/sidebar.php:66
+msgid "Join-us"
+msgstr "Priključi se"
+
+#: ../../iftheme/single.php:73
+msgid "Useful informations"
+msgstr "Korisne informacije"
+
+#: ../../iftheme/single.php:92
+msgid "Booking"
+msgstr "Rezervirajte"
+
+#: ../../iftheme/sitemap.php:9
+msgid "Pages"
+msgstr "Stranice"
+
+#: ../../iftheme/sitemap.php:12
+msgid "RSS Feeds"
+msgstr "RSS"
+
+#: ../../iftheme/sitemap.php:14
+msgid "Main RSS"
+msgstr "Glavni RSS"
+
+#: ../../iftheme/sitemap.php:15
+msgid "Comment Feed"
+msgstr "RSS des Commentaires"
+
+#: ../../iftheme/sitemap.php:19 ../../iftheme/inc/theme-options.php:312
+msgid "Categories"
+msgstr "Kategorije"
+
+#: ../../iftheme/sitemap.php:24
+msgid "All Blog Posts"
+msgstr "Svi članci"
+
+#: ../../iftheme/sitemap.php:26
+#, php-format
+msgid "Permanent Link to %s"
+msgstr "Stalna veza prema %s"
+
+#: ../../iftheme/inc/if-user.php:12
+msgid "Antenna"
+msgstr "Antene"
+
+#: ../../iftheme/inc/if-user.php:53
+msgid "Category assigned to this Antenna"
+msgstr "Kategorija dodjeljena ovoj Anteni"
+
+#: ../../iftheme/inc/if-user.php:64
+msgid "You must create another top level category to assign to this user"
+msgstr ""
+"Da bi ste dodjelili ovom korisniku, morate kreirati drugu vršnu kategoriju "
+
+#: ../../iftheme/inc/if-user.php:65
+msgid "Or there is no category in this language"
+msgstr "Ili ne postoji ni jedna kategorija u ovom jeziku"
+
+#: ../../iftheme/inc/if-user.php:91
+msgid "Category"
+msgstr "Kategorija"
+
+#: ../../iftheme/inc/theme-classes.php:16
+msgid "Slider images"
+msgstr "Slike u slajdovima"
+
+#: ../../iftheme/inc/theme-classes.php:35
+msgid "Country slider"
+msgstr "Slajder zemlje"
+
+#: ../../iftheme/inc/theme-classes.php:35
+msgid "Check this box if this slider is for Country homepage"
+msgstr ""
+"Odaberite ovu kučicu ukoliko želite ovaj slajder na početnoj stranici zemlje"
+
+#: ../../iftheme/inc/theme-classes.php:37
+msgid "Title / Description"
+msgstr "Naslov / Opis"
+
+#: ../../iftheme/inc/theme-classes.php:38
+msgid "URL link for the image"
+msgstr "URL poveznica slike"
+
+#: ../../iftheme/inc/theme-classes.php:45
+msgid "Slider Images"
+msgstr "Slike u slajdovima"
+
+#: ../../iftheme/inc/theme-classes.php:61
+#: ../../iftheme/inc/theme-classes.php:77
+msgid "Partners logos"
+msgstr "Logo oznake partnera"
+
+#: ../../iftheme/inc/theme-classes.php:73
+msgid "Name of the partner"
+msgstr "Ime partnera"
+
+#: ../../iftheme/inc/theme-classes.php:74
+#: ../../iftheme/inc/events/if-events.php:220
+#: ../../iftheme/inc/events/if-events.php:221
+#: ../../iftheme/inc/events/if-events.php:222
+msgid "Link"
+msgstr "Poveznica"
+
+#: ../../iftheme/inc/theme-classes.php:75
+msgid "Logo"
+msgstr "Logo"
+
+#: ../../iftheme/inc/theme-classes.php:90
+msgid "Booking informations"
+msgstr "Informacije rezervacija"
+
+#: ../../iftheme/inc/theme-classes.php:99
+msgid "Open booking"
+msgstr "Otvori rezervacije"
+
+#: ../../iftheme/inc/theme-classes.php:99
+msgid "By checking this box, you enable the booking for this event."
+msgstr "Odabirom ove kučice, omogućili ste rezervaciju na ovaj događaj."
+
+#: ../../iftheme/inc/theme-classes.php:100
+#: ../../iftheme/inc/events/if-events.php:219
+msgid "Email"
+msgstr "Email"
+
+#: ../../iftheme/inc/theme-classes.php:100
+msgid "Email to whom send the booking"
+msgstr "Email adresa osobe kojoj poslati rezervaciju"
+
+#: ../../iftheme/inc/theme-classes.php:101
+msgid "Details"
+msgstr "Detalji"
+
+#: ../../iftheme/inc/theme-classes.php:101
+msgid "Some information you want to add at the top of the booking form"
+msgstr "Neke informacije koje želite dodati "
+
+#: ../../iftheme/inc/theme-options.php:56
+msgid "Antenna options"
+msgstr "Opcije Antene"
+
+#: ../../iftheme/inc/theme-options.php:65
+msgid "Country homepage"
+msgstr "Početna stranica zemlje"
+
+#: ../../iftheme/inc/theme-options.php:73
+msgid "Social sites on the web"
+msgstr "Socijalne mreže"
+
+#: ../../iftheme/inc/theme-options.php:79
+msgid "Background frame"
+msgstr "Pozadinski okvir"
+
+#: ../../iftheme/inc/theme-options.php:85
+msgid "Displayed home categories"
+msgstr "Prikazane početne kategorije"
+
+#: ../../iftheme/inc/theme-options.php:86
+msgid "Number of events for each category displayed on homepage:"
+msgstr ""
+
+#: ../../iftheme/inc/theme-options.php:87
+msgid "Background image"
+msgstr "Pozadinska slika"
+
+#: ../../iftheme/inc/theme-options.php:92
+msgid "Facebook Page"
+msgstr "Facebook stranica"
+
+#: ../../iftheme/inc/theme-options.php:98
+msgid "Twitter Account"
+msgstr "Twitter korisnički račun"
+
+#: ../../iftheme/inc/theme-options.php:99
+msgid "Google Plus Page"
+msgstr "Google Plus stranica"
+
+#: ../../iftheme/inc/theme-options.php:100
+msgid "Your IF TV Page"
+msgstr ""
+
+#: ../../iftheme/inc/theme-options.php:104
+msgid "Country's background frame"
+msgstr "Pozadinski okvir zemlje"
+
+#: ../../iftheme/inc/theme-options.php:105
+msgid "Displayed country's homepage categories"
+msgstr "Prikazane početne kategorije zemlje"
+
+#: ../../iftheme/inc/theme-options.php:106
+msgid "Number of events for each category displayed on country's homepage:"
+msgstr ""
+
+#: ../../iftheme/inc/theme-options.php:107
+msgid "Country's background image"
+msgstr "Pozadinska slika zemlje"
+
+#: ../../iftheme/inc/theme-options.php:145
+#: ../../iftheme/inc/theme-options.php:146
+msgid "Theme Options"
+msgstr "Opcije teme"
+
+#: ../../iftheme/inc/theme-options.php:175
+#, php-format
+msgid "Frame %s"
+msgstr "Okvir %s"
+
+#: ../../iftheme/inc/theme-options.php:183
+msgid "Frame 1"
+msgstr "Okvir 1"
+
+#: ../../iftheme/inc/theme-options.php:312
+msgid "You must create some child categories"
+msgstr "Morate kreirati sekundarne kategorije"
+
+#: ../../iftheme/inc/theme-options.php:358
+msgid "Upload image"
+msgstr "Pošalji sliku"
+
+#: ../../iftheme/inc/theme-options.php:359
+msgid "Choose your background image"
+msgstr "Odaberite pozadinski sliku"
+
+#: ../../iftheme/inc/theme-options.php:362
+#: ../../iftheme/inc/theme-options.php:364
+msgid "Actual Image"
+msgstr "Aktualna slika"
+
+#: ../../iftheme/inc/theme-options.php:366
+msgid "No image"
+msgstr "Bez slike"
+
+#: ../../iftheme/inc/theme-options.php:377
+msgid ""
+"This section is where you can save the social sites where readers can find "
+"you on the Internet."
+msgstr ""
+"U ovom odjeljku možete sačuvati stranice profila vaših socijalnih mreža "
+"preko kojih vas čitatellji mogu lakše pronaći."
+
+#: ../../iftheme/inc/theme-options.php:410
+#, php-format
+msgid "%s Theme Options"
+msgstr "%s Opcije teme"
+
+#: ../../iftheme/inc/theme-taxo-classes.php:30
+msgid "Download an image for your category"
+msgstr "Preuzmite sliku za vašu kategoriju"
+
+#: ../../iftheme/inc/theme-taxo-classes.php:32
+msgid "Display sub-categories"
+msgstr "Prikaži podkategorije"
+
+#: ../../iftheme/inc/theme-taxo-classes.php:32
+msgid "Check this box if you want to display a list of child categories"
+msgstr "Odaberite ovu kućicu ukoliko želite prikazati listu svih podkategorija"
+
+#: ../../iftheme/inc/theme-taxo-classes.php:39
+msgid "Display Posts"
+msgstr "Prikaži članke"
+
+#: ../../iftheme/inc/theme-taxo-classes.php:39
+msgid ""
+"Uncheck this box if you want disable the display of the category's posts"
+msgstr ""
+"Maknite kvačicu ukoliko želite onemogućiti prikazivanje članaka kategorije"
+
+#: ../../iftheme/inc/events/if-events.php:25
+msgid "Event information"
+msgstr "Informacije o događaju"
+
+#: ../../iftheme/inc/events/if-events.php:26
+msgid "Additional event information"
+msgstr "Dodatne informacije o događaju"
+
+#: ../../iftheme/inc/events/if-events.php:60
+msgid "Start Date"
+msgstr "Datum početka"
+
+#: ../../iftheme/inc/events/if-events.php:60
+#: ../../iftheme/inc/events/if-events.php:61
+#: ../../iftheme/inc/events/if-events.php:184
+#: ../../iftheme/inc/events/if-events.php:194
+#: ../../iftheme/inc/events/if-events.php:198
+#: ../../iftheme/inc/events/if-events.php:200
+#: ../../iftheme/inc/events/if-events.php:210
+#: ../../iftheme/inc/events/if-events.php:213
+#: ../../iftheme/inc/events/if-events.php:225
+#: ../../iftheme/inc/events/if-events.php:393
+msgid "Mandatory field"
+msgstr "Obavezno polje"
+
+#: ../../iftheme/inc/events/if-events.php:61
+msgid "End Date"
+msgstr "Krajnji datum"
+
+#: ../../iftheme/inc/events/if-events.php:62
+msgid "Time"
+msgstr "Vrijeme"
+
+#: ../../iftheme/inc/events/if-events.php:62
+msgid ""
+"<em>Use 24h format (7pm = 19:00). Use the \"Time field\" only if \"End date"
+"\" is equal to \"Start date\"</em>"
+msgstr ""
+"<em>Koristi 24h format (7pm = 19:00). Koristi \"Polje Vrijeme\" samo ako je "
+"\"krajnji datum\" jednak \"početnom datumu\"</em>"
+
+#: ../../iftheme/inc/events/if-events.php:107
+#: ../../iftheme/inc/events/if-events.php:130
+msgid ""
+"You must ask your server's administrator if the function <i style=\"color:red"
+"\">file_get_contents()</i> can be used without limitation"
+msgstr ""
+"Morate upitati administratora servera može li se <i style=\"color:red"
+"\">file_get_contents()</i> koristiti bez limita."
+
+#: ../../iftheme/inc/events/if-events.php:184
+msgid "Disciplines"
+msgstr "Discipline"
+
+#: ../../iftheme/inc/events/if-events.php:185
+msgid ""
+"The proposed disciplines are useful for the mobile application only and have "
+"<b>no impact on your website</b>"
+msgstr ""
+"Predložene discipline su korisne samo za mobilne aplikacije i <b>nemaju "
+"utjecaja na vašu web stranicu</b>"
+
+#: ../../iftheme/inc/events/if-events.php:194
+msgid "Place"
+msgstr "Mjesto"
+
+#: ../../iftheme/inc/events/if-events.php:195
+msgid "Address"
+msgstr "Adresa"
+
+#: ../../iftheme/inc/events/if-events.php:196
+msgid "Additional address"
+msgstr "Dodatna adresa"
+
+#: ../../iftheme/inc/events/if-events.php:197
+msgid "Zip code"
+msgstr "Poštanski broj"
+
+#: ../../iftheme/inc/events/if-events.php:198
+msgid "City"
+msgstr "Grad"
+
+#: ../../iftheme/inc/events/if-events.php:200
+msgid "Country"
+msgstr "Zemlja"
+
+#: ../../iftheme/inc/events/if-events.php:202
+msgid "Select"
+msgstr "Odaberi"
+
+#: ../../iftheme/inc/events/if-events.php:210
+msgid "Get longitude & latitude"
+msgstr "Dohvati geografsku dužinu i širinu"
+
+#: ../../iftheme/inc/events/if-events.php:210
+msgid ""
+"<em>Type here the full address of your event. <b>Press \"tab\" key</b> to "
+"get/modify the longitude and latitude</em>"
+msgstr ""
+"<em>Ovdje upišite adresu vašeg događaja.<b>Pritisnite \"tab\" tipku</b> za "
+"dohvačanje/izmjenu geografske širine i dužine</em>"
+
+#: ../../iftheme/inc/events/if-events.php:213
+msgid "Longitude"
+msgstr "Geografska dužina"
+
+#: ../../iftheme/inc/events/if-events.php:213
+msgid "Latitude"
+msgstr "Geografska širina"
+
+#: ../../iftheme/inc/events/if-events.php:213
+msgid "Zoom"
+msgstr "Zoom"
+
+#: ../../iftheme/inc/events/if-events.php:218
+msgid "Phone number"
+msgstr "Broj telefona"
+
+#: ../../iftheme/inc/events/if-events.php:225
+msgid "Mandatory fields"
+msgstr "Obavezna polja"
+
+#: ../../iftheme/inc/events/if-events.php:353
+#, php-format
+msgid "Event updated. <a href=\"%s\">View item</a>"
+msgstr "Događaj osvježen. <a href=\"%s\">Prikaži stavku</a>"
+
+#: ../../iftheme/inc/events/if-events.php:354
+msgid "Custom field updated."
+msgstr "Vlastito polje za unos osvježeno."
+
+#: ../../iftheme/inc/events/if-events.php:355
+msgid "Custom field deleted."
+msgstr "Vlastito polje za unos obrisao."
+
+#: ../../iftheme/inc/events/if-events.php:356
+msgid "Event updated."
+msgstr "Dogažaj osvježen."
+
+#: ../../iftheme/inc/events/if-events.php:358
+#, php-format
+msgid "Event restored to revision from %s"
+msgstr "Dogažaj vraćen na reviziju iz %s"
+
+#: ../../iftheme/inc/events/if-events.php:359
+#, php-format
+msgid "Event published. <a href=\"%s\">View event</a>"
+msgstr "Događaj objavljen. <a href=\"%s\">Prikaži događaj</a>"
+
+#: ../../iftheme/inc/events/if-events.php:360
+msgid "Event saved."
+msgstr "Događaj spremljen."
+
+#: ../../iftheme/inc/events/if-events.php:361
+#, php-format
+msgid "Event submitted. <a target=\"_blank\" href=\"%s\">Preview event</a>"
+msgstr "Događaj poslan. <a target=\"_blank\" href=\"%s\">Pregledaj događaj</a>"
+
+#: ../../iftheme/inc/events/if-events.php:362
+#, php-format
+msgid ""
+"Event scheduled for: <strong>%1$s</strong>. <a target=\"_blank\" href=\"%2$s"
+"\">Preview event</a>"
+msgstr ""
+"Događaj planiran za : <strong>%1$s</strong>. <a target=\"_blank\" href=\"%2$s"
+"\">Pregledaj događaj</a>"
+
+#: ../../iftheme/inc/events/if-events.php:364
+msgid "M j, Y @ G:i"
+msgstr "j M Y @ G:i"
+
+#: ../../iftheme/inc/events/if-events.php:365
+#, php-format
+msgid "Event draft updated. <a target=\"_blank\" href=\"%s\">Preview event</a>"
+msgstr ""
+"Skica događaja osvježena. <a target=\"_blank\" href=\"%s\">Pregledaj "
+"događaj</a>"
+
+#: ../../iftheme/inc/events/if-events.php:392
+msgid "You must tell where this event takes place."
+msgstr "Morate navesti gdje će se zbiti događaj."
+
+#: ../../iftheme/inc/events/if-events.php:394
+msgid "Longitude is required and must be a valid decimal"
+msgstr "Geografska dužina je potreban i mora biti ispravan decimalni broj"
+
+#: ../../iftheme/inc/events/if-events.php:395
+msgid "Latitude is required and must be a valid decimal"
+msgstr "Geografska širina je potrebna i mora biti ispravan decimalni broj"
+
+#: ../../iftheme/inc/events/if-events.php:396
+msgid "Must be like: <b>http://www.my-link.ext</b>"
+msgstr "Mora biti kao : <b>http://www.moj-link.ext</b>"
+
+#: ../../iftheme/inc/events/if-events.php:397
+msgid "You must check at least one discipline !"
+msgstr "Morate odabrati barem jednu disciplinu !"
+
+#: ../../iftheme/inc/IF-class/class-IF-terms-list-table.php:26
+msgid "Invalid taxonomy"
+msgstr "Neispravna taksonomija"
+
+#: ../../iftheme/inc/IF-class/class-IF-terms-list-table.php:86
+#: ../../iftheme/inc/IF-class/class-IF-terms-list-table.php:265
+#: ../../iftheme/inc/meta-box-class/my-meta-box-class.php:253
+#: ../../iftheme/inc/meta-box-class/my-meta-box-class.php:869
+#: ../../iftheme/inc/Tax-meta-class/Tax-meta-class.php:250
+#: ../../iftheme/inc/Tax-meta-class/Tax-meta-class.php:882
+msgid "Delete"
+msgstr "Obriši"
+
+#: ../../iftheme/inc/IF-class/class-IF-terms-list-table.php:104
+msgid "Description"
+msgstr "Opis"
+
+#: ../../iftheme/inc/IF-class/class-IF-terms-list-table.php:105
+#: ../../iftheme/inc/IF-class/class-IF-terms-list-table.php:348
+msgid "Slug"
+msgstr "Slug"
+
+#: ../../iftheme/inc/IF-class/class-IF-terms-list-table.php:109
+msgid "Links"
+msgstr "Poveznice"
+
+#: ../../iftheme/inc/IF-class/class-IF-terms-list-table.php:112
+msgid "Posts"
+msgstr "Članci"
+
+#: ../../iftheme/inc/IF-class/class-IF-terms-list-table.php:257
+#, php-format
+msgid "Edit &#8220;%s&#8221;"
+msgstr "Izmjeni &#8220;%s&#8221;"
+
+#: ../../iftheme/inc/IF-class/class-IF-terms-list-table.php:261
+msgid "Edit"
+msgstr "Izmjeni"
+
+#: ../../iftheme/inc/IF-class/class-IF-terms-list-table.php:262
+msgid "Quick&nbsp;Edit"
+msgstr "Brza&nbsp;izmjena"
+
+#: ../../iftheme/inc/IF-class/class-IF-terms-list-table.php:266
+msgid "View"
+msgstr "Prikaži"
+
+#: ../../iftheme/inc/IF-class/class-IF-terms-list-table.php:340
+msgid "Quick Edit"
+msgstr "Brza izmjena"
+
+#: ../../iftheme/inc/IF-class/class-IF-terms-list-table.php:369
+msgid "Cancel"
+msgstr "Otkaži"
+
+#: ../../iftheme/inc/meta-box-class/my-meta-box-class.php:253
+#: ../../iftheme/inc/Tax-meta-class/Tax-meta-class.php:250
+msgid "Delete this image"
+msgstr "Obriši ovu sliku"
+
+#: ../../iftheme/inc/meta-box-class/my-meta-box-class.php:349
+#, fuzzy
+msgid "Cannot delete file. Something's wrong"
+msgstr "Ne mogu obrisati datoteku. Nešto nije u redu."
+
+#: ../../iftheme/inc/meta-box-class/my-meta-box-class.php:562
+#: ../../iftheme/inc/meta-box-class/my-meta-box-class.php:607
+#: ../../iftheme/inc/Tax-meta-class/Tax-meta-class.php:582
+#: ../../iftheme/inc/Tax-meta-class/Tax-meta-class.php:629
+msgid "Remove"
+msgstr "Makni"
+
+#: ../../iftheme/inc/meta-box-class/my-meta-box-class.php:574
+#: ../../iftheme/inc/Tax-meta-class/Tax-meta-class.php:595
+msgid "Add"
+msgstr "Dodaj"
+
+#: ../../iftheme/inc/meta-box-class/my-meta-box-class.php:865
+#: ../../iftheme/inc/Tax-meta-class/Tax-meta-class.php:878
+msgid "Uploaded files"
+msgstr "Prenesene datoteke"
+
+#: ../../iftheme/inc/meta-box-class/my-meta-box-class.php:876
+#: ../../iftheme/inc/Tax-meta-class/Tax-meta-class.php:889
+msgid "Upload new files"
+msgstr "Prenesi nove datoteke"
+
+#: ../../iftheme/inc/meta-box-class/my-meta-box-class.php:882
+#: ../../iftheme/inc/Tax-meta-class/Tax-meta-class.php:895
+msgid "Add more files"
+msgstr "Dodaj još datoteka"
+
+#: ../../iftheme/inc/meta-box-class/my-meta-box-class.php:932
+#: ../../iftheme/inc/Tax-meta-class/Tax-meta-class.php:947
+msgid "Select a color"
+msgstr "Odaberi boju"
+
+#: ../../iftheme/inc/Tax-meta-class/Tax-meta-class.php:357
+msgid "Cannot delete file. Something's wrong."
+msgstr "Ne mogu obrisati datoteku. Nešto nije u redu."
+
+#: ../../iftheme/inc/widgets/if-antennas-widget.php:16
+msgid "Displays a list of all the local antennas"
+msgstr "Prikaži listu svih lokalnih antena"
+
+#: ../../iftheme/inc/widgets/if-antennas-widget.php:31
+#: ../../iftheme/inc/widgets/if-categ-widget.php:53
+#: ../../iftheme/inc/widgets/if-partners-widget.php:43
+#: ../../iftheme/inc/widgets/if-world-widget.php:33
+msgid "Title"
+msgstr "Naslov"
+
+#: ../../iftheme/inc/widgets/if-antennas-widget.php:35
+msgid "This widget displays all the local antennas. No configuration options"
+msgstr "Ovaj dodatak prikazuje sve lokalne antene. Bez postavki konfiguracije"
+
+#: ../../iftheme/inc/widgets/if-categ-widget.php:16
+msgid "Displays a list of category's children, related to the current antenna"
+msgstr "Prikaži listu podkategorija vezanih uz trenutnu antenu"
+
+#: ../../iftheme/inc/widgets/if-categ-widget.php:23
+msgid "Antenna's categories"
+msgstr "Kategorije Antene"
+
+#: ../../iftheme/inc/widgets/if-categ-widget.php:48
+msgid "None"
+msgstr "Ni jedan"
+
+#: ../../iftheme/inc/widgets/if-categ-widget.php:54
+msgid ""
+"You can custom the widget title here. Default is the category name you "
+"choose in the Category parent field below."
+msgstr ""
+"Ovdje možete urediti naslov dodatka. Uobičajen je onaj kojeg odaberete iznad "
+"u polju glavna kategorija."
+
+#: ../../iftheme/inc/widgets/if-categ-widget.php:57
+msgid "Category parent"
+msgstr "Glavna kategorija"
+
+#: ../../iftheme/inc/widgets/if-partners-widget.php:16
+msgid ""
+"Displays a list of antenna's partners logo, related to the current antenna"
+msgstr "Prikaži listu logo-a partnera antena, srodnih trenutnoj anteni"
+
+#: ../../iftheme/inc/widgets/if-partners-widget.php:23
+msgid "Antenna's partners"
+msgstr "Partneri antene"
+
+#: ../../iftheme/inc/widgets/if-partners-widget.php:44
+msgid ""
+"You can custom the widget title here. Default is the title of the selected "
+"partner."
+msgstr ""
+"Ovdje možete urediti naslov dodatka. Uobičajen naslov je naslov odabranog "
+"partnera."
+
+#: ../../iftheme/inc/widgets/if-partners-widget.php:47
+msgid "Select Partners:"
+msgstr "Odaberi partnere :"
+
+#: ../../iftheme/inc/widgets/if-partners-widget.php:53
+msgid ""
+"You must create a Partner in order to use this widget: <a href=\"/wp-admin/"
+"edit.php?post_type=if_partner\">Partners</a>"
+msgstr ""
+"Ukoliko želite koristit ovaj dodatak morate kreirarti Partnera : <a href=\"/"
+"wp-admin/edit.php?post_type=if_partner\">Partneri</a>"
+
+#: ../../iftheme/inc/widgets/if-partners-widget.php:85
+msgid "Error"
+msgstr "Greška"
+
+#: ../../iftheme/inc/widgets/if-partners-widget.php:97
+msgid ""
+"You must choose a Partner in the widget configuration: <a href=\"/wp-admin/"
+"widgets.php\">widgets</a>"
+msgstr ""
+"U konfiguraciji dodatka morate odabrati Partnera : <a href=\"/wp-admin/"
+"widgets.php\">dodaci</a>"
+
+#: ../../iftheme/inc/widgets/if-world-widget.php:16
+msgid "Displays a list of links related to the Institut Français"
+msgstr "Prikaži listu linkova povezanih sa Institut Français"
+
+#: ../../iftheme/inc/widgets/if-world-widget.php:23
+msgid "Institut Français links"
+msgstr "Institut Français linkovi"
+
+#: ../../iftheme/inc/widgets/if-world-widget.php:29
+#: ../../iftheme/inc/widgets/if-world-widget.php:62
+msgid "Numeric IF"
+msgstr "Numerički IF"
+
+#: ../../iftheme/inc/widgets/if-world-widget.php:39
+msgid "URL"
+msgstr "URL"
+
+#: ../../iftheme/inc/widgets/if-world-widget.php:41
+msgid "Label"
+msgstr "Oznaka"
+
+#~ msgid "Cannot delete file. Something's wrong.tyty"
+#~ msgstr "Ne mogu obrisati datoteku. Nešto nije u redu."
+
+#~ msgid "L'Institut Français dans le monde"
+#~ msgstr "L'Institut Français dans le monde"
+
+#~ msgid "<small>Edit this entry</small>"
+#~ msgstr "<small>Modifier cet évènement</small>"
+
+#~ msgid ""
+#~ "This widget displays default links related to the Institut Français. For "
+#~ "the moment, you can only modify the title."
+#~ msgstr ""
+#~ "Ce widget affiche des liens relatifs à l'Institut Français. Pour le "
+#~ "moment, vous ne pouvez modifier que le titre."
+
+#~ msgid "You have no content for the moment."
+#~ msgstr "Aucun contenu pour le moment."

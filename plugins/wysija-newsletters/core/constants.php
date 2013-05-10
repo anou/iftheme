@@ -13,7 +13,7 @@ $current_folder=dirname(dirname(__FILE__));
 
 if(!defined('DS')) define('DS', DIRECTORY_SEPARATOR);
 define('WYSIJA', $plugin_name);
-
+define('WYSIJAFUTURE','wysija-future');
 define('WYSIJA_PLG_DIR', dirname($current_folder).DS);
 define('WYSIJA_DIR', $current_folder.DS);
 define('WYSIJA_DATA_DIR', WYSIJA_DIR.'data'.DS);
@@ -25,11 +25,17 @@ $upload_dir = wp_upload_dir();
 
 define('WYSIJA_UPLOADS_DIR',str_replace('/',DS,$upload_dir['basedir']).DS.'wysija'.DS);
 define('WYSIJA_UPLOADS_URL',$upload_dir['baseurl'].'/wysija/');
+if(is_multisite()){
+    define('WYSIJA_UPLOADS_MS_DIR',str_replace(get_option( 'upload_path' ), get_blog_option(1, 'upload_path'), $upload_dir['basedir']).DS.'wysija'.DS);
+    define('WYSIJA_UPLOADS_MS_URL',get_blog_option(1, 'siteurl').'/'.get_blog_option(1, 'upload_path').'/wysija/');
+}
+
 define('WYSIJA_INC',WYSIJA_DIR.'inc'.DS);
 define('WYSIJA_CORE',WYSIJA_DIR.'core'.DS);
 define('WYSIJA_VIEWS',WYSIJA_DIR.'views'.DS);
 define('WYSIJA_MODELS',WYSIJA_DIR.'models'.DS);
 define('WYSIJA_HELPERS',WYSIJA_DIR.'helpers'.DS);
+define('WYSIJA_CLASSES',WYSIJA_DIR.'classes'.DS);
 define('WYSIJA_CTRL',WYSIJA_DIR.'controllers'.DS);
 define('WYSIJA_WIDGETS',WYSIJA_DIR.'widgets'.DS);
 

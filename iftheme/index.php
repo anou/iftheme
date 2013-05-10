@@ -8,15 +8,20 @@
 <?php 	
   	  global $sitepress;
   	  $default_lg = isset($sitepress) ? $sitepress->get_default_language() : 'fr';//assuming that 'fr' should be default language
+/*
   	  $antenna = get_current_antenna();
 	    $original = function_exists('icl_object_id') ? icl_object_id($currenta, 'category', true, $default_lg) : $antenna;
+*/
 
-		$args_slider = array(
-			'post_type'=> 'if_slider',
-			'order'    => 'DESC',
-			'meta_key' => 'slide_antenna',
-			'meta_value' => $original,
-			'posts_per_page' => 1
+  	  $antenna = get_current_parent_categ();
+	    $original = function_exists('icl_object_id') ? icl_object_id($currenta, 'category', true, $default_lg) : $antenna;
+
+  		$args_slider = array(
+  			'post_type'=> 'if_slider',
+  			'order'    => 'DESC',
+  			'meta_key' => 'slide_antenna',
+  			'meta_value' => $original,
+  			'posts_per_page' => 1
 			);
 			
 			query_posts( $args_slider );
@@ -69,13 +74,13 @@
 					<h2 class="posts-category"><?php echo $cat;?></h2>
 					<?php //alter query
 					$time = (time() - (60*60*24));
-					$paged = (get_query_var('paged')) ? get_query_var('paged') : 1;
+					$nb = isset($options['theme_home_nb_events']) ? $options['theme_home_nb_events'] : 5; //default nb of posts if not set
           $args = array(
              'cat' => $id,
              'meta_key' => 'if_events_startdate',
              'orderby' => 'meta_value_num',
              'order' => 'ASC',
-             'paged' => $paged,
+             'posts_per_page' => $nb,
              'meta_query' => array(
                  array(
                      'key' => 'if_events_enddate',

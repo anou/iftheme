@@ -36,21 +36,26 @@ class WYSIJA_control_front_stats extends WYSIJA_control_front{
         return substr($newquery,1);
     }
 
+    /**
+     * count the click statistic and redirect to the right url
+     * @return boolean
+     */
     function analyse(){
-if(isset($_REQUEST['debug'])){
-    if(version_compare(phpversion(), '5.4')>= 0){
-        error_reporting(E_ALL ^ E_STRICT);
+        if(isset($_REQUEST['debug'])){
+            if(version_compare(phpversion(), '5.4')>= 0){
+                error_reporting(E_ALL ^ E_STRICT);
 
-    }else{
-        error_reporting(E_ALL);
-    }
-    ini_set('display_errors', '1');
-}
+            }else{
+                error_reporting(E_ALL);
+            }
+            ini_set('display_errors', '1');
+        }
         if(isset($_REQUEST['email_id']) && isset($_REQUEST['user_id'])){
             $email_id=(int)$_REQUEST['email_id'];
             $user_id=(int)$_REQUEST['user_id'];
 
-if(isset($_REQUEST['debug']))   echo '<h2>isset email_id and user_id</h2>';
+            //debug message
+            if(isset($_REQUEST['debug']))   echo '<h2>isset email_id and user_id</h2>';
 
             $requesturlencoded=false;
             if(isset($_REQUEST['urlencoded'])){
@@ -60,7 +65,7 @@ if(isset($_REQUEST['debug']))   echo '<h2>isset email_id and user_id</h2>';
             }
 
             if($requesturlencoded){
-                /* clicked stats */
+                //clicked stats
                 if(isset($_REQUEST['no64'])){
                     $recordedUrl=$decodedUrl=$requesturlencoded;
                 }else{
@@ -70,88 +75,110 @@ if(isset($_REQUEST['debug']))   echo '<h2>isset email_id and user_id</h2>';
                     $recordedUrl=$this->rm_url_param(array('utm_source','utm_campaign','utm_medium'),$recordedUrl);
                 }
 
-if(isset($_REQUEST['debug']))   echo '<h2>isset urlencoded '.$decodedUrl.'</h2>';
+                //debug message
+                if(isset($_REQUEST['debug']))   echo '<h2>isset urlencoded '.$decodedUrl.'</h2>';
 
-                if($email_id){ //if not email_id that means it is an email preview
-                    /* look for url entry and insert if not exists*/
+                if($email_id && !isset($_REQUEST['demo'])){ //if not email_id that means it is an email preview
+                    //look for url entry and insert if not exists
                     $modelUrl=&WYSIJA::get('url','model');
 
                     $urlObj=$modelUrl->getOne(false,array('url'=>$recordedUrl));
 
                     if(!$urlObj){
-                        /* we need to insert in url */
+                        //we need to insert in url
                         $modelUrl->insert(array('url'=>$recordedUrl));
                         $urlObj=$modelUrl->getOne(false,array('url'=>$recordedUrl));
                     }
                     $modelUrl=null;
 
-                    /* look for email_user_url entry and insert if not exists*/
+                    //look for email_user_url entry and insert if not exists
                     $modelEmailUserUrl=WYSIJA::get('email_user_url','model');
                     $dataEmailUserUrl=array('email_id'=>$email_id,'user_id'=>$user_id,'url_id'=>$urlObj['url_id']);
                     $emailUserUrlObj=$modelEmailUserUrl->getOne(false,$dataEmailUserUrl);
                     $uniqueclick=false;
                     if(!$emailUserUrlObj){
-                        /* we need to insert in email_user_url */
+                        //we need to insert in email_user_url
                         $modelEmailUserUrl->reset();
                         $modelEmailUserUrl->insert($dataEmailUserUrl);
                         $uniqueclick=true;
                     }
 
-                    /* increment stats counter on email_user_url clicked */
+                    //increment stats counter on email_user_url clicked
                     $modelEmailUserUrl=WYSIJA::get('email_user_url','model');
                     $modelEmailUserUrl->update(array('clicked_at'=>time(),'number_clicked'=>'[increment]'),$dataEmailUserUrl);
                     $modelEmailUserUrl=null;
 
-                    /* look for url_mail entry and insert if not exists*/
+                    //look for url_mail entry and insert if not exists
                     $modelUrlMail=&WYSIJA::get('url_mail','model');
                     $dataUrlEmail=array('email_id'=>$email_id,'url_id'=>$urlObj['url_id']);
                     $urlMailObj=$modelUrlMail->getOne(false,$dataUrlEmail);
                     if(!$urlMailObj){
-                        /* we need to insert in url_mail */
+                        //we need to insert in url_mail
                         $modelUrlMail->reset();
                         $modelUrlMail->insert($dataUrlEmail);
                     }
 
                     $dataUpdate=array('total_clicked'=>'[increment]');
                     if(!$uniqueclick)    $dataUpdate['unique_clicked']='[increment]';
-                    /* increment stats counter on url_mail clicked */
+                    //increment stats counter on url_mail clicked
                     $modelUrlMail->update($dataUpdate,$dataUrlEmail);
                     $modelUrlMail=null;
-
-                    /* increment email_stat  clicked */
-                    //$modelEmail=&WYSIJA::get("email","model");
-                    //$modelEmail->update(array('number_clicked'=>"[increment]"),array("email_id"=>$email_id));
 
                     $statusEmailUserStat=2;
                     if(in_array($recordedUrl,array('[unsubscribe_link]','[subscriptions_link]','[view_in_browser_link]'))){
                         $this->subscriberClass = &WYSIJA::get('user','model');
                         $this->subscriberClass->getFormat=OBJECT;
-                        $receiver = $this->subscriberClass->getOne($user_id);
+
+                        //check if the security hash is passed to insure privacy
+                        $receiver=$link=false;
+                        if(isset($_REQUEST['hash'])){
+                            if($_REQUEST['hash']==md5(AUTH_KEY.$recordedUrl.$user_id)){
+                                $receiver = $this->subscriberClass->getOne(array('user_id'=>$user_id));
+                            }else{
+                                die('Security check failure.');
+                            }
+                        }else{
+                            //link is not valid anymore
+                            //propose to resend the newsletter with good links ?
+                            $link=$this->subscriberClass->getResendLink($user_id,$email_id);
+                        }
+
+
                         switch($recordedUrl){
                             case '[unsubscribe_link]':
-                                $link=$this->subscriberClass->getUnsubLink($receiver,true);
-                                $statusEmailUserStat=3;
+                                //we need to make sure that this link belongs to that user
+                                if($receiver){
+                                    $link=$this->subscriberClass->getUnsubLink($receiver,true);
+                                    $statusEmailUserStat=3;
+                                }
                                 break;
                             case '[subscriptions_link]':
-                                $link=$this->subscriberClass->getEditsubLink($receiver,true);
+                                if($receiver){
+                                    $link=$this->subscriberClass->getEditsubLink($receiver,true);
+                                }
                                 break;
                             case '[view_in_browser_link]':
                                 $modelEmail=&WYSIJA::get('email','model');
-
                                 $dataEmail=$modelEmail->getOne(false,array('email_id'=>$email_id));
-
                                 $emailH=&WYSIJA::get('email','helper');
                                 $link=$emailH->getVIB($dataEmail);
-
                                 break;
                         }
 
-                        $decodedUrl=$link;
+                        //if the subscriber still exists in the DB we will have a link
+                        if($link){
+                            $decodedUrl=$link;
+                        }else{
+                            //the subscriber doesn't appear in the DB we can redirect to the web version
+                            $decodedUrl=$this->_get_browser_link($email_id);
+
+                            return $this->redirect($decodedUrl);
+                        }
 
                     }else{
 
                         if(strpos($decodedUrl, 'http://' )=== false && strpos($decodedUrl, 'https://' )=== false) $decodedUrl='http://'.$decodedUrl;
-                        /*check that there is no broken unsubscribe link such as http://[unsubscribe_link] */
+                        //check that there is no broken unsubscribe link such as http://[unsubscribe_link]
                         if(strpos($decodedUrl, '[unsubscribe_link]')!==false){
                             $this->subscriberClass = &WYSIJA::get('user','model');
                             $this->subscriberClass->getFormat=OBJECT;
@@ -160,21 +187,14 @@ if(isset($_REQUEST['debug']))   echo '<h2>isset urlencoded '.$decodedUrl.'</h2>'
                         }
 
                         if(strpos($decodedUrl, '[view_in_browser_link]')!==false){
-                            $paramsurl=array(
-                                    'wysija-page'=>1,
-                                    'controller'=>'email',
-                                    'action'=>'view',
-                                    'email_id'=>$email_id,
-                                    'user_id'=>0
-                                    );
-                                $config=&WYSIJA::get('config','model');
-                                $link=WYSIJA::get_permalink($config->getValue('confirm_email_link'),$paramsurl);
+                            $link=$this->_get_browser_link($email_id);
                             $decodedUrl=$link;
                         }
 
                     }
 
-if(isset($_REQUEST['debug']))   echo '<h2>isset decoded url '.$decodedUrl.'</h2>';
+                    //debug information
+                    if(isset($_REQUEST['debug']))   echo '<h2>isset decoded url '.$decodedUrl.'</h2>';
 
                     $modelEmailUS=&WYSIJA::get('email_user_stat','model');
                     $exists=$modelEmailUS->getOne(false,array('equal'=>array('email_id'=>$email_id,'user_id'=>$user_id), 'less'=>array('status'=>$statusEmailUserStat)));
@@ -182,7 +202,6 @@ if(isset($_REQUEST['debug']))   echo '<h2>isset decoded url '.$decodedUrl.'</h2>
                     if($exists && isset($exists['opened_at']) && !(int)$exists['opened_at']){
                         $dataupdate['opened_at']=time();
                     }
-                    //,'opened_at'=>time()
 
                     $modelEmailUS->reset();
                     $modelEmailUS->colCheck=false;
@@ -204,17 +223,10 @@ if(isset($_REQUEST['debug']))   echo '<h2>isset decoded url '.$decodedUrl.'</h2>
                                 //$link=$this->subscriberClass->getEditsubLink($receiver,true);
                                 break;
                             case 'view_in_browser_link':
+                            case '[view_in_browser_link]':
                                 if(!$email_id) $email_id=$_REQUEST['id'];
-                                $paramsurl=array(
-                                    'wysija-page'=>1,
-                                    'controller'=>'email',
-                                    'action'=>'view',
-                                    'email_id'=>$email_id,
-                                    'user_id'=>0,
-                                    'demo'=>1
-                                    );
-                                $config=&WYSIJA::get('config','model');
-                                $link=WYSIJA::get_permalink($config->getValue('confirm_email_link'),$paramsurl);
+
+                                $link=$this->_get_browser_link($email_id);
                                 break;
                         }
                         $decodedUrl=$link;
@@ -222,21 +234,22 @@ if(isset($_REQUEST['debug']))   echo '<h2>isset decoded url '.$decodedUrl.'</h2>
                     }else{
                         if(strpos($decodedUrl, 'http://' )=== false && strpos($decodedUrl, 'https://' )=== false) $decodedUrl='http://'.$decodedUrl;
                     }
-if(isset($_REQUEST['debug']))   {
-    echo '<h2>not email_id </h2>';
-}
+                    if(isset($_REQUEST['debug']))   {
+                        echo '<h2>not email_id </h2>';
+                    }
                 }
 
-                /*sometimes this will be a life saver :)*/
+                //sometimes this will be a life saver :)
                 $decodedUrl = str_replace('&amp;','&',$decodedUrl);
-if(isset($_REQUEST['debug']))   {
-    echo '<h2>final decoded url '.$decodedUrl.'</h2>';
-    exit;
-}
+                if(isset($_REQUEST['debug']))   {
+                    echo '<h2>final decoded url '.$decodedUrl.'</h2>';
+                    exit;
+                }
                 $this->redirect($decodedUrl);
 
+
             }else{
-                /* opened stat */
+                //opened stat */
                 //$modelEmail=&WYSIJA::get("email","model");
                 //$modelEmail->update(array('number_opened'=>"[increment]"),array("email_id"=>$email_id));
 
@@ -265,6 +278,18 @@ if(isset($_REQUEST['debug']))   {
         }
 
         return true;
+    }
+
+    function _get_browser_link($email_id){
+        $paramsurl=array(
+            'wysija-page'=>1,
+            'controller'=>'email',
+            'action'=>'view',
+            'email_id'=>$email_id,
+            'user_id'=>0
+            );
+        $config=&WYSIJA::get('config','model');
+        return WYSIJA::get_permalink($config->getValue('confirm_email_link'),$paramsurl);
     }
 
 }

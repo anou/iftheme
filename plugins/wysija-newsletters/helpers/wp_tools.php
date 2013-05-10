@@ -3,8 +3,9 @@ defined('WYSIJA') or die('Restricted access');
 class WYSIJA_help_wp_tools extends WYSIJA_object{
     function WYSIJA_help_wp_tools(){
     }
+    
     function set_default_rolecaps(){
-        
+
 
         $rolesadmin=array('administrator','super_admin');
         foreach($rolesadmin as $roladm){
@@ -17,8 +18,9 @@ class WYSIJA_help_wp_tools extends WYSIJA_object{
             }
         }
     }
+    
     function wp_get_roles() {
-        
+
         global $wp_roles;
         $all_roles = $wp_roles->roles;
         $editable_roles = apply_filters('editable_roles', $all_roles);
@@ -53,8 +55,9 @@ class WYSIJA_help_wp_tools extends WYSIJA_object{
         ksort($rolearray);
         return $rolearray;
     }
+    
     function wp_get_editable_roles() {
-        
+
         global $wp_roles;
         $all_roles = $wp_roles->roles;
         $editable_roles = apply_filters('editable_roles', $all_roles);
@@ -85,7 +88,14 @@ class WYSIJA_help_wp_tools extends WYSIJA_object{
         }
         return $possible_values;
     }
+    
+    function wp_get_all_roles() {
 
+        global $wp_roles;
+        $all_roles = $wp_roles->get_names();
+        return $all_roles;
+    }
+    
     function is_caching_active(){
         $checkPlugins=array(
             'wp-super-cache/wp-cache.php' ,
@@ -93,7 +103,6 @@ class WYSIJA_help_wp_tools extends WYSIJA_object{
             'quick-cache/quick-cache.php',
             'hyper-cache/plugin.php'
             );
-
         foreach($checkPlugins as $pluginFileName){
             if(WYSIJA::is_plugin_active($pluginFileName)){
                 switch($pluginFileName){
@@ -117,7 +126,9 @@ class WYSIJA_help_wp_tools extends WYSIJA_object{
                 return true;
             }
         }
+        return false;
     }
+    
     function get_permalink($pageid,$params=array(),$simple=false){
         $post = &get_post($pageid);
         $url=get_permalink($post);
@@ -166,6 +177,7 @@ class WYSIJA_help_wp_tools extends WYSIJA_object{
         }
         return $url;
     }
+    
     function get_post_types(){
         $args=array(
           'public'   => true,
@@ -174,5 +186,9 @@ class WYSIJA_help_wp_tools extends WYSIJA_object{
           'show_ui'=>true,
         );
         return get_post_types($args,'objects');
+    }
+    
+    function get_post_statuses(){
+        return array_merge(get_post_statuses(), array('future'=>__('Scheduled',WYSIJA)));
     }
 }

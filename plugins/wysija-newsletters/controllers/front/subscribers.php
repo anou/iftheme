@@ -2,30 +2,29 @@
 defined('WYSIJA') or die('Restricted access');
 
 class WYSIJA_control_front_subscribers extends WYSIJA_control_front{
-    var $model="user";
-    var $view="widget_nl";
+    var $model='user';
+    var $view='widget_nl';
 
     function WYSIJA_control_front_subscribers(){
         parent::WYSIJA_control_front();
         if(isset($_REQUEST['message_success'])){
             $this->messages['insert'][true]=$_REQUEST['message_success'];
         }else{
-            $this->messages['insert'][true]=__("User has been inserted.",WYSIJA);
+            $this->messages['insert'][true]=__('User has been inserted.',WYSIJA);
         }
 
-        $this->messages['insert'][false]=__("User has not been inserted.",WYSIJA);
-        $this->messages['update'][true]=__("User has been updated.",WYSIJA);
-        $this->messages['update'][false]=__("User has not been updated.",WYSIJA);
+        $this->messages['insert'][false]=__('User has not been inserted.',WYSIJA);
+        $this->messages['update'][true]=__('User has been updated.',WYSIJA);
+        $this->messages['update'][false]=__('User has not been updated.',WYSIJA);
     }
 
    function save(){
         $config=&WYSIJA::get('config','model');
 
-        if(!$config->getValue("allow_no_js")){
-            $this->notice(__("Subscription without JavaScript is disabled.",WYSIJA));
+        if(!$config->getValue('allow_no_js')){
+            $this->notice(__('Subscription without JavaScript is disabled.',WYSIJA));
             return false;
         }
-
 
         if(isset($_REQUEST['wysija']['user_list']['list_id'])){
             $_REQUEST['wysija']['user_list']['list_ids']=$_REQUEST['wysija']['user_list']['list_id'];
@@ -49,67 +48,87 @@ class WYSIJA_control_front_subscribers extends WYSIJA_control_front{
         return true;
     }
 
-
+    /**
+     * handles the form generation in iframe mode, basically wysija's iframes call that action to generate the html of the body
+     */
     function wysija_outter() {
 
-        if(isset($_REQUEST['encodedForm'])){
-            $encodedForm=json_decode(base64_decode(urldecode($_REQUEST['encodedForm'])));
-        }
-        else{
-            if(isset($_REQUEST['fullWysijaForm'])){
-                $encodedForm=json_decode(base64_decode(urldecode($_REQUEST['fullWysijaForm'])));
-            }else{
-                if(isset($_REQUEST['widgetnumber'])){
+        //params used to generate the html in the widget class
+        $widget_data=array();
 
-                    $widgets=get_option('widget_wysija');
-                    if(isset($widgets[$_REQUEST['widgetnumber']])){
-                        $encodedForm=$widgets[$_REQUEST['widgetnumber']];
-                    }
+        if(isset($_REQUEST['wysija_form']) && (int)$_REQUEST['wysija_form'] > 0) {
+            // this a wysija form made with the form editor
+            // if it's a preview, we need to dynamically render the form
+            // get form data
 
-                }else{
-                    $encodedForm=$_REQUEST['formArray'];
-                    $encodedForm=stripslashes_deep($encodedForm);
-                }
+            $widget_data['form']=(int)$_REQUEST['wysija_form'];
+            $widget_data['form_type']='iframe';
 
-            }
+        } else {
 
-        }
+            //this is the old way, we need to keep it for backward compatibility
+            if(isset($_REQUEST['encodedForm'])){
+                $encoded_form=json_decode(base64_decode(urldecode($_REQUEST['encodedForm'])));
+            } else {
+                if(isset($_REQUEST['fullWysijaForm'])){
+                    $encoded_form=json_decode(base64_decode(urldecode($_REQUEST['fullWysijaForm'])));
+                } else {
+                    if(isset($_REQUEST['widgetnumber'])){
 
-        $widgetdata=array();
-        if($encodedForm){
-           foreach($encodedForm as $key =>$val) {
-                $widgetdata[$key]=$val;
-                if(is_object($val)){
-                    $valu=array();
-                    foreach($val as $keyin =>$valin){
-                        $valu[$keyin]=$valin;
-                        if(is_object($valin)){
-                            $inin=array();
-                            foreach($valin as $kin => $vin){
-                                $inin[$kin]=$vin;
-                            }
-                            $valu[$keyin]=$inin;
+                        $widgets=get_option('widget_wysija');
+                        if(isset($widgets[$_REQUEST['widgetnumber']])){
+                            $encoded_form=$widgets[$_REQUEST['widgetnumber']];
                         }
+
+                    }else{
+                        $encoded_form=$_REQUEST['formArray'];
+                        $encoded_form=stripslashes_deep($encoded_form);
                     }
-                    $widgetdata[$key]=$valu;
+
                 }
             }
-        }else{
-            if(current_user_can('switch_themes'))    echo '<b>'.str_replace(array('[link]','[/link]'),array('<a target="_blank" href="'.  admin_url('widgets.php').'">','</a>'),__('It seems your widget has been deleted from the WordPress\' [link]widgets area[/link].',WYSIJA)).'</b>';
-            exit;
+
+
+            //fill the widget data array based on the parameters found earlier
+            if($encoded_form){
+                foreach($encoded_form as $key =>$val) {
+                    $widget_data[$key]=$val;
+
+                    //if the value is an object we need to loop through and make an array of it
+                    //I think we could simply cast the object as an array not sure if that works on objects within objects...
+                    if(is_object($val)){
+                        $object_to_array=array();
+                        foreach($val as $key_in =>$val_in){
+                            $object_to_array[$key_in]=$val_in;
+                            if(is_object($val_in)){
+                                $object_to_array_second_level=array();
+                                foreach($val_in as $k_in => $v_in){
+                                    $object_to_array_second_level[$k_in]=$v_in;
+                                }
+                                $object_to_array[$key_in]=$object_to_array_second_level;
+                            }
+                        }
+                        $widget_data[$key]=$object_to_array;
+                    }
+                }
+            }else{
+                if(current_user_can('switch_themes'))    echo '<b>'.str_replace(array('[link]','[/link]'),array('<a target="_blank" href="'.  admin_url('widgets.php').'">','</a>'),__('It seems your widget has been deleted from the WordPress\' [link]widgets area[/link].',WYSIJA)).'</b>';
+                exit;
+            }
+
+            //create a unique identifier for the form (the old way)
+            if(isset($_REQUEST['widgetnumber']))  $form_identifier=$_REQUEST['widgetnumber'];
+            else $form_identifier=rand(5, 1500);
+            $widget_data['widget_id']='wysija-nl-iframe-'.$form_identifier;
         }
 
 
-
-        if(isset($_REQUEST['widgetnumber']))  $intrand=$_REQUEST['widgetnumber'];
-        else $intrand=rand(5, 1500);
-        $widgetdata['widget_id']='wysija-nl-iframe-'.$intrand;
         require_once(WYSIJA_WIDGETS.'wysija_nl.php');
-        $widgetNL=new WYSIJA_NL_Widget(1);
-        $widgetNL->iFrame=true;
-        $subscriptionForm= $widgetNL->widget($widgetdata,$widgetdata);
+        $widget_NL=new WYSIJA_NL_Widget(true);
+        $widget_NL->iFrame=true;
+        $subscription_form = $widget_NL->widget($widget_data,$widget_data);
 
-        echo $subscriptionForm;
+        echo $subscription_form;
         exit;
     }
 

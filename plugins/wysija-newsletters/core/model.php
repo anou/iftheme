@@ -27,7 +27,7 @@ class WYSIJA_model extends WYSIJA_object{
     var $comparisonKeys = array('equal', 'notequal', 'like', 'greater', 'less', 'greater_eq', 'less_eq');
 
     function WYSIJA_model($extensions=''){
-        if(defined('WYSIJA_DBG') || defined('WYSIJA_DBG_ALL')) $this->dbg=true;
+        if(defined('WYSIJA_DBG') && WYSIJA_DBG>0) $this->dbg=true;
         global $wpdb;
         $this->wpprefix=$wpdb->prefix;
         if($extensions) $this->table_prefix=$extensions;
@@ -109,20 +109,19 @@ class WYSIJA_model extends WYSIJA_object{
         /*set the columns*/
         if($columns){
             if(is_array($columns)){
-                $columns=implode(", ",$columns);
+                $columns=implode(', ',$columns);
             }
-        }else $columns="*";
+        }else $columns='*';
 
 
-        $query="SELECT ".$columns." FROM `".$this->getSelectTableName()."`";
+        $query='SELECT '.$columns.' FROM `'.$this->getSelectTableName()."`";
         $query.=$this->makeJoins();
         $query.=$this->makeWhere();
         $query.=$this->makeGroupBY();
         $query.=$this->makeOrderBY();
 
         if($this->limitON) $query.=$this->setLimit($page,$limit);
-
-        $results=$this->query("get_res",$query,$this->getFormat);
+        $results=$this->query('get_res',$query,$this->getFormat);
 
         //$this->escapeQuotesFromRes($results);
 
@@ -159,8 +158,8 @@ class WYSIJA_model extends WYSIJA_object{
         if(!$limit){
             if(isset($this->limit_pp)) $limit=$this->limit_pp;
             else{
-                $config=&WYSIJA::get("config","model");
-                $limit=$config->getValue("limit_listing");
+                $config=&WYSIJA::get('config','model');
+                $limit=$config->getValue('limit_listing');
             }
         }
 
@@ -178,7 +177,7 @@ class WYSIJA_model extends WYSIJA_object{
      * @return type
      */
     function getResults($query,$type=ARRAY_A){
-        return $this->query("get_res",$query, $type);
+        return $this->query('get_res',$query, $type);
     }
 
 
@@ -199,16 +198,16 @@ class WYSIJA_model extends WYSIJA_object{
             $groupBy=$this->makeGroupBY();
             $columnMore='';
             if($groupBy) $columnMore=','.$this->groupby;
-            $query="SELECT COUNT(".$this->getPk().") as count ".$columnMore." FROM `".$this->getSelectTableName()."`";
+            $query='SELECT COUNT('.$this->getPk().') as count '.$columnMore.' FROM `'.$this->getSelectTableName().'`';
             $query.=$this->makeJoins();
 
             $query.=$this->makeWhere();
             $query.=$groupBy;
         }
 
-        if($this->dbg) $this->keepQry($query,"count");
+        if($this->dbg) $this->keepQry($query,'count');
 
-        $results=$this->query("get_res",$query,$this->getFormat);
+        $results=$this->query('get_res',$query,$this->getFormat);
 
         if(!$results || count($results)>1) return $results;
         else {
@@ -227,7 +226,7 @@ class WYSIJA_model extends WYSIJA_object{
      * @return string
      */
     function makeWhere(){
-        $query="";
+        $query='';
         if($this->conditions){
             /*set the WHERE clause*/
             $conditions=array();
@@ -235,7 +234,7 @@ class WYSIJA_model extends WYSIJA_object{
                 if(!in_array($type, $this->comparisonKeys)){
                     $conditionsss=$this->conditions;
                     $this->conditions=array();
-                    $this->conditions["equal"]=$conditionsss;
+                    $this->conditions['equal']=$conditionsss;
 
                     break;
                 }
@@ -245,56 +244,65 @@ class WYSIJA_model extends WYSIJA_object{
                     if(is_array($values)){
                         $total=count($values);
                         $i=1;
-                        $likeCond="";
+                        $likeCond='';
                         foreach($values as $qfield => $qval){
-                            $likeCond.=$qfield." LIKE '%".addcslashes($qval, '%_' )."%'";
+                            $likeCond.=$qfield." LIKE '%".mysql_real_escape_string(addcslashes($qval, '%_' ))."%'";
                             if($i<$total){
-                                $likeCond.=" OR ";
+                                $likeCond.=' OR ';
                             }
                             $i++;
                         }
-                        $conditions[]="(".$likeCond.")";
+                        $conditions[]='('.$likeCond.')';
                     }
                     continue;
                 }
                 foreach($values as $condK => $condVal){
 
-                    /* secure from injections */
-                    $this->_secureFieldVal($condK,$condVal);
+                    //secure from injections
+                    $this->_secureFieldVal($condK, $condVal);
 
                     switch($type){
-                        case "equal":
+                        case 'equal':
                             if(is_array($condVal)){
                                 $conditions[]=$condK.' IN ("'.implode('","', $condVal).'")';
                             }else{
-                                if(is_numeric($condVal) === false) $condVal = '"'.$condVal.'"';
-                                $conditions[]=$condK.'='.$condVal;
+                                if(is_null($condVal)) {
+                                    $conditions[] = $condK.' IS NULL';
+                                } else {
+                                    if(is_numeric($condVal) === false) $condVal = '"'.$condVal.'"';
+                                    $conditions[] = $condK.'='.$condVal;
+                                }
                             }
                             break;
-                        case "notequal":
+                        case 'notequal':
                             if(is_array($condVal)){
                                 $conditions[]=$condK.' NOT IN ("'.implode('","', $condVal).'")';
                             }else{
-                                if(is_numeric($condVal) === false) $condVal = '"'.$condVal.'"';
-                                $conditions[]=$condK.' != '.$condVal;
+                                //this means that if I delete something  with a list of ids and the array happens to be empty array of ids it will just delete everything by
+                                if(is_null($condVal)) {
+                                    $conditions[] = $condK.' IS NOT NULL';
+                                } else {
+                                    if(is_numeric($condVal) === false) $condVal = '"'.$condVal.'"';
+                                    $conditions[] = $condK.' != '.$condVal;
+                                }
                             }
                             break;
-                        case "like":
-                                $conditions[]=$condK." LIKE '%".addcslashes($condVal, '%_' )."%'";
+                        case 'like':
+                                $conditions[]=$condK." LIKE '%".mysql_real_escape_string(addcslashes($condVal, '%_' ))."%'";
                             break;
-                        case "greater":
+                        case 'greater':
                             if(is_numeric($condVal) === false) $condVal = '"'.$condVal.'"';
                             $conditions[]=$condK.' > '.$condVal;
                             break;
-                        case "less":
+                        case 'less':
                             if(is_numeric($condVal) === false) $condVal = '"'.$condVal.'"';
                             $conditions[]=$condK.' < '.$condVal;
                             break;
-                        case "greater_eq":
+                        case 'greater_eq':
                             if(is_numeric($condVal) === false) $condVal = '"'.$condVal.'"';
                             $conditions[]=$condK.' >= '.$condVal;
                             break;
-                        case "less_eq":
+                        case 'less_eq':
                             if(is_numeric($condVal) === false) $condVal = '"'.$condVal.'"';
                             $conditions[]=$condK.' <= '.$condVal;
                             break;
@@ -302,7 +310,7 @@ class WYSIJA_model extends WYSIJA_object{
                 }
 
             }
-            $query.=" WHERE ".implode(" AND ",$conditions);
+            $query.=' WHERE '.implode(' AND ',$conditions);
         }
 
         return $query;
@@ -313,14 +321,14 @@ class WYSIJA_model extends WYSIJA_object{
      * @return string
      */
     function makeOrderBY(){
-        $query=" ORDER BY ";
+        $query=' ORDER BY ';
         if($this->orderby){
             /*set the ORDER BY clause*/
-            $query.=$this->orderby." ".$this->orderbyt;
+            $query.=$this->orderby.' '.$this->orderbyt;
         }else{
            /*by default we order by pk desc*/
-            if(is_array($this->pk)) return "";
-            $query.=$this->pk." DESC";
+            if(is_array($this->pk)) return '';
+            $query.=$this->pk.' DESC';
         }
         return $query;
     }
@@ -329,11 +337,11 @@ class WYSIJA_model extends WYSIJA_object{
     function makeJoins(){
 
         if($this->joins){
-            $join=" as A";
-            $arrayLetters=array("B","C","D","E");
+            $join=' as A';
+            $arrayLetters=array('B','C','D','E');
             foreach($this->joins['tablejoins'] as $table => $fk){
                 $letter=array_shift($arrayLetters);
-                $join.=' JOIN `'.$this->getPrefix().$table.'` AS '.$letter." on $letter.$fk=A.".$this->joins['keystart']." ";
+                $join.=' JOIN `'.$this->getPrefix().$table.'` AS '.$letter." on $letter.$fk=A.".$this->joins['keystart'].' ';
             }
             /*set the ORDER BY clause*/
             return $join;
@@ -348,7 +356,7 @@ class WYSIJA_model extends WYSIJA_object{
 
         if($this->groupby){
             /*set the ORDER BY clause*/
-            return " GROUP BY ".$this->groupby;
+            return ' GROUP BY '.$this->groupby;
         }else return '';
 
     }
@@ -373,11 +381,20 @@ class WYSIJA_model extends WYSIJA_object{
 
                 $value = current($name);
 
+                //security escaping
+                if(!is_string(key($name)) OR preg_match('|[^a-z0-9#_.-]|i',key($name)) !== 0 ){
+                    $orderByCol="";
+                }else $orderByCol=key($name);
+                //security escaping
+                if(!is_string($value) OR preg_match('|[^a-z0-9#_.-]|i',$value) !== 0 ){
+                    $orderByVal="";
+                }else $orderByVal=$value;
+
                 if($i === ($count - 1)) {
-                    $this->orderby .= key($name);
-                    $this->ordert = $value;
+                    $this->orderby .= $orderByCol;
+                    $this->ordert = $orderByVal;
                 } else {
-                    $this->orderby .= key($name).' '.$value;
+                    $this->orderby .=$orderByCol.' '.$orderByVal;
                     $this->orderby .= ', ';
                     next($name);
                 }
@@ -405,7 +422,6 @@ class WYSIJA_model extends WYSIJA_object{
         }else{
             $this->error(sprintf('missing values in model insert : %1$s.', get_class($this)));
         }
-
     }
 
 
@@ -477,11 +493,11 @@ class WYSIJA_model extends WYSIJA_object{
                     case "%d":
                         $bits[] = "`$field` = ".(int)$val;
                         break;
-                    case "[increment]":
-                        $bits[] = "`$field` = ".$field."+1";
+                    case '[increment]':
+                        $bits[] = "`$field` = ".$field.'+1';
                         break;
-                    case "[decrement]":
-                        $bits[] = "`$field` = ".$field."-1";
+                    case '[decrement]':
+                        $bits[] = "`$field` = ".$field.'-1';
                         break;
                     default :
                         $bits[] = "`$field` = '".$val."'";
@@ -520,8 +536,8 @@ class WYSIJA_model extends WYSIJA_object{
      */
     function save($update=false){
 
-        if($update)$updateStr="Update";
-        else $updateStr="Insert";
+        if($update)$updateStr='Update';
+        else $updateStr='Insert';
         $beforeSave='before'.$updateStr;
         $afterSave='after'.$updateStr;
 
@@ -564,17 +580,17 @@ class WYSIJA_model extends WYSIJA_object{
         foreach($this->values as $key =>$val){
             if(!isset($this->columns[$key]['html']))    $this->values[$key]=strip_tags($val);
             /* let's correct the type of the values based on the one defined in the model*/
-            if(in_array($val, array("[increment]","[decrement]"))){
+            if(in_array($val, array('[increment]','[decrement]'))){
                 $fieldsFormats[]=$val;
                 $this->specialUpdate=true;
             }else{
                 //dbg($this->values);
                 if(!isset($this->columns[$key]['type'])){
-                    $this->columns[$key]['type']="default";
+                    $this->columns[$key]['type']='default';
                 }
                 switch($this->columns[$key]['type']){
-                    case "integer":
-                    case "boolean":
+                    case 'integer':
+                    case 'boolean':
                         $fieldsFormats[]="%d";
                         break;
                     default:
@@ -655,14 +671,14 @@ class WYSIJA_model extends WYSIJA_object{
     function insertMany($values){
         $fields=array_keys($values[0]);
 
-        $query="INSERT INTO `".$this->getPrefix().$this->table_name."` (`" . implode( '`,`', $fields ) . "`) VALUES ";
+        $query='INSERT INTO `'.$this->getPrefix().$this->table_name.'` (`' . implode( '`,`', $fields ) . '`) VALUES ';
 
         $total=count($values);
         $i=1;
         foreach($values as &$vals){
             foreach($vals as &$v) $v=mysql_real_escape_string($v);
            $query.= "('" . implode( "','", $vals )."')";
-           if($i<$total)    $query.=",";
+           if($i<$total)    $query.=',';
            $i++;
         }
 
@@ -677,14 +693,14 @@ class WYSIJA_model extends WYSIJA_object{
     function validateFields(){
         $error=false;
         foreach($this->values as $key =>$val){
-            if(isset($this->columns[$key]['req']) && !$val && $this->columns[$key]['type']!="boolean"){
+            if(isset($this->columns[$key]['req']) && !$val && $this->columns[$key]['type']!='boolean'){
                 $this->error(sprintf(__('Field "%1$s" is required in table "%2$s".',WYSIJA), $key,$this->table_name),true);
                 $error=true;
             }
             /* let's correct the type of the values based on the one defined in the model*/
             switch($this->columns[$key]['type']){
                 case "email":
-                    $userHelper = &WYSIJA::get("user","helper");
+                    $userHelper = &WYSIJA::get('user','helper');
                     if(!$userHelper->validEmail($val)){
                         $this->error(sprintf(__('Field "%1$s" needs to be a valid Email.',WYSIJA), $key),true);
                         $error=true;
@@ -704,15 +720,15 @@ class WYSIJA_model extends WYSIJA_object{
      * @return type
      */
     function delete($conditions){
-        $query="DELETE FROM `".$this->getPrefix().$this->table_name."`";
+        $query='DELETE FROM `'.$this->getPrefix().$this->table_name.'`';
 
         if($this->setConditions($conditions)){
             $whereQuery=$this->makeWhere();
             if(!$whereQuery){
-                $this->error("Cannot delete element without conditions in model : ".get_class($this));
+                $this->error('Cannot delete element without conditions in model : '.get_class($this));
             }
         }else{
-            $this->error("Cannot delete element without conditions in model : ".get_class($this));
+            $this->error('Cannot delete element without conditions in model : '.get_class($this));
             return false;
         }
         $result=$this->beforeDelete($conditions);
@@ -725,19 +741,19 @@ class WYSIJA_model extends WYSIJA_object{
 
     function exists($conditions){
 
-        $query="SELECT ".$this->getPk()." FROM `".$this->getSelectTableName()."`";
+        $query='SELECT '.$this->getPk().' FROM `'.$this->getSelectTableName().'`';
 
         $query.=$this->makeJoins();
         if($this->setConditions($conditions)){
             $whereQuery=$this->makeWhere();
             if(!$whereQuery){
-                $this->error("Cannot test element without conditions in model : ".get_class($this));
+                $this->error('Cannot test element without conditions in model : '.get_class($this));
             }
         }else{
-            $this->error("Cannot test element without conditions in model : ".get_class($this));
+            $this->error('Cannot test element without conditions in model : '.get_class($this));
             return false;
         }
-        $res=$this->query("get_res",$query.$whereQuery, ARRAY_A);
+        $res=$this->query('get_res',$query.$whereQuery, ARRAY_A);
         if($res) return $res;
         else return false;
     }
@@ -823,7 +839,7 @@ class WYSIJA_model extends WYSIJA_object{
 
             $columnName = $column;
             if(!isset($this->columns[$columnName])){
-                $this->error(sprintf('Column %1$s does not exists in model : %2$s', $columnName, get_class($this)));
+                $this->error(sprintf('Column %1$s does not exist in model : %2$s', $columnName, get_class($this)));
                 return false;
             }
         }
@@ -837,26 +853,26 @@ class WYSIJA_model extends WYSIJA_object{
        else $arg2=str_replace(array('[wysija]','[wp]'),array($this->getPrefix(),$wpdb->prefix),$arg2);
 
         switch($query){
-            case "get_row":
-                if($this->dbg) $this->keepQry($arg2,"query");
+            case 'get_row':
+                if($this->dbg) $this->keepQry($arg2,'query');
 
                 $resultss=$wpdb->get_row($arg2,$arg3);
                 $this->logError();
                 return $resultss;
                 break;
-            case "get_res":
-                if($this->dbg) $this->keepQry($arg2,"query");
+            case 'get_res':
+                if($this->dbg) $this->keepQry($arg2,'query');
                 $results=$wpdb->get_results($arg2,$arg3);
                 //$this->escapeQuotesFromRes($results);
                 $this->logError();
                 return $results;
                 break;
             default:
-                if($this->dbg) $this->keepQry($query,"query");
+                if($this->dbg) $this->keepQry($query,'query');
 
                 $result=$wpdb->query($query);
                 $this->logError();
-                if(substr($query, 0, 6)=="INSERT") return $wpdb->insert_id;
+                if(substr($query, 0, 6)=='INSERT') return $wpdb->insert_id;
                 else return $result;
         }
 
@@ -878,10 +894,10 @@ class WYSIJA_model extends WYSIJA_object{
 
     }
 
-    function keepQry($qry=false,$from="wpdb"){
+    function keepQry($qry=false,$from='wpdb'){
         global $wpdb,$wysija_queries;
-        if($qry)    $wysija_queries[]="[FROM ".$from."]".$qry;
-        else    $wysija_queries[$from][]="[FROM ".$from."]".$wpdb->last_query;
+        if($qry)    $wysija_queries[]='[FROM '.$from.']'.$qry;
+        else    $wysija_queries[$from][]='[FROM '.$from.']'.$wpdb->last_query;
     }
 
     function getAffectedRows(){

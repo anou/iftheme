@@ -78,7 +78,7 @@ class WYSIJA_help_bounce extends WYSIJA_help{
     if(!$this->mailbox->connect($serverName,$port)){
       $warnings = ob_get_clean();
       if($this->report) {
-          $this->error("Error connecting to the server ".$this->config->getValue('bounce_host')." : ".$port,true);
+          $this->error('Error connecting to the server '.$this->config->getValue('bounce_host').' : '.$port,true);
           return false;
       }
       if(!empty($warnings) AND $this->report) $this->error($warnings,true);
@@ -95,7 +95,6 @@ class WYSIJA_help_bounce extends WYSIJA_help{
           return false;
       }
       ob_clean();
-
       return true;
   }
   function _connectimap(){
@@ -110,9 +109,9 @@ class WYSIJA_help_bounce extends WYSIJA_help{
     $protocol = $this->config->getValue('bounce_connection_method','');
     $serverName = '{'.$this->config->getValue('bounce_host');
     if(empty($port)){
-		if($secure == 'ssl' && $protocol == 'imap') $port = '993';
-		elseif($protocol == 'imap') $port = '143';
-		elseif($protocol == 'pop3') $port = '110';
+        if($secure == 'ssl' && $protocol == 'imap') $port = '993';
+        elseif($protocol == 'imap') $port = '143';
+        elseif($protocol == 'pop3') $port = '110';
     }
 
     if(!empty($port)) $serverName .= ':'.$port;
@@ -246,16 +245,16 @@ class WYSIJA_help_bounce extends WYSIJA_help{
 
 		$disp = '<html><head><meta http-equiv="Content-Type" content="text/html;charset=utf-8" />';
 		$disp .= '<title>'.addslashes(__('Bounce Handling',WYSIJA)).'</title>';
-		$disp .= '<style>body{font-size:12px;font-family: Arial,Helvetica,sans-serif;padding-top:50px;}</style></head><body>';
-		$disp = "<div style='position:relative; top:3px;left:3px;background-color : white;border : 1px solid grey; padding : 3px;'>";
-		$disp.= __("Bounce Handling",WYSIJA);
-      $disp.= ':  <span id="counter"/>0</span> / '. $maxMessages;
-      $disp.= '</div>';
+		$disp .= '<style>body{font-size:12px;font-family: Arial,Helvetica,sans-serif;} strong{color: black;}</style></head><body>';
+		$disp .= "<div style='position:relative; top:3px;left:3px;'>";
+		$disp .= __("Bounce Handling",WYSIJA);
+      $disp .= ':  <span id="counter"/>0</span> / '. $maxMessages;
+      $disp .= '</div>';
       $disp .= '<br/>';
-      $disp.= '<script type="text/javascript" language="javascript">';
-      $disp.= 'var mycounter = document.getElementById("counter");';
-      $disp.= 'function setCounter(val){ mycounter.innerHTML=val;}';
-      $disp.= '</script>';
+      $disp .= '<script type="text/javascript" language="javascript">';
+      $disp .= 'var mycounter = document.getElementById("counter");';
+      $disp .= 'function setCounter(val){ mycounter.innerHTML=val;}';
+      $disp .= '</script>';
       echo $disp;
 		if(function_exists('ob_flush')) @ob_flush();
 			@flush();
@@ -276,7 +275,7 @@ class WYSIJA_help_bounce extends WYSIJA_help{
       $msgNB--;
       if(empty($this->_message->subject)) continue;
       $this->_message->analyseText = $this->_message->html.' '.$this->_message->text;
-      $this->_display('<b>'.__("Subject",WYSIJA).' : '.strip_tags($this->_message->subject).'</b>',false,$maxMessages-$this->_message->messageNB+1);
+      $this->_display('<strong>'.__("Subject",WYSIJA).' : '.strip_tags($this->_message->subject).'</strong>',false,$maxMessages-$this->_message->messageNB+1);
 
       preg_match('#WY([0-9]+)SI([0-9]+)JA#i',$this->_message->analyseText,$resultsVars);
       if(!empty($resultsVars[1])) $this->_message->user_id = $resultsVars[1];
@@ -383,7 +382,7 @@ class WYSIJA_help_bounce extends WYSIJA_help{
   }
 
     if(!preg_match('#'.$regex.'#is',$analyseText)) return false;
-    $message = __("Rules",WYSIJA).' ['.$oneRule['id'].'] '.$oneRule['name'].' : ';
+    $message = $oneRule['name'];
   $message .= $this->_actionuser($oneRule);
   $message .= $this->_actionmessage($oneRule);
     $this->_display($message,true);
@@ -429,22 +428,22 @@ class WYSIJA_help_bounce extends WYSIJA_help{
         if(isset($oneRule['action_user'])){
             switch($oneRule['action_user']){
                 case 'delete'://1 -Delete user
-                    $message .= ' | user '.$this->_message->subemail.' deleted';
+                    $message .= ', user '.$this->_message->subemail.' deleted';
                     $this->deletedUsers[] = intval($this->_message->user_id);
                     break;
                 case 'unsub'://2-Unsubscribe user
 
-                    $message .= ' | user '.$this->_message->subemail.' unsubscribed';
+                    $message .= ', user '.$this->_message->subemail.' unsubscribed';
                     $this->unsubscribedUsers[]=$this->_message->user_id;
                     break;
                 default:
 
                     if(strpos($oneRule['action_user'],"unsub_")!==false){
                         $listid=(int)str_replace("unsub_","",$oneRule['action_user']);
-                        $message .= ' | user '.$this->_message->subemail.' unsubscribed';
+                        $message .= ', user '.$this->_message->subemail.' unsubscribed';
                         $this->unsubscribedUsers[]=$this->_message->user_id;
                         $this->addtolistUsers[$listid][]=$this->_message->user_id;
-                        $message .= ' | user '.$this->_message->subemail.' added to list '.$this->listdetails[$listid];
+                        $message .= ', user '.$this->_message->subemail.' added to list "' . $this->listdetails[$listid] . '"';
                     }
             }
         }
@@ -456,7 +455,7 @@ class WYSIJA_help_bounce extends WYSIJA_help{
           $res=$modelEUS->query("get_row",'SELECT COUNT(email_id) as count FROM [wysija]'.$modelEUS->table_name.' WHERE status = -1 AND user_id = '.$this->_message->user_id);
           $nb = intval($res['count']) + 1;
           if($nb < $oneRule['action_user_min']){
-            $message .= ' | '.sprintf(__('We received %1$s messages from the user %2$s',WYSIJA),$nb,$this->_message->subemail).' | '.sprintf(__('Actions will be executed after %1$s messages',WYSIJA),$oneRule['action_user_min']);
+            $message .= ', '.sprintf(__('We received %1$s messages from the user %2$s',WYSIJA),$nb,$this->_message->subemail).', '.sprintf(__('Actions will be executed after %1$s messages',WYSIJA),$oneRule['action_user_min']);
             return $message;
           }
         }
@@ -480,7 +479,7 @@ class WYSIJA_help_bounce extends WYSIJA_help{
             $data[] = 'FROM_ADDRESS::'.$this->_message->header->from_name. ' ( '.$this->_message->header->from_email.' )';
             $data[] = print_r($this->_message->headerinfo,true);
             $this->historyClass->insert($this->_message->user_id,'bounce',$data,@$this->_message->email_id);
-            $message .= ' | message saved (user '.$this->_message->user_id.')';
+            $message .= ', message saved (user '.$this->_message->user_id.')';
         }
         if(isset($oneRule['forward'])){
             if(isset($oneRule['action_message_forwardto']) && !empty($oneRule['action_message_forwardto']) && trim($oneRule['action_message_forwardto']) !=trim($this->config->getValue('bounce_email'))){
@@ -502,9 +501,9 @@ class WYSIJA_help_bounce extends WYSIJA_help{
                 $this->mailer->AddReplyTo($this->_message->header->reply_to_email,$this->_message->header->reply_to_name);
                 $this->mailer->setFrom($this->_message->header->from_email,$this->_message->header->from_name);
                 if($this->mailer->send()){
-                    $message .= ' | forwarded to '.$oneRule['action_message_forwardto'];
+                    $message .= ', forwarded to '.$oneRule['action_message_forwardto'];
                 }else{
-                    $message .= ' | error forwarding to '.$oneRule['action_message_forwardto'];
+                    $message .= ', error forwarding to '.$oneRule['action_message_forwardto'];
                 }
             }else{
 
@@ -512,7 +511,7 @@ class WYSIJA_help_bounce extends WYSIJA_help{
             }
         }
         if(isset($oneRule['action_message']['delete'])){
-            $message .= ' | message deleted';
+            $message .= ', message deleted';
             $this->deleteMessage($this->_message->messageNB);
         }
 
@@ -537,10 +536,10 @@ class WYSIJA_help_bounce extends WYSIJA_help{
   function _display($message,$status = '',$num = ''){
     $this->messages[] = $message;
     if(!$this->report) return;
-    $color = $status ? 'green' : 'blue';
+    $color = $status ? 'black' : 'blue';
     if(!empty($num)) echo '<br/>'.$num.' : ';
     else echo '<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;';
-    echo '<font color="'.$color.'">'.$message.'</font>';
+    echo '<font style="font-family: Arial;" color="'.$color.'">'.$message.'</font>';
   if(function_exists('ob_flush')) @ob_flush();
   @flush();
   }

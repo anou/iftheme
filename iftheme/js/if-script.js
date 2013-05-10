@@ -76,7 +76,7 @@ $(document).ready(function() {
     }
     
     //PARTNERS
-    if($('.partners')){
+    if ($('.partners').length) {
 	    $(function(){
 	      $(".partners").slides({
 	        container: 'partners_container',
@@ -91,7 +91,7 @@ $(document).ready(function() {
 			slideSpeed: 700,
 	      });
 	    });
-	}
+	  }
 	
 	
 

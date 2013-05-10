@@ -22,7 +22,7 @@ class acymailingSendgrid {
 	function sendMail(& $object) {
             $url = 'http://sendgrid.com/';
 
-            $to = array_merge($object->to[0], $object->cc, $object->bcc);
+            $to = array_merge(array($object->to[0][0]), $object->cc, $object->bcc);
             /*foreach($to as $oneRecipient){
                     $data .= '&to[]='.urlencode($object->AddrFormat($oneRecipient).";");
             }*/
@@ -88,7 +88,8 @@ class acymailingSendgrid {
             $result=json_decode($result);
 
             //If the ID is correct and we have no Errors
-            if($result->message=='error'){
+            $this->error='';
+            if(isset($result->message) && $result->message=='error'){
                 foreach($result->errors as $msgError)
                     $this->error .= $msgError."\n\r";
                 return false;

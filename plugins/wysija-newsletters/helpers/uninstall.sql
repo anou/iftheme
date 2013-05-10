@@ -1,5 +1,5 @@
 DROP TABLE `user_list`;
--- QUERY ---		
+-- QUERY ---
 DROP TABLE `user`;
 -- QUERY ---
 DROP TABLE `list`;
@@ -23,3 +23,5 @@ DROP TABLE `url`;
 DROP TABLE `email_user_url`;
 -- QUERY ---
 DROP TABLE `url_mail`;
+-- QUERY ---
+DROP TABLE `form`;

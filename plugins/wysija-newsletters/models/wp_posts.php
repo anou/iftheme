@@ -62,27 +62,30 @@ class WYSIJA_model_wp_posts extends WYSIJA_model{
             switch($col){
                 case 'category':
                     //$conditionsIn['B.term_taxonomy_id']=array('sign'=>'IN','val' =>$val, 'cast' => 'int');
-                    $conditionsIn['C.term_id']=array('sign'=>'IN','val' =>$val, 'cast' => 'int');
+                    $conditionsIn[]=array('col'=>'C.term_id','sign'=>'IN','val' =>$val, 'cast' => 'int');
+                    break;
+                case 'includeonly':
+                    $conditionsIn[] = array('col'=>'A.ID', 'sign'=>'=','val' =>$val);
                     break;
                 case 'include':
-                    $conditionsIn['A.ID'] = array('sign'=>'IN','val' =>$val, 'cast' => 'int');
+                    $conditionsIn[] = array('col'=>'A.ID','sign'=>'IN','val' =>$val, 'cast' => 'int');
                     break;
                 case 'exclude':
-                    $conditionsIn['A.ID'] = array('sign'=>'NOT IN', 'val' => $val, 'cast' => 'int');
+                    $conditionsIn[] = array('col'=>'A.ID','sign'=>'NOT IN', 'val' => $val, 'cast' => 'int');
                     break;
                 case 'post_type':
-                    $conditionsIn['A.post_type']=array('sign'=>'IN','val' =>$val);
+                    $conditionsIn[]=array('col'=>'A.post_type','sign'=>'IN','val' =>$val);
                     break;
                 case 'post_status':
-                    $conditionsIn['A.post_status']=array('sign'=>'IN','val' =>$val);
+                    $conditionsIn[]=array('col'=>'A.post_status','sign'=>'IN','val' =>$val);
                     break;
                 case 'post_date':
-                    //convert the date
+                    //convert the date to WordPress format
                     $toob=&WYSIJA::get('toolbox','helper');
                     $val= $toob->time_tzed($val);
 
                     if($val !== '') {
-                        $conditionsIn['A.post_date']=array('sign'=>'>','val' =>$val);
+                        $conditionsIn[]=array('col'=>'A.post_date','sign'=>'>','val' =>$val);
                     }
                     break;
                 default:
@@ -101,6 +104,7 @@ class WYSIJA_model_wp_posts extends WYSIJA_model{
         if(isset($args['numberposts'])){
             $customQuery.=' LIMIT 0,'.$args['numberposts'];
         }
+
         WYSIJA::log('post notif qry',$customQuery,'post_notif');
         return $this->query('get_res',$customQuery);
     }
@@ -109,11 +113,11 @@ class WYSIJA_model_wp_posts extends WYSIJA_model{
         $customQuery='';
         $i = 0;
 
-        foreach($conditionsIn as $col => $data) {
+        foreach($conditionsIn as $key => $data) {
 
             if($i > 0) $customQuery .=' AND ';
 
-            $customQuery .= $col.' ';
+            $customQuery .= $data['col'].' ';
 
             $value = $data['val'];
 

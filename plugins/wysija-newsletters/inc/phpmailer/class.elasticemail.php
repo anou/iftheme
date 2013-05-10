@@ -52,7 +52,8 @@ class acymailingElasticemail {
 		$data = "username=" . urlencode($this->Username);
 		$data .= "&api_key=" . urlencode($this->Password);
 		$data .= "&referral=" . urlencode('2f0447bb-173a-459d-ab1a-ab8cbebb9aab');
-
+                //if you want to encode the message in quoted printable
+                //$data .= "&encodingtype=3";
 		if (!empty ($object->From)) $data .= "&from=" . urlencode($object->From);
 		if (!empty ($object->FromName)) $data .= "&from_name=" . urlencode($object->FromName);
 

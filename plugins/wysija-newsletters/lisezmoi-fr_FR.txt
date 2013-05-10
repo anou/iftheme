@@ -1,0 +1,45 @@
+=== Wysija Newsletters ===
+Contributeurs : wysija
+Tags: newsletter, newsletters, manager newsletter, newsletter signup, newsletter widget, subscribers, post notification, email subscription, email alerts, automatic newsletter, auto newsletter, autoresponder, autoresponders, follow up, email marketing, email, emailing, subscription
+Requires at least: 3.0
+Tested up to : 3.5.1
+Stable tag : trunk
+
+Envoyez facilement et joliment vos articles et newsletters directement de WordPress.
+
+
+== Description ==
+
+Glissez/déposez vos articles, images, liens sociaux et séparateurs dans votre newsletter. Choisissez parmi un des 30 thèmes intégrés. Modifier les polices et les couleurs à la volée. La configuration est simplifiée. Et si vous êtes encore perdu [nous sommes là](http://support.wysija.com/) pour vous aider. Envoyer des newsletters avec WordPress devient un jeu d'enfant.
+
+
+= Video de demonstration d'une minute =
+
+http://vimeo.com/35054446
+
+
+== Credits pour la traduction ==
+
+Traduction pour fr_FR par FxB*
+
+Langue : Français
+Nom du traducteur : Fx Bénard
+Website du traducteur : http://www.fxbenard.com
+E-mail: fxb@fxbenard.com
+
+* Basé sur le travail précédent de :
+- Kim
+
+
+== Instructions d'installation ==
+
+Placez les fichiers joints dans le dossier de l'extension en respectant la structure des fichiers, comme indiqué ci-dessous
+
+/languages/
+	wysija-newsletters-fr_FR.mo
+	wysija-newsletters-fr_FR.po
+
+
+== Dégagement de resposabilité ==
+
+Les fichiers fournis sont fournis «tels quels». A utiliser à vos propres risques et périls.

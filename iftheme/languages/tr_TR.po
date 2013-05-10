@@ -1,0 +1,1059 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: Institut Français theme\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2013-05-03 09:28+0100\n"
+"PO-Revision-Date: 2013-05-03 09:29+0100\n"
+"Last-Translator: David Thomas <anou@smol.org>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Poedit-KeywordsList: __;_e;gettext;gettext_noop\n"
+"X-Poedit-Basepath: .\n"
+"X-Poedit-SourceCharset: UTF-8\n"
+"X-Generator: Poedit 1.5.5\n"
+"X-Poedit-SearchPath-0: ../../iftheme\n"
+
+#: ../../iftheme/404.php:5
+msgid "Error 404 Not Found"
+msgstr "Hata 404 Bulunamadı"
+
+#: ../../iftheme/404.php:7
+msgid "Oops. Fail. The page cannot be found."
+msgstr "Oops. Hata. Sayfa bulunamadı."
+
+#: ../../iftheme/404.php:8
+msgid "Please check your URL or use the search form below."
+msgstr ""
+"Lütfen URL bağlantınızı kontrol edin ve yukarıdaki ara butonunu kullanın."
+
+#: ../../iftheme/archive.php:81 ../../iftheme/search.php:56
+msgid "No results"
+msgstr "Sonuç yok"
+
+#: ../../iftheme/author.php:11
+msgid "About:"
+msgstr "Hakkında:"
+
+#: ../../iftheme/author.php:20
+msgid "Recent Posts by "
+msgstr "Tarafından en son gönderiler"
+
+#: ../../iftheme/author.php:32
+msgid "Written on "
+msgstr "Yazılı"
+
+#: ../../iftheme/author.php:32
+msgid " at "
+msgstr "da"
+
+#: ../../iftheme/author.php:33
+msgid "Categories: "
+msgstr "Kategoriler"
+
+#: ../../iftheme/author.php:38
+msgid "No posts by "
+msgstr "Tarafından gönderi yok"
+
+#: ../../iftheme/author.php:43
+msgid "Recent Comments by "
+msgstr "Tarafından en son yorumlar"
+
+#: ../../iftheme/author.php:51
+#, php-format
+msgid "%1$s on %2$s"
+msgstr "%1$s üzerinden %2$s"
+
+#: ../../iftheme/author.php:53
+msgid "No comments by "
+msgstr "Tarafından yorum yok"
+
+#: ../../iftheme/category.php:153 ../../iftheme/index.php:144
+#: ../../iftheme/multi-front-page.php:137
+msgid "No post for the moment"
+msgstr "Şuan için hiç gönderi yok"
+
+#: ../../iftheme/category.php:161
+msgid "No post for the moment and/or no homepage category selected"
+msgstr ""
+"Şuan için hiç gönderi yok ve/veya hiç bir ana sayfa kategorisi seçilmedi"
+
+#: ../../iftheme/category.php:181
+msgid "Agenda"
+msgstr "Ajanda"
+
+#: ../../iftheme/comments.php:23
+msgid "Your comment is awaiting approval."
+msgstr "Yorumunuz onay bekliyor."
+
+#: ../../iftheme/comments.php:51
+msgid "No comments yet. You should be kind and add one!"
+msgstr "Henüz yorum yapılmamış. İlk yorumu siz yapın!"
+
+#: ../../iftheme/comments.php:57
+msgid "Our apologies, you must be "
+msgstr "Özür dileriz, siz olmalısınız"
+
+#: ../../iftheme/comments.php:57
+msgid "logged in"
+msgstr "Giriş yapıldı"
+
+#: ../../iftheme/comments.php:57
+msgid " to post a comment."
+msgstr "yorum yaz"
+
+#: ../../iftheme/comments.php:60
+msgid "Logged in as "
+msgstr "Olarak giriş yap"
+
+#: ../../iftheme/comments.php:60
+msgid "Log out"
+msgstr "Çıkış yap"
+
+#: ../../iftheme/comments.php:62
+msgid "Allowed HTML tags:"
+msgstr "Açılır pencerelere izin ver:"
+
+#: ../../iftheme/comments.php:64
+msgid "Name"
+msgstr "İsim"
+
+#: ../../iftheme/comments.php:68
+msgid "Mail (will not be shared)"
+msgstr "Mail (paylaşılmayacak)"
+
+#: ../../iftheme/comments.php:72
+msgid "Website"
+msgstr "Web sitesi"
+
+#: ../../iftheme/comments.php:77
+msgid "Comment"
+msgstr "Yorum"
+
+#: ../../iftheme/comments.php:86
+msgid "By submitting a comment you grant "
+msgstr "Bir yorum yazmak"
+
+#: ../../iftheme/comments.php:86
+msgid ""
+" a perpetual license to reproduce your words and name/web site in "
+"attribution. Inappropriate and irrelevant comments will be removed at an "
+"admin’s discretion. Your email is used for verification purposes only, it "
+"will never be shared."
+msgstr ""
+"yazdıklarınız ve isminiz  web sitesinin kalıcı lisansında geçerli olacak, "
+"uygunsuz ve ilgisiz yorumlar  yönetici kararına bağlı olarak "
+"kaldırılacaktır. E-postanız doğrulama amaçlı kullanılacak, "
+"paylaşılmayacaktır. "
+
+#: ../../iftheme/comments.php:89
+msgid "The comments are closed."
+msgstr "Yoruma kapatıldı."
+
+#: ../../iftheme/footer.php:24
+#: ../../iftheme/inc/widgets/if-antennas-widget.php:23
+#: ../../iftheme/inc/widgets/if-antennas-widget.php:28
+msgid "Local antennas"
+msgstr "Yerel şubeler"
+
+#: ../../iftheme/functions.php:356
+msgid "You must assign a category to this user : "
+msgstr "Bu kullanıcı için bir kategori seçmeniz gerekmektedir:"
+
+#: ../../iftheme/functions.php:574 ../../iftheme/inc/theme-classes.php:39
+msgid "Image"
+msgstr "Fotoğraf"
+
+#: ../../iftheme/functions.php:841
+#, php-format
+msgid ""
+"Your content <em>Partner</em> is empty. <a href=\"/wp-admin/post.php?post="
+"%s&action=edit\"> >Edit</a>"
+msgstr ""
+"İçeriğiniz <em>Destekçi</em>boştur. <a href=\"/wp-admin/post.php?post="
+"%s&action=edit\"> >Düzenle</a>"
+
+#: ../../iftheme/functions.php:884
+msgid "You must fill in an email !"
+msgstr "Bir e-mail adresi girmelisiniz !"
+
+#: ../../iftheme/functions.php:884
+msgid "Edit this post"
+msgstr "Gönderiyi düzenle"
+
+#: ../../iftheme/functions.php:891
+msgid "The <b>Last name</b> field is required."
+msgstr "The <b>Soy isim</b> alanı gereklidir."
+
+#: ../../iftheme/functions.php:892
+msgid "The <b>First name</b> field is required."
+msgstr "The <b>İsim</b> alanı gereklidir."
+
+#: ../../iftheme/functions.php:893
+msgid "The <b>E-mail</b>  field is required."
+msgstr "The <b>E-mail</b> alanı gereklidir."
+
+#: ../../iftheme/functions.php:894
+msgid "The <b>E-mail name</b> field is invalid."
+msgstr "The <b>E-mail adresi</b> geçersizdir."
+
+#: ../../iftheme/functions.php:897
+msgid "Invalid verification code."
+msgstr "Geçersiz doğrulama kodu."
+
+#: ../../iftheme/functions.php:901
+msgid "Subcription request to: "
+msgstr "İçin kayıt isteği: "
+
+#: ../../iftheme/functions.php:903
+msgid "Subcription from IF Website"
+msgstr "IF Web sitesi kaydı"
+
+#: ../../iftheme/functions.php:904
+msgid "Your request has been sent."
+msgstr "İsteğiniz gönderildi."
+
+#: ../../iftheme/functions.php:920
+msgid "Last name"
+msgstr "Soy isim"
+
+#: ../../iftheme/functions.php:921
+msgid "First name"
+msgstr "İsim"
+
+#: ../../iftheme/functions.php:922
+msgid "E-mail"
+msgstr "E-mail"
+
+#: ../../iftheme/functions.php:923
+msgid "Copy verification code"
+msgstr "Doğrulama kodunu yazınız"
+
+#: ../../iftheme/functions.php:925
+msgid "Submit"
+msgstr "Teslim et"
+
+#: ../../iftheme/functions.php:942
+msgid "Sliders"
+msgstr "Sunumlar"
+
+#: ../../iftheme/functions.php:943
+msgid "Slider"
+msgstr "Sunum"
+
+#: ../../iftheme/functions.php:944
+msgid "Add new slider"
+msgstr "Yeni sunum ekle"
+
+#: ../../iftheme/functions.php:945
+msgid "Edit slider"
+msgstr "Sunumu düzenle"
+
+#: ../../iftheme/functions.php:946
+msgid "New slider"
+msgstr "Yeni sunum"
+
+#: ../../iftheme/functions.php:947
+msgid "View slider"
+msgstr "Sunumu gör"
+
+#: ../../iftheme/functions.php:948
+msgid "Search sliders"
+msgstr "Sunum ara"
+
+#: ../../iftheme/functions.php:949
+msgid "No slider found"
+msgstr "Sunum bulunamadı"
+
+#: ../../iftheme/functions.php:950
+msgid "No sliders found in Trash"
+msgstr "Geri dönüşüm kutusunda sunum bulunamadı"
+
+#: ../../iftheme/functions.php:962
+msgid "Partners"
+msgstr "Destekçler"
+
+#: ../../iftheme/functions.php:963
+msgid "Partner"
+msgstr "Destekçi"
+
+#: ../../iftheme/functions.php:964
+msgid "Add new partners"
+msgstr "Yeni destekçiler ekle"
+
+#: ../../iftheme/functions.php:965
+msgid "Edit partner"
+msgstr "Destekçileri düzenle"
+
+#: ../../iftheme/functions.php:966
+msgid "New partner"
+msgstr "Yeni destekçi"
+
+#: ../../iftheme/functions.php:967
+msgid "View partner"
+msgstr "Destekçileri görüntüle"
+
+#: ../../iftheme/functions.php:968
+msgid "Search partners"
+msgstr "Destekçi ara"
+
+#: ../../iftheme/functions.php:969
+msgid "No partners found"
+msgstr "Destekçi bulunamadı"
+
+#: ../../iftheme/functions.php:970
+msgid "No partners found in Trash"
+msgstr "Geri dönüşüm kutusunda destekçi bulunamadı"
+
+#: ../../iftheme/functions.php:1121
+msgid "This sidebar is for all antennas only. Only the admin can configure it."
+msgstr "Bu kenar çubuğu tüm şubeler içindir. Sadece yönetici yapılandırabilir."
+
+#: ../../iftheme/functions.php:1141
+#, php-format
+msgid "This sidebar is for %s only"
+msgstr "Kenar çubuğu sadece %s içindir"
+
+#: ../../iftheme/functions.php:1249
+msgid "Continue Reading"
+msgstr "Okumaya devam et"
+
+#: ../../iftheme/functions.php:1479
+msgid "Post navigation"
+msgstr ""
+
+#: ../../iftheme/functions.php:1480
+msgid "Previous"
+msgstr ""
+
+#: ../../iftheme/functions.php:1481
+msgid "Next"
+msgstr ""
+
+#: ../../iftheme/header.php:122
+msgid "Skip to Content"
+msgstr "İçeriği geç"
+
+#: ../../iftheme/index.php:152
+msgid "No post for the moment & no homepage category selected"
+msgstr "Şuan için hiçbir gönderi yok & hiçbir anasayfa kategorisi seçilmedi"
+
+#: ../../iftheme/multi-front-page.php:49
+msgid ""
+"You don't have any <em>Slider</em> recorded yet. <a href=\"/wp-admin/post-"
+"new.php?post_type=if_slider\">Add one now ?</a>"
+msgstr ""
+"Hiçbir <em>Sunumuz</em> kaydedilmedi.<a href=\"/wp-admin/post-new.php?"
+"post_type=if_slider\">Bir tane ekle ?</a>"
+
+#: ../../iftheme/multi-front-page.php:145
+msgid "No post for the moment & no configuration options"
+msgstr "Şuan için hiçbir yorum yok & yapılandırma seçenekleri"
+
+#: ../../iftheme/multi-front-page.php:162
+msgid "Coming soon"
+msgstr "Yakında"
+
+#: ../../iftheme/page.php:8 ../../iftheme/single.php:48
+msgid "Edit this entry"
+msgstr "Bu gönderiyi düzenle"
+
+#: ../../iftheme/sidebar.php:26
+msgid "Newsletter"
+msgstr "Bülten"
+
+#: ../../iftheme/sidebar.php:27
+msgid "Subscribe"
+msgstr "Abone ol"
+
+#: ../../iftheme/sidebar.php:30
+msgid "OK"
+msgstr "Tamam"
+
+#: ../../iftheme/sidebar.php:31
+msgid ""
+"You’ve successfully subscribed. Check your inbox now to confirm your "
+"subscription."
+msgstr ""
+"Kaydınız başarıyla gerçekleştirildi. Şimdi gelen kutunuzu kontrol edin ve "
+"kaydınızı doğrulayın."
+
+#: ../../iftheme/sidebar.php:35
+msgid "Your Email"
+msgstr "E-mail adresiniz"
+
+#: ../../iftheme/sidebar.php:66
+msgid "Join-us"
+msgstr "Bize katılın"
+
+#: ../../iftheme/single.php:73
+msgid "Useful informations"
+msgstr "Gerekli bilgiler"
+
+#: ../../iftheme/single.php:92
+msgid "Booking"
+msgstr "Rezervasyon"
+
+#: ../../iftheme/sitemap.php:9
+msgid "Pages"
+msgstr "Sayfalar"
+
+#: ../../iftheme/sitemap.php:12
+msgid "RSS Feeds"
+msgstr "RSS verileri"
+
+#: ../../iftheme/sitemap.php:14
+msgid "Main RSS"
+msgstr "Ana RSS"
+
+#: ../../iftheme/sitemap.php:15
+msgid "Comment Feed"
+msgstr "Yorum"
+
+#: ../../iftheme/sitemap.php:19 ../../iftheme/inc/theme-options.php:306
+msgid "Categories"
+msgstr "Kategoriler"
+
+#: ../../iftheme/sitemap.php:24
+msgid "All Blog Posts"
+msgstr "Bütün Sayfa Gönderileri"
+
+#: ../../iftheme/sitemap.php:26
+#, php-format
+msgid "Permanent Link to %s"
+msgstr "için Kalıcı Bağlantı %s"
+
+#: ../../iftheme/inc/if-user.php:12
+msgid "Antenna"
+msgstr "Şube"
+
+#: ../../iftheme/inc/if-user.php:53
+msgid "Category assigned to this Antenna"
+msgstr "Kategori bu Şubeye atandı"
+
+#: ../../iftheme/inc/if-user.php:64
+msgid "You must create another top level category to assign to this user"
+msgstr ""
+"Bu kullanıcıyı atamak için başka bir üst düzey kategori oluşturmanız gerekir"
+
+#: ../../iftheme/inc/if-user.php:65
+msgid "Or there is no category in this language"
+msgstr "Ya da bu dilde hiç bir kategori yok"
+
+#: ../../iftheme/inc/if-user.php:91
+msgid "Category"
+msgstr "Kategori"
+
+#: ../../iftheme/inc/theme-classes.php:16
+msgid "Slider images"
+msgstr "Sunum fotoğrafları"
+
+#: ../../iftheme/inc/theme-classes.php:35
+msgid "Country slider"
+msgstr "Ülke sunumu"
+
+#: ../../iftheme/inc/theme-classes.php:35
+msgid "Check this box if this slider is for Country homepage"
+msgstr "Eğer sunum Ülke anasayfasındaysa bu kutuyu kontrol edin"
+
+#: ../../iftheme/inc/theme-classes.php:37
+msgid "Title / Description"
+msgstr "Başlık/Tanım"
+
+#: ../../iftheme/inc/theme-classes.php:38
+msgid "URL link for the image"
+msgstr "Fotoğraf için URL bağlantısı"
+
+#: ../../iftheme/inc/theme-classes.php:45
+msgid "Slider Images"
+msgstr "Sunum fotoğrafları"
+
+#: ../../iftheme/inc/theme-classes.php:61
+#: ../../iftheme/inc/theme-classes.php:77
+msgid "Partners logos"
+msgstr "Destekçi logoları"
+
+#: ../../iftheme/inc/theme-classes.php:73
+msgid "Name of the partner"
+msgstr "Destekçi ismi"
+
+#: ../../iftheme/inc/theme-classes.php:74
+#: ../../iftheme/inc/events/if-events.php:220
+#: ../../iftheme/inc/events/if-events.php:221
+#: ../../iftheme/inc/events/if-events.php:222
+msgid "Link"
+msgstr "Bağlantı"
+
+#: ../../iftheme/inc/theme-classes.php:75
+msgid "Logo"
+msgstr "Logo"
+
+#: ../../iftheme/inc/theme-classes.php:90
+msgid "Booking informations"
+msgstr "Rezervasyon bilgileri"
+
+#: ../../iftheme/inc/theme-classes.php:99
+msgid "Open booking"
+msgstr "Açık rezervasyon "
+
+#: ../../iftheme/inc/theme-classes.php:99
+msgid "By checking this box, you enable the booking for this event."
+msgstr ""
+"Bu kutuyu kontrol ederek, bu etkinlik için rezervasyon oluşturabilirsiniz."
+
+#: ../../iftheme/inc/theme-classes.php:100
+#: ../../iftheme/inc/events/if-events.php:219
+msgid "Email"
+msgstr "E-mail"
+
+#: ../../iftheme/inc/theme-classes.php:100
+msgid "Email to whom send the booking"
+msgstr "Rezervasyonu gönderenin e-mail adresi"
+
+#: ../../iftheme/inc/theme-classes.php:101
+msgid "Details"
+msgstr "Detaylar"
+
+#: ../../iftheme/inc/theme-classes.php:101
+msgid "Some information you want to add at the top of the booking form"
+msgstr "Rezervasyon formuna eklemek istediğiniz bazı bilgiler"
+
+#: ../../iftheme/inc/theme-options.php:56
+msgid "Antenna options"
+msgstr "Şube seçenekleri"
+
+#: ../../iftheme/inc/theme-options.php:65
+msgid "Country homepage"
+msgstr "Ülke anasayfası"
+
+#: ../../iftheme/inc/theme-options.php:73
+msgid "Social sites on the web"
+msgstr "Webteki sosyal siteler"
+
+#: ../../iftheme/inc/theme-options.php:79
+msgid "Background frame"
+msgstr "Arka Plan çerçevesi"
+
+#: ../../iftheme/inc/theme-options.php:85
+msgid "Displayed home categories"
+msgstr "Ana kategorileri göster"
+
+#: ../../iftheme/inc/theme-options.php:86
+msgid "Number of events for each category displayed on homepage:"
+msgstr ""
+
+#: ../../iftheme/inc/theme-options.php:87
+msgid "Background image"
+msgstr "Arka plan fotoğrafı"
+
+#: ../../iftheme/inc/theme-options.php:92
+msgid "Facebook Page"
+msgstr "Facebook Sayfası"
+
+#: ../../iftheme/inc/theme-options.php:98
+msgid "Twitter Account"
+msgstr "Twitter Hesabı"
+
+#: ../../iftheme/inc/theme-options.php:99
+msgid "Google Plus Page"
+msgstr "Google Plus Sayfası"
+
+#: ../../iftheme/inc/theme-options.php:100
+msgid "Your IF TV Page"
+msgstr ""
+
+#: ../../iftheme/inc/theme-options.php:104
+msgid "Country's background frame"
+msgstr "Ülke Arka Plan çerçevesi"
+
+#: ../../iftheme/inc/theme-options.php:105
+msgid "Displayed country's homepage categories"
+msgstr "Ülke anasayfasının kategorilerini göster"
+
+#: ../../iftheme/inc/theme-options.php:106
+msgid "Country's background image"
+msgstr "Ülke Arka plan fotoğrafı"
+
+#: ../../iftheme/inc/theme-options.php:144
+#: ../../iftheme/inc/theme-options.php:145
+msgid "Theme Options"
+msgstr "Tema Seçenekleri"
+
+#: ../../iftheme/inc/theme-options.php:174
+#, php-format
+msgid "Frame %s"
+msgstr "Çerçeve %s"
+
+#: ../../iftheme/inc/theme-options.php:182
+msgid "Frame 1"
+msgstr "Çerçeve 1"
+
+#: ../../iftheme/inc/theme-options.php:306
+msgid "You must create some child categories"
+msgstr "Bazı alt kategoriler oluşturmanız gerekmektedir"
+
+#: ../../iftheme/inc/theme-options.php:346
+msgid "Upload image"
+msgstr "Fotoğraf yükle"
+
+#: ../../iftheme/inc/theme-options.php:347
+msgid "Choose your background image"
+msgstr "Arka plan fotoğrafınızı seçin"
+
+#: ../../iftheme/inc/theme-options.php:350
+#: ../../iftheme/inc/theme-options.php:352
+msgid "Actual Image"
+msgstr "Güncel fotoğrafı"
+
+#: ../../iftheme/inc/theme-options.php:354
+msgid "No image"
+msgstr "Fotoğraf yok"
+
+#: ../../iftheme/inc/theme-options.php:365
+msgid ""
+"This section is where you can save the social sites where readers can find "
+"you on the Internet."
+msgstr ""
+"Bu bölüme okuyucuların sizi Internet üzerinden bulabileceği  sosyal siteleri "
+"kaydedebilirsiniz."
+
+#: ../../iftheme/inc/theme-options.php:395
+#, php-format
+msgid "%s Theme Options"
+msgstr "%s Tema Seçenekleri"
+
+#: ../../iftheme/inc/theme-taxo-classes.php:30
+msgid "Download an image for your category"
+msgstr "Kategoriniz için bir fotoğraf yükleyin"
+
+#: ../../iftheme/inc/theme-taxo-classes.php:32
+msgid "Display sub-categories"
+msgstr "Alt kategorileri göster"
+
+#: ../../iftheme/inc/theme-taxo-classes.php:32
+msgid "Check this box if you want to display a list of child categories"
+msgstr "Alt kategorileri görüntülemek istiyorsanız, bu kutuyu kontrol edin"
+
+#: ../../iftheme/inc/theme-taxo-classes.php:39
+msgid "Display Posts"
+msgstr "Gönderileri göster"
+
+#: ../../iftheme/inc/theme-taxo-classes.php:39
+msgid ""
+"Uncheck this box if you want disable the display of the category's posts"
+msgstr ""
+"Kategori gönderilerini görüntülemek istemiyorsanız, bu kutuyu kontrol etmeyin"
+
+#: ../../iftheme/inc/events/if-events.php:25
+msgid "Event information"
+msgstr "Etkinlik bilgisi"
+
+#: ../../iftheme/inc/events/if-events.php:26
+msgid "Additional event information"
+msgstr "Ek etkinlik bilgisi"
+
+#: ../../iftheme/inc/events/if-events.php:60
+msgid "Start Date"
+msgstr "Başlangıç Tarihi"
+
+#: ../../iftheme/inc/events/if-events.php:60
+#: ../../iftheme/inc/events/if-events.php:61
+#: ../../iftheme/inc/events/if-events.php:184
+#: ../../iftheme/inc/events/if-events.php:194
+#: ../../iftheme/inc/events/if-events.php:198
+#: ../../iftheme/inc/events/if-events.php:200
+#: ../../iftheme/inc/events/if-events.php:210
+#: ../../iftheme/inc/events/if-events.php:213
+#: ../../iftheme/inc/events/if-events.php:225
+#: ../../iftheme/inc/events/if-events.php:393
+msgid "Mandatory field"
+msgstr "Zorunlu alan"
+
+#: ../../iftheme/inc/events/if-events.php:61
+msgid "End Date"
+msgstr "Bitiş Tarihi"
+
+#: ../../iftheme/inc/events/if-events.php:62
+msgid "Time"
+msgstr "Tarih"
+
+#: ../../iftheme/inc/events/if-events.php:62
+msgid ""
+"<em>Use 24h format (7pm = 19:00). Use the \"Time field\" only if \"End date"
+"\" is equal to \"Start date\"</em>"
+msgstr ""
+"<em>24 saat formatını kullan (7pm = 19:00). Kullan \"Zaman alanı\" eğer "
+"sadece \"Bitiş Tarihi\" is equal to \"Başlangıç Tarihi\"</em>"
+
+#: ../../iftheme/inc/events/if-events.php:107
+#: ../../iftheme/inc/events/if-events.php:130
+msgid ""
+"You must ask your server's administrator if the function <i style=\"color:red"
+"\">file_get_contents()</i> can be used without limitation"
+msgstr ""
+"İşlevi sunucu yöneticisine sormanız gerekir, <i style=\"renk:kırmızı"
+"\">file_get_contents()</i> sınırlama olmaksızın kullanılabilir"
+
+#: ../../iftheme/inc/events/if-events.php:184
+msgid "Disciplines"
+msgstr "Disiplinler"
+
+#: ../../iftheme/inc/events/if-events.php:185
+msgid ""
+"The proposed disciplines are useful for the mobile application only and have "
+"<b>no impact on your website</b>"
+msgstr ""
+"Önerilen disiplinler yalnızca mobil uygulama için kullanılabilir ve vardır "
+"<b>no impact on your website</b>"
+
+#: ../../iftheme/inc/events/if-events.php:194
+msgid "Place"
+msgstr "Yer"
+
+#: ../../iftheme/inc/events/if-events.php:195
+msgid "Address"
+msgstr "Adres"
+
+#: ../../iftheme/inc/events/if-events.php:196
+msgid "Additional address"
+msgstr "Ek adres"
+
+#: ../../iftheme/inc/events/if-events.php:197
+msgid "Zip code"
+msgstr "Posta Kodu"
+
+#: ../../iftheme/inc/events/if-events.php:198
+msgid "City"
+msgstr "Şehir"
+
+#: ../../iftheme/inc/events/if-events.php:200
+msgid "Country"
+msgstr "Ülke"
+
+#: ../../iftheme/inc/events/if-events.php:202
+msgid "Select"
+msgstr "Seç"
+
+#: ../../iftheme/inc/events/if-events.php:210
+msgid "Get longitude & latitude"
+msgstr "boylam ve enlem al"
+
+#: ../../iftheme/inc/events/if-events.php:210
+msgid ""
+"<em>Type here the full address of your event. <b>Press \"tab\" key</b> to "
+"get/modify the longitude and latitude</em>"
+msgstr ""
+"<em>Etkinliğinizin tam adresi <b>Press \"tab\" key</b> to get/modify the "
+"longitude and latitude</em>"
+
+#: ../../iftheme/inc/events/if-events.php:213
+msgid "Longitude"
+msgstr "Boylam"
+
+#: ../../iftheme/inc/events/if-events.php:213
+msgid "Latitude"
+msgstr "Enlem"
+
+#: ../../iftheme/inc/events/if-events.php:213
+msgid "Zoom"
+msgstr "Yakınlaştır"
+
+#: ../../iftheme/inc/events/if-events.php:218
+msgid "Phone number"
+msgstr "Telefon Numarası"
+
+#: ../../iftheme/inc/events/if-events.php:225
+msgid "Mandatory fields"
+msgstr "Zorunlu alanlar"
+
+#: ../../iftheme/inc/events/if-events.php:353
+#, php-format
+msgid "Event updated. <a href=\"%s\">View item</a>"
+msgstr "Etkinlik güncellendi. <a href=\"%s\">View item</a>"
+
+#: ../../iftheme/inc/events/if-events.php:354
+msgid "Custom field updated."
+msgstr "Özel alan güncellendi."
+
+#: ../../iftheme/inc/events/if-events.php:355
+msgid "Custom field deleted."
+msgstr "Özel alan silindi."
+
+#: ../../iftheme/inc/events/if-events.php:356
+msgid "Event updated."
+msgstr "Etkinlik güncellendi."
+
+#: ../../iftheme/inc/events/if-events.php:358
+#, php-format
+msgid "Event restored to revision from %s"
+msgstr "Etkinlik yeniden gözden geçirildi %s"
+
+#: ../../iftheme/inc/events/if-events.php:359
+#, php-format
+msgid "Event published. <a href=\"%s\">View event</a>"
+msgstr "Etkinlik yayınlandı. <a href=\"%s\">Etkinlik görüntüle</a>"
+
+#: ../../iftheme/inc/events/if-events.php:360
+msgid "Event saved."
+msgstr "Etkinlik kaydedildi."
+
+#: ../../iftheme/inc/events/if-events.php:361
+#, php-format
+msgid "Event submitted. <a target=\"_blank\" href=\"%s\">Preview event</a>"
+msgstr "Etkinlik sunuldu. <a target=\"_blank\" href=\"%s\">Preview event</a>"
+
+#: ../../iftheme/inc/events/if-events.php:362
+#, php-format
+msgid ""
+"Event scheduled for: <strong>%1$s</strong>. <a target=\"_blank\" href=\"%2$s"
+"\">Preview event</a>"
+msgstr ""
+"Etkinlik için programlandı: <strong>%1$s</strong>. <a target=\"_blank\" href="
+"\"%2$s\">Preview event</a>"
+
+#: ../../iftheme/inc/events/if-events.php:364
+msgid "M j, Y @ G:i"
+msgstr "M j, Y @ G:i"
+
+#: ../../iftheme/inc/events/if-events.php:365
+#, php-format
+msgid "Event draft updated. <a target=\"_blank\" href=\"%s\">Preview event</a>"
+msgstr ""
+"Etkinlik taslağı güncellendi. <a target=\"_blank\" href=\"%s\">Preview "
+"event</a>"
+
+#: ../../iftheme/inc/events/if-events.php:392
+msgid "You must tell where this event takes place."
+msgstr "Etkinliğin nerede gerçekleşeceğini söyleyin. "
+
+#: ../../iftheme/inc/events/if-events.php:394
+msgid "Longitude is required and must be a valid decimal"
+msgstr "Boylam gereklidir ve bir ondalık olmalıdır"
+
+#: ../../iftheme/inc/events/if-events.php:395
+msgid "Latitude is required and must be a valid decimal"
+msgstr "Enlem gereklidir ve bir ondalık olmalıdır"
+
+#: ../../iftheme/inc/events/if-events.php:396
+msgid "Must be like: <b>http://www.my-link.ext</b>"
+msgstr "Gibi: <b>http://www.my-link.ext</b>"
+
+#: ../../iftheme/inc/events/if-events.php:397
+msgid "You must check at least one discipline !"
+msgstr "En az bir disiplini kontrol etmelisiniz!"
+
+#: ../../iftheme/inc/IF-class/class-IF-terms-list-table.php:26
+msgid "Invalid taxonomy"
+msgstr "Geçersiz taksonomi"
+
+#: ../../iftheme/inc/IF-class/class-IF-terms-list-table.php:86
+#: ../../iftheme/inc/IF-class/class-IF-terms-list-table.php:265
+#: ../../iftheme/inc/meta-box-class/my-meta-box-class.php:253
+#: ../../iftheme/inc/meta-box-class/my-meta-box-class.php:869
+#: ../../iftheme/inc/Tax-meta-class/Tax-meta-class.php:250
+#: ../../iftheme/inc/Tax-meta-class/Tax-meta-class.php:882
+msgid "Delete"
+msgstr "Sil"
+
+#: ../../iftheme/inc/IF-class/class-IF-terms-list-table.php:104
+msgid "Description"
+msgstr "Tanım"
+
+#: ../../iftheme/inc/IF-class/class-IF-terms-list-table.php:105
+#: ../../iftheme/inc/IF-class/class-IF-terms-list-table.php:348
+msgid "Slug"
+msgstr "Slug"
+
+#: ../../iftheme/inc/IF-class/class-IF-terms-list-table.php:109
+msgid "Links"
+msgstr "Bağlantılar"
+
+#: ../../iftheme/inc/IF-class/class-IF-terms-list-table.php:112
+msgid "Posts"
+msgstr "Gönderiler"
+
+#: ../../iftheme/inc/IF-class/class-IF-terms-list-table.php:257
+#, php-format
+msgid "Edit &#8220;%s&#8221;"
+msgstr "Düzenle &#8220;%s&#8221;"
+
+#: ../../iftheme/inc/IF-class/class-IF-terms-list-table.php:261
+msgid "Edit"
+msgstr "Düzenle"
+
+#: ../../iftheme/inc/IF-class/class-IF-terms-list-table.php:262
+msgid "Quick&nbsp;Edit"
+msgstr "Hızlı&nbsp;Düzenle"
+
+#: ../../iftheme/inc/IF-class/class-IF-terms-list-table.php:266
+msgid "View"
+msgstr "Görüntüle"
+
+#: ../../iftheme/inc/IF-class/class-IF-terms-list-table.php:340
+msgid "Quick Edit"
+msgstr "Hızlı Düzenle"
+
+#: ../../iftheme/inc/IF-class/class-IF-terms-list-table.php:369
+msgid "Cancel"
+msgstr "İptal et"
+
+#: ../../iftheme/inc/meta-box-class/my-meta-box-class.php:253
+#: ../../iftheme/inc/Tax-meta-class/Tax-meta-class.php:250
+msgid "Delete this image"
+msgstr "Bu fotoğrafı sil"
+
+#: ../../iftheme/inc/meta-box-class/my-meta-box-class.php:349
+msgid "Cannot delete file. Something's wrong"
+msgstr "Bu dosya silinemedi. Bir hata oluştu."
+
+#: ../../iftheme/inc/meta-box-class/my-meta-box-class.php:562
+#: ../../iftheme/inc/meta-box-class/my-meta-box-class.php:607
+#: ../../iftheme/inc/Tax-meta-class/Tax-meta-class.php:582
+#: ../../iftheme/inc/Tax-meta-class/Tax-meta-class.php:629
+msgid "Remove"
+msgstr "Kaldır"
+
+#: ../../iftheme/inc/meta-box-class/my-meta-box-class.php:574
+#: ../../iftheme/inc/Tax-meta-class/Tax-meta-class.php:595
+msgid "Add"
+msgstr "Ekle"
+
+#: ../../iftheme/inc/meta-box-class/my-meta-box-class.php:865
+#: ../../iftheme/inc/Tax-meta-class/Tax-meta-class.php:878
+msgid "Uploaded files"
+msgstr "İndirilen dosyalar"
+
+#: ../../iftheme/inc/meta-box-class/my-meta-box-class.php:876
+#: ../../iftheme/inc/Tax-meta-class/Tax-meta-class.php:889
+msgid "Upload new files"
+msgstr "Yeni dosyalar indir"
+
+#: ../../iftheme/inc/meta-box-class/my-meta-box-class.php:882
+#: ../../iftheme/inc/Tax-meta-class/Tax-meta-class.php:895
+msgid "Add more files"
+msgstr "Daha fazla dosya ekle"
+
+#: ../../iftheme/inc/meta-box-class/my-meta-box-class.php:932
+#: ../../iftheme/inc/Tax-meta-class/Tax-meta-class.php:947
+msgid "Select a color"
+msgstr "Renk seç"
+
+#: ../../iftheme/inc/Tax-meta-class/Tax-meta-class.php:357
+msgid "Cannot delete file. Something's wrong."
+msgstr "Bu dosya silinemedi. Bir hata oluştu."
+
+#: ../../iftheme/inc/widgets/if-antennas-widget.php:16
+msgid "Displays a list of all the local antennas"
+msgstr "Tüm yerel şubelerin listesini görüntüle"
+
+#: ../../iftheme/inc/widgets/if-antennas-widget.php:31
+#: ../../iftheme/inc/widgets/if-categ-widget.php:53
+#: ../../iftheme/inc/widgets/if-partners-widget.php:43
+#: ../../iftheme/inc/widgets/if-world-widget.php:33
+msgid "Title"
+msgstr "Başlık"
+
+#: ../../iftheme/inc/widgets/if-antennas-widget.php:35
+msgid "This widget displays all the local antennas. No configuration options"
+msgstr ""
+"Bu widget tüm yerel antenleri görüntüler.Yapılandırma seçenekleri yoktur"
+
+#: ../../iftheme/inc/widgets/if-categ-widget.php:16
+msgid "Displays a list of category's children, related to the current antenna"
+msgstr "Alt kategorileri görüntüler, mevcut şube ile ilgilidir"
+
+#: ../../iftheme/inc/widgets/if-categ-widget.php:23
+msgid "Antenna's categories"
+msgstr "Şube kategorileri"
+
+#: ../../iftheme/inc/widgets/if-categ-widget.php:48
+msgid "None"
+msgstr "Hiç biri"
+
+#: ../../iftheme/inc/widgets/if-categ-widget.php:54
+msgid ""
+"You can custom the widget title here. Default is the category name you "
+"choose in the Category parent field below."
+msgstr ""
+"Burada özel Widget başlığı olabilir. Aşağıdaki Kategori üst alanda "
+"seçtiğiniz kategori adıdır."
+
+#: ../../iftheme/inc/widgets/if-categ-widget.php:57
+msgid "Category parent"
+msgstr "Ana kategori"
+
+#: ../../iftheme/inc/widgets/if-partners-widget.php:16
+msgid ""
+"Displays a list of antenna's partners logo, related to the current antenna"
+msgstr "Şubelerin destekçi logo listesini görüntüle, mevcut şube ile ilgilidir"
+
+#: ../../iftheme/inc/widgets/if-partners-widget.php:23
+msgid "Antenna's partners"
+msgstr "Şube destekçileri"
+
+#: ../../iftheme/inc/widgets/if-partners-widget.php:44
+msgid ""
+"You can custom the widget title here. Default is the title of the selected "
+"partner."
+msgstr ""
+"Burada özel Widget başlığı olabilir. Standart seçilen destekçinin başlığıdır."
+
+#: ../../iftheme/inc/widgets/if-partners-widget.php:47
+msgid "Select Partners:"
+msgstr "Destekçi seç:"
+
+#: ../../iftheme/inc/widgets/if-partners-widget.php:53
+msgid ""
+"You must create a Partner in order to use this widget: <a href=\"/wp-admin/"
+"edit.php?post_type=if_partner\">Partners</a>"
+msgstr "Bu widget'ı kullanmak için bir Destekçi oluşturmanız gerekmektedir:"
+
+#: ../../iftheme/inc/widgets/if-partners-widget.php:85
+msgid "Error"
+msgstr "Hata"
+
+#: ../../iftheme/inc/widgets/if-partners-widget.php:97
+msgid ""
+"You must choose a Partner in the widget configuration: <a href=\"/wp-admin/"
+"widgets.php\">widgets</a>"
+msgstr ""
+"Widget yapılandırması için bir Destekçi seçmelisiniz: <a href=\"/wp-admin/"
+"widgets.php\">widgets</a>"
+
+#: ../../iftheme/inc/widgets/if-world-widget.php:16
+msgid "Displays a list of links related to the Institut Français"
+msgstr "Fransız Kültür Merkezi ile ilgili bağlantı listesi görüntüler"
+
+#: ../../iftheme/inc/widgets/if-world-widget.php:23
+msgid "Institut Français links"
+msgstr "Fransız Kültür Merkezi bağlantıları"
+
+#: ../../iftheme/inc/widgets/if-world-widget.php:29
+#: ../../iftheme/inc/widgets/if-world-widget.php:62
+msgid "Numeric IF"
+msgstr "Fransız Kültür Merkezi Dijital"
+
+#: ../../iftheme/inc/widgets/if-world-widget.php:39
+msgid "URL"
+msgstr "URL"
+
+#: ../../iftheme/inc/widgets/if-world-widget.php:41
+msgid "Label"
+msgstr "Etiket"
+
+#~ msgid "L'Institut Français dans le monde"
+#~ msgstr "Dünyada Fransız Kültür Merkezi"
+
+#~ msgid "<small>Edit this entry</small>"
+#~ msgstr "<small>Gönderiyi düzenle</small>"
+
+#~ msgid ""
+#~ "This widget displays default links related to the Institut Français. For "
+#~ "the moment, you can only modify the title."
+#~ msgstr ""
+#~ "Bu widgetFransız Kültür Merkezi ile ilgili varsayılan bağlantıları "
+#~ "görüntüler. Şu an için, sadece başlığı değiştirebilirsiniz."
+
+#~ msgid "You have no content for the moment."
+#~ msgstr "Şu an için herhangi bir içeriğe sahip değilsiniz."
