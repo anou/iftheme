@@ -149,7 +149,7 @@ global $current_user; get_currentuserinfo();
 					</aside>
 				<?php endif;?>
 				
-				<aside id="header-pages-menu" class="widget none">
+				<aside id="header-pages-menu" class="widget">
 					<?php wp_page_menu(); /* outputs the pages menu */ ?>
 				</aside>
 				
