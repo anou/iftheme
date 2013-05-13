@@ -3,8 +3,8 @@ msgstr ""
 "Project-Id-Version: Institut Français theme\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2013-05-07 08:32+0100\n"
-"PO-Revision-Date: 2013-05-07 08:33+0100\n"
-"Last-Translator: David Thomas <anou@smol.org>\n"
+"PO-Revision-Date: 2013-05-07 20:34+0100\n"
+"Last-Translator: Tomislav Marcinkovic <tomislav@marcinkovic.com>\n"
 "Language-Team: smol <team@smol.org>\n"
 "Language: fr_FR\n"
 "MIME-Version: 1.0\n"
@@ -13,7 +13,7 @@ msgstr ""
 "X-Poedit-KeywordsList: __;_e;gettext;gettext_noop\n"
 "X-Poedit-Basepath: .\n"
 "X-Poedit-SourceCharset: UTF-8\n"
-"X-Generator: Poedit 1.5.5\n"
+"X-Generator: Poedit 1.5.4\n"
 "X-Poedit-SearchPath-0: ../../iftheme\n"
 
 #: ../../iftheme/404.php:5
@@ -100,7 +100,7 @@ msgstr "prijavljen"
 
 #: ../../iftheme/comments.php:57
 msgid " to post a comment."
-msgstr "napisati komentar."
+msgstr " napisati komentar."
 
 #: ../../iftheme/comments.php:60
 msgid "Logged in as "
@@ -320,15 +320,15 @@ msgstr "Nastavi čitati"
 
 #: ../../iftheme/functions.php:1486
 msgid "Post navigation"
-msgstr ""
+msgstr "Šetanje po člancima"
 
 #: ../../iftheme/functions.php:1487
 msgid "Previous"
-msgstr ""
+msgstr "Prethodni"
 
 #: ../../iftheme/functions.php:1488
 msgid "Next"
-msgstr ""
+msgstr "Sljedeći"
 
 #: ../../iftheme/header.php:122
 msgid "Skip to Content"
@@ -540,7 +540,7 @@ msgstr "Prikazane početne kategorije"
 
 #: ../../iftheme/inc/theme-options.php:86
 msgid "Number of events for each category displayed on homepage:"
-msgstr ""
+msgstr "Broj događaja za svaku kategoriju prikazan na početnoj stranici:"
 
 #: ../../iftheme/inc/theme-options.php:87
 msgid "Background image"
@@ -560,7 +560,7 @@ msgstr "Google Plus stranica"
 
 #: ../../iftheme/inc/theme-options.php:100
 msgid "Your IF TV Page"
-msgstr ""
+msgstr "Vaša IF TV stranica"
 
 #: ../../iftheme/inc/theme-options.php:104
 msgid "Country's background frame"
@@ -573,6 +573,7 @@ msgstr "Prikazane početne kategorije zemlje"
 #: ../../iftheme/inc/theme-options.php:106
 msgid "Number of events for each category displayed on country's homepage:"
 msgstr ""
+"Broj događaja za svaku kategoriju prikazan na početnoj stranici vaše zemlje:"
 
 #: ../../iftheme/inc/theme-options.php:107
 msgid "Country's background image"
@@ -907,7 +908,6 @@ msgid "Delete this image"
 msgstr "Obriši ovu sliku"
 
 #: ../../iftheme/inc/meta-box-class/my-meta-box-class.php:349
-#, fuzzy
 msgid "Cannot delete file. Something's wrong"
 msgstr "Ne mogu obrisati datoteku. Nešto nije u redu."
 
