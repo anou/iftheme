@@ -163,14 +163,15 @@ global $current_user; get_currentuserinfo();
 		<div class="container for-angle">
 			<!-- div for bevel angle -->
 			<div class="right-corner"></div>
-			
+		  <?php if(get_if_level2_categ(array('style' => 'none'))) : ?>	
 			<?php if($multi): //MENU multi antennes ?>
 				<?php if(!is_date() && !is_404() && !is_search() && !is_page() && (!is_front_page() || !is_home())) :?>
-				  <nav id="antennes" role="navigation"><ul class="menu clearfix"><?php  get_if_level2_categ(); ?></ul></nav><!-- /#antennes -->
+				  <nav id="antennes" role="navigation"><ul class="menu clearfix"><?php  if(get_if_level2_categ()) get_if_level2_categ(); ?></ul></nav><!-- /#antennes -->
 				<?php endif;?>
 		  
 		  <?php else : ?>
-				<nav id="antennes" role="navigation"><ul class="menu clearfix"><?php  get_if_level2_categ(); ?></ul></nav><!-- /#antennes -->
+				<nav id="antennes" role="navigation"><ul class="menu clearfix"><?php  get_if_level2_categ();?></ul></nav><!-- /#antennes -->
+			<?php endif;?>
 			<?php endif;?>
 
 		</div><!--/.container.for-angle-->

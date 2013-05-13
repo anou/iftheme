@@ -68,19 +68,24 @@
 		$home_cat = isset($options['theme_home_categ']) ? $options['theme_home_categ'][0] : '';
 		if($home_cat):?>
 			<div id="home-list">
-			<?php foreach($home_cat as $id):?>
+			<?php foreach($home_cat as $id): 
+			  $show = TRUE;
+			  //check if category has a translation
+  			if ( function_exists('icl_object_id') ) {
+  			  $show = icl_object_id($id, 'category', false);
+  		  } ?>
+  		<?php if ($show) : ?>
 				<?php $cat = get_the_category_by_ID($id);?>
 				<div class="block-home">
 					<h2 class="posts-category"><?php echo $cat;?></h2>
 					<?php //alter query
 					$time = (time() - (60*60*24));
-					$nb = isset($options['theme_home_nb_events']) ? $options['theme_home_nb_events'] : 5; //default nb of posts if not set
           $args = array(
              'cat' => $id,
              'meta_key' => 'if_events_startdate',
              'orderby' => 'meta_value_num',
              'order' => 'ASC',
-             'posts_per_page' => $nb,
+             'posts_per_page' => $options['theme_home_nb_events'],
              'meta_query' => array(
                  array(
                      'key' => 'if_events_enddate',
@@ -146,6 +151,7 @@
 						</div><!--noResults-->
 					<?php endif; ?>
 				</div><!-- /.block-home -->
+					<?php endif; ?>
 			<?php endforeach;?>
 			</div>
 		<?php else : ?>

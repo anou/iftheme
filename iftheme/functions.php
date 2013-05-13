@@ -187,7 +187,7 @@ function get_if_top_categ($args=array()){
 	wp_list_categories($default_args);
 }
 //get level 2 (key=1) categories.
-function get_if_level2_categ($args=array()){
+function get_if_level2_categ($args = array()){
 	
 	$default_args = array(
 		'hide_empty' => 0,
