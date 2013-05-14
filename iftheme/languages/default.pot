@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Institut Français theme\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-05-03 09:29+0100\n"
-"PO-Revision-Date: 2013-05-03 09:29+0100\n"
+"POT-Creation-Date: 2013-05-14 18:40+0100\n"
+"PO-Revision-Date: 2013-05-14 18:40+0100\n"
 "Last-Translator: David Thomas <anou@smol.org>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -68,16 +68,16 @@ msgstr ""
 msgid "No comments by "
 msgstr ""
 
-#: ../../iftheme/category.php:153 ../../iftheme/index.php:144
+#: ../../iftheme/category.php:150 ../../iftheme/index.php:150
 #: ../../iftheme/multi-front-page.php:137
 msgid "No post for the moment"
 msgstr ""
 
-#: ../../iftheme/category.php:161
+#: ../../iftheme/category.php:158
 msgid "No post for the moment and/or no homepage category selected"
 msgstr ""
 
-#: ../../iftheme/category.php:181
+#: ../../iftheme/category.php:178
 msgid "Agenda"
 msgstr ""
 
@@ -145,189 +145,197 @@ msgstr ""
 msgid "The comments are closed."
 msgstr ""
 
-#: ../../iftheme/footer.php:24
+#: ../../iftheme/footer.php:25
 #: ../../iftheme/inc/widgets/if-antennas-widget.php:23
 #: ../../iftheme/inc/widgets/if-antennas-widget.php:28
 msgid "Local antennas"
 msgstr ""
 
-#: ../../iftheme/functions.php:356
+#: ../../iftheme/functions.php:50
+#, php-format
+msgid ""
+"Warning - You must assign a category to the current user <a href=\"%2$s/wp-"
+"admin/users.php\"><b>%1$s</b>!</a>"
+msgstr ""
+
+#: ../../iftheme/functions.php:393
 msgid "You must assign a category to this user : "
 msgstr ""
 
-#: ../../iftheme/functions.php:574 ../../iftheme/inc/theme-classes.php:39
+#: ../../iftheme/functions.php:617 ../../iftheme/inc/theme-classes.php:39
 msgid "Image"
 msgstr ""
 
-#: ../../iftheme/functions.php:841
+#: ../../iftheme/functions.php:883
 #, php-format
 msgid ""
 "Your content <em>Partner</em> is empty. <a href=\"/wp-admin/post.php?post="
 "%s&action=edit\"> >Edit</a>"
 msgstr ""
 
-#: ../../iftheme/functions.php:884
+#: ../../iftheme/functions.php:926
 msgid "You must fill in an email !"
 msgstr ""
 
-#: ../../iftheme/functions.php:884
+#: ../../iftheme/functions.php:926
 msgid "Edit this post"
 msgstr ""
 
-#: ../../iftheme/functions.php:891
+#: ../../iftheme/functions.php:933
 msgid "The <b>Last name</b> field is required."
 msgstr ""
 
-#: ../../iftheme/functions.php:892
+#: ../../iftheme/functions.php:934
 msgid "The <b>First name</b> field is required."
 msgstr ""
 
-#: ../../iftheme/functions.php:893
+#: ../../iftheme/functions.php:935
 msgid "The <b>E-mail</b>  field is required."
 msgstr ""
 
-#: ../../iftheme/functions.php:894
+#: ../../iftheme/functions.php:936
 msgid "The <b>E-mail name</b> field is invalid."
 msgstr ""
 
-#: ../../iftheme/functions.php:897
+#: ../../iftheme/functions.php:939
 msgid "Invalid verification code."
 msgstr ""
 
-#: ../../iftheme/functions.php:901
+#: ../../iftheme/functions.php:943
 msgid "Subcription request to: "
 msgstr ""
 
-#: ../../iftheme/functions.php:903
+#: ../../iftheme/functions.php:945
 msgid "Subcription from IF Website"
 msgstr ""
 
-#: ../../iftheme/functions.php:904
+#: ../../iftheme/functions.php:946
 msgid "Your request has been sent."
 msgstr ""
 
-#: ../../iftheme/functions.php:920
+#: ../../iftheme/functions.php:962
 msgid "Last name"
 msgstr ""
 
-#: ../../iftheme/functions.php:921
+#: ../../iftheme/functions.php:963
 msgid "First name"
 msgstr ""
 
-#: ../../iftheme/functions.php:922
+#: ../../iftheme/functions.php:964
 msgid "E-mail"
 msgstr ""
 
-#: ../../iftheme/functions.php:923
+#: ../../iftheme/functions.php:965
 msgid "Copy verification code"
 msgstr ""
 
-#: ../../iftheme/functions.php:925
+#: ../../iftheme/functions.php:967
 msgid "Submit"
 msgstr ""
 
-#: ../../iftheme/functions.php:942
+#: ../../iftheme/functions.php:984
 msgid "Sliders"
 msgstr ""
 
-#: ../../iftheme/functions.php:943
+#: ../../iftheme/functions.php:985
 msgid "Slider"
 msgstr ""
 
-#: ../../iftheme/functions.php:944
+#: ../../iftheme/functions.php:986
 msgid "Add new slider"
 msgstr ""
 
-#: ../../iftheme/functions.php:945
+#: ../../iftheme/functions.php:987
 msgid "Edit slider"
 msgstr ""
 
-#: ../../iftheme/functions.php:946
+#: ../../iftheme/functions.php:988
 msgid "New slider"
 msgstr ""
 
-#: ../../iftheme/functions.php:947
+#: ../../iftheme/functions.php:989
 msgid "View slider"
 msgstr ""
 
-#: ../../iftheme/functions.php:948
+#: ../../iftheme/functions.php:990
 msgid "Search sliders"
 msgstr ""
 
-#: ../../iftheme/functions.php:949
+#: ../../iftheme/functions.php:991
 msgid "No slider found"
 msgstr ""
 
-#: ../../iftheme/functions.php:950
+#: ../../iftheme/functions.php:992
 msgid "No sliders found in Trash"
 msgstr ""
 
-#: ../../iftheme/functions.php:962
+#: ../../iftheme/functions.php:1004
+#: ../../iftheme/inc/widgets/if-partners-widget.php:53
 msgid "Partners"
 msgstr ""
 
-#: ../../iftheme/functions.php:963
+#: ../../iftheme/functions.php:1005
 msgid "Partner"
 msgstr ""
 
-#: ../../iftheme/functions.php:964
+#: ../../iftheme/functions.php:1006
 msgid "Add new partners"
 msgstr ""
 
-#: ../../iftheme/functions.php:965
+#: ../../iftheme/functions.php:1007
 msgid "Edit partner"
 msgstr ""
 
-#: ../../iftheme/functions.php:966
+#: ../../iftheme/functions.php:1008
 msgid "New partner"
 msgstr ""
 
-#: ../../iftheme/functions.php:967
+#: ../../iftheme/functions.php:1009
 msgid "View partner"
 msgstr ""
 
-#: ../../iftheme/functions.php:968
+#: ../../iftheme/functions.php:1010
 msgid "Search partners"
 msgstr ""
 
-#: ../../iftheme/functions.php:969
+#: ../../iftheme/functions.php:1011
 msgid "No partners found"
 msgstr ""
 
-#: ../../iftheme/functions.php:970
+#: ../../iftheme/functions.php:1012
 msgid "No partners found in Trash"
 msgstr ""
 
-#: ../../iftheme/functions.php:1121
+#: ../../iftheme/functions.php:1163
 msgid "This sidebar is for all antennas only. Only the admin can configure it."
 msgstr ""
 
-#: ../../iftheme/functions.php:1141
+#: ../../iftheme/functions.php:1183
 #, php-format
 msgid "This sidebar is for %s only"
 msgstr ""
 
-#: ../../iftheme/functions.php:1249
+#: ../../iftheme/functions.php:1291
 msgid "Continue Reading"
 msgstr ""
 
-#: ../../iftheme/functions.php:1479
+#: ../../iftheme/functions.php:1521
 msgid "Post navigation"
 msgstr ""
 
-#: ../../iftheme/functions.php:1480
+#: ../../iftheme/functions.php:1522
 msgid "Previous"
 msgstr ""
 
-#: ../../iftheme/functions.php:1481
+#: ../../iftheme/functions.php:1523
 msgid "Next"
 msgstr ""
 
-#: ../../iftheme/header.php:122
+#: ../../iftheme/header.php:124
 msgid "Skip to Content"
 msgstr ""
 
-#: ../../iftheme/index.php:152
+#: ../../iftheme/index.php:159
 msgid "No post for the moment & no homepage category selected"
 msgstr ""
 
@@ -371,7 +379,7 @@ msgstr ""
 msgid "Your Email"
 msgstr ""
 
-#: ../../iftheme/sidebar.php:66
+#: ../../iftheme/sidebar.php:64
 msgid "Join-us"
 msgstr ""
 
@@ -399,7 +407,7 @@ msgstr ""
 msgid "Comment Feed"
 msgstr ""
 
-#: ../../iftheme/sitemap.php:19 ../../iftheme/inc/theme-options.php:306
+#: ../../iftheme/sitemap.php:19 ../../iftheme/inc/theme-options.php:319
 msgid "Categories"
 msgstr ""
 
@@ -514,95 +522,121 @@ msgid "Country homepage"
 msgstr ""
 
 #: ../../iftheme/inc/theme-options.php:73
+msgid "Special settings"
+msgstr ""
+
+#: ../../iftheme/inc/theme-options.php:74
+msgid "Display header's menu pages"
+msgstr ""
+
+#: ../../iftheme/inc/theme-options.php:75
+msgid "Use wysija theme form"
+msgstr ""
+
+#: ../../iftheme/inc/theme-options.php:78
 msgid "Social sites on the web"
 msgstr ""
 
-#: ../../iftheme/inc/theme-options.php:79
+#: ../../iftheme/inc/theme-options.php:84
 msgid "Background frame"
 msgstr ""
 
-#: ../../iftheme/inc/theme-options.php:85
+#: ../../iftheme/inc/theme-options.php:90
 msgid "Displayed home categories"
 msgstr ""
 
-#: ../../iftheme/inc/theme-options.php:86
+#: ../../iftheme/inc/theme-options.php:91
 msgid "Number of events for each category displayed on homepage:"
 msgstr ""
 
-#: ../../iftheme/inc/theme-options.php:87
+#: ../../iftheme/inc/theme-options.php:92
 msgid "Background image"
 msgstr ""
 
-#: ../../iftheme/inc/theme-options.php:92
+#: ../../iftheme/inc/theme-options.php:97
 msgid "Facebook Page"
 msgstr ""
 
-#: ../../iftheme/inc/theme-options.php:98
+#: ../../iftheme/inc/theme-options.php:103
 msgid "Twitter Account"
 msgstr ""
 
-#: ../../iftheme/inc/theme-options.php:99
+#: ../../iftheme/inc/theme-options.php:104
 msgid "Google Plus Page"
 msgstr ""
 
-#: ../../iftheme/inc/theme-options.php:100
+#: ../../iftheme/inc/theme-options.php:105
 msgid "Your IF TV Page"
 msgstr ""
 
-#: ../../iftheme/inc/theme-options.php:104
+#: ../../iftheme/inc/theme-options.php:109
 msgid "Country's background frame"
 msgstr ""
 
-#: ../../iftheme/inc/theme-options.php:105
+#: ../../iftheme/inc/theme-options.php:110
 msgid "Displayed country's homepage categories"
 msgstr ""
 
-#: ../../iftheme/inc/theme-options.php:106
+#: ../../iftheme/inc/theme-options.php:111
+msgid "Number of events for each category displayed on country's homepage:"
+msgstr ""
+
+#: ../../iftheme/inc/theme-options.php:112
 msgid "Country's background image"
 msgstr ""
 
-#: ../../iftheme/inc/theme-options.php:144
-#: ../../iftheme/inc/theme-options.php:145
+#: ../../iftheme/inc/theme-options.php:150
+#: ../../iftheme/inc/theme-options.php:151
 msgid "Theme Options"
 msgstr ""
 
-#: ../../iftheme/inc/theme-options.php:174
+#: ../../iftheme/inc/theme-options.php:180
 #, php-format
 msgid "Frame %s"
 msgstr ""
 
-#: ../../iftheme/inc/theme-options.php:182
+#: ../../iftheme/inc/theme-options.php:188
 msgid "Frame 1"
 msgstr ""
 
-#: ../../iftheme/inc/theme-options.php:306
+#: ../../iftheme/inc/theme-options.php:319
 msgid "You must create some child categories"
 msgstr ""
 
-#: ../../iftheme/inc/theme-options.php:346
+#: ../../iftheme/inc/theme-options.php:365
 msgid "Upload image"
 msgstr ""
 
-#: ../../iftheme/inc/theme-options.php:347
+#: ../../iftheme/inc/theme-options.php:366
 msgid "Choose your background image"
 msgstr ""
 
-#: ../../iftheme/inc/theme-options.php:350
-#: ../../iftheme/inc/theme-options.php:352
+#: ../../iftheme/inc/theme-options.php:369
+#: ../../iftheme/inc/theme-options.php:371
 msgid "Actual Image"
 msgstr ""
 
-#: ../../iftheme/inc/theme-options.php:354
+#: ../../iftheme/inc/theme-options.php:373
 msgid "No image"
 msgstr ""
 
-#: ../../iftheme/inc/theme-options.php:365
+#: ../../iftheme/inc/theme-options.php:391
+msgid "Check this box to display the header's pages menu"
+msgstr ""
+
+#: ../../iftheme/inc/theme-options.php:402
+msgid ""
+"Check this box to use and display the wysija newsletter subscription form "
+"embedded in the IF theme"
+msgstr ""
+
+#: ../../iftheme/inc/theme-options.php:408
 msgid ""
 "This section is where you can save the social sites where readers can find "
 "you on the Internet."
 msgstr ""
 
-#: ../../iftheme/inc/theme-options.php:395
+#: ../../iftheme/inc/theme-options.php:441
 #, php-format
 msgid "%s Theme Options"
 msgstr ""
@@ -971,9 +1005,7 @@ msgid "Select Partners:"
 msgstr ""
 
 #: ../../iftheme/inc/widgets/if-partners-widget.php:53
-msgid ""
-"You must create a Partner in order to use this widget: <a href=\"/wp-admin/"
-"edit.php?post_type=if_partner\">Partners</a>"
+msgid "You must create a Partner in order to use this widget:"
 msgstr ""
 
 #: ../../iftheme/inc/widgets/if-partners-widget.php:85
@@ -981,9 +1013,11 @@ msgid "Error"
 msgstr ""
 
 #: ../../iftheme/inc/widgets/if-partners-widget.php:97
-msgid ""
-"You must choose a Partner in the widget configuration: <a href=\"/wp-admin/"
-"widgets.php\">widgets</a>"
+msgid "You must choose a Partner in the widget configuration:"
+msgstr ""
+
+#: ../../iftheme/inc/widgets/if-partners-widget.php:97
+msgid "widgets"
 msgstr ""
 
 #: ../../iftheme/inc/widgets/if-world-widget.php:16
