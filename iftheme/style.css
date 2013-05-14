@@ -302,7 +302,7 @@ input.wysija-email { border: 1px solid #ababac; padding: 0; width: 150px; height
 #error404 {}
 
 #sidebar { border-top: 0 none; }
-	#sidebar aside {padding: 0; margin-bottom: 15px; width: 100%;}
+	#sidebar aside {padding: 0 0 10px; margin-bottom: 15px; width: 100%; display: inline-block;}
 	#sidebar h3 { color: #fff; background: #008ac9 url(images/bg-post-title.png) repeat left top; font-family: 'dinMed'; font-size: 18px; padding: 10px;}
 	#sidebar ul, #sidebar ul li {padding: 0; margin: 0; list-style: none none;}
 	#sidebar .ifworldlinks h3 { color: #008ac9; background: #fff url(images/bg-sidebar-h2.png) repeat left top; text-transform: uppercase;}
@@ -311,7 +311,8 @@ input.wysija-email { border: 1px solid #ababac; padding: 0; width: 150px; height
 		#sidebar .ifworldlinks ul li a {color: #fff; }
 		
 	#sidebar .widget-sidebar ul,
-	#sidebar .widget-sidebar div {padding: 10px; display: inline-block;}
+	#sidebar .widget-sidebar div {padding: 10px;}
+	#sidebar .widget-sidebar .wysija-msg {padding: 0}
 		#sidebar-search {}
 		#sidebar-nav {}
 		#sidebar-archives {}

@@ -127,7 +127,7 @@
 			start = start.replace(startYear, '');
 			thisPostStart.text(start);
 			end = end.replace(endYear, '');
-			end = !time ? end : time;
+			end = end !== start ? end : time;
 			
 			if(end !== start) thisPostEnd.text(' / '+end);
 			

@@ -104,9 +104,11 @@ global $current_user; get_currentuserinfo();
 		 		$vals['background_img_country'], get_template_directory_uri() . '/inc/images/frames/'.$vals['bg_frame_country'].'.png');
 		 }
 	  }
-	}  else {
-		echo 'body.category-1 {background-image: url('.$options['background_img'].') !important}';
-		echo 'body.category-1 .sides {background-image: url('.get_template_directory_uri() . '/inc/images/frames/'.$options['bg_frame'].'.png) !important}'; 
+	}  
+	else {
+		$aid = function_exists('icl_object_id') ? icl_object_id($options['aid'], 'category', true) : $options['aid'];
+		printf('body.category-%s {background-image: url(%s) !important}  body.category-%s .sides {background-image: url(%s) !important}',
+		   $aid, $options['background_img'], $$aid, get_template_directory_uri() . '/inc/images/frames/'.$options['bg_frame'].'.png');
 	}
 
 	?>
@@ -149,9 +151,12 @@ global $current_user; get_currentuserinfo();
 					</aside>
 				<?php endif;?>
 				
-				<aside id="header-pages-menu" class="widget">
-					<?php wp_page_menu(); /* outputs the pages menu */ ?>
-				</aside>
+				<?php $hmenupages = isset($options['theme_options_setting_hmenupage']) ? $options['theme_options_setting_hmenupage'] : 1;
+				if ($hmenupages) : //0 is NULL?>
+  				<aside id="header-pages-menu" class="widget">
+  					<?php wp_page_menu(); /* outputs the pages menu */ ?>
+  				</aside>
+  		  <?php endif;?>
 				
 				<aside id="header-search" class="widget">
 					<?php get_search_form(); /* outputs the default Wordpress search form */ ?>
@@ -163,7 +168,8 @@ global $current_user; get_currentuserinfo();
 		<div class="container for-angle">
 			<!-- div for bevel angle -->
 			<div class="right-corner"></div>
-		  <?php if(get_if_level2_categ(array('style' => 'none'))) : ?>	
+		  <?php $termlevel2 = get_if_level2_categ(true);
+		  if (!empty($termlevel2)) : ?>	
 			<?php if($multi): //MENU multi antennes ?>
 				<?php if(!is_date() && !is_404() && !is_search() && !is_page() && (!is_front_page() || !is_home())) :?>
 				  <nav id="antennes" role="navigation"><ul class="menu clearfix"><?php  if(get_if_level2_categ()) get_if_level2_categ(); ?></ul></nav><!-- /#antennes -->
@@ -172,7 +178,7 @@ global $current_user; get_currentuserinfo();
 		  <?php else : ?>
 				<nav id="antennes" role="navigation"><ul class="menu clearfix"><?php  get_if_level2_categ();?></ul></nav><!-- /#antennes -->
 			<?php endif;?>
-			<?php endif;?>
+		<?php endif;?>
 
 		</div><!--/.container.for-angle-->
 	  </header>

@@ -69,6 +69,11 @@ function iftheme_theme_options_init() {
 	}
 	// Add the section to theme options settings so we can add our fields to it.
 	//Only for admin (user 1)
+	if($current_user->ID === 1) {
+	  add_settings_section('special_setting_section', __('Special settings','iftheme'), 'special_setting_section_callback_function','theme_options');
+	  add_settings_field('theme_options_setting_header', __("Display header's menu pages",'iftheme'),'theme_options_setting_header_callback_function','theme_options','special_setting_section');
+	  add_settings_field('theme_options_wysija_embed', __("Use wysija theme form",'iftheme'),'theme_options_setting_wysija_embed_callback_function','theme_options','special_setting_section');
+  }
 	//if($current_user->ID === 1) {
 	  add_settings_section('social_setting_section', __('Social sites on the web','iftheme'), 'social_setting_section_callback_function','theme_options');
   //}
@@ -243,6 +248,8 @@ function iftheme_get_default_theme_options() {
 		'theme_options_setting_googleplus' => '',
 		'theme_options_setting_iftv' => 'http://institutfrancais.tv',
 		'theme_home_nb_events' => '5',
+		'theme_options_setting_hmenupage' => '1',
+		'theme_options_setting_wysija_embed' => '1',
 	);
 	
 	if ($pays) {
@@ -372,6 +379,30 @@ function iftheme_settings_field_background_img_country() {
 	iftheme_settings_field_background_img($pays);
 }
 
+//---------- SPECIAL settings -------------//
+//header pages menu
+function theme_options_setting_header_callback_function() {
+	$antenna = get_antenna();
+	$options = iftheme_get_theme_options();
+	$defaults = iftheme_get_default_theme_options();
+	
+  $checked = isset($options['theme_options_setting_hmenupage']) ? $options['theme_options_setting_hmenupage'] : $defaults['theme_options_setting_hmenupage'];
+?>
+	<input name="iftheme_theme_options_<?php echo $antenna;?>[theme_options_setting_hmenupage]" id="theme_options_setting_hmenupage" type="checkbox"  value="1" <?php checked( $checked, 1 ); ?> />&nbsp;<span><?php _e("Check this box to display the header's pages menu", 'iftheme');?></span>
+<?php 
+}
+//wysija form embed in theme
+function theme_options_setting_wysija_embed_callback_function() {
+	$antenna = get_antenna();
+	$options = iftheme_get_theme_options();
+	$defaults = iftheme_get_default_theme_options();
+	
+  $checked = isset($options['theme_options_setting_wysija_embed']) ? $options['theme_options_setting_wysija_embed'] : $defaults['theme_options_setting_wysija_embed'];
+?>
+	<input name="iftheme_theme_options_<?php echo $antenna;?>[theme_options_setting_wysija_embed]" id="theme_options_setting_wysija_embed" type="checkbox"  value="1" <?php checked( $checked, 1 ); ?> />&nbsp;<span><?php _e("Check this box to use and display the wysija newsletter subscription form embedded in the IF theme", 'iftheme');?></span>
+<?php 
+}
+
 // —————-Settings section callback function social networks
 function social_setting_section_callback_function() {
 	echo '<p>'.__('This section is where you can save the social sites where readers can find you on the Internet.','iftheme').'</p>';
@@ -409,7 +440,7 @@ function iftheme_theme_options_render_page() { ?>
 		<?php $theme_name = function_exists( 'wp_get_theme' ) ? wp_get_theme() : get_current_theme(); ?>
 		<h2><?php printf( __( '%s Theme Options', 'iftheme' ), $theme_name ); ?></h2>
 		<?php settings_errors(); ?>
-	<?php $opt = iftheme_get_theme_options();?>
+	<?php $opts = iftheme_get_theme_options(); ?>
 
 		<form method="post" action="options.php" enctype="multipart/form-data">
 			<?php
@@ -460,7 +491,11 @@ function iftheme_theme_options_validate( $input ) {
 	// Country Background image 
 	if ( isset( $input['background_img_country'] ) )
 		$output['background_img_country'] = $input['background_img_country'];
-	
+	//header page menu
+	$output['theme_options_setting_hmenupage'] = isset($input['theme_options_setting_hmenupage']) ? $input['theme_options_setting_hmenupage'] : 0;
+	//wysija embedded sub. form
+	$output['theme_options_setting_wysija_embed'] = isset($input['theme_options_setting_wysija_embed']) ? $input['theme_options_setting_wysija_embed'] : 0;
+
 	if ( isset( $input['theme_options_setting_facebook'] ) )
 		$output['theme_options_setting_facebook'] = $input['theme_options_setting_facebook'];
 	if ( isset( $input['theme_options_setting_twitter'] ) )

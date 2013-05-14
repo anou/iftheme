@@ -187,7 +187,7 @@ function get_if_top_categ($args=array()){
 	wp_list_categories($default_args);
 }
 //get level 2 (key=1) categories.
-function get_if_level2_categ($args = array()){
+function get_if_level2_categ($raw = false, $args = array()) {
 	
 	$default_args = array(
 		'hide_empty' => 0,
@@ -200,8 +200,17 @@ function get_if_level2_categ($args = array()){
     if(!empty($args) && is_array($args)) {
 	    $default_args = array_merge($default_args,$args);
     }
+	if (!$raw) {
+  	wp_list_categories($default_args);
+	}
+	else {
+  	$default_args = array(
+  		'hide_empty' => 0,
+  		'parent' 	 => get_current_parent_categ(),
+    );
+  	return get_terms( 'category', $default_args);
+	}
 	
-	wp_list_categories($default_args);
 }
 
 function str_lreplace($search, $replace, $subject) {
@@ -315,6 +324,7 @@ function get_cat_if_user_lang($uid){
 function get_antenna(){
 	global $current_user; get_currentuserinfo();
 	$antenna = get_cat_slug(get_cat_if_user($current_user->ID));
+	
 	return $antenna;
 }
 
@@ -759,7 +769,7 @@ function if_display_posts_on_archive_pages( $query ) {
 add_action( 'pre_get_posts', 'if_display_posts_on_archive_pages' );
 
 //get meta data of post for display on page
-function get_meta_if_post($pid=''){
+function get_meta_if_post($pid = ''){
 	global $post;
 	$pid = !$pid ? $post->ID : $pid;
 	
@@ -778,6 +788,7 @@ function get_meta_if_post($pid=''){
 
 	$end = !empty($end) ? utf8_encode(strftime('%d %b',$end)) : NULL;
 	$time = $meta['if_events_time'][0];
+	
 
 	$data['start'] = !empty($start) ? utf8_encode(strftime('%d %b',$start)) : NULL;
 	$data['end'] = !$end ? ($time ? ' / '.$time : '') : ' / '.$end;  

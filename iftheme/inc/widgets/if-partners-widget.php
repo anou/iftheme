@@ -50,7 +50,7 @@ class If_Antenna_Partners extends WP_Widget {
 				<label for="<?php echo $this->get_field_id('partnersshown'); ?>">&nbsp;<input type="radio" id="<?php echo $this->get_field_id( 'partnersshown' ); ?>" name="<?php echo $this->get_field_name( 'partnersshown' ); ?>" value="<?php echo  $o->ID;?>" <?php if($instance['partnersshown'] == $o->ID):?>checked="checked"<?php endif;?> /><?php echo $o->post_title;?></label>
 			<?php endforeach;?>
 		<?php else:?>
-			<div class="msg warning"><?php _e("You must create a Partner in order to use this widget: <a href=\"/wp-admin/edit.php?post_type=if_partner\">Partners</a>",'iftheme');?></div>
+			<div class="msg warning"><?php _e("You must create a Partner in order to use this widget:",'iftheme');?>&nbsp;<a href="<?php bloginfo('wpurl');?>/wp-admin/edit.php?post_type=if_partner"><?php _e("Partners", 'iftheme');?></a></div>
 		<?php endif;?>
 		</p>
 		
@@ -94,7 +94,7 @@ class If_Antenna_Partners extends WP_Widget {
 		<div class="partners">
             <div class="partners_container">
             <?php if(!$partners):?>
-            	<div class="msg warning"><?php _e("You must choose a Partner in the widget configuration: <a href=\"/wp-admin/widgets.php\">widgets</a>",'iftheme');?></div>
+            	<div class="msg warning"><?php _e("You must choose a Partner in the widget configuration:",'iftheme');?>&nbsp;<a href="<?php bloginfo('wpurl');?>/wp-admin/widgets.php\"><?php _e('widgets')?></a></div>
             <?php else :?>
             <?php foreach($partners as $pPart => $pInfo): 
 	            $img = wp_get_attachment_image_src( $pInfo['image_logo']['id'],'partner');

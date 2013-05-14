@@ -9,7 +9,8 @@
 ?>
 <div id="sidebar">
 			<?php  //NEWSLETTER FORM
-			if(defined('WYSIJA')) {
+  		$wysija_embedded = isset($options['theme_options_setting_wysija_embed']) ? $options['theme_options_setting_wysija_embed'] : 1;
+			if(defined('WYSIJA') && $wysija_embedded) {
 				$modelList = &WYSIJA::get("list","model");
 				$arrayOfMailingLists = $modelList->get(false,array('is_enabled'=>1));
 				
@@ -19,8 +20,7 @@
 					$lists[] = $list['list_id'];
 					$names[$list['list_id']] = $list['name'];
 				}
-				
-				
+
 				$widgetdata = array (
 				   'widget_id' => 'wysija-nl-php-1',//form identifier important when many subscription forms on the same page
 				   'title' =>  __('Newsletter','iftheme'),//title of widget
@@ -44,10 +44,8 @@
 				if($multi && $nbMailingLists > 1){
 				   $widgetdata['autoregister'] = 'auto_register'; //the users can choose the mailing-list they want to subscribe to
 				}
-				 
+			 
 				$widgetNL = new WYSIJA_NL_Widget(0);//0 > display title; 1 > hide title
-				
-				
 				$subscriptionForm = $widgetNL->widget($widgetdata,$widgetdata);
 				 
 				echo $subscriptionForm;

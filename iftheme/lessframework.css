@@ -153,8 +153,8 @@ body .container.header {padding: 30px 10px 10px;}
 		/* overflow: hidden; */
 	}
 	
-	#sidebar aside#sidebar-calendar {width: 300px; margin: 0 auto;}
-	#sidebar aside#sidebar-newsletter { display: block;}
+	#sidebar aside#sidebar-calendar {width: 300px; margin: 0 auto; padding: 0; display: block;}
+	#sidebar aside#sidebar-newsletter, #sidebar aside#sidebar-social { display: block; padding: 0;}
 	#footer .container {width: 648px;}
 	
 	#footer .widget-footer.footer-logo {width: 128px; padding: 15px 10px; min-height: 228px; background-position: 10px 220px;}

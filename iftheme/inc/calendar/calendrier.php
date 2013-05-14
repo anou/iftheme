@@ -82,8 +82,8 @@
   */
   
   
-  $pathJ = "http://".$_SERVER['SERVER_NAME'] . "/%04s/%02s/%02s/";
-  $pathM = "http://".$_SERVER['SERVER_NAME'] . "/%04s/%02s/";
+  $pathJ = get_bloginfo('wpurl') . "/%04s/%02s/%02s/";
+  $pathM = get_bloginfo('wpurl') . "/%04s/%02s/";
   
 	if(isset($sitepress_settings['language_negotiation_type'])) { 
     //last verif before output link
@@ -92,16 +92,16 @@
     switch ($sitepress_settings['language_negotiation_type']) {
       case 1:
         $pathlang = $pathlang ? '/'.$pathlang : '';
-        $pathJ = "http://".$_SERVER['SERVER_NAME'] . $pathlang . "/%04s/%02s/%02s/";
-        $pathM = "http://".$_SERVER['SERVER_NAME'] . $pathlang . "/%04s/%02s/";
+        $pathJ = get_bloginfo('wpurl') . $pathlang . "/%04s/%02s/%02s/";
+        $pathM = get_bloginfo('wpurl') . $pathlang . "/%04s/%02s/";
       break;
       case 2:
         $pathlang = '';
       break;
       case 3:
         $pathlang = $pathlang ? '?lang='.$pathlang : '';
-        $pathJ = "http://".$_SERVER['SERVER_NAME'] . "/%04s/%02s/%02s/" . $pathlang;
-        $pathM = "http://".$_SERVER['SERVER_NAME'] . "/%04s/%02s/". $pathlang;
+        $pathJ = get_bloginfo('wpurl') . "/%04s/%02s/%02s/" . $pathlang;
+        $pathM = get_bloginfo('wpurl') . "/%04s/%02s/". $pathlang;
       break;
     }
 	}
@@ -127,7 +127,7 @@
 	$obj_cal->setFormatLienJours($pathJ);    
 	$obj_cal->setFormatLienMois($pathM);
 	
-	$obj_cal->activeAjax("ajax_calendrier","http://".$_SERVER['SERVER_NAME']."/wp-content/themes/iftheme/inc/calendar/calendrier.php");
+	$obj_cal->activeAjax("ajax_calendrier",get_bloginfo('wpurl')."/wp-content/themes/iftheme/inc/calendar/calendrier.php");
 
  	global $wpdb;
  	$curLang = isset($_POST['lang']) ? $_POST['lang'] : str_ireplace('-', '_', get_bloginfo('language'));
