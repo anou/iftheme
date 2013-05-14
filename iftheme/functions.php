@@ -179,8 +179,16 @@ add_filter('deleted_term_taxonomy', 'remove_my_category_fields');
 
 //get site language in short code
 function get_site_lang() {
-  $lg = strstr(get_bloginfo('language'), '-', TRUE);
-  
+  //to realize if the actual php version ist newer than '5.3'
+  if (strnatcmp(phpversion(),'5.3.0') >= 0) {
+      $lg = strstr(get_bloginfo('language'), '-', TRUE);
+  }
+  else {
+    $haystack = get_bloginfo('language');
+    $needle = '-';
+    $result = substr($haystack, 0, strpos($haystack, $needle)); // $result = php
+  }
+
   $lg = $lg ? $lg : 'fr'; //if nothing is returned best to return at least 'fr'. We're assuming that default language is french...
 
   return $lg;
