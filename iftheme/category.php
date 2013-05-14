@@ -120,7 +120,7 @@
       			   $raw_data = get_meta_raw_if_post($pid);
       			?>
       			<script type="text/javascript">
-      			  var lang = !icl_lang ? bInfo['bLang'] : icl_lang;
+      			  var lang = (typeof(icl_lang) != "undefined" && icl_lang !== null) ? icl_lang : bInfo['bLang'].substr(0,2); //TODO: check if bInfo['bLang'] is construct like this xx-XX...
       			  moment.lang(lang);
       			  
       			  var startYear = new Date(<?php echo $raw_data['start'];?>*1000).getFullYear();
@@ -202,7 +202,7 @@
 			   $raw_data = get_meta_raw_if_post($pid);
 			?>
 			<script type="text/javascript">
-			  var lang = !icl_lang ? bInfo['bLang'] : icl_lang;
+			  var lang = (typeof(icl_lang) != "undefined" && icl_lang !== null) ? icl_lang : bInfo['bLang'].substr(0,2); //TODO: check if bInfo['bLang'] is construct like this xx-XX...
 			  moment.lang(lang);
 			  
 			  var startYear = new Date(<?php echo $raw_data['start'];?>*1000).getFullYear();

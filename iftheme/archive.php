@@ -20,7 +20,7 @@
 		<?php endif; ?>
 	</h1>
 	<script type="text/javascript">
-	  var lang = !icl_lang ? bInfo['bLang'] : icl_lang;	  
+	  var lang = (typeof(icl_lang) != "undefined" && icl_lang !== null) ? icl_lang : bInfo['bLang'].substr(0,2); //TODO: check if bInfo['bLang'] is construct like this xx-XX...
 	  moment.lang(lang);
 
     var titleDate = jQuery('#titledate').text();
