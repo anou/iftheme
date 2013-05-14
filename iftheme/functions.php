@@ -37,6 +37,24 @@ function if_init() {
 }
 add_action('init', 'if_init');
 
+/////////////////ERROR MESSAGE IF NO CATEG FOR USER ////////////////
+add_action( 'admin_notices', 'iftheme_categtouser_error_notice' );
+function iftheme_categtouser_error_notice($raw = false){
+  global $current_screen;
+  global $current_user; get_currentuserinfo();
+  $usercat = get_cat_if_user($current_user->ID);
+  
+  if ( $current_screen->base == 'appearance_page_theme_options' && !$usercat ) {
+    if(!$raw) {
+      echo '<div class="error"><p>';
+      printf( __('Warning - You must assign a category to the current user <a href="%2$s/wp-admin/users.php"><b>%1$s</b>!</a>', 'iftheme'), $current_user->data->display_name, get_bloginfo('wpurl') );
+      echo '</p></div>';
+    }
+    
+    return 'user-categ-error';
+
+  }
+}
 
 /**
  * Tell WordPress to run iftheme_setup() when the 'after_setup_theme' hook is run.
@@ -537,6 +555,12 @@ function load_custom_wp_admin_style(){
         wp_enqueue_style( 'custom_wp_admin_css' );
         wp_register_script( 'custom_wp_admin_js', get_bloginfo('stylesheet_directory') . '/inc/if-admin-script.js', false, '1.0.0' );
         wp_enqueue_script( 'custom_wp_admin_js' );
+        
+        $test_user_categ = iftheme_categtouser_error_notice(true);
+        if($test_user_categ){ 
+          $params = array('id' => 'submit');
+          wp_localize_script( 'custom_wp_admin_js', 'ifAdmin', $params );
+        }
 }
 add_action('admin_enqueue_scripts', 'load_custom_wp_admin_style');
 

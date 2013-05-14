@@ -293,7 +293,7 @@ nav.oldernewer {}
 
 #searchform .search-container input.type-text,
 input.wysija-email { border: 1px solid #ababac; padding: 0; width: 150px; height: 20px; /* text-transform: uppercase; */ color: #008ac9; font-family: 'dinMed',sans-serif; font-size: 12px;}
-#searchsubmit {margin: 0 0 0 5px; padding: 2px; float: none;}
+#searchsubmit {margin: 0 0 0 5px; padding:3px 2px 2px; border: 1px solid #58585A; float: none;}
 
 .author {}
 #recent-author-posts {}
@@ -325,7 +325,7 @@ input.wysija-email { border: 1px solid #ababac; padding: 0; width: 150px; height
 	  .wysija-p-email {margin: 0; float: left;}
 	  input.wysija-email {width: 268px; padding-left: 10px}
 	  p.wysija-instruct { color: #58585A; font-family: 'dinMed',sans-serif; font-size: 16px; margin: 0; background: transparent url(images/fleche-nl.png) no-repeat right bottom; padding: 0 20px 0 0; position: relative; top: -30px; float: right;}
-     .widget_wysija .wysija-submit {margin: 0; padding: 2px; float: right;}
+     .widget_wysija .wysija-submit {margin: 0; padding:3px 2px 2px; border: 1px solid #58585A; float: right;}
      
      .wysija_lists {float: left; width: 100%; margin: 10px 0 0;}
      p.wysija_list_check {margin: 0;}
@@ -502,13 +502,9 @@ input.wysija-email { border: 1px solid #ababac; padding: 0; width: 150px; height
 	text-shadow:none;
 }
 /*PARTNERS*/
-body #sidebar .widget-sidebar .partners,
+body #sidebar .widget-sidebar .partners {padding: 0; margin-bottom: -10px; border: 1px solid #D3D3D3;}
 body #sidebar .widget-sidebar .partners div {padding: 0;}
-.partners_container {
-    width:297px;
-    height:150px;
-    border: 1px solid #D3D3D3;
-}
+.partners_container { height:150px; }
 .partners_container div {
     width:300px;
     height:150px;

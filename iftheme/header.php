@@ -108,7 +108,7 @@ global $current_user; get_currentuserinfo();
 	else {
 		$aid = function_exists('icl_object_id') ? icl_object_id($options['aid'], 'category', true) : $options['aid'];
 		printf('body.category-%s {background-image: url(%s) !important}  body.category-%s .sides {background-image: url(%s) !important}',
-		   $aid, $options['background_img'], $$aid, get_template_directory_uri() . '/inc/images/frames/'.$options['bg_frame'].'.png');
+		   $aid, $options['background_img'], $aid, get_template_directory_uri() . '/inc/images/frames/'.$options['bg_frame'].'.png');
 	}
 
 	?>
@@ -150,7 +150,6 @@ global $current_user; get_currentuserinfo();
 						<?php languages_list_header(); /* outputs the language switcher */ ?>
 					</aside>
 				<?php endif;?>
-				
 				<?php $hmenupages = isset($options['theme_options_setting_hmenupage']) ? $options['theme_options_setting_hmenupage'] : 1;
 				if ($hmenupages) : //0 is NULL?>
   				<aside id="header-pages-menu" class="widget">

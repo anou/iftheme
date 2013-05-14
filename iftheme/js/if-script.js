@@ -245,7 +245,7 @@ $(selectMenu).change(function() {
 		});
 		
 */
-	} else { $('input.wysija-email').css({ width: '233px'}); }
+	} else { $('input.wysija-email').css({ width: '220px'}); }
     
     //homepages
   if(windowWidth > 767){

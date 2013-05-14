@@ -81,7 +81,6 @@
     - 3 == mysite.com?lang=fr
   */
   
-  
   $pathJ = get_bloginfo('wpurl') . "/%04s/%02s/%02s/";
   $pathM = get_bloginfo('wpurl') . "/%04s/%02s/";
   
