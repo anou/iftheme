@@ -1527,8 +1527,8 @@ function iftheme_content_nav( $html_id ) {
 	if ( $wp_query->max_num_pages > 1 ) : ?>
 		<nav id="<?php echo $html_id; ?>" class="navigation" role="navigation">
 			<h3 class="assistive-text"><?php _e( 'Post navigation', 'twentytwelve' ); ?></h3>
-			<div class="nav-next alignleft"><span class="meta-nav">&larr;</span> <?php previous_posts_link( __( 'Previous', 'iftheme' ) ); ?></div>
-			<div class="nav-previous alignright"><?php next_posts_link( __( 'Next', 'iftheme' ) ); ?> <span class="meta-nav">&rarr;</span></div>
+			<div class="nav-next alignleft"><?php previous_posts_link( __( '<span class="meta-nav">&larr;</span> Previous', 'iftheme' ) ); ?></div>
+			<div class="nav-previous alignright"><?php next_posts_link( __( 'Next <span class="meta-nav">&rarr;</span>', 'iftheme' ) ); ?></div>
 		</nav><!-- #<?php echo $html_id; ?> .navigation -->
 	<?php endif;
 }
