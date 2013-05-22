@@ -68,11 +68,13 @@ function iftheme_theme_options_init() {
 		);
 	}
 	// Add the section to theme options settings so we can add our fields to it.
-	//Only for admin (user 1)
+	//Only for admin (user 1) -- SPECIAL SETTINGS
 	if($current_user->ID === 1) {
 	  add_settings_section('special_setting_section', __('Special settings','iftheme'), 'special_setting_section_callback_function','theme_options');
 	  add_settings_field('theme_options_setting_header', __("Display header's menu pages",'iftheme'),'theme_options_setting_header_callback_function','theme_options','special_setting_section');
 	  add_settings_field('theme_options_wysija_embed', __("Use wysija theme form",'iftheme'),'theme_options_setting_wysija_embed_callback_function','theme_options','special_setting_section');
+	  
+	  //TODO: ADD choice of bg color : array(#ADA59A,#ECB813,#FF4B00,#BAC900,#595959,#D2204C,#55BCBE,#3E647E)
   }
 	//if($current_user->ID === 1) {
 	  add_settings_section('social_setting_section', __('Social sites on the web','iftheme'), 'social_setting_section_callback_function','theme_options');
@@ -213,16 +215,18 @@ function iftheme_home_categories($pays=NULL) {
 	  $level = get_level($category->cat_ID);
 	  //get only second level categories
 	  //if($level == 1){
-    	$home_categ_options[$category->term_id] = array(
-    		'value' => function_exists('icl_object_id') ? icl_object_id($category->term_id, 'category', TRUE, $default_lg) : $category->term_id,
-    		'label' => $category->name,
-    		'antenne' => $pays ? get_cat_name(get_root_category($category->term_id)) : NULL,
-    		'level' => $level,
-    	);
-    	
-    	if($pays) $root_categ[get_root_category($category->term_id)] = get_root_category($category->term_id);
+	  //get all except the level 0 ones
+	    if($category->parent){
+      	$home_categ_options[$category->term_id] = array(
+      		'value' => function_exists('icl_object_id') ? icl_object_id($category->term_id, 'category', TRUE, $default_lg) : $category->term_id,
+      		'label' => $category->name,
+      		'antenne' => $pays ? get_cat_name(get_root_category($category->term_id)) : NULL,
+      		'level' => $level,
+      	);
+      	
+      	if($pays) $root_categ[get_root_category($category->term_id)] = get_root_category($category->term_id);
       }
-    //}
+    }
     
     if($pays) foreach($root_categ as $k => $id){ unset($home_categ_options[$k]); }
     

@@ -422,7 +422,7 @@ function test(){
 }
 // Add specific CSS class by filter
 function iftheme_body_class($classes) {
-	$cid = get_current_antenna();
+	$cid = get_current_parent_categ();
 	$class = 'category-'. $cid .' black';
 	
 	// add $class to the $classes array
@@ -468,9 +468,8 @@ function get_level($cid, $level = 0) {
 function get_current_antenna(){
 	global $sitepress;
 	$default_lg = isset($sitepress) ? $sitepress->get_default_language() : 'fr';//assuming that 'fr' should be default language
-
 	$current_id = function_exists('icl_object_id') ? icl_object_id(1, 'category', true) : 1;//default category
-	
+
 	if(is_category()) {
 		//get root category (antenna)
 	  $current_id = defined('ICL_LANGUAGE_CODE') ? icl_object_id(get_root_category(get_query_var('cat')),'category',true,$default_lg) : get_root_category(get_query_var('cat'));

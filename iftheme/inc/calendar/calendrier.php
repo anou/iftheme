@@ -208,7 +208,7 @@
   }
   
 	//add events to the calendar
-	if($events){
+	if(isset($events) && $events){
 		foreach($events as $k => $e){
 		  foreach($e as $day => $t){
 			$obj_cal->ajouteEvenement($day,$t.'<br />');

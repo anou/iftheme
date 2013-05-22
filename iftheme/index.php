@@ -14,7 +14,7 @@
 */
 
   	  $antenna = get_current_parent_categ();
-	    $original = function_exists('icl_object_id') ? icl_object_id($currenta, 'category', true, $default_lg) : $antenna;
+	    $original = function_exists('icl_object_id') ? icl_object_id($antenna, 'category', true, $default_lg) : $antenna;
 
   		$args_slider = array(
   			'post_type'=> 'if_slider',
