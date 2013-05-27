@@ -77,7 +77,7 @@ function iftheme_theme_options_init() {
 	  //TODO: ADD choice of bg color : array(#ADA59A,#ECB813,#FF4B00,#BAC900,#595959,#D2204C,#55BCBE,#3E647E)
   }
 	//if($current_user->ID === 1) {
-	  add_settings_section('social_setting_section', __('Social sites on the web','iftheme'), 'social_setting_section_callback_function','theme_options');
+  add_settings_section('social_setting_section', __('Social sites on the web','iftheme'), 'social_setting_section_callback_function','theme_options');
   //}
 	
 	// Register our individual settings fields
@@ -384,6 +384,10 @@ function iftheme_settings_field_background_img_country() {
 }
 
 //---------- SPECIAL settings -------------//
+// —————-Settings section callback function special settings
+function special_setting_section_callback_function() {
+	echo '<p><em>'.__('In this section you can custom some functionalities.','iftheme').'</em></p>';
+}
 //header pages menu
 function theme_options_setting_header_callback_function() {
 	$antenna = get_antenna();
@@ -409,7 +413,7 @@ function theme_options_setting_wysija_embed_callback_function() {
 
 // —————-Settings section callback function social networks
 function social_setting_section_callback_function() {
-	echo '<p>'.__('This section is where you can save the social sites where readers can find you on the Internet.','iftheme').'</p>';
+	echo '<p><em>'.__('This section is where you can save the social sites where readers can find you on the Internet.','iftheme').'</em></p>';
 }
 function theme_options_setting_facebook_callback_function() {
 	$antenna = get_antenna();
