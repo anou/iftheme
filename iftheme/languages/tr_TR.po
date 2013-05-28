@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Institut Français theme\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-05-25 15:53+0100\n"
-"PO-Revision-Date: 2013-05-25 15:53+0100\n"
+"POT-Creation-Date: 2013-05-28 09:56+0100\n"
+"PO-Revision-Date: 2013-05-28 10:52+0100\n"
 "Last-Translator: David Thomas <anou@smol.org>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -163,6 +163,8 @@ msgid ""
 "Warning - You must assign a category to the current user <a href=\"%2$s/wp-"
 "admin/users.php\"><b>%1$s</b>!</a>"
 msgstr ""
+"Uyarı - Mevcut kullanıcı için bir kategori seçmeniz gerekmektedir <a href="
+"\"%2$s/wp-admin/users.php\"><b>%1$s</b>!</a>"
 
 #: ../../iftheme/functions.php:401
 msgid "You must assign a category to this user : "
@@ -329,7 +331,7 @@ msgstr "Okumaya devam et"
 
 #: ../../iftheme/functions.php:1528
 msgid "Post navigation"
-msgstr ""
+msgstr "Post navigation"
 
 #: ../../iftheme/functions.php:1529
 msgid "<span class=\"meta-nav\">&larr;</span> Previous"
@@ -537,11 +539,11 @@ msgstr "Ülke anasayfası"
 
 #: ../../iftheme/inc/theme-options.php:73
 msgid "Special settings"
-msgstr ""
+msgstr "Özel ayarları"
 
 #: ../../iftheme/inc/theme-options.php:74
 msgid "Display header's menu pages"
-msgstr ""
+msgstr "Ekran başlığının menü sayfaları"
 
 #: ../../iftheme/inc/theme-options.php:75
 msgid "Use wysija theme form"
@@ -636,11 +638,11 @@ msgstr "Fotoğraf yok"
 
 #: ../../iftheme/inc/theme-options.php:389
 msgid "In this section you can custom some functionalities."
-msgstr ""
+msgstr "Bu bölümde bazı özel işlevleri yapabilirsiniz"
 
 #: ../../iftheme/inc/theme-options.php:399
 msgid "Check this box to display the header's pages menu"
-msgstr ""
+msgstr "Başlık sayfaları menüsünü görüntülemek için bu kutuyu işaretleyin"
 
 #: ../../iftheme/inc/theme-options.php:410
 msgid ""
@@ -1055,7 +1057,7 @@ msgstr "Widget yapılandırması için bir Destekçi seçmelisiniz:"
 
 #: ../../iftheme/inc/widgets/if-partners-widget.php:97
 msgid "widgets"
-msgstr ""
+msgstr "widgets"
 
 #: ../../iftheme/inc/widgets/if-world-widget.php:16
 msgid "Displays a list of links related to the Institut Français"
