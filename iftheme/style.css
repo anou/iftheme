@@ -409,6 +409,8 @@ input.wysija-email { border: 1px solid #ababac; padding: 0; width: 150px; height
 #calendrier td.actif{}
 
 #calendrier td.event{background-color:#fff;}
+#calendrier td.event:hover {background-color: #008ac9; }
+#calendrier td.event:hover a {color:#fff; }
 #calendrier_events{
 	font-size:12px;
 	background-color:#fff;
