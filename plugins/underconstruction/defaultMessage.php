@@ -58,7 +58,7 @@ function displayComingSoonPage($title, $headerText, $bodyText) {
       		<div id="content"><span class="none">UNDER CONSTRUCTION PAGE</span>
       			<div class="no-results bxshadow">
       				<h1><?php echo $headerText; ?></h1>
-      				<p><?php echo nl2br($bodyText);?></p>
+      				<p><?php echo html_entity_decode(nl2br($bodyText)); ?></p>
       			</div><!--noResults-->
       	</div><!--#content-->
       	

@@ -250,7 +250,7 @@ function iftheme_get_default_theme_options() {
 		'theme_options_setting_facebook' => '',
 		'theme_options_setting_twitter' => '',
 		'theme_options_setting_googleplus' => '',
-		'theme_options_setting_iftv' => 'http://institutfrancais.tv',
+		'theme_options_setting_iftv' => 'http://www.institutfrancais.tv',
 		'theme_home_nb_events' => '5',
 		'theme_options_setting_hmenupage' => '1',
 		'theme_options_setting_wysija_embed' => '1',
@@ -434,7 +434,7 @@ function theme_options_setting_iftv_callback_function() {
 	$antenna = get_antenna();
 	$options = iftheme_get_theme_options();
 	$defaults = iftheme_get_default_theme_options();
-	$value = (isset($options['theme_options_setting_iftv']) && !empty($options['theme_options_setting_iftv'])) ? $options['theme_options_setting_iftv'] : $defaults['theme_options_setting_iftv'];
+	$value = isset($options['theme_options_setting_iftv']) ? $options['theme_options_setting_iftv'] : '';
 	?>
 	<input name="iftheme_theme_options_<?php echo $antenna;?>[theme_options_setting_iftv]" id="theme_options_setting_iftv" type="text" value="<?php echo $value;?>" />
 <?php }
@@ -510,7 +510,8 @@ function iftheme_theme_options_validate( $input ) {
 		$output['theme_options_setting_twitter'] = $input['theme_options_setting_twitter'];
 	if ( isset( $input['theme_options_setting_googleplus'] ) )
 		$output['theme_options_setting_googleplus'] = $input['theme_options_setting_googleplus'];
-	if ( isset( $input['theme_options_setting_iftv'] ) && strlen($input['theme_options_setting_iftv']) )
+	//if ( isset( $input['theme_options_setting_iftv'] ) && strlen($input['theme_options_setting_iftv']) )
+	if ( isset( $input['theme_options_setting_iftv'] ))
 		$output['theme_options_setting_iftv'] = $input['theme_options_setting_iftv'];
 		
 	return apply_filters( 'iftheme_theme_options_validate', $output, $input, $defaults );
