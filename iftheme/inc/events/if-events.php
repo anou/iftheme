@@ -387,7 +387,7 @@ function events_scripts() {
 		
 		wp_enqueue_script('jquery-validate', get_bloginfo('template_url') . '/inc/events/js/jquery.validate.min.js', array('jquery'), '1.8.1',true);
     
-    wp_enqueue_script('custom_script', get_bloginfo('template_url').'/inc/events/js/ifevents-admin.js', array('jquery'));
+    wp_enqueue_script('custom_script', get_bloginfo('template_url').'/inc/events/js/ifevents-admin.js', array('jquery-validate'));
     wp_localize_script( 'custom_script', 'objectL10n', array(
   			'place' => __("You must tell where this event takes place.", 'iftheme'),
   			'mandatory' => __("Mandatory field", 'iftheme'),

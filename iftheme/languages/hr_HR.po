@@ -2,9 +2,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Institut Français theme\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-05-25 14:22+0100\n"
-"PO-Revision-Date: 2013-05-25 19:32+0100\n"
-"Last-Translator: Tomislav Marcinkovic <tomislav@marcinkovic.com>\n"
+"POT-Creation-Date: 2013-06-03 11:43+0100\n"
+"PO-Revision-Date: 2013-06-03 11:44+0100\n"
+"Last-Translator: David Thomas <anou@smol.org>\n"
 "Language-Team: smol <team@smol.org>\n"
 "Language: fr_FR\n"
 "MIME-Version: 1.0\n"
@@ -13,7 +13,7 @@ msgstr ""
 "X-Poedit-KeywordsList: __;_e;gettext;gettext_noop\n"
 "X-Poedit-Basepath: .\n"
 "X-Poedit-SourceCharset: UTF-8\n"
-"X-Generator: Poedit 1.5.4\n"
+"X-Generator: Poedit 1.5.5\n"
 "X-Poedit-SearchPath-0: ../../iftheme\n"
 
 #: ../../iftheme/404.php:5
@@ -81,6 +81,10 @@ msgstr "Trenutno bez članaka i/ili nije odabrana početna stranica kategorije"
 #: ../../iftheme/category.php:178
 msgid "Agenda"
 msgstr "Agenda"
+
+#: ../../iftheme/category.php:245
+msgid "Archives"
+msgstr ""
 
 #: ../../iftheme/comments.php:23
 msgid "Your comment is awaiting approval."
@@ -164,15 +168,15 @@ msgstr ""
 "Upozorenje - Morate dodjeliti kategoriju trenutnom korisniku <a href=\"%2$s/"
 "wp-admin/users.php\"><b>%1$s</b>!</a>"
 
-#: ../../iftheme/functions.php:401
+#: ../../iftheme/functions.php:402
 msgid "You must assign a category to this user : "
 msgstr "Morate korisniku dodjeliti kategoriju:"
 
-#: ../../iftheme/functions.php:624 ../../iftheme/inc/theme-classes.php:39
+#: ../../iftheme/functions.php:625 ../../iftheme/inc/theme-classes.php:39
 msgid "Image"
 msgstr "Slika"
 
-#: ../../iftheme/functions.php:890
+#: ../../iftheme/functions.php:882
 #, php-format
 msgid ""
 "Your content <em>Partner</em> is empty. <a href=\"/wp-admin/post.php?post="
@@ -181,162 +185,162 @@ msgstr ""
 "Sadržaj <em>Partner</em> je prazan. <a href=\"/wp-admin/post.php?post="
 "%s&action=edit\"> >Uredi</a>"
 
-#: ../../iftheme/functions.php:933
+#: ../../iftheme/functions.php:925
 msgid "You must fill in an email !"
 msgstr "Morate upisati email adresu!"
 
-#: ../../iftheme/functions.php:933
+#: ../../iftheme/functions.php:925
 msgid "Edit this post"
 msgstr "Izmjeni članak"
 
-#: ../../iftheme/functions.php:940
+#: ../../iftheme/functions.php:932
 msgid "The <b>Last name</b> field is required."
 msgstr "Polje <b>Prezime</b> je obavezno."
 
-#: ../../iftheme/functions.php:941
+#: ../../iftheme/functions.php:933
 msgid "The <b>First name</b> field is required."
 msgstr "Polje <b>Ime</b> je obavezno."
 
-#: ../../iftheme/functions.php:942
+#: ../../iftheme/functions.php:934
 msgid "The <b>E-mail</b>  field is required."
 msgstr "Polje <b>Email</b> je obavezno."
 
-#: ../../iftheme/functions.php:943
+#: ../../iftheme/functions.php:935
 msgid "The <b>E-mail name</b> field is invalid."
 msgstr "<b>Email ime</b> polje je neispravno ."
 
-#: ../../iftheme/functions.php:946
+#: ../../iftheme/functions.php:938
 msgid "Invalid verification code."
 msgstr "Pogrešan verifikacijski kod."
 
-#: ../../iftheme/functions.php:950
+#: ../../iftheme/functions.php:942
 msgid "Subcription request to: "
 msgstr "Zahtjev za pretplatu:"
 
-#: ../../iftheme/functions.php:952
+#: ../../iftheme/functions.php:944
 msgid "Subcription from IF Website"
 msgstr "Pretplata sa IF webstranice"
 
-#: ../../iftheme/functions.php:953
+#: ../../iftheme/functions.php:945
 msgid "Your request has been sent."
 msgstr "Vaš zahtjev je poslan."
 
-#: ../../iftheme/functions.php:969
+#: ../../iftheme/functions.php:961
 msgid "Last name"
 msgstr "Prezime"
 
-#: ../../iftheme/functions.php:970
+#: ../../iftheme/functions.php:962
 msgid "First name"
 msgstr "Ime"
 
-#: ../../iftheme/functions.php:971
+#: ../../iftheme/functions.php:963
 msgid "E-mail"
 msgstr "Email"
 
-#: ../../iftheme/functions.php:972
+#: ../../iftheme/functions.php:964
 msgid "Copy verification code"
 msgstr "Kopirati verifikacijski kod"
 
-#: ../../iftheme/functions.php:974
+#: ../../iftheme/functions.php:966
 msgid "Submit"
 msgstr "Pošalji"
 
-#: ../../iftheme/functions.php:991
+#: ../../iftheme/functions.php:983
 msgid "Sliders"
 msgstr "Diaporamas"
 
-#: ../../iftheme/functions.php:992
+#: ../../iftheme/functions.php:984
 msgid "Slider"
 msgstr "Diaporama"
 
-#: ../../iftheme/functions.php:993
+#: ../../iftheme/functions.php:985
 msgid "Add new slider"
 msgstr "Dodaj novi slajder"
 
-#: ../../iftheme/functions.php:994
+#: ../../iftheme/functions.php:986
 msgid "Edit slider"
 msgstr "Uredi slajder"
 
-#: ../../iftheme/functions.php:995
+#: ../../iftheme/functions.php:987
 msgid "New slider"
 msgstr "Novi slajder"
 
-#: ../../iftheme/functions.php:996
+#: ../../iftheme/functions.php:988
 msgid "View slider"
 msgstr "Prikaži slajder"
 
-#: ../../iftheme/functions.php:997
+#: ../../iftheme/functions.php:989
 msgid "Search sliders"
 msgstr "Pretraži slajdere"
 
-#: ../../iftheme/functions.php:998
+#: ../../iftheme/functions.php:990
 msgid "No slider found"
 msgstr "Slajder nije pronađen"
 
-#: ../../iftheme/functions.php:999
+#: ../../iftheme/functions.php:991
 msgid "No sliders found in Trash"
 msgstr "Slajder nije pronađen u smeću"
 
-#: ../../iftheme/functions.php:1011
+#: ../../iftheme/functions.php:1003
 #: ../../iftheme/inc/widgets/if-partners-widget.php:53
 msgid "Partners"
 msgstr "Partneri"
 
-#: ../../iftheme/functions.php:1012
+#: ../../iftheme/functions.php:1004
 msgid "Partner"
 msgstr "Partner"
 
-#: ../../iftheme/functions.php:1013
+#: ../../iftheme/functions.php:1005
 msgid "Add new partners"
 msgstr "Dodaj nove partnere"
 
-#: ../../iftheme/functions.php:1014
+#: ../../iftheme/functions.php:1006
 msgid "Edit partner"
 msgstr "Uredi partnere"
 
-#: ../../iftheme/functions.php:1015
+#: ../../iftheme/functions.php:1007
 msgid "New partner"
 msgstr "Novi partner"
 
-#: ../../iftheme/functions.php:1016
+#: ../../iftheme/functions.php:1008
 msgid "View partner"
 msgstr "Prikaži partnere"
 
-#: ../../iftheme/functions.php:1017
+#: ../../iftheme/functions.php:1009
 msgid "Search partners"
 msgstr "Pretraži partnere"
 
-#: ../../iftheme/functions.php:1018
+#: ../../iftheme/functions.php:1010
 msgid "No partners found"
 msgstr "Nije pronađen ni jedan partner"
 
-#: ../../iftheme/functions.php:1019
+#: ../../iftheme/functions.php:1011
 msgid "No partners found in Trash"
 msgstr "Ni jedan partner nije pronađen u smeću"
 
-#: ../../iftheme/functions.php:1170
+#: ../../iftheme/functions.php:1162
 msgid "This sidebar is for all antennas only. Only the admin can configure it."
 msgstr ""
 "Ova pomoćna traka je samo za sve antene. Može je urediti samo administrator."
 
-#: ../../iftheme/functions.php:1190
+#: ../../iftheme/functions.php:1182
 #, php-format
 msgid "This sidebar is for %s only"
 msgstr "Ova pomoćna traka je samo za %s"
 
-#: ../../iftheme/functions.php:1298
+#: ../../iftheme/functions.php:1290
 msgid "Continue Reading"
 msgstr "Nastavi čitati"
 
-#: ../../iftheme/functions.php:1528
+#: ../../iftheme/functions.php:1520
 msgid "Post navigation"
 msgstr "Šetanje po člancima"
 
-#: ../../iftheme/functions.php:1529
+#: ../../iftheme/functions.php:1521
 msgid "<span class=\"meta-nav\">&larr;</span> Previous"
 msgstr "<span class=\"meta-nav\">&larr;</span> Prethodni"
 
-#: ../../iftheme/functions.php:1530
+#: ../../iftheme/functions.php:1522
 msgid "Next <span class=\"meta-nav\">&rarr;</span>"
 msgstr "Sljedeći <span class=\"meta-nav\">&rarr;</span>"
 

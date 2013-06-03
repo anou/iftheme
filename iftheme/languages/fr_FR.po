@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Institut Français theme\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-05-25 14:14+0100\n"
-"PO-Revision-Date: 2013-05-25 14:17+0100\n"
+"POT-Creation-Date: 2013-06-03 11:42+0100\n"
+"PO-Revision-Date: 2013-06-03 11:42+0100\n"
 "Last-Translator: David Thomas <anou@smol.org>\n"
 "Language-Team: smol <team@smol.org>\n"
 "Language: fr_FR\n"
@@ -85,6 +85,10 @@ msgstr ""
 #: ../../iftheme/category.php:178
 msgid "Agenda"
 msgstr "Agenda"
+
+#: ../../iftheme/category.php:245
+msgid "Archives"
+msgstr "Archives"
 
 #: ../../iftheme/comments.php:23
 msgid "Your comment is awaiting approval."
@@ -169,15 +173,15 @@ msgstr ""
 "Attention - Vous devez assigner une catégorie à l'utilisateur courant <a "
 "href=\"%2$s/wp-admin/users.php\"><b>%1$s</b>!</a>"
 
-#: ../../iftheme/functions.php:401
+#: ../../iftheme/functions.php:402
 msgid "You must assign a category to this user : "
 msgstr "Vous devez assigner une catégorie à cet utilisateur : "
 
-#: ../../iftheme/functions.php:624 ../../iftheme/inc/theme-classes.php:39
+#: ../../iftheme/functions.php:625 ../../iftheme/inc/theme-classes.php:39
 msgid "Image"
 msgstr "Image"
 
-#: ../../iftheme/functions.php:890
+#: ../../iftheme/functions.php:882
 #, php-format
 msgid ""
 "Your content <em>Partner</em> is empty. <a href=\"/wp-admin/post.php?post="
@@ -186,163 +190,163 @@ msgstr ""
 "Votre contenu <em>Partenaire</em> est vide. <a href=\"/wp-admin/post.php?"
 "post=%s&action=edit\"> >Modifier</a>"
 
-#: ../../iftheme/functions.php:933
+#: ../../iftheme/functions.php:925
 msgid "You must fill in an email !"
 msgstr "Vous devez renseigner votre courriel !"
 
-#: ../../iftheme/functions.php:933
+#: ../../iftheme/functions.php:925
 msgid "Edit this post"
 msgstr "Modifier cet article"
 
-#: ../../iftheme/functions.php:940
+#: ../../iftheme/functions.php:932
 msgid "The <b>Last name</b> field is required."
 msgstr "Le champ <b>Nom</b> est obligatoire."
 
-#: ../../iftheme/functions.php:941
+#: ../../iftheme/functions.php:933
 msgid "The <b>First name</b> field is required."
 msgstr "Le champ <b>Prénom</b> est obligatoire."
 
-#: ../../iftheme/functions.php:942
+#: ../../iftheme/functions.php:934
 msgid "The <b>E-mail</b>  field is required."
 msgstr "Le champ <b>Courriel</b> est obligatoire."
 
-#: ../../iftheme/functions.php:943
+#: ../../iftheme/functions.php:935
 msgid "The <b>E-mail name</b> field is invalid."
 msgstr "Vérifiez le champ <b>Courriel</b>."
 
-#: ../../iftheme/functions.php:946
+#: ../../iftheme/functions.php:938
 msgid "Invalid verification code."
 msgstr "Le code de vérification est incorrect"
 
-#: ../../iftheme/functions.php:950
+#: ../../iftheme/functions.php:942
 msgid "Subcription request to: "
 msgstr "Demande d'inscription à :"
 
-#: ../../iftheme/functions.php:952
+#: ../../iftheme/functions.php:944
 msgid "Subcription from IF Website"
 msgstr "Inscription depuis le site web IF"
 
-#: ../../iftheme/functions.php:953
+#: ../../iftheme/functions.php:945
 msgid "Your request has been sent."
 msgstr "Votre demande a été envoyé."
 
-#: ../../iftheme/functions.php:969
+#: ../../iftheme/functions.php:961
 msgid "Last name"
 msgstr "Nom"
 
-#: ../../iftheme/functions.php:970
+#: ../../iftheme/functions.php:962
 msgid "First name"
 msgstr "Prénom"
 
-#: ../../iftheme/functions.php:971
+#: ../../iftheme/functions.php:963
 msgid "E-mail"
 msgstr "Courriel"
 
-#: ../../iftheme/functions.php:972
+#: ../../iftheme/functions.php:964
 msgid "Copy verification code"
 msgstr "Recopier le code de vérification"
 
-#: ../../iftheme/functions.php:974
+#: ../../iftheme/functions.php:966
 msgid "Submit"
 msgstr "Soumettre"
 
-#: ../../iftheme/functions.php:991
+#: ../../iftheme/functions.php:983
 msgid "Sliders"
 msgstr "Diaporamas"
 
-#: ../../iftheme/functions.php:992
+#: ../../iftheme/functions.php:984
 msgid "Slider"
 msgstr "Diaporama"
 
-#: ../../iftheme/functions.php:993
+#: ../../iftheme/functions.php:985
 msgid "Add new slider"
 msgstr "Ajouter un diaporama"
 
-#: ../../iftheme/functions.php:994
+#: ../../iftheme/functions.php:986
 msgid "Edit slider"
 msgstr "Modifier le diaporama"
 
-#: ../../iftheme/functions.php:995
+#: ../../iftheme/functions.php:987
 msgid "New slider"
 msgstr "Nouveau diaporama"
 
-#: ../../iftheme/functions.php:996
+#: ../../iftheme/functions.php:988
 msgid "View slider"
 msgstr "Voir le diaporama"
 
-#: ../../iftheme/functions.php:997
+#: ../../iftheme/functions.php:989
 msgid "Search sliders"
 msgstr "Rechercher des diaporamas"
 
-#: ../../iftheme/functions.php:998
+#: ../../iftheme/functions.php:990
 msgid "No slider found"
 msgstr "Aucun diaporama trouvé"
 
-#: ../../iftheme/functions.php:999
+#: ../../iftheme/functions.php:991
 msgid "No sliders found in Trash"
 msgstr "Aucun diaporama trouvé dans la corbeille"
 
-#: ../../iftheme/functions.php:1011
+#: ../../iftheme/functions.php:1003
 #: ../../iftheme/inc/widgets/if-partners-widget.php:53
 msgid "Partners"
 msgstr "Partenaires"
 
-#: ../../iftheme/functions.php:1012
+#: ../../iftheme/functions.php:1004
 msgid "Partner"
 msgstr "Partenaire"
 
-#: ../../iftheme/functions.php:1013
+#: ../../iftheme/functions.php:1005
 msgid "Add new partners"
 msgstr "Ajouter un partenaire"
 
-#: ../../iftheme/functions.php:1014
+#: ../../iftheme/functions.php:1006
 msgid "Edit partner"
 msgstr "Modifier le partenaire"
 
-#: ../../iftheme/functions.php:1015
+#: ../../iftheme/functions.php:1007
 msgid "New partner"
 msgstr "Nouveau partenaire"
 
-#: ../../iftheme/functions.php:1016
+#: ../../iftheme/functions.php:1008
 msgid "View partner"
 msgstr "Voir le partenaire"
 
-#: ../../iftheme/functions.php:1017
+#: ../../iftheme/functions.php:1009
 msgid "Search partners"
 msgstr "Rechercher des partenaires"
 
-#: ../../iftheme/functions.php:1018
+#: ../../iftheme/functions.php:1010
 msgid "No partners found"
 msgstr "Aucun partenaire trouvé"
 
-#: ../../iftheme/functions.php:1019
+#: ../../iftheme/functions.php:1011
 msgid "No partners found in Trash"
 msgstr "Aucun partenaire trouvé dans la corbeille"
 
-#: ../../iftheme/functions.php:1170
+#: ../../iftheme/functions.php:1162
 msgid "This sidebar is for all antennas only. Only the admin can configure it."
 msgstr ""
 "Cette sidebar est visible pour toutes les antennes. Seul l'administrateur "
 "peut la configurer."
 
-#: ../../iftheme/functions.php:1190
+#: ../../iftheme/functions.php:1182
 #, php-format
 msgid "This sidebar is for %s only"
 msgstr "Cette sidebar est pour %s seulement"
 
-#: ../../iftheme/functions.php:1298
+#: ../../iftheme/functions.php:1290
 msgid "Continue Reading"
 msgstr "Lire la suite"
 
-#: ../../iftheme/functions.php:1528
+#: ../../iftheme/functions.php:1520
 msgid "Post navigation"
 msgstr "Navigation transversale"
 
-#: ../../iftheme/functions.php:1529
+#: ../../iftheme/functions.php:1521
 msgid "<span class=\"meta-nav\">&larr;</span> Previous"
 msgstr "<span class=\"meta-nav\">&larr;</span> Précédent"
 
-#: ../../iftheme/functions.php:1530
+#: ../../iftheme/functions.php:1522
 msgid "Next <span class=\"meta-nav\">&rarr;</span>"
 msgstr "Suivant <span class=\"meta-nav\">&rarr;</span>"
 

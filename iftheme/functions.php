@@ -318,7 +318,8 @@ function get_cat_slug($cat_id) {
 	$cat_id = (int) $cat_id;	
 	$category = &get_category($cat_id);
 
-	return property_exists($category,'slug') ? $category->slug : '';
+	  if(is_object($category))
+      return property_exists($category,'slug') ? $category->slug : '';
 }
 
 //Prepare vars for IF category vs antenna system
@@ -468,6 +469,7 @@ function get_level($cid, $level = 0) {
 function get_current_antenna(){
 	global $sitepress;
 	$default_lg = isset($sitepress) ? $sitepress->get_default_language() : 'fr';//assuming that 'fr' should be default language
+	
 	$current_id = function_exists('icl_object_id') ? icl_object_id(1, 'category', true) : 1;//default category
 
 	if(is_category()) {
@@ -490,8 +492,12 @@ function get_current_antenna(){
 function get_current_parent_categ(){
 	global $sitepress;
 	$default_lg = isset($sitepress) ? $sitepress->get_default_language() : 'fr';//assuming that 'fr' should be default language
-
-	$current_id = function_exists('icl_object_id') ? icl_object_id(1, 'category', true) : 1;//default category
+	
+  
+  $check_top_categ = get_terms( 'category', 'parent=0&hide_empty=0' );
+  //default is category (or translation) from admin (user 1)
+	$categ_admin = get_cat_if_user(1) != 0 ? get_cat_if_user(1) : 1;
+	$current_id = function_exists('icl_object_id') ? icl_object_id($categ_admin, 'category', true) : $categ_admin;//default category
 	
 	if(is_category()) {
 		//get root category (antenna)
@@ -505,7 +511,7 @@ function get_current_parent_categ(){
 		//if post has multiple categories, no problem we only need to get the root categ.
 		$current_id = get_root_category($cats[0]->term_id);
 	}
-	
+
 	return	$current_id;
 }
 
@@ -704,29 +710,20 @@ function if_display_posts_listing ( $query ) {
 	$value = mktime(23, 59, 59, date('m'), date('d')-1, date('Y')); //yesterday
 	$value2 = mktime(); //last hour of the last past 24 hours
 	$compare = '>=';
-	$compare2 = '>=';
+	$compare2 = '<=';
 	
-	$meta_query[] =
+  $meta_query[] =
 		array(
-		   'key' => 'if_events_startdate',
-		   'value' => $value,
-		   'compare' => $compare
+		   'key' => 'if_events_enddate',
+		   'value' => $value2,
+		   'compare' => $compare,
+		   'type' => 'numeric'
 		  );
 		
-		$meta_query[] =
-			array(
-			   'key' => 'if_events_enddate',
-			   'value' => $value,
-			   'compare' => $compare2,
-			  );
-		$meta_query['relation'] = 'AND';
-
 		$query->set( 'meta_query', $meta_query );
 		$query->set( 'orderby', 'meta_value_num' );
 		$query->set( 'meta_key', 'if_events_startdate' );
 		$query->set( 'order', 'ASC' );
-		//$query->set( 'posts_per_page', '10' );//can set this in /wp-admin/options-reading.php
-		
 	}
 }
 add_action( 'pre_get_posts', 'if_display_posts_listing' );

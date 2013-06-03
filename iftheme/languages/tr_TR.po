@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Institut Français theme\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-05-28 09:56+0100\n"
-"PO-Revision-Date: 2013-05-28 10:52+0100\n"
+"POT-Creation-Date: 2013-06-03 11:44+0100\n"
+"PO-Revision-Date: 2013-06-03 11:44+0100\n"
 "Last-Translator: David Thomas <anou@smol.org>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -82,6 +82,10 @@ msgstr ""
 #: ../../iftheme/category.php:178
 msgid "Agenda"
 msgstr "Ajanda"
+
+#: ../../iftheme/category.php:245
+msgid "Archives"
+msgstr "Arşivleri"
 
 #: ../../iftheme/comments.php:23
 msgid "Your comment is awaiting approval."
@@ -166,15 +170,15 @@ msgstr ""
 "Uyarı - Mevcut kullanıcı için bir kategori seçmeniz gerekmektedir <a href="
 "\"%2$s/wp-admin/users.php\"><b>%1$s</b>!</a>"
 
-#: ../../iftheme/functions.php:401
+#: ../../iftheme/functions.php:402
 msgid "You must assign a category to this user : "
 msgstr "Bu kullanıcı için bir kategori seçmeniz gerekmektedir:"
 
-#: ../../iftheme/functions.php:624 ../../iftheme/inc/theme-classes.php:39
+#: ../../iftheme/functions.php:625 ../../iftheme/inc/theme-classes.php:39
 msgid "Image"
 msgstr "Fotoğraf"
 
-#: ../../iftheme/functions.php:890
+#: ../../iftheme/functions.php:882
 #, php-format
 msgid ""
 "Your content <em>Partner</em> is empty. <a href=\"/wp-admin/post.php?post="
@@ -183,161 +187,161 @@ msgstr ""
 "İçeriğiniz <em>Destekçi</em>boştur. <a href=\"/wp-admin/post.php?post="
 "%s&action=edit\"> >Düzenle</a>"
 
-#: ../../iftheme/functions.php:933
+#: ../../iftheme/functions.php:925
 msgid "You must fill in an email !"
 msgstr "Bir e-mail adresi girmelisiniz !"
 
-#: ../../iftheme/functions.php:933
+#: ../../iftheme/functions.php:925
 msgid "Edit this post"
 msgstr "Gönderiyi düzenle"
 
-#: ../../iftheme/functions.php:940
+#: ../../iftheme/functions.php:932
 msgid "The <b>Last name</b> field is required."
 msgstr "The <b>Soy isim</b> alanı gereklidir."
 
-#: ../../iftheme/functions.php:941
+#: ../../iftheme/functions.php:933
 msgid "The <b>First name</b> field is required."
 msgstr "The <b>İsim</b> alanı gereklidir."
 
-#: ../../iftheme/functions.php:942
+#: ../../iftheme/functions.php:934
 msgid "The <b>E-mail</b>  field is required."
 msgstr "The <b>E-mail</b> alanı gereklidir."
 
-#: ../../iftheme/functions.php:943
+#: ../../iftheme/functions.php:935
 msgid "The <b>E-mail name</b> field is invalid."
 msgstr "The <b>E-mail adresi</b> geçersizdir."
 
-#: ../../iftheme/functions.php:946
+#: ../../iftheme/functions.php:938
 msgid "Invalid verification code."
 msgstr "Geçersiz doğrulama kodu."
 
-#: ../../iftheme/functions.php:950
+#: ../../iftheme/functions.php:942
 msgid "Subcription request to: "
 msgstr "İçin kayıt isteği: "
 
-#: ../../iftheme/functions.php:952
+#: ../../iftheme/functions.php:944
 msgid "Subcription from IF Website"
 msgstr "IF Web sitesi kaydı"
 
-#: ../../iftheme/functions.php:953
+#: ../../iftheme/functions.php:945
 msgid "Your request has been sent."
 msgstr "İsteğiniz gönderildi."
 
-#: ../../iftheme/functions.php:969
+#: ../../iftheme/functions.php:961
 msgid "Last name"
 msgstr "Soy isim"
 
-#: ../../iftheme/functions.php:970
+#: ../../iftheme/functions.php:962
 msgid "First name"
 msgstr "İsim"
 
-#: ../../iftheme/functions.php:971
+#: ../../iftheme/functions.php:963
 msgid "E-mail"
 msgstr "E-mail"
 
-#: ../../iftheme/functions.php:972
+#: ../../iftheme/functions.php:964
 msgid "Copy verification code"
 msgstr "Doğrulama kodunu yazınız"
 
-#: ../../iftheme/functions.php:974
+#: ../../iftheme/functions.php:966
 msgid "Submit"
 msgstr "Teslim et"
 
-#: ../../iftheme/functions.php:991
+#: ../../iftheme/functions.php:983
 msgid "Sliders"
 msgstr "Sunumlar"
 
-#: ../../iftheme/functions.php:992
+#: ../../iftheme/functions.php:984
 msgid "Slider"
 msgstr "Sunum"
 
-#: ../../iftheme/functions.php:993
+#: ../../iftheme/functions.php:985
 msgid "Add new slider"
 msgstr "Yeni sunum ekle"
 
-#: ../../iftheme/functions.php:994
+#: ../../iftheme/functions.php:986
 msgid "Edit slider"
 msgstr "Sunumu düzenle"
 
-#: ../../iftheme/functions.php:995
+#: ../../iftheme/functions.php:987
 msgid "New slider"
 msgstr "Yeni sunum"
 
-#: ../../iftheme/functions.php:996
+#: ../../iftheme/functions.php:988
 msgid "View slider"
 msgstr "Sunumu gör"
 
-#: ../../iftheme/functions.php:997
+#: ../../iftheme/functions.php:989
 msgid "Search sliders"
 msgstr "Sunum ara"
 
-#: ../../iftheme/functions.php:998
+#: ../../iftheme/functions.php:990
 msgid "No slider found"
 msgstr "Sunum bulunamadı"
 
-#: ../../iftheme/functions.php:999
+#: ../../iftheme/functions.php:991
 msgid "No sliders found in Trash"
 msgstr "Geri dönüşüm kutusunda sunum bulunamadı"
 
-#: ../../iftheme/functions.php:1011
+#: ../../iftheme/functions.php:1003
 #: ../../iftheme/inc/widgets/if-partners-widget.php:53
 msgid "Partners"
 msgstr "Destekçler"
 
-#: ../../iftheme/functions.php:1012
+#: ../../iftheme/functions.php:1004
 msgid "Partner"
 msgstr "Destekçi"
 
-#: ../../iftheme/functions.php:1013
+#: ../../iftheme/functions.php:1005
 msgid "Add new partners"
 msgstr "Yeni destekçiler ekle"
 
-#: ../../iftheme/functions.php:1014
+#: ../../iftheme/functions.php:1006
 msgid "Edit partner"
 msgstr "Destekçileri düzenle"
 
-#: ../../iftheme/functions.php:1015
+#: ../../iftheme/functions.php:1007
 msgid "New partner"
 msgstr "Yeni destekçi"
 
-#: ../../iftheme/functions.php:1016
+#: ../../iftheme/functions.php:1008
 msgid "View partner"
 msgstr "Destekçileri görüntüle"
 
-#: ../../iftheme/functions.php:1017
+#: ../../iftheme/functions.php:1009
 msgid "Search partners"
 msgstr "Destekçi ara"
 
-#: ../../iftheme/functions.php:1018
+#: ../../iftheme/functions.php:1010
 msgid "No partners found"
 msgstr "Destekçi bulunamadı"
 
-#: ../../iftheme/functions.php:1019
+#: ../../iftheme/functions.php:1011
 msgid "No partners found in Trash"
 msgstr "Geri dönüşüm kutusunda destekçi bulunamadı"
 
-#: ../../iftheme/functions.php:1170
+#: ../../iftheme/functions.php:1162
 msgid "This sidebar is for all antennas only. Only the admin can configure it."
 msgstr "Bu kenar çubuğu tüm şubeler içindir. Sadece yönetici yapılandırabilir."
 
-#: ../../iftheme/functions.php:1190
+#: ../../iftheme/functions.php:1182
 #, php-format
 msgid "This sidebar is for %s only"
 msgstr "Kenar çubuğu sadece %s içindir"
 
-#: ../../iftheme/functions.php:1298
+#: ../../iftheme/functions.php:1290
 msgid "Continue Reading"
 msgstr "Okumaya devam et"
 
-#: ../../iftheme/functions.php:1528
+#: ../../iftheme/functions.php:1520
 msgid "Post navigation"
 msgstr "Post navigation"
 
-#: ../../iftheme/functions.php:1529
+#: ../../iftheme/functions.php:1521
 msgid "<span class=\"meta-nav\">&larr;</span> Previous"
 msgstr "<span class=\"meta-nav\">&larr;</span> Önceki"
 
-#: ../../iftheme/functions.php:1530
+#: ../../iftheme/functions.php:1522
 msgid "Next <span class=\"meta-nav\">&rarr;</span>"
 msgstr "Sonraki <span class=\"meta-nav\">&rarr;</span>"
 

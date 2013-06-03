@@ -384,7 +384,7 @@ function iftheme_settings_field_background_img_country() {
 }
 
 //---------- SPECIAL settings -------------//
-// —————-Settings section callback function special settings
+// Settings section callback function special settings
 function special_setting_section_callback_function() {
 	echo '<p><em>'.__('In this section you can custom some functionalities.','iftheme').'</em></p>';
 }
