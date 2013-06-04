@@ -1,0 +1,147 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: Under Construction\n"
+"POT-Creation-Date: 2013-06-04 11:15+0100\n"
+"PO-Revision-Date: 2013-06-04 11:15+0100\n"
+"Last-Translator: David Thomas <anou@smol.org>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 1.5.5\n"
+"X-Poedit-KeywordsList: _e;__;_;gettext;gettext_noop\n"
+"X-Poedit-Basepath: .\n"
+"Plural-Forms: \n"
+"X-Poedit-SourceCharset: UTF-8\n"
+"X-Poedit-SearchPath-0: ..\n"
+
+#: ../ucOptions.php:152
+msgid ""
+"JavaScript appears to be disabled in your browser. For this plugin to work "
+"correctly, please enable JavaScript or switch to a more modern browser."
+msgstr ""
+
+#: ../ucOptions.php:162
+msgid "Under Construction"
+msgstr ""
+
+#: ../ucOptions.php:166 ../ucOptions.php:173
+msgid "Activate or Deactivate"
+msgstr ""
+
+#: ../ucOptions.php:178
+msgid "on"
+msgstr ""
+
+#: ../ucOptions.php:181
+msgid "off"
+msgstr ""
+
+#: ../ucOptions.php:187 ../ucOptions.php:195
+msgid "HTTP Status Code"
+msgstr ""
+
+#: ../ucOptions.php:188
+msgid ""
+"You can choose to send the standard HTTP status code with the under "
+"construction page, or send a 503 \"Service Unavailable\" status code. This "
+"will tell Google that this page isn't ready yet, and cause your site not to "
+"be listed until this plugin is disabled."
+msgstr ""
+
+#: ../ucOptions.php:200
+msgid "HTTP 200 - ok"
+msgstr ""
+
+#: ../ucOptions.php:203
+msgid "HTTP 301 - Redirect"
+msgstr ""
+
+#: ../ucOptions.php:206
+msgid "HTTP 503 - Service Unavailable"
+msgstr ""
+
+#: ../ucOptions.php:211
+msgid "Redirect Location:"
+msgstr ""
+
+#: ../ucOptions.php:219
+msgid "Restrict By Role"
+msgstr ""
+
+#: ../ucOptions.php:223
+msgid "Only users at or above this level will be able to log in:"
+msgstr ""
+
+#: ../ucOptions.php:225
+msgid "All Users"
+msgstr ""
+
+#: ../ucOptions.php:245
+msgid "IP Address Whitelist"
+msgstr ""
+
+#: ../ucOptions.php:262
+msgid "IP Address:"
+msgstr ""
+
+#: ../ucOptions.php:263
+msgid "Add Current Address"
+msgstr ""
+
+#: ../ucOptions.php:270 ../ucOptions.php:277
+msgid "Display Options"
+msgstr ""
+
+#: ../ucOptions.php:280
+msgid "Display the default under construction page"
+msgstr ""
+
+#: ../ucOptions.php:282
+msgid "Display the default under construction page, but use custom text"
+msgstr ""
+
+#: ../ucOptions.php:284
+msgid "Display a custom page using your own HTML"
+msgstr ""
+
+#: ../ucOptions.php:290
+msgid "Display Custom Text"
+msgstr ""
+
+#: ../ucOptions.php:291
+msgid "The text here will replace the text on the default page"
+msgstr ""
+
+#: ../ucOptions.php:294
+msgid "Page Title"
+msgstr ""
+
+#: ../ucOptions.php:298
+msgid "Header Text"
+msgstr ""
+
+#: ../ucOptions.php:302
+msgid "Body Text"
+msgstr ""
+
+#: ../ucOptions.php:308
+msgid "Under Construction Page HTML"
+msgstr ""
+
+#: ../ucOptions.php:309
+msgid "Put in this area the HTML you want to show up on your front page"
+msgstr ""
+
+#: ../underConstruction.php:321
+msgid "Settings"
+msgstr ""
+
+#: ../templates/defaultMessage.php:18
+#, php-format
+msgid "%d is coming soon"
+msgstr ""
+
+#: ../templates/defaultMessage.php:20
+msgid " is coming soon"
+msgstr ""

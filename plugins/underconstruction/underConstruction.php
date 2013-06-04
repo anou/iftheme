@@ -21,9 +21,14 @@
  You should have received a copy of the GNU General Public License
  along with underConstruction.  If not, see <http://www.gnu.org/licenses/>.
  */
-
 ?>
 <?php
+function underConstruction_init() {
+  load_plugin_textdomain( 'underconstruction', false, dirname( plugin_basename( __FILE__ ) ) . '/languages/' );
+}
+
+add_action('plugins_loaded', 'underConstruction_init');
+
 class underConstruction
 {
 	var $installedFolder = "";
@@ -58,7 +63,7 @@ class underConstruction
 	function uc_adminMenu()
 	{
 		/* Register our plugin page */
-		$page = add_options_page('Under Construction Settings', 'Under Construction', 'activate_plugins', $this->mainOptionsPage, array($this, 'uc_changeMessage'));
+		$page = add_options_page(__('Under Construction Settings'), __('Under Construction'), 'activate_plugins', $this->mainOptionsPage, array($this, 'uc_changeMessage'));
 
 		/* Using registered $page handle to hook script load */
 		add_action('admin_print_scripts-'.$page, array($this, 'underConstructionEnqueueScripts'));
@@ -103,14 +108,14 @@ class underConstruction
 
 					if ($this->displayStatusCodeIs(0)) //they want the default!
 					{
-						require_once ('defaultMessage.php');
+						require_once ('templates/defaultMessage.php');
 						displayDefaultComingSoonPage();
 						die();
 					}
 
 					if ($this->displayStatusCodeIs(1)) //they want the default with custom text!
 					{
-						require_once ('defaultMessage.php');
+						require_once ('templates/defaultMessage.php');
 						displayComingSoonPage($this->getCustomPageTitle(), $this->getCustomHeaderText(), $this->getCustomBodyText());
 						die();
 					}
@@ -118,6 +123,13 @@ class underConstruction
 					if ($this->displayStatusCodeIs(2)) //they want custom HTML!
 					{
 						echo html_entity_decode($this->getCustomHTML(), ENT_QUOTES);
+						die();
+					}
+
+					if ($this->displayStatusCodeIs(3)) //they want custom TEMPLATE!
+					{
+						require_once ('templates/' . $this->getCustomTemplate());
+						displayComingSoonPage($this->getCustomPageTitle(), $this->getCustomHeaderText(), $this->getCustomBodyText());
 						die();
 					}
 				}
@@ -167,6 +179,7 @@ class underConstruction
 			update_option('underConstructionCustomText', $options['underConstructionCustomText']);
 			update_option('underConstructionDisplayOption', $options['underConstructionDisplayOption']);
 			update_option('underConstructionHTTPStatus', $options['underConstructionHTTPStatus']);
+			update_option('underConstructionTPL', $options['underConstructionTPL']);
 
 			delete_option('underConstructionArchive');
 		}
@@ -181,6 +194,7 @@ class underConstruction
 		$options['underConstructionCustomText'] = get_option('underConstructionCustomText');
 		$options['underConstructionDisplayOption'] = get_option('underConstructionDisplayOption');
 		$options['underConstructionHTTPStatus'] = get_option('underConstructionHTTPStatus');
+		$options['underConstructionTPL'] = get_option('underConstructionTPL');
 
 		//store the options all in one record, in case we ever reactivate the plugin
 		update_option('underConstructionArchive', $options);
@@ -191,6 +205,7 @@ class underConstruction
 		delete_option('underConstructionCustomText');
 		delete_option('underConstructionDisplayOption');
 		delete_option('underConstructionHTTPStatus');
+		delete_option('underConstructionTPL');
 	}
 
 	function pluginIsActive()
@@ -245,6 +260,22 @@ class underConstruction
 			return false;
 		}
 	}
+	
+	function displayTemplateIs($status) {
+		if (!get_option('underConstructionTPL')) //if it's not set yet
+		{
+			update_option('underConstructionTPL', 0); //set it
+		}
+
+		if (get_option('underConstructionTPL') == $status)
+		{
+			return true;
+		}
+		else
+		{
+			return false;
+		}
+	}
 
 	function getCustomPageTitle()
 	{
@@ -285,7 +316,18 @@ class underConstruction
 		}
 	}
 
-
+	function getCustomTemplate() {
+		if (get_option('underConstructionTPL') != false) {
+			$fileID = get_option('underConstructionTPL');
+			$files = getTemplatesFiles();
+			$file = $files[$fileID];
+			return $file;
+		}
+		else {
+		  //always return the default one at least!
+			return 'defaultMessage.php';
+		}
+	}
 }
 
 $underConstructionPlugin = new underConstruction();
@@ -320,14 +362,29 @@ function underConstructionPluginLinks($links, $file)
 		//add settings page
 		$manage_link = '<a href="'.admin_url('options-general.php?page='.$underConstructionPlugin->getMainOptionsPage()).'">'.__('Settings').'</a>';
 		array_unshift($links, $manage_link);
-
-
 	}
 	return $links;
 }
 
 add_filter('plugin_action_links', 'underConstructionPluginLinks', 10, 2);
 
+//list files from a folder
+function getTemplatesFiles($folder = 'templates', $exclude = array()){
+  //list to exclude from array
+  $exclude_list = array(".", "..", "defaultMessage.php");
+  //exclude some files and most of all the default one
+  $exclude_list = array_merge($exclude_list, $exclude);
+  //path to files
+  $dir_path = dirname(__FILE__).'/'.$folder;
+  
+  $files = array_diff(scandir($dir_path), $exclude_list);
+  
+  //on top af array the default file and assign it key = 0
+  array_unshift($files, 'defaultMessage.php');
+  $files = array_values($files);
+  
+  return $files;
+}
 
 //ajax
 
