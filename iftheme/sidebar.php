@@ -57,8 +57,10 @@
 			  $twit = isset($options['theme_options_setting_twitter']) ? $options['theme_options_setting_twitter'] : $options[(int)$antenna]['theme_options_setting_twitter'];
 			  $gg = isset($options['theme_options_setting_googleplus']) ? $options['theme_options_setting_googleplus'] : $options[(int)$antenna]['theme_options_setting_googleplus'];
 			  $iftv = isset($options['theme_options_setting_iftv']) ? $options['theme_options_setting_iftv'] : $options[(int)$antenna]['theme_options_setting_iftv'];
+			  $youtube = isset($options['theme_options_setting_youtube']) ? $options['theme_options_setting_youtube'] : $options[(int)$antenna]['theme_options_setting_youtube'];
+			  $instagram = isset($options['theme_options_setting_instagram']) ? $options['theme_options_setting_instagram'] : $options[(int)$antenna]['theme_options_setting_instagram'];
 		  
-			  if($fb || $twit || $gg || $iftv):
+			  if($fb || $twit || $gg || $iftv || $youtube || $instagram):
 		?>
 			<aside id="sidebar-social" class="widget bxshadow clearfix">
 			  <h3><?php _e('Join-us','iftheme');?></h3>
@@ -66,6 +68,8 @@
 				<?php if($fb):?><li id="fb"><a href="<?php echo $fb;?>" target="_blank"><img src="<?php bloginfo('template_directory');?>/images/social/fb.png" alt="facebook" /></a></li><?php endif;?>
 				<?php if($twit):?><li id="twit"><a href="<?php echo $twit;?>" target="_blank"><img src="<?php bloginfo('template_directory');?>/images/social/twit.png" alt="twitter" /></a></li><?php endif;?>
 				<?php if($gg):?><li id="gg"><a href="<?php echo $gg;?>" target="_blank"><img src="<?php bloginfo('template_directory');?>/images/social/gg.png" alt="google plus" /></a></li><?php endif;?>
+				<?php if($youtube):?><li id="youtube"><a href="<?php echo $youtube;?>" target="_blank"><img src="<?php bloginfo('template_directory');?>/images/social/youtube.png" alt="youtube" /></a></li><?php endif;?>
+				<?php if($instagram):?><li id="instagram"><a href="<?php echo $instagram;?>" target="_blank"><img src="<?php bloginfo('template_directory');?>/images/social/instagram.png" alt="instagram" /></a></li><?php endif;?>
 				<?php if($iftv):?><li id="iftv"><a href="<?php echo $iftv;?>" target="_blank"><img src="<?php bloginfo('template_directory');?>/images/social/iftv.png" alt="Institut Français TV" /></a></li><?php endif;?>
 			  </ul>
 			</aside>

@@ -344,7 +344,7 @@ input.wysija-email { border: 1px solid #ababac; padding: 0; width: 150px; height
 	    color: #008ac9;
 	    font-family: 'dinMed';
 	    font-size: 16px;
-	    padding: 10px;
+	    padding: 10px 5px 10px 10px;
 	}     
     #sidebar-social ul {float: right; padding: 10px;}
     #sidebar-social ul li {float: left; margin-left: 5px}

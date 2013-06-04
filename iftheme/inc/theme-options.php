@@ -93,18 +93,20 @@ function iftheme_theme_options_init() {
 	add_settings_field( 'theme_home_nb_events', __( 'Number of events for each category displayed on homepage:', 'iftheme' ), 'iftheme_settings_field_nb_events', 'theme_options', 'general' );//number of posts on homepage
 	add_settings_field('background_img', __('Background image','iftheme'), 'iftheme_settings_field_background_img', 'theme_options', 'general'); // Background image
 
-
 	// Add the field with the names and function to use for our new
 	// settings, put it in our new section
+	//facebook
 	add_settings_field('theme_options_setting_facebook', __('Facebook Page','iftheme'),'theme_options_setting_facebook_callback_function','theme_options','social_setting_section');
-	
-	// Register our setting so that $_POST handling is done for us and
-	// our callback function just has to echo the <input>
-	//register_setting('general','theme_options_setting_facebook');
-	
+	//twitter
 	add_settings_field('theme_options_setting_twitter', __('Twitter Account','iftheme'),'theme_options_setting_twitter_callback_function','theme_options','social_setting_section');
+	//google
 	add_settings_field('theme_options_setting_googleplus', __('Google Plus Page','iftheme'),'theme_options_setting_googleplus_callback_function','theme_options','social_setting_section');
+	//iftv
 	add_settings_field('theme_options_setting_iftv', __('Your IF TV Page','iftheme'),'theme_options_setting_iftv_callback_function','theme_options','social_setting_section');
+	//you tube
+	add_settings_field('theme_options_setting_youtube', __('You Tube Page','iftheme'),'theme_options_setting_youtube_callback_function','theme_options','social_setting_section');
+	//instagram
+	add_settings_field('theme_options_setting_instagram', __('Instagram Page','iftheme'),'theme_options_setting_instagram_callback_function','theme_options','social_setting_section');
 
 	// Register our individual settings fields for country hompage if multi-antenna site
 	if($multi && $current_user->ID === 1) {
@@ -251,6 +253,8 @@ function iftheme_get_default_theme_options() {
 		'theme_options_setting_twitter' => '',
 		'theme_options_setting_googleplus' => '',
 		'theme_options_setting_iftv' => 'http://www.institutfrancais.tv',
+		'theme_options_setting_youtube' => '',
+		'theme_options_setting_instagram' => '',
 		'theme_home_nb_events' => '5',
 		'theme_options_setting_hmenupage' => '1',
 		'theme_options_setting_wysija_embed' => '1',
@@ -404,7 +408,6 @@ function theme_options_setting_wysija_embed_callback_function() {
 	$antenna = get_antenna();
 	$options = iftheme_get_theme_options();
 	$defaults = iftheme_get_default_theme_options();
-	
   $checked = isset($options['theme_options_setting_wysija_embed']) ? $options['theme_options_setting_wysija_embed'] : $defaults['theme_options_setting_wysija_embed'];
 ?>
 	<input name="iftheme_theme_options_<?php echo $antenna;?>[theme_options_setting_wysija_embed]" id="theme_options_setting_wysija_embed" type="checkbox"  value="1" <?php checked( $checked, 1 ); ?> />&nbsp;<span><?php _e("Check this box to use and display the wysija newsletter subscription form embedded in the IF theme", 'iftheme');?></span>
@@ -415,28 +418,50 @@ function theme_options_setting_wysija_embed_callback_function() {
 function social_setting_section_callback_function() {
 	echo '<p><em>'.__('This section is where you can save the social sites where readers can find you on the Internet.','iftheme').'</em></p>';
 }
+//facebook
 function theme_options_setting_facebook_callback_function() {
 	$antenna = get_antenna();
 	$options = iftheme_get_theme_options(); ?>
-	<input name="iftheme_theme_options_<?php echo $antenna;?>[theme_options_setting_facebook]" id="theme_options_setting_facebook" type="text" value="<?php echo $options['theme_options_setting_facebook'] ;?>" />
+	<input name="iftheme_theme_options_<?php echo $antenna;?>[theme_options_setting_facebook]" id="theme_options_setting_facebook" type="text" value="<?php echo $options['theme_options_setting_facebook'];?>" />
 <?php }
+//twitter
 function theme_options_setting_twitter_callback_function() {
 	$antenna = get_antenna();
 	$options = iftheme_get_theme_options(); ?>
-	<input name="iftheme_theme_options_<?php echo $antenna;?>[theme_options_setting_twitter]" id="theme_options_setting_twitter" type="text" value="<?php echo $options['theme_options_setting_twitter'] ;?>" />
+	<input name="iftheme_theme_options_<?php echo $antenna;?>[theme_options_setting_twitter]" id="theme_options_setting_twitter" type="text" value="<?php echo $options['theme_options_setting_twitter'];?>" />
 <?php }
+//googleplus
 function theme_options_setting_googleplus_callback_function() {
 	$antenna = get_antenna();
 	$options = iftheme_get_theme_options(); ?>
-	<input name="iftheme_theme_options_<?php echo $antenna;?>[theme_options_setting_googleplus]" id="theme_options_setting_googleplus" type="text" value="<?php echo $options['theme_options_setting_googleplus'] ;?>" />
+	<input name="iftheme_theme_options_<?php echo $antenna;?>[theme_options_setting_googleplus]" id="theme_options_setting_googleplus" type="text" value="<?php echo $options['theme_options_setting_googleplus'];?>" />
 <?php }
+//iftv
 function theme_options_setting_iftv_callback_function() {
 	$antenna = get_antenna();
 	$options = iftheme_get_theme_options();
 	$defaults = iftheme_get_default_theme_options();
-	$value = isset($options['theme_options_setting_iftv']) ? $options['theme_options_setting_iftv'] : '';
-	?>
+	$value = isset($options['theme_options_setting_iftv']) ? $options['theme_options_setting_iftv'] : $defaults['theme_options_setting_iftv'];
+?>
 	<input name="iftheme_theme_options_<?php echo $antenna;?>[theme_options_setting_iftv]" id="theme_options_setting_iftv" type="text" value="<?php echo $value;?>" />
+<?php }
+//you tube
+function theme_options_setting_youtube_callback_function() {
+	$antenna = get_antenna();
+	$options = iftheme_get_theme_options();
+	$defaults = iftheme_get_default_theme_options(); 
+	$value = isset($options['theme_options_setting_youtube']) ? $options['theme_options_setting_youtube'] : $defaults['theme_options_setting_youtube'];
+?>
+	<input name="iftheme_theme_options_<?php echo $antenna;?>[theme_options_setting_youtube]" id="theme_options_setting_youtube" type="text" value="<?php echo $value;?>" />
+<?php }
+//instagram
+function theme_options_setting_instagram_callback_function() {
+	$antenna = get_antenna();
+	$options = iftheme_get_theme_options(); 
+	$defaults = iftheme_get_default_theme_options(); 
+	$value = isset($options['theme_options_setting_instagram']) ? $options['theme_options_setting_instagram'] : $defaults['theme_options_setting_instagram'];
+?>
+	<input name="iftheme_theme_options_<?php echo $antenna;?>[theme_options_setting_instagram]" id="theme_options_setting_instagram" type="text" value="<?php echo $value;?>" />
 <?php }
 
 /**
@@ -504,15 +529,19 @@ function iftheme_theme_options_validate( $input ) {
 	//wysija embedded sub. form
 	$output['theme_options_setting_wysija_embed'] = isset($input['theme_options_setting_wysija_embed']) ? $input['theme_options_setting_wysija_embed'] : 0;
 
+  //SOCIAL NETWORKS
 	if ( isset( $input['theme_options_setting_facebook'] ) )
 		$output['theme_options_setting_facebook'] = $input['theme_options_setting_facebook'];
 	if ( isset( $input['theme_options_setting_twitter'] ) )
 		$output['theme_options_setting_twitter'] = $input['theme_options_setting_twitter'];
 	if ( isset( $input['theme_options_setting_googleplus'] ) )
 		$output['theme_options_setting_googleplus'] = $input['theme_options_setting_googleplus'];
-	//if ( isset( $input['theme_options_setting_iftv'] ) && strlen($input['theme_options_setting_iftv']) )
 	if ( isset( $input['theme_options_setting_iftv'] ))
 		$output['theme_options_setting_iftv'] = $input['theme_options_setting_iftv'];
+	if ( isset( $input['theme_options_setting_youtube'] ) )
+		$output['theme_options_setting_youtube'] = $input['theme_options_setting_youtube'];
+	if ( isset( $input['theme_options_setting_instagram'] ) )
+		$output['theme_options_setting_instagram'] = $input['theme_options_setting_instagram'];
 		
 	return apply_filters( 'iftheme_theme_options_validate', $output, $input, $defaults );
 }

@@ -1,33 +1,40 @@
 <?php get_header(); 
-	
-/*
-	echo(date('F Y',mktime(0, 0, 0, 8, 0, 2012)));
-	echo(date('F Y',mktime(0, 0, 0, 6, 0, 2012)));
-*/
+  //setlocale(LC_ALL, get_locale());
+  $q = $wp_query->query;
 ?>
 <div id="content">
 	<h1 id="titledate">
-		<?php //setlocale(LC_ALL, get_locale());  
-		  $q = $wp_query->query;
-			if ( is_day() ) : /* if the daily archive is loaded */ ?>
+		<?php if ( is_day() ) : /* if the daily archive is loaded */ ?>
 			<?php echo utf8_encode(strftime('%d %B %Y', mktime(0, 0, 0, $q['monthnum'], $q['day'], $q['year'])));?>
 		<?php elseif ( is_month() ) : /* if the montly archive is loaded */ ?>
 			<?php echo utf8_encode(strftime('%B %Y', mktime(0, 0, 0, $q['monthnum']+1, 0, $q['year'])));?>
 		<?php elseif ( is_year() ) : /* if the yearly archive is loaded */ ?>
 			<?php echo utf8_encode(strftime('%Y', mktime(0, 0, 0, 12, 31, $q['year'])));?>
 		<?php else : /* if anything else is loaded, ex. if the tags or categories template is missing this page will load */ ?>
-			Blog Archives
+			<?php _e('Archives', 'iftheme');?>
 		<?php endif; ?>
 	</h1>
-	<script type="text/javascript">
-	  var lang = (typeof(icl_lang) != "undefined" && icl_lang !== null) ? icl_lang : bInfo['bLang'].substr(0,2); //TODO: check if bInfo['bLang'] is construct like this xx-XX...
-	  moment.lang(lang);
 
-    var titleDate = jQuery('#titledate').text();
+	<script type="text/javascript">
+	  var month = '<?php echo is_month();?>';
+	  month = month ? true : false;
+	  var year = '<?php echo is_year();?>';
+	  year = year ? true : false;
+
+    var lang = (typeof(icl_lang) != "undefined" && icl_lang !== null) ? icl_lang : bInfo['bLang'].substr(0,2); //TODO: check if bInfo['bLang'] is construct like this xx-XX...
+	  moment.lang(lang);
+	  
+	  var titleDate = jQuery('#titledate').text();
+    titleDate = month ? '1 '+titleDate  : titleDate;
+    titleDate = year ? '1 january '+titleDate  : titleDate;;
+    
     titleDate = moment(titleDate).format('LL');
+    
+    titleDate = month ? titleDate.substr(2) : titleDate;
+    titleDate = year ? titleDate.substr(-4) : titleDate;
+    
     jQuery('#titledate').text(titleDate);
   </script>
-
 
 	<?php if (have_posts()) : while (have_posts()) : the_post(); ?>
 			<article class="post-single clearfix" id="post-<?php the_ID();?>">
