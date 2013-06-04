@@ -3,7 +3,7 @@
  Plugin Name: Under Construction
  Plugin URI: http://www.masseltech.com/
  Description: Makes it so your site can only be accessed by users who log in. Useful for developing a site on a live server, without the world being able to see it
- Version: 1.08
+ Version: 1.09
  Author: Jeremy Massel
  Author URI: http://www.masseltech.com/
  */

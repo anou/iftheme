@@ -1,4 +1,11 @@
 <?php
+
+if($_SERVER['REQUEST_METHOD'] == "POST"){
+	if(!wp_verify_nonce($_POST['save_options_field'], 'save_options')){
+		die("Sorry, but this request is invalid");
+	}
+}
+
 if (isset($_GET['turnOnUnderConstructionMode']))
 {
 	update_option('underConstructionActivationStatus', 1);
@@ -292,7 +299,7 @@ if(isset($_POST['required_role'])){
 							title="HTTP503"> <input type="radio" name="display_options"
 							value="1" id="displayOption1"
 							<?php if ($this->displayStatusCodeIs(1)) { echo ' checked="checked"'; } ?>>
-							Display the default under construction page , but use custom text
+							Display the default under construction page, but use custom text
 						</label> <br /> <label title="HTTP503"> <input type="radio"
 							name="display_options" value="2" id="displayOption2"
 							<?php if ($this->displayStatusCodeIs(2)) { echo ' checked="checked"'; } ?>>
@@ -337,6 +344,9 @@ if(isset($_POST['required_role'])){
 			<?php echo '<textarea name="ucHTML" rows="15" cols="75">'.$this->getCustomHTML().'</textarea>'; ?>
 		</div>
 		<p class="submit">
+			   <?php wp_nonce_field('save_options','save_options_field'); ?>
+
+		
 			<input type="submit" name="Submit" class="button-primary"
 				value="Save Changes" id="submitChangesToUnderConstructionPlugin" />
 		</p>
