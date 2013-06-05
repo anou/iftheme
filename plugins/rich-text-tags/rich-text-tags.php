@@ -4,7 +4,7 @@ Plugin Name: Rich Text Tags, Categories, and Taxonomies
 Plugin URI: http://www.seodenver.com/rich-text-tags/
 Description: This plugin offers rich text editing capabilities for descriptions of tags, categories, and taxonomies.
 Author: Katz Web Services, Inc.
-Version: 1.7.2
+Version: 1.7.3
 Author URI: http://www.katzwebservices.com
 */
 
@@ -138,13 +138,13 @@ function kws_add_form($object = ''){
 		?>
 	<table class="form-table rich-text-tags">
 	<tr>
-		<th><label for="description"><?php _e('Biographical Info'); ?></label></th>
+		<th><label for="description"><?php _e('Biographical Info','rich-text-tags'); ?></label></th>
 		<td><?php wp_editor($content, $editor_id, 
 			array(
 				'textarea_name' => $editor_selector, 
 				'editor_css' => kws_rtt_get_css(),
 			)); ?><br />
-		<span class="description"><?php _e('Share a little biographical information to fill out your profile. This may be shown publicly.'); ?></span></td>
+		<span class="description"><?php _e('Share a little biographical information to fill out your profile. This may be shown publicly.','rich-text-tags'); ?></span></td>
 	</tr>
 <?php
 	} 
@@ -159,16 +159,15 @@ function kws_add_form($object = ''){
 		} else {
 			$editor_id = $editor_selector = 'category_description';
 		}
-		$css = '';
+		
 		?>
 <tr class="form-field">
-	<th scope="row" valign="top"><label for="description"><?php _ex('Description', 'Taxonomy Description'); ?></label></th>
-	<td><?php wp_editor($content, $editor_id, 
-		array(
-			'textarea_name' => $editor_selector, 
-			'editor_css' => $css,
-		)); ?><br />
-	<span class="description"><?php _e('The description is not prominent by default, however some themes may show it.'); ?></span></td>
+	<th scope="row" valign="top"><label for="description"><?php _ex('Description', 'Taxonomy Description', 'rich-text-tags'); ?></label></th>
+	<td><?php wp_editor($content, $editor_id, array(
+				'textarea_name' => $editor_selector, 
+				'editor_css' => kws_rtt_get_css(),
+	)); ?><br />
+	<span class="description"><?php _e('The description is not prominent by default, however some themes may show it.','rich-text-tags'); ?></span></td>
 </tr>
 <?php 
 

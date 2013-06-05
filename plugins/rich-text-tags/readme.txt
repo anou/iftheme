@@ -3,7 +3,7 @@ Contributors: katzwebdesign
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=zackkatz%40gmail%2ecom&item_name=Rich%20Text%20Tags&no_shipping=0&no_note=1&tax=0&currency_code=USD&lc=US&bn=PP%2dDonationsBF&charset=UTF%2d8
 Tags: tag, tags, taxonomy, taxonomies, category, categories, category description, rich text category, editor, rich text, description, tag description, taxonomy description, rich text, wysiwyg, tinyMCE, SEO, search engine optimization, terms, bio, biography, user, user data, user description
 Requires at least: 3.3
-Tested up to: 3.5
+Tested up to: 3.6
 Stable tag: trunk
 
 The Rich Text Tags Plugin allows you to edit tag, category, and taxonomy descriptions using Wordpress' built in WYSIWYG editor.
@@ -34,6 +34,9 @@ Use the WordPress functions `tag_description()` and `category_description()` in 
 Thanks, it's by <a href="http://www.flickr.com/photos/laurenmanning/5659535988/" rel="nofollow">Lauren Manning</a>.
 
 == Upgrade Notice ==
+
+= 1.7.3 = 
+* Fixed "Undefined variable" PHP warning <a href="http://wordpress.org/support/topic/plugin-rich-text-tags-debug-error-in-your-plugin">referenced here</a>
 
 = 1.7.2 = 
 * Re-added shortened term descriptions in Term view.
@@ -100,6 +103,9 @@ Thanks, it's by <a href="http://www.flickr.com/photos/laurenmanning/5659535988/"
 * Fixed issues with rich text being stripped by WordPress (issue <a href="http://wordpress.org/support/topic/386264" rel="nofollow">386264</a> and <a href="http://wordpress.org/support/topic/460685" rel="nofollow">460685</a>
 
 == Changelog ==
+
+= 1.7.3 = 
+* Fixed "Undefined variable" PHP warning <a href="http://wordpress.org/support/topic/plugin-rich-text-tags-debug-error-in-your-plugin">referenced here</a>
 
 = 1.7.2 = 
 * Re-added shortened term descriptions in Term view.
