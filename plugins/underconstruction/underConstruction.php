@@ -153,7 +153,7 @@ class underConstruction
 				}
 			}
 
-			if(!current_user_can($new_privs[0])){
+			if($this->pluginIsActive() && !current_user_can($new_privs[0])){
 				wp_logout();
 				wp_redirect(get_bloginfo('url'));
 			}

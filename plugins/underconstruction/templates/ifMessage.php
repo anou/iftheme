@@ -71,8 +71,9 @@ function displayComingSoonPage($title, $headerText, $bodyText) {
       <?php if (function_exists('get_antennas_details')):?>
     		<!-- SOCIAL NETWORKS -->
     		<?php $options = get_antennas_details();
-
-    		    $fb = isset($options['theme_options_setting_facebook']) ? $options['theme_options_setting_facebook'] : $options[(int)$antenna]['theme_options_setting_facebook'];
+              $antenna = isset($antenna) ? $antenna : 1;
+          
+            $fb = isset($options['theme_options_setting_facebook']) ? $options['theme_options_setting_facebook'] : $options[(int)$antenna]['theme_options_setting_facebook'];
     			  $twit = isset($options['theme_options_setting_twitter']) ? $options['theme_options_setting_twitter'] : $options[(int)$antenna]['theme_options_setting_twitter'];
     			  $gg = isset($options['theme_options_setting_googleplus']) ? $options['theme_options_setting_googleplus'] : $options[(int)$antenna]['theme_options_setting_googleplus'];
     			  $iftv = isset($options['theme_options_setting_iftv']) ? $options['theme_options_setting_iftv'] : $options[(int)$antenna]['theme_options_setting_iftv'];
