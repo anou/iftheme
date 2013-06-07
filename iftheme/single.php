@@ -35,7 +35,8 @@
 			$data = get_meta_if_post();
 			$start = '<span class="start">' . $data['start'] . '</span>';
 			$end = '<span class="end">' . $data['end'] . '</span>'; 
-			$book = $data['booking']; 
+			$book = $data['booking'];
+			$town = $data['city']; 
 	}
 ?>
 <div id="content">
@@ -43,7 +44,7 @@
 		<div id="post-<?php the_ID(); ?>" <?php post_class('post'); ?>>
 
 			<article class="post">
-				<?php if($start):?><div class="infos-post bxshadow"><?php echo $start ? $start . $end .' - ' : ''; ?><?php echo get_cat_name($antenna);?></div><?php endif;?>
+				<?php if($start):?><div class="infos-post bxshadow"><?php echo $start ? $start . $end .' - ' : ''; ?><?php echo $multi ? get_cat_name($antenna) : $town;?></div><?php endif;?>
 				<h1><a href="<?php the_permalink() ?>" title="<?php the_title(); ?>" rel="bookmark"><?php the_title(); ?></a></h1>
 				<small><?php edit_post_link(__('Edit this entry', 'iftheme')); ?></small>
 				<?php if ( has_post_thumbnail() ) { echo '<div class="featured-post-img">'; the_post_thumbnail('post-img'); echo '</div>'; } ?>
@@ -77,7 +78,7 @@
 	            <p>
 	              <?php echo $data['adresse'] ? $data['adresse'].'<br />':'';?>
 	              <?php echo $data['adressebis'] ? $data['adressebis'].'<br />':'';?>
-	              <?php echo $data['zip'] ? $data['zip']:''; ?> <?php echo $data['city'] ? ' - '.$data['city']:'';?> <?php $data['pays'] ? ' - '.$data['pays']:'';?><br />
+	              <?php echo $data['zip'] ? $data['zip'] . ' - ':''; ?> <?php echo $data['city'];?> <?php $data['pays'] ? ' - '.$data['pays']:'';?><br />
 	              <?php echo $data['tel'] ? $data['tel'].'<br />':'';?>
 	              <?php echo $data['event_mail'] ? '<a href="mailto:'. $data['event_mail'] .'">'. $data['event_mail'] .'</a><br />' : '';?>
 	              <?php echo $data['link1'] ? '<a href="'. $data['link1'] .'" target="_blank">'. $data['link1'] .'</a><br />' : '';?>
@@ -128,8 +129,8 @@
 			thisPostStart.text(start);
 			end = end.replace(endYear, '');
 			end = end !== start ? end : time;
-			
-			if(end !== start) thisPostEnd.text(' / '+end);
+
+			if (end) if(end !== start) thisPostEnd.text(' / '+end);
 			
 		</script>
 

@@ -219,7 +219,7 @@ function get_if_level2_categ($raw = false, $args = array()) {
 		'hide_empty' => 0,
 		'use_desc_for_title' => 0,
 		'title_li' => '',
-		'child_of' 	 => get_current_parent_categ(),
+		'child_of' => get_current_parent_categ(),
 		'depth' => 2
     );
     
@@ -819,8 +819,8 @@ function get_meta_if_post($pid = ''){
 	
 
 	$data['start'] = !empty($start) ? utf8_encode(strftime('%d %b',$start)) : NULL;
-	$data['end'] = !$end ? ($time ? ' / '.$time : '') : ' / '.$end;  
-	$data['time'] = $time;  
+	$data['end'] = !$end ? (strlen($time) ? ' / '.$time : '') : ' / '.$end;  
+	$data['time'] = $time;
 	
 	//add featured img id if exist
 	$img = isset($meta['_thumbnail_id']) ?$meta['_thumbnail_id'] : array();
@@ -908,7 +908,8 @@ function get_meta_raw_if_post($pid=''){
 	$data['end'] = !empty($end[0]) ? $end[0] : NULL;
 	
 	$time = get_post_meta($pid, 'if_events_time', false);
-	$data['time'] = !empty($time[0]) && $time[0] != '00:00' ? $time[0] : NULL;
+	/* $data['time'] = !empty($time[0]) && $time[0] != '00:00' ? $time[0] : NULL; */
+	$data['time'] = !empty($time[0]) ? $time[0] : NULL;
 	
 	//add featured img id if exist
 	$img = get_post_meta($pid, '_thumbnail_id', false);

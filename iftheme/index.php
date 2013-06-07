@@ -103,10 +103,10 @@
 									$data = get_meta_if_post($pid);
 									$start = $data['start'];
 									$end = $data['end'];  
-
+									$town = $data['city'];
 							?>
 							<div class="top-block">
-								<?php if($start):?><div class="date-time"><span class="start"><?php echo $start;?></span><span class="end"><?php echo $end;?></span><?php endif;?> - <span class="post-antenna"><?php echo(get_cat_name($antenna));?></span></div>
+								<?php if($start):?><div class="date-time"><span class="start"><?php echo $start;?></span><span class="end"><?php echo $end;?></span><?php endif;?> - <span class="post-antenna"><?php echo $multi ? get_cat_name($antenna) : $town;?></span></div>
 								<h3 class="post-title"><a href="<?php the_permalink() ?>" title="<?php the_title(); ?>" rel="bookmark"><?php the_title(); ?></a></h3>
 							</div>
 							<?php if ( has_post_thumbnail() ) : /* loades the post's featured thumbnail, requires Wordpress 3.0+ */ ?>

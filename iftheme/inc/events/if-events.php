@@ -43,7 +43,7 @@ function if_events_meta () {
 
     // - populate today if empty, 00:00 for time -
 
-    if ($meta_sd == null) { $meta_sd = time(); $meta_ed = $meta_sd; $meta_time = '00:00';}
+    if ($meta_sd == null) { $meta_sd = time(); $meta_ed = $meta_sd; $meta_time = '';}
 
     // - convert to pretty formats -
 

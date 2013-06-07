@@ -1,5 +1,5 @@
 <?php get_header(); ?>
-<div id="content"><span style="color:#ccc" class="none"> Home Page ONE ANTENNA </span>
+<div id="content"><span style="color:#ccc" class="none"> Home Page ONE ANTENNA in MULTI </span>
 <?php 
   	  global $sitepress;
   	  //$default_lg = isset($sitepress) ? $sitepress->get_default_language() : 'fr';//assuming that 'fr' should be default language
@@ -101,11 +101,11 @@
 									$pid = get_the_ID();
 									$data = get_meta_if_post($pid);
 									$start = $data['start'];
-									$end = $data['end'];  
-
+									$end = $data['end'];
+									$town = $data['city'];
 							?>
 							<div class="top-block">
-								<?php if($start):?><div class="date-time"><span class="start"><?php echo $start;?></span><span class="end"><?php echo $end;?></span><?php endif;?> - <span class="post-antenna"><?php echo(get_cat_name($antenna));?></span></div>
+								<?php if($start):?><div class="date-time"><span class="start"><?php echo $start;?></span><span class="end"><?php echo $end;?></span><?php endif;?> - <span class="post-antenna"><?php echo $multi ? get_cat_name($antenna) : $town;?></span></div>
 								<h3 class="post-title"><a href="<?php the_permalink() ?>" title="<?php the_title(); ?>" rel="bookmark"><?php the_title(); ?></a></h3>
 							</div>
 							<?php if ( has_post_thumbnail() ) : /* loades the post's featured thumbnail, requires Wordpress 3.0+ */ ?>
@@ -182,13 +182,14 @@
 				$pid =$post->ID;
 				$data = get_meta_if_post($pid);
 				$start = $data['start'];
-				$end = $data['end'];  
-			?>			 
+				$end = $data['end'];
+				$town = $data['city'];
+      ?>
 			<article class="post-single clearfix" id="post-<?php the_ID();?>">
 				<?php if ( has_post_thumbnail() ) { /* loades the post's featured thumbnail, requires Wordpress 3.0+ */ echo '<div class="featured-thumbnail">'; the_post_thumbnail('listing-post'); echo '</div>'; } ?>
 				<div class="top-block bxshadow">
 					<div class="date-time">
-						<?php if($start):?><span class="start"><?php echo $start;?></span><span class="end"><?php echo $end;?></span><?php endif;?> - <span class="post-antenna"><?php echo(get_cat_name($antenna));?></span>
+						<?php if($start):?><span class="start"><?php echo $start;?></span><span class="end"><?php echo $end;?></span><?php endif;?> - <span class="post-antenna"><?php echo $multi ? get_cat_name($antenna) : $town;?></span>
 					</div>
 					<h2><a href="<?php the_permalink() ?>" title="<?php the_title(); ?>" rel="bookmark"><?php the_title(); ?></a></h2>
 				</div>
