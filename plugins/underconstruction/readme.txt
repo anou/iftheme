@@ -4,7 +4,7 @@ Donate link: http://masseltech.com/donate/
 Tags: construction, under construction, private, preview, security, coming soon
 Requires at least: 2.7
 Tested up to: 3.5.1
-Stable tag: 1.09
+Stable tag: 1.10
 
 Creates a 'Coming Soon' page that will show for all users who are not logged in
 
@@ -42,6 +42,13 @@ I've had a few people ask me this. If you like it, please go to WordPress.org an
 Sorry, I get a lot of questions. But visit the homepage for this plugin and leave me a comment. They go right to my inbox, and well I might not be able to for a few days, I promise I'll get back to you.
 
 == Changelog ==
+
+= 1.10 =
+* Fixes a bug where users who aren't admins wouldn't be able to use the admin area of the site if the under construction plugin was enabled
+* Adds French translation (my thanks to David Thomas at studio de création sympathique)
+* Removed the screenshots from the downloadable bundle in order make the plugin install faster
+* Fixed a minor security issue where users with valid credentials could view a single page when logging in
+* Sorry for all the updates lately
 
 = 1.09 =
 * Fixed an issue identified Charlie Eriksen. Listed as Secunia Advisory SA52881. Fixes a security issue that could possibly result in the plugin being inadvertently deactivated.

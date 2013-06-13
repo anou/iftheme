@@ -69,7 +69,6 @@ if (isset($_POST['display_options']))
 	}
 }
 
-d(get_option('underConstructionTPL'));
 // ======================================
 // 		process http status codes
 // ======================================
@@ -149,9 +148,6 @@ if(isset($_POST['remove_selected_ip_btn'])){
 if(isset($_POST['required_role'])){
 	update_option('underConstructionRequiredRole', $_POST['required_role']);
 }
-
-d($this);
-
 ?>
 <noscript>
 	<div class='updated' id='javascriptWarn'>
@@ -258,7 +254,7 @@ d($this);
 						<?php endfor;?>
           </select><br />
 
-          <input type="submit" value="Remove Selected IP Address" name="remove_selected_ip_btn" id="remove_selected_ip_btn" /> <br /> <br /> 
+          <input type="submit" value="<?php _e('Remove Selected IP Address', 'underconstruction'); ?>" name="remove_selected_ip_btn" id="remove_selected_ip_btn" /> <br /> <br /> 
         <?php endif; ?> 
         <label><?php _e('IP Address:', 'underconstruction');?> <input type="text" name="ip_address" id="ip_address" /> </label>
 					<a id="add_current_address_btn" style="cursor: pointer;"><?php _e('Add Current Address', 'underconstruction');?></a>
@@ -334,7 +330,7 @@ d($this);
 
 		<p class="submit">
 		<?php wp_nonce_field('save_options','save_options_field'); ?>
-			<input type="submit" name="Submit" class="button-primary" value="Save Changes" id="submitChangesToUnderConstructionPlugin" />
+			<input type="submit" name="Submit" class="button-primary" value="<?php _e('Save Changes', 'underconstruction'); ?>" id="submitChangesToUnderConstructionPlugin" />
 		</p>
 	</form>
 </div>
