@@ -25,6 +25,16 @@ Tags: dark, light, white, blue, gray, one-column, two-columns, right-sidebar, fi
  */
 @font-face {
     font-family: 'dinMed';
+    src: url("fonts/DINWebPro-Medium.eot");
+    src: url('fonts/DINWebPro-Medium.eot?#iefix') format('embedded-opentype'),
+         url('fonts/DINWebPro-Medium.woff') format('woff'),
+         url('fonts/DINCompPro-Medium.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'dinMedOT';
     src: url('fonts/dinot-medium.eot');
     src: url('fonts/dinot-medium.eot?#iefix') format('embedded-opentype'),
          url('fonts/dinot-medium.woff') format('woff'),
@@ -35,7 +45,7 @@ Tags: dark, light, white, blue, gray, one-column, two-columns, right-sidebar, fi
 }
 
 @font-face {
-    font-family: 'dinBC';
+    font-family: 'dinBCOT';
     src: url('fonts/dincondb.eot');
     src: url('fonts/dincondb.eot?#iefix') format('embedded-opentype'),
          url('fonts/dincondb.woff') format('woff'),
@@ -566,12 +576,12 @@ html[xmlns] .clearfix {
 #content .description h2,
 #content .post h2,
 .mceContentBody h2
- {font-family: "DinBC";font-size:28px;font-weight: normal;text-transform: uppercase;text-align: left}
+ {font-family: "dinMed";font-size:28px;font-weight: normal;text-transform: uppercase;text-align: left}
 
 #content .description h3,
 #content .post h3,
 .mceContentBody h3
- {font-family: "DinBC";font-size:22px;font-weight: normal;text-transform: uppercase;text-align: left}
+ {font-family: "dinMed";font-size:22px;font-weight: normal;text-transform: uppercase;text-align: left}
 
 #content .description .chapo,
 #content .post .chapo,
