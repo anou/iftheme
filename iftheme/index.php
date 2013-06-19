@@ -44,12 +44,12 @@
 				<div class="slides_container">
 				<?php foreach($slides as $slide => $values):
 						  $img = wp_get_attachment_image_src( $values['img'],'slider');
-				?>
+				 if($img) : ?>
 					<div class="slide">
 						<a href="<?php echo $values['link'];?>" title="<?php echo $values['link'];?>"><img src="<?php echo $img[0]; ?>" width="<?php echo $img[1]; ?>" height="<?php echo $img[2]; ?>" alt="" /></a><div class="caption"><?php echo $values['title'];?></div>
 					</div><!-- /.slide -->
 					
-				<?php endforeach;?>
+				<?php endif; endforeach;?>
 				
 				</div><!-- /.slides_container -->
 				<a href="#" class="prev none"><img src="<?php bloginfo('template_directory');?>/images/slide/arrow-prev.png" width="24" height="43" alt="Arrow Prev"></a>

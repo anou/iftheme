@@ -164,7 +164,7 @@ header { }
 	nav#antennes ul li {float: left;}
 	/* nav#antennes ul.menu li {border-right: 1px solid white;} */
 	nav#antennes ul.menu li.last-cat-item {border-right: 0 none}
-	nav#antennes ul li a {font: normal 14px/2em "dinMed",sans-serif; color: #fff; text-transform: uppercase; height: 30px; padding: 0 17px; display: inline-block}
+	nav#antennes ul li a {font: normal 14px/2.3em "dinMed",sans-serif; color: #fff; text-transform: uppercase; height: 30px; padding: 0 17px; display: inline-block}
 	nav#antennes ul li:first-child a {padding-left:10px}
 	nav#antennes ul li a:hover {background: #008ac9 url(images/bg-header-menu-on.png) repeat left top;}
 	nav#antennes ul li.current-cat a,
@@ -442,7 +442,7 @@ input.wysija-email { border: 1px solid #ababac; padding: 0; width: 150px; height
 	Set to display none, prevents content flash
 */
 
-.slides_container { width:630px; overflow:hidden; position:relative; display:none; }
+.slides_container { width:630px; overflow:hidden; position:relative; display:none; background: #fff}
 
 /*
 	Each slide
@@ -491,6 +491,7 @@ input.wysija-email { border: 1px solid #ababac; padding: 0; width: 150px; height
 	float:left;
 	overflow:hidden;
 	text-indent: -99px;
+	box-shadow: -1px -1px 1px rgba(0, 0, 0, 0.1) inset;
 }
 
 #slider .pagination li.current a { background:#fff url(images/bg-post-title.png) repeat center center;}

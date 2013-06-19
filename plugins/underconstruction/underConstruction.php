@@ -136,8 +136,7 @@ class underConstruction
 		if(!$this->pluginIsActive()){
 			return;
 		}
-
-		if(get_option('underConstructionRequiredRole')){
+		if(get_option('underConstructionRequiredRole') && is_admin()){
 			$editable_roles = get_editable_roles();
 
 			$required_role = $editable_roles[get_option('underConstructionRequiredRole')];
