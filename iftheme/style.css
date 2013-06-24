@@ -194,13 +194,13 @@ header { }
 	#top-menu-antennes ul li a {color: #58585A}
 	#top-menu-antennes ul li a:hover, #top-menu-antennes ul li.current-cat a {color: #008AC9}
 	
-	#header_language_list{text-align: right;}
-	#header_language_list ul{ list-style: none; margin:0; padding:0;}
-	#header_language_list ul li{text-align: center; display:inline-block; margin:0 0 0 5px; padding:0; color: #fff; text-decoration:none; text-transform: uppercase; font-family: 'dinMed',sans-serif; font-size: 12px; background: #008AC9;}
-	#header_language_list ul li.active {width: 25px; height: 20px;}
+	#header_language_list {text-align: right;}
+	#header_language_list ul { list-style: none; margin:0; padding:0;}
+	#header_language_list ul li {text-align: center; display:inline-block; margin:0 0 0 5px; padding:0; color: #fff; text-decoration:none; text-transform: uppercase; font-family: 'dinMed',sans-serif; font-size: 12px; background: #008AC9;}
+	#header_language_list ul li.active {width: 25px; height: 19px; padding-top: 1px;}
 	
 	#header_language_list ul li a, 
-	#header_language_list ul li a:visited { background: #58585A; color: #fff; display: inline-block;width: 25px; height: 20px;}
+	#header_language_list ul li a:visited { background: #58585A; color: #fff; display: inline-block;width: 25px; height: 19px; padding-top: 1px; }
 	#header_language_list ul li a:hover, #header_language_list ul li a:active{background: #008AC9;}
 
 .container.for-angle {background: transparent !important; overflow: visible; position: relative;}
@@ -331,7 +331,8 @@ input.wysija-email { border: 1px solid #ababac; padding: 0; width: 150px; height
 		
 	#sidebar aside#sidebar-newsletter {width: auto; padding: 10px; border: 1px solid #e4e5e5}
 	#sidebar aside#sidebar-newsletter div {padding: 0}
-	  aside#sidebar-newsletter h3 {font-size: 16px; text-transform: none; background: #fff none;color: #008ac9; padding: 0 0 10px;}
+	  aside#sidebar-newsletter h3 {font-size: 16px; text-transform: none; background: #fff none;color: #008ac9; padding: 0;}
+	  .widget_wysija_cont {margin-top: 10px}
 	  .wysija-p-email {margin: 0; float: left;}
 	  input.wysija-email {width: 268px; padding-left: 10px}
 	  p.wysija-instruct { color: #58585A; font-family: 'dinMed',sans-serif; font-size: 16px; margin: 0; background: transparent url(images/fleche-nl.png) no-repeat right bottom; padding: 0 20px 0 0; position: relative; top: -30px; float: right;}
@@ -442,7 +443,7 @@ input.wysija-email { border: 1px solid #ababac; padding: 0; width: 150px; height
 	Set to display none, prevents content flash
 */
 
-.slides_container { width:630px; overflow:hidden; position:relative; display:none; background: #fff}
+.slides_container { width:630px; overflow:hidden; position:relative; display:none; background-color: #fff;}
 
 /*
 	Each slide
@@ -491,7 +492,6 @@ input.wysija-email { border: 1px solid #ababac; padding: 0; width: 150px; height
 	float:left;
 	overflow:hidden;
 	text-indent: -99px;
-	box-shadow: -1px -1px 1px rgba(0, 0, 0, 0.1) inset;
 }
 
 #slider .pagination li.current a { background:#fff url(images/bg-post-title.png) repeat center center;}
@@ -501,18 +501,18 @@ input.wysija-email { border: 1px solid #ababac; padding: 0; width: 150px; height
 */
 
 #slider .caption {
-	z-index:500;
-	position:absolute;
+	z-index: 500;
+	position: absolute;
 	right: 0;
 	bottom: 30px;
-	height:16px;
-	padding:3px 40px 11px 15px;
-	background:#fff url(images/bg-post-title.png) repeat left top;	
-	width:auto;
-	font-size:16px;
+	height: 16px;
+	padding: 6px 40px 8px 15px;
+	background: #fff url(images/bg-post-title.png) repeat left top;	
+	width: auto;
+	font-size: 16px;
 	font-family: 'dinMed',sans-serif;
-	color:#fff;
-	text-shadow:none;
+	color: #fff;
+	text-shadow: none;
 }
 /*PARTNERS*/
 body #sidebar .widget-sidebar .partners {padding: 0; margin-bottom: -10px; border: 1px solid #D3D3D3;}

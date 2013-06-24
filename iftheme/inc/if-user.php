@@ -23,26 +23,30 @@ add_action('init','antenna_role',1);
  * This is only required for user with Antenna role and for Admin (user 1)
  */
 function extendUser_antenna($user_id){
-	global $profileuser;
+	  global $profileuser;
+    global $sitepress;
+
+    $default_lg = isset($sitepress) ? $sitepress->get_default_language() : get_site_lang();
+
     $userID = $user_id->ID;
     $userRole = $profileuser->roles[0];
-    
+
     $antennaz = get_antenna_users();
-    
+
     //display only top level categories even if no posts assign to it
     //FYI : add in array $args 'exclude'=>1 if you're not using the default category;
     $args = array('parent'=>0,'hide_empty'=>0);
     $categories = get_categories($args);
-    
+
     //exclude categories that are allready in use
     foreach($antennaz as $k => $o){
     	$cat = get_user_meta($o->ID, 'categ_to_antenna', true);
 	    $usedCateg[$cat]['cat'] = $cat; 
 	    $usedCateg[$cat]['user'] = $o->ID; 
     }  
-
+    
     foreach($categories as $c => $v){
-      $tid = function_exists('icl_object_id') ? icl_object_id($v->term_id, 'category', true, 'fr') : $v->term_id;
+      $tid = function_exists('icl_object_id') ? icl_object_id($v->term_id, 'category', true, $default_lg) : $v->term_id;
 	    if(isset($usedCateg[$tid]['cat']) && $userID != $usedCateg[$tid]['user']){
 		    unset($categories[$c]);
 	    }
@@ -51,18 +55,22 @@ function extendUser_antenna($user_id){
     if($userRole == "administrator" || $userRole == "antenna" && current_user_can('publish_posts')) : ?>
    
     <h3><?php echo __('Category assigned to this Antenna', 'iftheme');?></h3>
-  <?php if(!empty($categories)):?>
+ 
+  <?php if( !empty($categories) ): ?>
     <table class="form-table if-form-table">
-        <tr>
-        <?php foreach($categories as $category) : ?>
-            	<th scope="row"><label for="<?php echo $category->slug;?>"><?php echo $category->name; ?></label></th>
-            	<td><input type="radio" name="categ_to_antenna" value="<?php echo function_exists('icl_object_id') ? icl_object_id($category->term_id, 'category', true, 'fr') : $category->term_id; ?>" <?php checked( get_user_meta($userID, "categ_to_antenna", true), $category->term_id ); ?> /></td>
-        <?php endforeach; ?>
-        </tr>
+      <tr>
+      <?php foreach($categories as $category) : 
+        $categID = function_exists('icl_object_id') ? icl_object_id($category->term_id, 'category', true, $default_lg) : $category->term_id; ?>
+        <th scope="row"><label for="<?php echo $category->slug;?>"><?php echo $category->name; ?></label></th>
+        <td><input type="radio" name="categ_to_antenna" value="<?php echo $categID ?>" <?php checked( get_user_meta($userID, "categ_to_antenna", true), $categID ); ?> /></td>
+      <?php endforeach; ?>
+      </tr>
     </table>
+    
   <?php else: ?>
     <?php _e('You must create another top level category to assign to this user', 'iftheme');?>
     <?php defined('ICL_LANGUAGE_CODE') ? _e('Or there is no category in this language', 'iftheme') : '';?>
+  
   <?php endif;?>
 <?php 
     endif;

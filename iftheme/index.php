@@ -1,17 +1,13 @@
 <?php get_header(); ?>
 
 <?php if($multi) : ?>
-	<?php require_once('multi-front-page.php');?>
-<?php else :?>
+	<?php require_once( 'multi-front-page.php' );?>
 
+<?php else :?>
 	<div id="content"><span class="none" style="color:gray"><i>FRONT FOR SINGLE ANTENNA</i></span>
 <?php 	
   	  global $sitepress;
   	  $default_lg = isset($sitepress) ? $sitepress->get_default_language() : 'fr';//assuming that 'fr' should be default language
-/*
-  	  $antenna = get_current_antenna();
-	    $original = function_exists('icl_object_id') ? icl_object_id($currenta, 'category', true, $default_lg) : $antenna;
-*/
 
   	  $antenna = get_current_parent_categ();
 	    $original = function_exists('icl_object_id') ? icl_object_id($antenna, 'category', true, $default_lg) : $antenna;
@@ -139,7 +135,7 @@
         			end = end.replace(endYear, '');
         			end = end !== start ? end : time;
         			
-        			if(end !== start) thisPostEnd.text(' / '+end);
+        			if (end) if(end !== start) thisPostEnd.text(' / '+end);
         			
       			</script>
 

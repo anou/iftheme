@@ -2,23 +2,23 @@
 <div id="content"><span style="color:#ccc" class="none"> Home Page ONE ANTENNA in MULTI </span>
 <?php 
   	  global $sitepress;
-  	  //$default_lg = isset($sitepress) ? $sitepress->get_default_language() : 'fr';//assuming that 'fr' should be default language
   	  $default_lg = isset($sitepress) ? $sitepress->get_default_language() : get_site_lang();
-  	  //$currenta = get_current_antenna();
+  	  //$default_lg = isset($sitepress) ? $sitepress->get_default_language() : 'fr';//assuming that 'fr' should be default language
+
   	  $currenta = get_current_parent_categ();
 	    $original = function_exists('icl_object_id') ? icl_object_id($currenta, 'category', true, $default_lg) : $currenta;
 	
 	if(get_query_var('cat') === $currenta && $multi):?>
 	
 	<?php $args_slider = array(
-			'post_type'=> 'if_slider',
-			'order'    => 'DESC',
-			'meta_query' => array(
-        array(
-          'key' => 'slide_antenna',
-          'value' => $original
+  			'post_type'=> 'if_slider',
+  			'order'    => 'DESC',
+  			'meta_query' => array(
+          array(
+            'key' => 'slide_antenna',
+            'value' => $original
+          ),
         ),
-      ),
 			);
 			
   		query_posts( $args_slider );
@@ -69,18 +69,18 @@
 		
 	<?php //get displayed home categories for antenna
 		$home_cat = isset($options[$original]['theme_home_categ']) ? $options[$original]['theme_home_categ'][0] : '';
-
+		
 		if($home_cat):?>
 			<div id="home-list">
-			<?php foreach($home_cat as $id):?>
-				<?php $cat = get_the_category_by_ID($id);?>
+			<?php foreach($home_cat as $id): ?>
+				<?php $cat = get_the_category_by_ID($id); ?>
 				<div class="block-home">
 					<h2 class="posts-category"><?php echo $cat;?></h2>
 					<?php //alter query
 					$time = (time() - (60*60*24));
 					$paged = (get_query_var('paged')) ? get_query_var('paged') : 1;
           $args = array(
-             'cat' => $id,
+             'cat' => (int)$id,
              'meta_key' => 'if_events_startdate',
              'orderby' => 'meta_value_num',
              'order' => 'ASC',
@@ -137,21 +137,19 @@
         			end = end.replace(endYear, '');
         			end = end !== start ? end : time;
         			
-        			if(end !== start) thisPostEnd.text(' / '+end);
+        			if (end) if(end !== start) thisPostEnd.text(' / '+end);
         			
       			</script>
 					<?php endwhile; ?>
-
-					<?php iftheme_content_nav( 'nav-below' ); //next-prev nav ?>
-
 					<?php wp_reset_query();?>
+
 					<?php else: ?>
 						<div class="no-results bxshadow">
 							<p><?php _e('No post for the moment','iftheme'); ?></p>
 						</div><!--noResults-->
 					<?php endif; ?>
 				</div><!-- /.block-home -->
-			<?php endforeach;?>
+			<?php endforeach; ?>
 			</div>
 		<?php else : ?>
 			<div class="no-results bxshadow">
@@ -220,11 +218,14 @@
   			end = end.replace(endYear, '');
   			end = end !== start ? end : time;
   			
-  			if(end !== start) thisPostEnd.text(' / '+end);
+  			if (end) if(end !== start) thisPostEnd.text(' / '+end);
   			
 			</script>
 
 		<?php endwhile; ?>
+		
+		<?php iftheme_content_nav( 'nav-below' ); //next-prev nav ?>
+
 		<!-- OLD POSTS -->
 		<?php elseif (!have_posts() && !empty($data['posts'])) : 
   		//list old post/event from this category
@@ -287,11 +288,14 @@
   			end = end.replace(endYear, '');
   			end = end !== start ? end : time;
   			
-  			if(end !== start) thisPostEnd.text(' / '+end);
+  			if (end) if(end !== start) thisPostEnd.text(' / '+end);
   			
 			</script>
 
   		<?php endwhile; ?>
+      
+      <?php iftheme_content_nav( 'nav-below' ); //next-prev nav ?>
+
   		<?php endif;?>		
   		<?php wp_reset_query();?>
  		<?php else: /* ?>
@@ -300,8 +304,6 @@
 			</div><!--noResults-->
 		<?php */ endif; ?>
 		
-		<?php iftheme_content_nav( 'nav-below' ); //next-prev nav ?>
-	
 	<?php endif;?>
 
 </div><!--#content-->

@@ -884,7 +884,7 @@ function get_meta_partners($pid=''){
 	$tab_imgz = get_post_meta($pid,'re_');
 	
 	if(!$tab_imgz[0]) { 
-		$data = '<div class="msg warning">'.sprintf( __('Your content <em>Partner</em> is empty. <a href="/wp-admin/post.php?post=%s&action=edit"> >Edit</a>','iftheme') , $pid ).'</div>'; 
+		$data = '<div class="msg warning">'. sprintf( __('Your content <em>Partner</em> is empty. <a href="/wp-admin/post.php?post=%s&action=edit"> >Edit</a>','iftheme') , $pid ) .'</div>'; 
 	} else {
 		foreach($tab_imgz[0] as $k => $vals){
 			$data['partners']['part-'.$k] = $vals;
@@ -1139,9 +1139,7 @@ function showMessage($message, $errormsg = false) {
 } 
    
 function categMsg(){
-	//if (user_can('manage_options') {
-   showMessage("You must ask your administrator to select a user's category");
-    //}
+   showMessage(__("You must ask your administrator to select a user's category", 'iftheme'));
 }
 
 // enables wigitized sidebars
@@ -1184,7 +1182,6 @@ if ( function_exists('register_sidebar') ) {
 			} else {
 				register_sidebar(array('name'=>'Sidebar '. get_cat_slug($user_categ),
 					'id' => 'sidebar-'.$user_categ,
-					//'description' => __("This sidebar is for ". get_cat_slug($user_categ) ." ",'iftheme'),
 					'description' => sprintf( __("This sidebar is for %s only" , 'iftheme') , get_cat_slug($user_categ) ),
 					'before_widget' => '<aside class="widget-area widget-sidebar bxshadow">',
 					'after_widget' => '</aside>',
@@ -1282,23 +1279,23 @@ if(function_exists('icl_get_languages')) {
 	function rss_comment_footer($content) {
 		if (is_feed()) {
 			if (comments_open()) {
-				$content .= 'Comments are open! <a href="'.get_permalink().'">Add yours!</a>';
+				$content .=  sprintf( __('Comments are open! <a href="%s">Add yours!</a>','iftheme') , get_permalink() );
 			}
 		}
 		return $content;
 	}
 
-  if ( ! function_exists( 'twentyeleven_continue_reading_link' ) ) :
+  if ( ! function_exists( 'iftheme_continue_reading_link' ) ) :
     /**
      * Returns a "Continue Reading" link for excerpts
      */
     function iftheme_continue_reading_link() {
     	return '<a href="'. esc_url( get_permalink() ) . '" class="read-more">'.__('Continue Reading','iftheme').' >'.'</a>';
     }
-  endif; // twentyeleven_continue_reading_link
+  endif; // iftheme_continue_reading_link
 
   /**
-   * Replaces "[...]" (appended to automatically generated excerpts) with an ellipsis and twentyeleven_continue_reading_link().
+   * Replaces "[...]" (appended to automatically generated excerpts) with an ellipsis and iftheme_continue_reading_link().
    *
    * To override this in a child theme, remove the filter and add your own
    * function tied to the excerpt_more filter hook.

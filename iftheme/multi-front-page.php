@@ -49,53 +49,62 @@
 	<?php else :?><div class="msg warning"><?php _e("You don't have any <em>Slider</em> recorded yet. <a href=\"/wp-admin/post-new.php?post_type=if_slider\">Add one now ?</a>"); ?></div>
 	<?php endif; ?>
 				
-	<?php //get displayed home categories for antenna 
-	
-		$home_cat = isset($options[1]['theme_home_categ_country']) ? $options[1]['theme_home_categ_country'][0] : '';
+	<?php 
+	  // Get admin categ. Only admin can configure country homepage
+	  $categAdmin = get_cat_if_user(1);
+	  // Get displayed home categories for antenna.
+		$home_cat = isset($options[$categAdmin]['theme_home_categ_country']) ? $options[$categAdmin]['theme_home_categ_country'][0] : '';
 		
-		if($home_cat):?>
+		if($home_cat):
+    /**
+     * Homepage country
+     */
+    ?>
 			<div id="home-list">
 			<?php foreach($home_cat as $id):?>
-				<?php $cat = get_category($id); $antparent = get_cat_name($cat->parent);?>
+				<?php $cat = get_category($id); $antparent = get_cat_name(get_root_category($id));?>
 				<div class="block-home">
 					<h2 class="posts-category"><?php echo $cat->name;?> / <?php echo $antparent;?></h2>
 					<?php //alter query
+					$time = (time() - (60*60*24));
           $args = array(
              'cat' => $id,
              'meta_key' => 'if_events_startdate',
              'orderby' => 'meta_value_num',
              'order' => 'ASC',
-             'posts_per_page' => -1,
+             'posts_per_page' => $options[$categAdmin]['theme_home_nb_events_country'],
              'meta_query' => array(
                  array(
                      'key' => 'if_events_enddate',
-                     'value' => (time() - (60*60*24)),
+                     'value' => $time,
                      'compare' => '>=',
                  )
              )
            );					
 					query_posts($args); ?>
+					
 					<?php if (have_posts()) : while (have_posts()) : the_post(); ?>
 						<?php //prepare data 
-
 								$pid = get_the_ID();
 								$data = get_meta_if_post($pid);
 								$start = $data['start'];
 								$end = $data['end'];
 								$antenna_id = $data['antenna_id'];
-								 
-?>
+						?>
 						<article class="post-single-home clearfix" id="post-<?php the_ID();?>">
 							<div class="top-block">
-								<?php if($start):?><div class="date-time"><span class="start"><?php echo $start;?></span><span class="end"><?php echo $end;?></span><?php endif;?><span class="post-antenna"><?php if('page' == get_post_type()){ bloginfo('description'); } else { echo ' - '.get_cat_name($antenna_id);}?></span></div>
+							  <div class="date-time">
+								  <?php if($start):?><span class="start"><?php echo $start;?></span><span class="end"><?php echo $end;?></span><?php endif;?>
+                  <span class="post-antenna"><?php echo 'page' == get_post_type() ? bloginfo('description') : ' - ' . get_cat_name($antenna_id);?></span>
+						    </div><!-- /.date-time -->
 								<h3 class="post-title"><a href="<?php the_permalink() ?>" title="<?php the_title(); ?>" rel="bookmark"><?php the_title(); ?></a></h3>
-							</div>
+							</div><!-- /.top-block -->
+							
 							<?php if ( has_post_thumbnail() ) : /* loades the post's featured thumbnail, requires Wordpress 3.0+ */ ?>
-								<div class="featured-thumbnail-home"><a href="<?php the_permalink() ?>" title="<?php the_title(); ?>" rel="bookmark"><?php echo  the_post_thumbnail('home-block');?></a></div>
+								<div class="featured-thumbnail-home"><a href="<?php the_permalink() ?>" title="<?php the_title(); ?>" rel="bookmark"><?php echo the_post_thumbnail('home-block');?></a></div>
+							
 							<?php else : ?>
-								<div class="post-excerpt">
-									<?php the_excerpt(); /* the excerpt is loaded to help avoid duplicate content issues */ ?>
-								</div>
+								<div class="post-excerpt"><?php the_excerpt(); ?></div>
 							<?php endif;?>
 						</article><!--.post-single-->
       			<?php //prepare data for dates in JS 
@@ -119,19 +128,12 @@
         			end = end.replace(endYear, '');
         			end = end !== start ? end : time;
         			
-        			if(end !== start) thisPostEnd.text(' / '+end);
+        			if (end) if(end !== start) thisPostEnd.text(' / '+end);
         			
       			</script>
 					<?php endwhile; ?>
-
-<!--
-		<div class="oldernewer">
-			<p class="older"><?php next_posts_link('&laquo; Older Entries') ?></p>
-			<p class="newer"><?php previous_posts_link('Newer Entries &raquo;') ?></p>
-		</div>
--->
-
 					<?php wp_reset_query();?>
+
 					<?php else: ?>
 						<div class="no-results bxshadow">
 							<p><?php _e('No post for the moment','iftheme'); ?></p>
@@ -146,16 +148,26 @@
 			</div><!--noResults-->
 		<?php endif; ?>	
 	
-	<?php else: //Page category ------------------------ ?>
+	<?php else: 
+    /** 
+     * Page for 1 category 
+     */
+    ?>
 		<?php //prepare data (key are img, children, posts)
 			$data = get_categ_data(get_query_var('cat'));
 		?>
 			<h1><?php echo single_cat_title( '', false ); ?></h1>
-			<?php if(!empty($data['img'])) : $img = wp_get_attachment_image_src( $data['img']['id'],'categ-img');?><div class="categ-image"><img src="<?php echo $img[0]; ?>" width="<?php echo $img[1]; ?>" height="<?php echo $img[2]; ?>" alt="" /></div><?php endif;?>
-			<div class="description"><?php echo category_description(); /* displays the category's description from the Wordpress admin */ ?></div>
+			<?php if(!empty($data['img'])) : $img = wp_get_attachment_image_src( $data['img']['id'],'categ-img');?>
+			  <div class="categ-image">
+			    <img src="<?php echo $img[0]; ?>" width="<?php echo $img[1]; ?>" height="<?php echo $img[2]; ?>" alt="" />
+			  </div>
+			 <?php endif;?>
+       <div class="description"><?php echo category_description(); ?></div>
 		<!-- Child categories -->
 		<?php if(!empty($data['children'])):?>
-			<ul class="display-children"><?php wp_list_categories('title_li=&use_desc_for_title=0&hide_empty=0&depth=1&child_of='.get_query_var('cat')); ?></ul>
+			<ul class="display-children">
+			  <?php wp_list_categories('title_li=&use_desc_for_title=0&hide_empty=0&depth=1&child_of='.get_query_var('cat')); ?>
+      </ul>
 		<?php endif;?>
 		<!-- POSTS -->
 		<?php if (have_posts() && !empty($data['posts'])) : ?> 
@@ -169,15 +181,15 @@
 					$start = $data['start'];
 					$end = $data['end'];  
 				?>
-				<?php if ( has_post_thumbnail() ) { /* loades the post's featured thumbnail, requires Wordpress 3.0+ */ echo '<div class="featured-thumbnail">'; the_post_thumbnail('listing-post'); echo '</div>'; } ?>
+				<?php if ( has_post_thumbnail() ) { echo '<div class="featured-thumbnail">'; the_post_thumbnail('listing-post'); echo '</div>'; } ?>
 				<div class="top-block bxshadow">
 					<div class="date-time">
-						<?php if($start):?><span class="start"><?php echo $start;?></span><span class="end"><?php echo $end;?></span><?php endif;?><span class="post-antenna"><?php if('page' == get_post_type()){ bloginfo('description'); } else { echo ' - '.get_cat_name($antenna);}?></span>
+						<?php if($start):?><span class="start"><?php echo $start;?></span><span class="end"><?php echo $end;?></span><?php endif;?><span class="post-antenna"><?php echo 'page' == get_post_type() ? bloginfo('description') : ' - ' . get_cat_name($antenna); ?></span>
 					</div>
 					<h2><a href="<?php the_permalink() ?>" title="<?php the_title(); ?>" rel="bookmark"><?php the_title(); ?></a></h2>
 				</div>
 				<div class="post-excerpt">
-					<?php the_excerpt(); /* the excerpt is loaded to help avoid duplicate content issues */ ?>
+					<?php the_excerpt(); ?>
 				</div>
 				<div class="post-meta"><?php the_category(', ') ?></div>
 		

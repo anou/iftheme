@@ -11,7 +11,7 @@ $options = get_antennas_details();
 //Make antenna id accessible everywhere
 global $antenna;
 $antenna = get_current_antenna();
-if($multi && is_front_page() && is_home()) {$antenna = 'front';}
+if($multi && is_front_page() && is_home()) { $antenna = 'front'; }
 
 global $sitepress;
 $default_lg = isset($sitepress) ? $sitepress->get_default_language() : 'fr';//assuming that 'fr' should be default language
@@ -34,9 +34,9 @@ global $current_user; get_currentuserinfo();
 	} elseif ( is_tag() ) {
 		echo single_tag_title(); echo '&quot; | '; bloginfo( 'name' );
 	} elseif ( is_archive() ) {
-		wp_title(''); echo ' Archive | '; bloginfo( 'name' );
+		wp_title(''); echo ' '. __('Archive |'); ' '.bloginfo( 'name' );
 	} elseif ( is_search() ) {
-		echo 'Search for &quot;'.wp_specialchars($s).'&quot; | '; bloginfo( 'name' );
+		echo sprintf( __('Search for &quot;%s&quot; |', 'iftheme'), wp_specialchars($s) ); ' '.bloginfo( 'name' );
 	} elseif ( is_home() ) {
 		bloginfo( 'name' ); echo ' | '; bloginfo( 'description' );
 	}  elseif ( is_404() ) {

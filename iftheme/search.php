@@ -47,7 +47,7 @@
   			end = end.replace(endYear, '');
   			end = end !== start ? end : time;
   			
-  			if(end !== start) thisPostEnd.text(' / '+end);
+  			if (end) if(end !== start) thisPostEnd.text(' / '+end);
   			
 			</script>
 

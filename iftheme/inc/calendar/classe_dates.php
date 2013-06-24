@@ -153,7 +153,7 @@
 					
 				case "mai":
 				case "may":
-				case "mayıs":			
+				case "mayıs":		case "may":			
 					$num = "05";		break;
 					
 				case "juin":			case "jun":
@@ -685,12 +685,5 @@
 
 			return ($this->convert($a_format,$unxNewDate));
 		}
-	
-
-
-
-
-}	
-
-
+}
 ?>
