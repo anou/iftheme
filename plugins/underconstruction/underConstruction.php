@@ -3,7 +3,7 @@
  Plugin Name: Under Construction
  Plugin URI: http://www.masseltech.com/
  Description: Makes it so your site can only be accessed by users who log in. Useful for developing a site on a live server, without the world being able to see it
- Version: 1.10
+ Version: 1.11
  Author: Jeremy Massel
  Author URI: http://www.masseltech.com/
  */
@@ -21,6 +21,7 @@
  You should have received a copy of the GNU General Public License
  along with underConstruction.  If not, see <http://www.gnu.org/licenses/>.
  */
+
 ?>
 <?php
 class underConstruction
@@ -136,8 +137,13 @@ class underConstruction
 		if(!$this->pluginIsActive()){
 			return;
 		}
-		if(get_option('underConstructionRequiredRole') && is_admin()){
-			$editable_roles = get_editable_roles();
+
+		if(get_option('underConstructionRequiredRole') && is_user_logged_in()){
+			
+			global $wp_roles;
+			$all_roles = $wp_roles->roles;
+					
+			$editable_roles = apply_filters('editable_roles', $all_roles);
 
 			$required_role = $editable_roles[get_option('underConstructionRequiredRole')];
 
