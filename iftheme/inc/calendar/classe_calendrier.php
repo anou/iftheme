@@ -17,8 +17,7 @@
 
 
 	
-	class classe_calendrier extends classe_date
-	{
+class classe_calendrier extends classe_date {
 	
 
 /*_______________________________________________________________________________________________________________	
@@ -66,8 +65,8 @@
 */
 		private function _ecritFonctionAjax()
 		{
-			$codeJs = "";
-			$codeJs .= "<script language=\"javascript\">";
+			$codeJs = '';
+			$codeJs .= '<script language="javascript">';
 				// mise à jour du calendrier
 				$codeJs .= "function navigCalendrier(annee,mois,lang)";
 				$codeJs .= "{";
@@ -125,6 +124,16 @@
 			$this->lienMois = basename($_SERVER['PHP_SELF'])."?";
 			$this->lienSemaines = basename($_SERVER['PHP_SELF'])."?";
 			$this->lienJours = basename($_SERVER['PHP_SELF'])."?";
+			
+			//replace jours
+			$this->days = array( __("Sunday",'iftheme'), __("Monday",'iftheme'), __("Tuesday",'iftheme'), __("Wednesday",'iftheme'), __("Thursday",'iftheme'), __("Friday",'iftheme'), __("Saturday",'iftheme'),  __("Sunday",'iftheme') );
+      //replace joursC
+			$this->daysC = array( __("Sun.",'iftheme'), __("Mon.",'iftheme'), __("Tue.",'iftheme'), __("Wed.",'iftheme'), __("Thu.",'iftheme'), __("Fri.",'iftheme'), __("Sat.",'iftheme'), __("Sun.",'iftheme') );
+			//replace mois
+			$this->month = array( 1 => __("January",'iftheme'), 2 => __("February",'iftheme'), 3 => __("March",'iftheme'), 4 => __("April",'iftheme'), 5 => __("May",'iftheme'), 6 => __("June",'iftheme'), 7 => __("July",'iftheme'), 8 => __("August",'iftheme'), 9 => __("September",'iftheme'), 10 => __("October",'iftheme'), 11 => __("November",'iftheme'), 12 => __("December",'iftheme') );
+			//replace moisC
+			$this->monthC = array( 1 => __("Jan.",'iftheme'), 2 => __("Feb.",'iftheme'), 3 => __("Mar.",'iftheme'), 4 => __("Apr.",'iftheme'), 5 => __("May",'iftheme'), 6 => __("Jun.",'iftheme'), 7 => __("Jul.",'iftheme'), 8 => __("Aug.",'iftheme'), 9 => __("Sep.",'iftheme'), 10 => __("Oct.",'iftheme'), 11 => __("Nov.",'iftheme'), 12 => __("Dec.",'iftheme') );
+
 			if (strlen($a_name)>0)
 				$this->calName = $a_name;
 		}
@@ -192,7 +201,7 @@
 		public function setTargetLiens ($a_target="")
 		{
 			if (strlen($a_target)>0)
-				$this->targetLiens = " target=\"".$a_target."\"";
+				$this->targetLiens = ' target="'.$a_target.'"';
 		}
 
 
@@ -202,7 +211,7 @@
 		public function setTargetNavig ($a_target="")
 		{
 			if (strlen($a_target)>0)
-				$this->targetNavig = " target=\"".$a_target."\"";
+				$this->targetNavig = ' target="'.$a_target.'"';
 		}
 
 
@@ -411,8 +420,8 @@
 
 
 
-			$code =  "<div id=\"calendrier\">\n";
-			$code .=  "<table>\n";
+			$code = '<div id="calendrier">';
+			$code .=  '<table cellpadding="0" cellspacing="0" border="0">';
 
 			// nombre de colonnes
 			$nbCols = $this->csemaines ? 8 : 7;
@@ -459,10 +468,12 @@
 				$code .=  "<tr>\n";
 				if ($this->csemaines)
 					$code .=  '<th>&nbsp;</th>';
-					
+
 				for ($j=1; $j<=7; $j++) {
-					//$code .=  '<th class="jour">' . substr($this->jours[$this->lng][$j],0,3) . '</th>';
-					$code .=  '<th class="jour">' . $this->joursC[$this->lng][$j] . '</th>';
+					$code .=  '<th class="jour">';
+					$code .= !$this->jourCourt ? $this->jours[$this->lng][$j] : $this->joursC[$this->lng][$j];
+					//$code .= !$this->jourCourt ? $this->days[$j] : $this->daysC[$j];
+					$code .= '</th>';
 				}
 				
 				$code .=  "</tr>\n";
@@ -494,8 +505,7 @@
 			
 			
 			// jours du mois
-			for ($i=1; $i<43; $i++)
-			{
+			for ($i=1; $i<43; $i++) {
 				$jour = $i-$decal+1;
 				$jourStr = sprintf("%04d-%02d-%02d",$a_annee,$a_mois,$jour);
 				$jourUnx = parent::convert("UNX",$jourStr);
@@ -633,13 +643,13 @@
 				($this->dateMin && $this->convert("SQL",$date) <= $this->convert("SQL",$this->dateMin))		// date inferieure à limite inf
 				|| (!$this->passe && $this->convert("SQL",$date) <= gmdate("Y-m-d"))
 				)
-					$code .= "<th class=\"mois\">&nbsp;</th>";
+					$code .= '<th class="mois">&nbsp;</th>';
 				else
-					$code .= "<th class=\"mois\"><a ". (strlen($lienMoisPrec)>0 ? "href=\"".$lienMoisPrec."\"" : "") .$onclickPrec.$this->targetNavig."><b><</b></a></th>";
+					$code .= '<th class="mois"><a '. (strlen($lienMoisPrec)>0 ? "href=\"".$lienMoisPrec."\"" : "") .$onclickPrec.$this->targetNavig."><b><</b></a></th>";
 
 
 				// lien mois en cours	
-				$code .=  "<th colspan=\"".$colspan."\" class=\"mois\">".($this->lienMoisActif ? "<a href=\"".$lienMois."\"".$this->targetLiens.">" : "") . sprintf("%s %04d",$this->_num2Month($moisCur),$a_annee).($this->lienMoisActif ? "</a>" : "") . "</th>";
+				$code .=  '<th colspan="'.$colspan.'" class="mois">'.($this->lienMoisActif ? '<a href="'.$lienMois.'"'.$this->targetLiens.'>' : '') . sprintf("%s %04d",$this->_num2Month($moisCur),$a_annee).($this->lienMoisActif ? '</a>' : '') . '</th>';
 				
 				
 
@@ -650,9 +660,9 @@
 				($this->dateMax && $this->getDateFrom($max,"SQL",$date) >= $this->convert("SQL",$this->dateMax))		// date inferieure à limite inf
 				|| (!$this->futur && $this->getDateFrom($max,"SQL",$date) >= gmdate("Y-m-d"))
 				)
-					$code .= "<th class=\"mois\">&nbsp;</th>";
+					$code .= '<th class="mois">&nbsp;</th>';
 				else
-					$code .= "<th class=\"mois\"><a ". (strlen($lienMoisSuiv)>0 ? "href=\"".$lienMoisSuiv."\"" : "") .$onclickSuiv.$this->targetNavig."><b>></b></a></th>";
+					$code .= '<th class="mois"><a '. (strlen($lienMoisSuiv)>0 ? 'href="'.$lienMoisSuiv.'"' : '') .$onclickSuiv.$this->targetNavig.'><b>></b></a></th>';
 
 				$code .=  "</tr>\n";
 			}
@@ -661,7 +671,7 @@
 			// affichage des événements
 			if ($this->cevents)
 			{
-				$code .= "<div id=\"calendrier_events\">";
+				$code .= '<div id="calendrier_events">';
 				$code .= $codeEvent;
 				$code .= "</div>";
 			}
