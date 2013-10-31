@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Institut Français theme\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-06-25 01:45+0100\n"
-"PO-Revision-Date: 2013-06-25 01:46+0100\n"
+"POT-Creation-Date: 2013-10-20 08:50+0100\n"
+"PO-Revision-Date: 2013-10-20 08:50+0100\n"
 "Last-Translator: David Thomas <anou@smol.org>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -12,7 +12,7 @@ msgstr ""
 "X-Poedit-KeywordsList: __;_e;_x;_ex;_n\n"
 "X-Poedit-Basepath: .\n"
 "X-Poedit-SourceCharset: UTF-8\n"
-"X-Generator: Poedit 1.5.5\n"
+"X-Generator: Poedit 1.5.7\n"
 "X-Poedit-SearchPath-0: ../../iftheme\n"
 
 #: ../../iftheme/404.php:5
@@ -554,7 +554,7 @@ msgid "Display header's menu pages"
 msgstr ""
 
 #: ../../iftheme/inc/theme-options.php:75
-msgid "Use wysija theme form"
+msgid "Use MailPoet Newsletter's theme form"
 msgstr ""
 
 #: ../../iftheme/inc/theme-options.php:80
@@ -662,14 +662,14 @@ msgstr ""
 
 #: ../../iftheme/inc/theme-options.php:413
 msgid ""
-"Check this box to use and display the wysija newsletter subscription form "
-"embedded in the IF theme"
+"Check this box to use and display the MailPoet Newsletters (formerly Wysija) "
+"subscription form embedded in the IF theme"
 msgstr ""
 
 #: ../../iftheme/inc/theme-options.php:419
 msgid ""
-"This section is where you can save the social sites where readers can find "
-"you on the Internet."
+"This section is where you can save the social networks where readers can "
+"find you on the Internet."
 msgstr ""
 
 #: ../../iftheme/inc/theme-options.php:474
@@ -696,6 +696,155 @@ msgstr ""
 #: ../../iftheme/inc/theme-taxo-classes.php:39
 msgid ""
 "Uncheck this box if you want disable the display of the category's posts"
+msgstr ""
+
+#: ../../iftheme/inc/calendar/classe_calendrier.php:129
+msgid "Sunday"
+msgstr ""
+
+#: ../../iftheme/inc/calendar/classe_calendrier.php:129
+msgid "Monday"
+msgstr ""
+
+#: ../../iftheme/inc/calendar/classe_calendrier.php:129
+msgid "Tuesday"
+msgstr ""
+
+#: ../../iftheme/inc/calendar/classe_calendrier.php:129
+msgid "Wednesday"
+msgstr ""
+
+#: ../../iftheme/inc/calendar/classe_calendrier.php:129
+msgid "Thursday"
+msgstr ""
+
+#: ../../iftheme/inc/calendar/classe_calendrier.php:129
+msgid "Friday"
+msgstr ""
+
+#: ../../iftheme/inc/calendar/classe_calendrier.php:129
+msgid "Saturday"
+msgstr ""
+
+#: ../../iftheme/inc/calendar/classe_calendrier.php:131
+msgid "Sun."
+msgstr ""
+
+#: ../../iftheme/inc/calendar/classe_calendrier.php:131
+msgid "Mon."
+msgstr ""
+
+#: ../../iftheme/inc/calendar/classe_calendrier.php:131
+msgid "Tue."
+msgstr ""
+
+#: ../../iftheme/inc/calendar/classe_calendrier.php:131
+msgid "Wed."
+msgstr ""
+
+#: ../../iftheme/inc/calendar/classe_calendrier.php:131
+msgid "Thu."
+msgstr ""
+
+#: ../../iftheme/inc/calendar/classe_calendrier.php:131
+msgid "Fri."
+msgstr ""
+
+#: ../../iftheme/inc/calendar/classe_calendrier.php:131
+msgid "Sat."
+msgstr ""
+
+#: ../../iftheme/inc/calendar/classe_calendrier.php:133
+msgid "January"
+msgstr ""
+
+#: ../../iftheme/inc/calendar/classe_calendrier.php:133
+msgid "February"
+msgstr ""
+
+#: ../../iftheme/inc/calendar/classe_calendrier.php:133
+msgid "March"
+msgstr ""
+
+#: ../../iftheme/inc/calendar/classe_calendrier.php:133
+msgid "April"
+msgstr ""
+
+#: ../../iftheme/inc/calendar/classe_calendrier.php:133
+#: ../../iftheme/inc/calendar/classe_calendrier.php:135
+msgid "May"
+msgstr ""
+
+#: ../../iftheme/inc/calendar/classe_calendrier.php:133
+msgid "June"
+msgstr ""
+
+#: ../../iftheme/inc/calendar/classe_calendrier.php:133
+msgid "July"
+msgstr ""
+
+#: ../../iftheme/inc/calendar/classe_calendrier.php:133
+msgid "August"
+msgstr ""
+
+#: ../../iftheme/inc/calendar/classe_calendrier.php:133
+msgid "September"
+msgstr ""
+
+#: ../../iftheme/inc/calendar/classe_calendrier.php:133
+msgid "October"
+msgstr ""
+
+#: ../../iftheme/inc/calendar/classe_calendrier.php:133
+msgid "November"
+msgstr ""
+
+#: ../../iftheme/inc/calendar/classe_calendrier.php:133
+msgid "December"
+msgstr ""
+
+#: ../../iftheme/inc/calendar/classe_calendrier.php:135
+msgid "Jan."
+msgstr ""
+
+#: ../../iftheme/inc/calendar/classe_calendrier.php:135
+msgid "Feb."
+msgstr ""
+
+#: ../../iftheme/inc/calendar/classe_calendrier.php:135
+msgid "Mar."
+msgstr ""
+
+#: ../../iftheme/inc/calendar/classe_calendrier.php:135
+msgid "Apr."
+msgstr ""
+
+#: ../../iftheme/inc/calendar/classe_calendrier.php:135
+msgid "Jun."
+msgstr ""
+
+#: ../../iftheme/inc/calendar/classe_calendrier.php:135
+msgid "Jul."
+msgstr ""
+
+#: ../../iftheme/inc/calendar/classe_calendrier.php:135
+msgid "Aug."
+msgstr ""
+
+#: ../../iftheme/inc/calendar/classe_calendrier.php:135
+msgid "Sep."
+msgstr ""
+
+#: ../../iftheme/inc/calendar/classe_calendrier.php:135
+msgid "Oct."
+msgstr ""
+
+#: ../../iftheme/inc/calendar/classe_calendrier.php:135
+msgid "Nov."
+msgstr ""
+
+#: ../../iftheme/inc/calendar/classe_calendrier.php:135
+msgid "Dec."
 msgstr ""
 
 #: ../../iftheme/inc/events/if-events.php:25

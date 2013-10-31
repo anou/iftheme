@@ -72,7 +72,7 @@ function iftheme_theme_options_init() {
 	if($current_user->ID === 1) {
 	  add_settings_section('special_setting_section', __('Special settings','iftheme'), 'special_setting_section_callback_function','theme_options');
 	  add_settings_field('theme_options_setting_header', __("Display header's menu pages",'iftheme'),'theme_options_setting_header_callback_function','theme_options','special_setting_section');
-	  add_settings_field('theme_options_wysija_embed', __("Use wysija theme form",'iftheme'),'theme_options_setting_wysija_embed_callback_function','theme_options','special_setting_section');
+	  add_settings_field('theme_options_wysija_embed', __("Use MailPoet Newsletter's theme form",'iftheme'),'theme_options_setting_wysija_embed_callback_function','theme_options','special_setting_section');
 	  
 	  //TODO: ADD choice of bg color : array(#ADA59A,#ECB813,#FF4B00,#BAC900,#595959,#D2204C,#55BCBE,#3E647E)
   }
@@ -410,13 +410,13 @@ function theme_options_setting_wysija_embed_callback_function() {
 	$defaults = iftheme_get_default_theme_options();
   $checked = isset($options['theme_options_setting_wysija_embed']) ? $options['theme_options_setting_wysija_embed'] : $defaults['theme_options_setting_wysija_embed'];
 ?>
-	<input name="iftheme_theme_options_<?php echo $antenna;?>[theme_options_setting_wysija_embed]" id="theme_options_setting_wysija_embed" type="checkbox"  value="1" <?php checked( $checked, 1 ); ?> />&nbsp;<span><?php _e("Check this box to use and display the wysija newsletter subscription form embedded in the IF theme", 'iftheme');?></span>
+	<input name="iftheme_theme_options_<?php echo $antenna;?>[theme_options_setting_wysija_embed]" id="theme_options_setting_wysija_embed" type="checkbox"  value="1" <?php checked( $checked, 1 ); ?> />&nbsp;<span><?php _e("Check this box to use and display the MailPoet Newsletters (formerly Wysija) subscription form embedded in the IF theme", 'iftheme');?></span>
 <?php 
 }
 
 // —————-Settings section callback function social networks
 function social_setting_section_callback_function() {
-	echo '<p><em>'.__('This section is where you can save the social sites where readers can find you on the Internet.','iftheme').'</em></p>';
+	echo '<p><em>'.__('This section is where you can save the social networks where readers can find you on the Internet.','iftheme').'</em></p>';
 }
 //facebook
 function theme_options_setting_facebook_callback_function() {
