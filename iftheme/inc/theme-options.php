@@ -205,7 +205,7 @@ function iftheme_bg_frames() {
 function iftheme_home_categories($pays=NULL) { 
 	global $current_user; get_currentuserinfo();
 	global $sitepress;
-	$default_lg = isset($sitepress) ? $sitepress->get_default_language() : 'fr';//assuming that 'fr' should be default
+	$default_lg = isset($sitepress) ? $sitepress->get_default_language() : get_site_lang();
 	$antenna_id = get_cat_if_user($current_user->ID);
 	$antenna_id = function_exists('icl_object_id') ? icl_object_id($antenna_id, 'category', TRUE) : $antenna_id; //icl_object_id(ID, type, return_original_if_missing,language_code)
 	$args = $pays ? array( 'hide_empty' => 0) : array('child_of' => $antenna_id, 'hide_empty' => 0);

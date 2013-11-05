@@ -198,7 +198,7 @@ $(selectMenu).change(function() {
 	   if($('.archive.date').length){ 
 		   $('.breadcrumbs').html( $('.breadcrumbs').find('> a:first-child').html());
 	   }
-	   if($('.home').length){ 
+	   if($('.accueil').length){ 
 		   $('.breadcrumbs').html('<img src="'+ bInfo.bTheme + '/images/pict-home-on.png" alt="" />');
 	   }
     }

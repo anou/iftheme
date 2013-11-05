@@ -40,7 +40,7 @@ global $current_user; get_currentuserinfo();
 	} elseif ( is_home() ) {
 		bloginfo( 'name' ); echo ' | '; bloginfo( 'description' );
 	}  elseif ( is_404() ) {
-		echo 'Error 404 Not Found | '; bloginfo( 'name' );
+		echo __('No results - search our archives |','iftheme'); ' '.bloginfo( 'name' );
 	} elseif ( is_single() ) {
 		wp_title('');
 	} else {
@@ -184,5 +184,5 @@ global $current_user; get_currentuserinfo();
 	</div><!--#header-->
 	<div class="container main-container">
 		<div class="breadcrumbs">
-			<?php if(function_exists('bcn_display')) { bcn_display();}?>
+			<?php if(function_exists('bcn_display')) { bcn_display(); }?>
 		</div>

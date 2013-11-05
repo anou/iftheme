@@ -385,7 +385,7 @@ function get_antennas_details(){
 
 	if($nb === 1) {//if only 1 user, we assume that it's the admin user so $user->ID = 1
 		$categ_admin = get_cat_if_user(1);
-		$antenna =  get_category_slug($categ_admin);
+		$antenna =  get_cat_slug($categ_admin);
 		$options = get_option('iftheme_theme_options_'.$antenna, iftheme_get_default_theme_options() );//cf. theme-options.php for keys of the option array
 		
 		//adding useful infos to $options
@@ -399,7 +399,7 @@ function get_antennas_details(){
 			$categ = get_cat_if_user($o->ID);
 			
 			//$categ = function_exists('icl_object_id') ? icl_object_id($categ, 'category', TRUE) : $categ;
-			$antenna =  get_category_slug($categ) ? get_category_slug($categ) : __('You must assign a category to this user : ','iftheme').$o->display_name;
+			$antenna =  get_cat_slug($categ) ? get_cat_slug($categ) : __('You must assign a category to this user : ','iftheme').$o->display_name;
 			$options[$categ] = get_option('iftheme_theme_options_'.$antenna, iftheme_get_default_theme_options() );//cf. theme-options.php for keys of the option array
 
 			//unset country options for non admin user
@@ -425,6 +425,8 @@ function test(){
 function iftheme_body_class($classes) {
 	$cid = get_current_parent_categ();
 	$class = 'category-'. $cid .' black';
+	
+	if (is_home()) $class .= ' accueil';
 	
 	// add $class to the $classes array
 	$classes[] = $class;
@@ -468,9 +470,10 @@ function get_level($cid, $level = 0) {
 //get current top level category/antenna
 function get_current_antenna(){
 	global $sitepress;
-	$default_lg = isset($sitepress) ? $sitepress->get_default_language() : 'fr';//assuming that 'fr' should be default language
+	$default_lg = isset($sitepress) ? $sitepress->get_default_language() : get_site_lang();
 	
-	$current_id = function_exists('icl_object_id') ? icl_object_id(1, 'category', true) : 1;//default category
+	$categ_admin = get_cat_if_user(1) != 0 ? get_cat_if_user(1) : 1;
+	$current_id = function_exists('icl_object_id') ? icl_object_id($categ_admin, 'category', true, $default_lg) : $categ_admin;//default category
 
 	if(is_category()) {
 		//get root category (antenna)
@@ -484,7 +487,7 @@ function get_current_antenna(){
 		//if post has multiple categories, no problem we only need to get the root categ.
 		$current_id = defined('ICL_LANGUAGE_CODE') ? icl_object_id(get_root_category($cats[0]->term_id),'category',true,$default_lg) : get_root_category($cats[0]->term_id);
 	}
-	
+
 	return	$current_id;
 }
 
@@ -524,7 +527,7 @@ function get_categ_data($cid){
 	return $data;
 }
 
-//get slug in default language
+//get slug in default language -- OBSOLETE --- use get_cat_slug() !!!
 function get_category_slug($id) {
     global $wpdb;
     $term_id = $wpdb->get_var("SELECT term_id FROM {$wpdb->prefix}term_taxonomy WHERE term_taxonomy_id = {$id}");
@@ -715,7 +718,7 @@ function if_display_posts_listing ( $query ) {
   $meta_query[] =
 		array(
 		   'key' => 'if_events_enddate',
-		   'value' => $value2,
+		   'value' => $value,
 		   'compare' => $compare,
 		   'type' => 'numeric'
 		  );
@@ -1279,7 +1282,7 @@ if(function_exists('icl_get_languages')) {
 	function rss_comment_footer($content) {
 		if (is_feed()) {
 			if (comments_open()) {
-				$content .=  sprintf( __('Comments are open! <a href="%s">Add yours!</a>','iftheme') , get_permalink() );
+				$content .=  sprintf( __('Comments are open! <a href="%s">Add yours!</a>','iftheme'), get_permalink() );
 			}
 		}
 		return $content;
@@ -1330,17 +1333,12 @@ if(function_exists('icl_get_languages')) {
 
 //MISCELANEOUS
 function if_login_logo() {
-    echo '<style type="text/css">
-        h1 a { background-image:url('.get_bloginfo('template_url').'/images/logo-if.png) !important; background-size:auto !important;}
-    </style>';
+    echo '<style type="text/css"> h1 a { background-image:url('.get_bloginfo('template_url').'/images/logo-if.png) !important; background-size:auto !important;} </style>';
 }
-	 
 add_action('login_head', 'if_login_logo');
 
 function if_custom_logo() {
-  echo '<style type="text/css">
-    #wp-admin-bar-wp-logo > .ab-item .ab-icon { background-image: url('.get_bloginfo('template_directory').'/images/admin-icon.png) !important; background-position: 0 0 !important; }
-    </style>';
+  echo '<style type="text/css"> #wp-admin-bar-wp-logo > .ab-item .ab-icon { background-image: url('.get_bloginfo('template_directory').'/images/admin-icon.png) !important; background-position: 0 0 !important; } </style>';
 }
 add_action('admin_head', 'if_custom_logo');
 

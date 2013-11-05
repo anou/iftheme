@@ -66,11 +66,19 @@ function extendUser_antenna($user_id){
       <?php endforeach; ?>
       </tr>
     </table>
-    
   <?php else: ?>
-    <?php _e('You must create another top level category to assign to this user', 'iftheme');?>
-    <?php defined('ICL_LANGUAGE_CODE') ? _e('Or there is no category in this language', 'iftheme') : '';?>
-  
+    <?php if($userRole == "administrator"): ?>
+      <?php $categAdmin = get_category(get_user_meta(1, 'categ_to_antenna', true)); ?>
+      <table class="form-table if-form-table">
+        <tr>
+          <th scope="row"><label for="<?php echo $categAdmin->slug;?>"><?php echo $categAdmin->name; ?></label></th>
+          <td><input type="radio" name="categ_to_antenna" value="<?php echo $categAdmin->cat_ID ?>" <?php checked( get_user_meta(1, "categ_to_antenna", true), $categAdmin->cat_ID ); ?> /></td>
+        </tr>
+      </table>
+    <?php else: ?>
+      <?php _e('You must create another top level category to assign to this user', 'iftheme');?>
+      <?php //defined('ICL_LANGUAGE_CODE') ? _e('Or there is no category in this language', 'iftheme') : '';?>
+    <?php endif;?>
   <?php endif;?>
 <?php 
     endif;

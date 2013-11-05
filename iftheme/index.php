@@ -7,11 +7,11 @@
 	<div id="content"><span class="none" style="color:gray"><i>FRONT FOR SINGLE ANTENNA</i></span>
 <?php 	
   	  global $sitepress;
-  	  $default_lg = isset($sitepress) ? $sitepress->get_default_language() : 'fr';//assuming that 'fr' should be default language
+  	  $default_lg = isset($sitepress) ? $sitepress->get_default_language() : get_site_lang();
 
   	  $antenna = get_current_parent_categ();
 	    $original = function_exists('icl_object_id') ? icl_object_id($antenna, 'category', true, $default_lg) : $antenna;
-
+	    
   		$args_slider = array(
   			'post_type'=> 'if_slider',
   			'order'    => 'DESC',

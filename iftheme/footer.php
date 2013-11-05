@@ -18,14 +18,14 @@
       <?php if(!$multi): ?><div class="widget-footer">&nbsp;</div><?php endif;?>
 		    <div class="widget-footer footer-pages">
 				  <?php the_widget('WP_Widget_Pages','title='.get_bloginfo('description'),'before_title=<h3>&after_title=</h3>'); ?>
-				  </div>
+				</div>
 
-			<?php if($multi): ?>
+		<?php if($multi): ?>
 			<div class="widget-footer footer-antenna">
 				<h3><?php _e('Local antennas','iftheme');?></h3>
 				<ul><?php get_if_top_categ(array('orderby' => 'name')); ?></ul>
 			</div>
-			<?php endif;?>
+		<?php endif;?>
 			
 			<div class="widget-footer footer-links">
 				<?php the_widget('If_World_Links'); ?>
