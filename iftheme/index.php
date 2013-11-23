@@ -70,7 +70,9 @@
   			if ( function_exists('icl_object_id') ) {
   			  $show = icl_object_id($id, 'category', false);
   		  } ?>
-  		<?php if ($show) : ?>
+  		<?php if ($show) : 
+    		  $id = is_numeric( $show ) ? $show : $id;
+  		?>
 				<?php $cat = get_the_category_by_ID($id);?>
 				<div class="block-home">
 					<h2 class="posts-category"><?php echo $cat;?></h2>

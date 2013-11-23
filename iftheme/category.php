@@ -160,7 +160,7 @@
 	<?php else: //Page category ------------------------ ?>
 		<?php //get data from categ (key are img, children, posts)
 			$data = get_categ_data(get_query_var('cat'));
-		?>
+		?><span class="none" style="color:red;">HOME PAGE 1 category</span>
 			<h1><?php echo single_cat_title( '', false ); ?></h1>
 			<?php if(!empty($data['img'])) : $img = wp_get_attachment_image_src( $data['img']['id'],'categ-img');?><div class="categ-image"><img src="<?php echo $img[0]; ?>" width="<?php echo $img[1]; ?>" height="<?php echo $img[2]; ?>" alt="" /></div><?php endif;?>
 			<div class="description"><?php echo category_description(); /* displays the category's description from the Wordpress admin */ ?></div>

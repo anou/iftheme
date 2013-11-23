@@ -314,9 +314,10 @@ function get_ifcat_parents($cid){
 }
 
 //Get categ slug
-function get_cat_slug($cat_id) {
-	$cat_id = (int) $cat_id;	
-	$category = &get_category($cat_id);
+function get_cat_slug($cat_id) { 
+	$cat_id = (int) $cat_id;
+  remove_all_filters('get_term');
+	$category = get_category($cat_id);
 
 	  if(is_object($category))
       return property_exists($category,'slug') ? $category->slug : '';
@@ -442,7 +443,7 @@ add_editor_style('style.css');
 function get_root_category($category_id) {
 	$parent_cats = get_category_parents($category_id);
 	//print_r($parent_cats);
-	if(!is_object($parent_cats)) $split_arr = split('/', $parent_cats);
+	if(!is_object($parent_cats)) $split_arr = explode('/', $parent_cats);
   	return get_cat_id($split_arr[0]);
 }
 
@@ -712,13 +713,14 @@ function if_display_posts_listing ( $query ) {
 	
 	$value = mktime(23, 59, 59, date('m'), date('d')-1, date('Y')); //yesterday
 	$value2 = mktime(); //last hour of the last past 24 hours
+	$value3 = mktime(0,0,0,date("m"),date("d")+1,date("Y")); //tomorrow
 	$compare = '>=';
 	$compare2 = '<=';
 	
   $meta_query[] =
 		array(
 		   'key' => 'if_events_enddate',
-		   'value' => $value,
+		   'value' => strtotime('yesterday'),
 		   'compare' => $compare,
 		   'type' => 'numeric'
 		  );
