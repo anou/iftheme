@@ -37,6 +37,9 @@ function if_init() {
 }
 add_action('init', 'if_init');
 
+//activate auto-update
+add_filter( 'auto_update_theme', '__return_true' );
+
 /////////////////ERROR MESSAGE IF NO CATEG FOR USER ////////////////
 add_action( 'admin_notices', 'iftheme_categtouser_error_notice' );
 function iftheme_categtouser_error_notice($raw = false){
