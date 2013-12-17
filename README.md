@@ -19,8 +19,10 @@ You can see a live example here: http://if-final.wp.anou.dev.smol.org
 
 Installation
 ============
-Download IF-theme_base.pdf (french) or IF-theme_base_EN.pdf (english)  and you'll know everything!
+Find the docs here: https://github.com/anou/iftheme-docs
+
+Download IF-theme_base.pdf (french) or IF-theme_base_EN.pdf (english) and you'll know everything!
 
 Contact
 =======
-You can contact me via: team(at)smol.org
+You can contact me via: anou(at)smol.org
