@@ -1,1 +1,0 @@
-jQuery(function(a){a(".bulksubmitcamp").click(function(){a(".global-action").attr("name","action");return true})});

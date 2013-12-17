@@ -1,1 +1,0 @@
-jQuery(function(a){a("#namenewlist").attr("disabled","disabled");a("#blocknewlist").hide()});

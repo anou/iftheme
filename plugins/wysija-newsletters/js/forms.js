@@ -1,1 +1,0 @@
-jQuery(function(a){a(document).ready(function(){if(a(".form-valid")&&a(".form-valid")["validationEngine"]!==undefined){a(".form-valid").validationEngine("attach",{promptPosition:"topRight",scroll:false,validationEventTrigger:"submit"})}a('input[name="wysija[user][email]"]').blur(function(){a(this).val(trim(a(this).val()))})})});
