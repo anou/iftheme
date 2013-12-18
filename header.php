@@ -109,6 +109,10 @@ global $current_user; get_currentuserinfo();
 		$aid = function_exists('icl_object_id') ? icl_object_id($options['aid'], 'category', true) : $options['aid'];
 		printf('body.category-%s {background-image: url(%s) !important}  body.category-%s .sides {background-image: url(%s) !important}',
 		   $aid, $options['background_img'], $aid, get_template_directory_uri() . '/inc/images/frames/'.$options['bg_frame'].'.png');
+
+		//for page with category-0
+		echo 'body.category-0 {background-image: url(' . $options['background_img'] . ') !important}  body.category-0 .sides {background-image: url(' .  get_template_directory_uri() . '/inc/images/frames/'.$options['bg_frame'].'.png' . ') !important}';
+	
 	}
 
 	?>
