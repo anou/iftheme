@@ -166,7 +166,7 @@ header { }
 	nav#antennes ul li {float: left;}
 	/* nav#antennes ul.menu li {border-right: 1px solid white;} */
 	nav#antennes ul.menu li.last-cat-item {border-right: 0 none}
-	nav#antennes ul li a {font: normal 14px/2.3em "dinMed",sans-serif; color: #fff; text-transform: uppercase; height: 30px; padding: 0 17px; display: inline-block}
+	nav#antennes ul li a {font: normal 14px/2.3em "dinMed",sans-serif; color: #fff; text-transform: uppercase; height: 30px; padding: 0 17px; display: inline-block; text-decoration: none;}
 	nav#antennes ul li:first-child a {padding-left:10px}
 	nav#antennes ul li a:hover {background: #008ac9 url(images/bg-header-menu-on.png) repeat left top;}
 	nav#antennes ul li.current-cat a,
