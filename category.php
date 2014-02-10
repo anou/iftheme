@@ -70,6 +70,7 @@
 	<?php //get displayed home categories for antenna
 		$home_cat = isset($options[$original]['theme_home_categ']) ? $options[$original]['theme_home_categ'][0] : '';
 		
+
 		if($home_cat):?>
 			<div id="home-list">
 			<?php foreach($home_cat as $id): ?>

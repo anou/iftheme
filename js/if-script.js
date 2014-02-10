@@ -276,7 +276,9 @@ $(selectMenu).change(function() {
 	  currentCountry = bInfo['bDesc'],//cf. header.php for the bInfo array
 	  select = $(document.createElement('select')).insertBefore($(this).hide());
 	  
-	  $('<option>'+currentCountry+'</option>').appendTo(select);
+	  //$('<option>'+currentCountry+'</option>').appendTo(select);
+	  
+	  $('<option>'+ifvarJS.select_txt+'</option>').appendTo(select);
 	  
 	  $('>li a', this).each(function(){
 	   // var target = $(this).attr('target'),

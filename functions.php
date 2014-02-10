@@ -390,21 +390,19 @@ function get_antennas_details(){
 	if($nb === 1) {//if only 1 user, we assume that it's the admin user so $user->ID = 1
 		$categ_admin = get_cat_if_user(1);
 		$antenna =  get_cat_slug($categ_admin);
-		$options = get_option('iftheme_theme_options_'.$antenna, iftheme_get_default_theme_options() );//cf. theme-options.php for keys of the option array
+		$options = get_option('iftheme_theme_options_' . $antenna, iftheme_get_default_theme_options() );//cf. theme-options.php for keys of the option array
 		
 		//adding useful infos to $options
 		$options['aid'] = $categ_admin;
 		$options['slug'] = $antenna;
-		
-		return $options;
-		
+
 	} else {//more than 1 user
 		foreach($users as $k => $o){
 			$categ = get_cat_if_user($o->ID);
 			
 			//$categ = function_exists('icl_object_id') ? icl_object_id($categ, 'category', TRUE) : $categ;
 			$antenna =  get_cat_slug($categ) ? get_cat_slug($categ) : __('You must assign a category to this user : ','iftheme').$o->display_name;
-			$options[$categ] = get_option('iftheme_theme_options_'.$antenna, iftheme_get_default_theme_options() );//cf. theme-options.php for keys of the option array
+			$options[$categ] = get_option('iftheme_theme_options_' . $antenna, iftheme_get_default_theme_options() );//cf. theme-options.php for keys of the option array
 
 			//unset country options for non admin user
 			if($o->ID != 1) { 
@@ -416,10 +414,12 @@ function get_antennas_details(){
 			$options[$categ]['aid'] = !$categ ? NULL : $categ;
 			$options[$categ]['slug'] = $antenna;
 		}
-		
-		return $options;
 	}
+  
+  
+  return $options;
 }
+
 function test(){
 		$cats = get_the_category();
 		return get_root_category(12);
@@ -610,12 +610,14 @@ function if_scripts() {
 	wp_enqueue_script('chosen',	get_template_directory_uri() . '/js/chosen/chosen.jquery.js');
     wp_register_style( 'chosen_css', get_bloginfo('stylesheet_directory') . '/js/chosen/chosen.css', false, '1.0.0' );
     wp_enqueue_style( 'chosen_css' );
-
-	if(is_rtl()) { 
-		wp_enqueue_script('if-script-rtl',	get_template_directory_uri() . '/js/if-script-rtl.js',	array('jquery')); 
-	} else {
-		wp_enqueue_script('if-script',	get_template_directory_uri() . '/js/if-script.js',	array('jquery')); 
-	}
+  
+  $script = is_rtl() ? 'if-script-rtl' : 'if-script';
+	wp_enqueue_script($script,	get_template_directory_uri() . '/js/'. $script .'.js',	array('jquery'));
+  
+  $varForJS = array(
+    'select_txt' => '-- ' . __('Select' , 'iftheme') . ' --',
+  );
+  wp_localize_script( $script, 'ifvarJS', $varForJS );
 	
 	wp_enqueue_script('if-ajax',	get_template_directory_uri() . '/inc/calendar/ajax.js');
 }
@@ -1338,7 +1340,7 @@ if(function_exists('icl_get_languages')) {
 
 //MISCELANEOUS
 function if_login_logo() {
-    echo '<style type="text/css"> h1 a { background-image:url('.get_bloginfo('template_url').'/images/logo-if.png) !important; background-size:auto !important;} </style>';
+    echo '<style type="text/css">.login h1 a { background-image:url('.get_bloginfo('template_url').'/images/logo-if.png) !important; background-size:auto !important; width:auto} </style>';
 }
 add_action('login_head', 'if_login_logo');
 
@@ -1348,10 +1350,10 @@ function if_custom_logo() {
 add_action('admin_head', 'if_custom_logo');
 
 //change url on the logo login form
-function put_my_url(){
-    return ('http://www.institutfrancais.com/'); //Put your URL here
+function if_login_logo_url(){
+    return (get_bloginfo('wpurl')); 
 }
-add_filter('login_headerurl', 'put_my_url');
+add_filter('login_headerurl', 'if_login_logo_url');
 	
 // session handling
 add_action('init', 'if_StartSession', 1);
@@ -1516,15 +1518,47 @@ if ( ! function_exists( 'iftheme_content_nav' ) ) :
  *
  * FROM Twenty Twelve 1.0 ;-)
  */
-function iftheme_content_nav( $html_id ) {
+function iftheme_content_nav( $html_id, $archives = TRUE ) {
 	global $wp_query;
-
 	$html_id = esc_attr( $html_id );
-
+	
 	if ( $wp_query->max_num_pages > 1 ) : ?>
+	<?php 
+	  //Archives pages query
+	  $archive_query = new WP_Query(array(
+      'post_type'  => 'page',  //overrides default 'post'
+      'posts_per_page' => 1, //get the latest one because Archives page should be unique.
+      'meta_key'   => '_wp_page_template',
+      'meta_value' => 'archives-page.php'
+    ));
+
+    // The Loop
+    if ( $archive_query->have_posts() ) {
+     	while ( $archive_query->have_posts() ) {
+    		$archive_query->the_post();
+        //$post_language_information = wpml_get_language_information(get_the_ID());
+        $archivesID = get_the_ID();
+        
+        //get category we are in to pass it to archives page
+        $cat = !is_integer(get_query_var('cat')) ? 'all' : get_query_var('cat');
+
+        $link_to_archives = add_query_arg('ifcat', $cat, get_permalink( $archivesID ));
+        $categ = $cat != 'all' ? get_category($cat) : NULL;
+        $link_title = $categ ? $categ->name : '';
+    	}
+    } else {
+    	// no posts found
+      $archivesID = FALSE;
+    }
+    /* Restore original Post Data */
+    wp_reset_postdata();
+
+  	$prev = get_previous_posts_link();
+  	$prev_link = !$prev && $archivesID && $archives ? '<a href="' . $link_to_archives . '">' . __( '<span class="meta-nav">&larr;</span> Archives', 'iftheme' ) . ' ' . $link_title . '</a>' : get_previous_posts_link( __( '<span class="meta-nav">&larr;</span> Previous', 'iftheme' ) );
+	?>
 		<nav id="<?php echo $html_id; ?>" class="navigation" role="navigation">
 			<h3 class="assistive-text"><?php _e( 'Post navigation', 'twentytwelve' ); ?></h3>
-			<div class="nav-next alignleft"><?php previous_posts_link( __( '<span class="meta-nav">&larr;</span> Previous', 'iftheme' ) ); ?></div>
+			<div class="nav-next alignleft"><?php echo $prev_link ?></div>
 			<div class="nav-previous alignright"><?php next_posts_link( __( 'Next <span class="meta-nav">&rarr;</span>', 'iftheme' ) ); ?></div>
 		</nav><!-- #<?php echo $html_id; ?> .navigation -->
 	<?php endif;

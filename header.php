@@ -95,23 +95,23 @@ global $current_user; get_currentuserinfo();
 	  foreach($options as $k => $vals){
 	  	 $k = function_exists('icl_object_id') ? icl_object_id($k, 'category', true) : $k;
 	  	 printf('body.category-%s {background-image: url(%s) !important}  body.category-%s .sides {background-image: url(%s) !important}',
-		   $k, $vals['background_img'], $k, get_template_directory_uri() . '/inc/images/frames/'.$vals['bg_frame'].'.png');
+		   $k, $vals['background_img'], $k, $vals['bg_frame'] != 'f0' ? get_template_directory_uri() . '/inc/images/frames/'.$vals['bg_frame'] . '.png' : '');
 		 
 		 $i++;
 		 
 		 if($j <= $i){ //home css
 		 	printf('body.home {background-image: url(%s) !important} body.home .sides {background-image: url(%s) !important}', 
-		 		$vals['background_img_country'], get_template_directory_uri() . '/inc/images/frames/'.$vals['bg_frame_country'].'.png');
+		 		$vals['background_img_country'], $vals['bg_frame'] != 'f0' ? get_template_directory_uri() . '/inc/images/frames/'.$vals['bg_frame_country'] . '.png' : '');
 		 }
 	  }
 	}  
 	else {
 		$aid = function_exists('icl_object_id') ? icl_object_id($options['aid'], 'category', true) : $options['aid'];
 		printf('body.category-%s {background-image: url(%s) !important}  body.category-%s .sides {background-image: url(%s) !important}',
-		   $aid, $options['background_img'], $aid, get_template_directory_uri() . '/inc/images/frames/'.$options['bg_frame'].'.png');
+		   $aid, $options['background_img'], $aid, $options['bg_frame'] != 'f0' ? get_template_directory_uri() . '/inc/images/frames/' . $options['bg_frame'] . '.png' : '');
 
 		//for page with category-0
-		echo 'body.category-0 {background-image: url(' . $options['background_img'] . ') !important}  body.category-0 .sides {background-image: url(' .  get_template_directory_uri() . '/inc/images/frames/'.$options['bg_frame'].'.png' . ') !important}';
+		echo 'body.category-0 {background-image: url(' . $options['background_img'] . ') !important}  body.category-0 .sides {background-image: url(' .  $options['bg_frame'] != 'f0' ? get_template_directory_uri() . '/inc/images/frames/'.$options['bg_frame'].'.png' : '' . ') !important}';
 	
 	}
 
@@ -157,7 +157,7 @@ global $current_user; get_currentuserinfo();
 				<?php $hmenupages = isset($options['theme_options_setting_hmenupage']) ? $options['theme_options_setting_hmenupage'] : 1;
 				if ($hmenupages) : //0 is NULL?>
   				<aside id="header-pages-menu" class="widget">
-  					<?php wp_page_menu(); /* outputs the pages menu */ ?>
+  					<?php wp_page_menu('show_home=0'); /* outputs the pages menu */ ?>
   				</aside>
   		  <?php endif;?>
 				

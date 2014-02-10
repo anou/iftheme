@@ -90,10 +90,7 @@
 		</div><!--noResults-->
 	<?php endif; ?>
 		
-	<div class="oldernewer">
-		<p class="older"><?php next_posts_link('&laquo; Older Entries', 'iftheme') ?></p>
-		<p class="newer"><?php previous_posts_link('Newer Entries &raquo;', 'iftheme') ?></p>
-	</div><!--.oldernewer-->
+  <?php iftheme_content_nav( 'nav-below', FALSE ); //next-prev nav ?>
 
 </div><!--#content-->
 <?php get_sidebar(); ?>

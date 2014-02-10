@@ -156,6 +156,8 @@ header { }
 	#logo img { display: block; }
 	.tagline {font: normal 1em/1em 'dinMed',sans-serif; text-transform: uppercase; color: #58585A; }
 	
+	#header-search {text-align: right;}
+	
 	#header-widget {float: right; margin-right: 10px;}
 	#header-widget ul, 	#header-widget ul li {padding: 0; margin: 0; list-style: none none;}
 	#header-widget #header-pages-menu ul li {padding: 3px 5px;}

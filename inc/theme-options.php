@@ -177,6 +177,13 @@ function iftheme_bg_frames() {
 	//count the number of files
 	$nbf = count($frames);
 	
+	//Add option for no frame
+	$bg_frames_options['f0'] = array(
+		'value' => 'f0',
+		'label' => __( 'No frame', 'iftheme' ),
+		'thumbnail' => '',
+	);
+
 	if(!empty($frames)){
 		foreach($frames as $k => $file){
 			$bg_frames_options['f'.($k+1)]= array(
@@ -194,8 +201,7 @@ function iftheme_bg_frames() {
 			),
 		);
 	}
-	//echo '<pre>';print_r($bg_frames_options);echo '</pre>';
-
+	
 	return apply_filters( 'iftheme_bg_frames', $bg_frames_options );
 }
 
@@ -252,7 +258,7 @@ function iftheme_get_default_theme_options() {
 		'theme_options_setting_facebook' => '',
 		'theme_options_setting_twitter' => '',
 		'theme_options_setting_googleplus' => '',
-		'theme_options_setting_iftv' => 'http://www.institutfrancais.tv',
+		'theme_options_setting_iftv' => '',
 		'theme_options_setting_youtube' => '',
 		'theme_options_setting_instagram' => '',
 		'theme_home_nb_events' => '5',
@@ -288,9 +294,11 @@ function iftheme_settings_field_bg_frames($pays = NULL) {
 	?>
 	<div class="layout image-radio-option bg-frame">
 	<label class="description">
-		<input type="radio" name="iftheme_theme_options_<?php echo $antenna;?>[bg_frame<?php echo $pays ? '_'.$pays : '';?>]" value="<?php echo esc_attr( $frame['value'] ); ?>" <?php checked( $pays ? $options['bg_frame_country']:$options['bg_frame'], $frame['value'] ); ?> />
-		<div style="background: transparent url('<?php echo esc_url( $frame['thumbnail'] ); ?>') repeat left top; width: 130px; height: 60px;"></div>
-		<span><?php echo $frame['label']; ?></span>
+		<input type="radio" name="iftheme_theme_options_<?php echo $antenna;?>[bg_frame<?php echo $pays ? '_'.$pays : '';?>]" value="<?php echo esc_attr( $frame['value'] ); ?>" <?php checked( $pays ? $options['bg_frame_country'] : $options['bg_frame'], $frame['value'] ); ?> />
+		<span><?php echo $frame['thumbnail'] ? $frame['label'] : ''; ?></span>
+		<div style="background: transparent url('<?php echo esc_url( $frame['thumbnail'] ); ?>') repeat left top; width: 130px; height: 60px; margin-top:5px">
+  		<?php if ( !$frame['thumbnail'] ) :?> <h3 style="margin:7px 0 0;"><?php _e($frame['label'], 'iftheme') ;?></h3><?php endif; ?>
+		</div>
 	</label>
 	</div>
 	<?php
