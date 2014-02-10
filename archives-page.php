@@ -1,43 +1,38 @@
-<?php /* Template Name: IF Archives */ ?>
+<?php /* Template Name: IF Archives */ 
+ /* 
+  * This template is for IF Archives and must be used only once by language.
+  * If used more then one time, the last page using it will be taken as Archives page.
+  */
+?>
 <?php get_header(); 
-  //setlocale(LC_ALL, get_locale());
-  $q = $wp_query->query;
+  //get category if any
+  $ifcat = isset($_GET['ifcat']) ? $_GET['ifcat'] : 'all';
+  $cat = $ifcat != 'all' ? '&cat=' . $ifcat : NULL;
+  
+  if($cat): 
+    $categ = get_category($ifcat); 
+    $subtitle = $categ->name;
+  else:
+    $subtitle = __('All categories', 'iftheme');
+  endif;
 ?>
 <div id="content">
 	<h1 id="titledate">
-		<?php if ( is_day() ) : /* if the daily archive is loaded */ ?>
-			<?php echo utf8_encode(strftime('%d %B %Y', mktime(0, 0, 0, $q['monthnum'], $q['day'], $q['year'])));?>
-		<?php elseif ( is_month() ) : /* if the montly archive is loaded */ ?>
-			<?php echo utf8_encode(strftime('%B %Y', mktime(0, 0, 0, $q['monthnum']+1, 0, $q['year'])));?>
-		<?php elseif ( is_year() ) : /* if the yearly archive is loaded */ ?>
-			<?php echo utf8_encode(strftime('%Y', mktime(0, 0, 0, 12, 31, $q['year'])));?>
-		<?php else : /* if anything else is loaded, ex. if the tags or categories template is missing this page will load */ ?>
 			<?php _e('Archives', 'iftheme');?>
-		<?php endif; ?>
 	</h1>
+  <?php if ($wp_query->have_posts()) : while ($wp_query->have_posts()) : $wp_query->the_post(); ?>
+  <p><?php the_content();?></p>
+	<?php endwhile; endif;  ?>
+	
+<?php // Display blog posts
 
-	<script type="text/javascript">
-	  var month = '<?php echo is_month();?>';
-	  month = month ? true : false;
-	  var year = '<?php echo is_year();?>';
-	  year = year ? true : false;
+		$temp = &$wp_query;
+		$wp_query = null;
+		$wp_query = new WP_Query(); $wp_query->query('showposts=' . get_option('posts_per_page') . '&paged=' . $paged . $cat);
+?>
+	<h2><?php echo $subtitle;?></h2>
 
-    var lang = (typeof(icl_lang) != "undefined" && icl_lang !== null) ? icl_lang : bInfo['bLang'].substr(0,2); //TODO: check if bInfo['bLang'] is construct like this xx-XX...
-	  moment.lang(lang);
-	  
-	  var titleDate = jQuery('#titledate').text();
-    titleDate = month ? '1 '+titleDate  : titleDate;
-    titleDate = year ? '1 january '+titleDate  : titleDate;;
-    
-    titleDate = moment(titleDate).format('LL');
-    
-    titleDate = month ? titleDate.substr(2) : titleDate;
-    titleDate = year ? titleDate.substr(-4) : titleDate;
-    
-    jQuery('#titledate').text(titleDate);
-  </script>
-
-	<?php if (have_posts()) : while (have_posts()) : the_post(); ?>
+  <?php if ($wp_query->have_posts()) : while ($wp_query->have_posts()) : $wp_query->the_post(); ?>
 			<article class="post-single clearfix" id="post-<?php the_ID();?>">
 				<?php //prepare data 
 					$pid = get_the_ID();
@@ -65,6 +60,8 @@
 			   $raw_data = get_meta_raw_if_post($pid);
 			?>
 			<script type="text/javascript">
+			  var lang = (typeof(icl_lang) != "undefined" && icl_lang !== null) ? icl_lang : bInfo['bLang'].substr(0,2); //TODO: check if bInfo['bLang'] is construct like this xx-XX...
+			  moment.lang(lang);
 			  
 			  var startYear = new Date(<?php echo $raw_data['start'];?>*1000).getFullYear();
 			  var endYear = new Date(<?php echo $raw_data['end'];?>*1000).getFullYear();
@@ -83,18 +80,16 @@
   			if (end) if(end !== start) thisPostEnd.text(' / '+end);
   			
 			</script>
-
 	<?php endwhile; else:  ?>
 		<div class="no-results">
 			<p><?php _e('No results', 'iftheme'); ?></p>
 			<?php get_search_form(); /* outputs the default Wordpress search form */ ?>
 		</div><!--noResults-->
 	<?php endif; ?>
-		
-	<div class="oldernewer">
-		<p class="older"><?php next_posts_link('&laquo; Older Entries', 'iftheme') ?></p>
-		<p class="newer"><?php previous_posts_link('Newer Entries &raquo;', 'iftheme') ?></p>
-	</div><!--.oldernewer-->
+  
+  <?php iftheme_content_nav( 'nav-below', FALSE ); //next-prev nav ?>
+  
+  <?php wp_reset_postdata(); ?>	
 
 </div><!--#content-->
 <?php get_sidebar(); ?>
