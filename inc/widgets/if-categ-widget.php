@@ -26,24 +26,27 @@ class If_Antenna_Categ extends WP_Widget {
 	function form ($instance) {
 		global $current_user; get_currentuserinfo();
 		//get antenna ID
-		$aid = get_cat_if_user($current_user->ID);
-		//$aid = $aid ? $aid : 1;
+		$aid = get_cat_if_user_lang($current_user->ID);
+
 		//get antenna's children
 		$children = get_categories('child_of='.$aid.'&hide_empty=0');
+
+    // prints the form on the widgets page
+		$catid = isset($instance['catid']) ? defined('ICL_LANGUAGE_CODE') ? icl_object_id($instance['catid'],'category',false,ICL_LANGUAGE_CODE) : $instance['catid'] : $children[0]->term_id;
 		
-		// prints the form on the widgets page
-		$defaults = array('catid' => $children[0]->term_id);
+		$defaults = array('catid' => $catid, 'title' => '');
 		$instance = wp_parse_args( (array) $instance, $defaults ); 
 		
 		//if admin access to all categories
 		if($current_user->ID == 1 ) {$aid = 0;}
+
 		
 		$args = array(
 			'hide_empty' => 0,
-			'hierarchical' =>1,
+			'hierarchical' => 1,
 			'id' => $this->get_field_id('catid'),
 			'name' => $this->get_field_name('catid'),
-			'selected' => $instance['catid'],
+			'selected' => $catid,
 			'child_of' => $aid,
 			'show_option_none' => __('None','iftheme'),
 		);
@@ -74,11 +77,14 @@ class If_Antenna_Categ extends WP_Widget {
 		extract($args);
 		
 		$catid = $instance['catid'];
-		//$catid = ! empty( $instance['catid'] ) ? $instance['catid'] : get_query_var('cat');
+    
+    //get cat ID dependent on language
+    $catid = defined('ICL_LANGUAGE_CODE') ? icl_object_id($catid,'category',false,ICL_LANGUAGE_CODE) : $catid;
+
 		$name = get_cat_name( $catid );
-		
 		$title = apply_filters('widget_title', empty( $instance['title'] ) ? $name : $instance['title'], $instance, $this->id_base);
 		//$title = empty( $instance['title'] ) ? $name : $instance['title'];
+    
 
 		$cat_args = array(
 			'title_li' => '',

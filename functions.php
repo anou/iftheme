@@ -106,6 +106,8 @@ function iftheme_setup() {
 	require_once( get_template_directory() . "/inc/widgets/if-categ-widget.php");
 	require_once( get_template_directory() . "/inc/widgets/if-partners-widget.php");
 	require_once( get_template_directory() . "/inc/widgets/if-antennas-widget.php");
+	require_once( get_template_directory() . "/inc/widgets/if-mobile-widget.php");
+	require_once( get_template_directory() . "/inc/widgets/if-nopadding-widget.php");
 
 	//include antenna categories widget
 	require_once( get_template_directory() . "/inc/editor-styles/editor-styles.php");
@@ -338,6 +340,9 @@ function get_cat_if_user($uid){
 	return $categ;	
 }
 
+/*
+ * antenna's ID depending on language
+ */
 function get_cat_if_user_lang($uid){
 	$categ = 0;
 	$user = get_user_meta( $uid );
@@ -1008,7 +1013,8 @@ function create_post_type() {
 			),
 			'public' => true,
 			'has_archive' => true,
-			'rewrite' => array('slug' => 'slider')
+			'rewrite' => array('slug' => 'slider'),
+			'menu_icon' => 'dashicons-format-gallery'
 		)
 	);
 	
@@ -1028,7 +1034,8 @@ function create_post_type() {
 			),
 			'public' => true,
 			'has_archive' => true,
-			'rewrite' => array('slug' => 'partner')
+			'rewrite' => array('slug' => 'partner'),
+			'menu_icon' => 'dashicons-share-alt'
 		)
 	);
 }
@@ -1175,10 +1182,11 @@ if ( function_exists('register_sidebar') ) {
 	$a = count($a_users);
 	$desc = $a>=2 ?  __("This sidebar is for all antennas only. Only the admin can configure it.",'iftheme'):'';
 	//$sidebar_default = $a<2 ? 'Sidebar' : 'Sidebar front';
-	register_sidebar(array('name'=> 'Sidebar',
+	register_sidebar(array(
+	  'name'=> 'Sidebar',
 		'id' => 'sidebar-default',
 		'description' => $desc,
-		'before_widget' => '<aside class="widget-area widget-sidebar bxshadow">',
+		'before_widget' => '<aside id="%1$s" class="widget-area widget-sidebar bxshadow %2$s">',
 		'after_widget' => '</aside>',
 		'before_title' => '<h3>',
 		'after_title' => '</h3>',
@@ -1190,10 +1198,11 @@ if ( function_exists('register_sidebar') ) {
 			if($user_categ == 0) {
 				add_action('admin_notices', 'categMsg');
 			} else {
-				register_sidebar(array('name'=>'Sidebar '. get_cat_slug($user_categ),
+				register_sidebar(array(
+				  'name'=>'Sidebar '. get_cat_slug($user_categ),
 					'id' => 'sidebar-'.$user_categ,
 					'description' => sprintf( __("This sidebar is for %s only" , 'iftheme') , get_cat_slug($user_categ) ),
-					'before_widget' => '<aside class="widget-area widget-sidebar bxshadow">',
+					'before_widget' => '<aside id="%1$s" class="widget-area widget-sidebar bxshadow %2$s">',
 					'after_widget' => '</aside>',
 					'before_title' => '<h3>',
 					'after_title' => '</h3>',
@@ -1206,7 +1215,7 @@ if ( function_exists('register_sidebar') ) {
 	// Footer Widget
 	// Location: at the right of the footer, next to the logo
 	register_sidebar(array('name'=>'Footer',
-		'before_widget' => '<aside class="widget-area widget-footer">',
+		'before_widget' => '<aside id="%1$s" class="widget-area widget-footer %2$s">',
 		'after_widget' => '</aside>',
 		'before_title' => '<h3>',
 		'after_title' => '</h3>',

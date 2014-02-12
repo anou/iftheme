@@ -4,7 +4,7 @@ Theme Name: Institut Français
 Theme URI: http://if-final.wp.anou.dev.smol.org
 Github Theme URI: https://github.com/anou/iftheme
 GitHub Branch: master
-Version: v2.2.7
+Version: v2.2.8
 Author: David THOMAS - SMOL
 Author URI: http://www.smol.org
 Description: The 2012 WordPress Base Theme for all Institut Français over the world.
@@ -91,6 +91,8 @@ Tags: dark, light, white, blue, gray, one-column, two-columns, right-sidebar, fi
 		#footer .container {width: 960px;}
 		  #footer .widget-footer.footer-logo {width: auto; min-height: 188px; height: 188px; padding: 25px 20px;}
 		  #footer .widget-footer {width: 200px; min-height: 198px;}
+      #footer .widget-footer.ifnopadding {width: 220px};
+
 
 }
 
@@ -108,6 +110,9 @@ body.custom-background {background-position: center top;}
 
 a, a:link, a:visited {color: #3E647E;}
 a:hover {color: #008AC9;}
+
+img {max-width: 100%}
+.metasize {max-width: 50%}
 
 h1,h2,h3,h4,h5,h6 {font-weight: normal; line-height: 1.2em;}
 
@@ -322,10 +327,20 @@ input.wysija-email { border: 1px solid #ababac; padding: 0; width: 150px; height
 	#sidebar aside {padding: 0 0 10px; margin-bottom: 15px; width: 100%; display: inline-block;}
 	#sidebar h3 { color: #fff; background: #008ac9 url(images/bg-post-title.png) repeat left top; font-family: 'dinMed'; font-size: 18px; padding: 10px;}
 	#sidebar ul, #sidebar ul li {padding: 0; margin: 0; list-style: none none;}
+	#sidebar .ifworldlinks { padding: 0; }
 	#sidebar .ifworldlinks h3 { color: #008ac9; background: #fff url(images/bg-sidebar-h2.png) repeat left top; text-transform: uppercase;}
 		#sidebar .ifworldlinks ul {padding: 10px 10px 5px; border: 1px solid #d3d3d3;}
 		#sidebar .ifworldlinks ul li {padding: 10px; background: #008ac9 url(images/bg-post-title.png) repeat left top; color: #fff; font-family: 'dinMed'; font-size: 16px; margin-bottom: 5px }
 		#sidebar .ifworldlinks ul li a {color: #fff; }
+		
+  #sidebar .ifmobile .ifmobile-content {padding:0 10px}
+   div.ifmobile-apps { padding: 0 !important; }
+   .ifmobile a {text-align: center; display: inline-block; max-width: 100%;}
+   div.ifmobile-apps a { display: inline-block; vertical-align: middle; width: 50%; float: left;}
+   div.ifmobile-apps a img { display: inline; }
+   
+   #sidebar aside.ifnopadding, #footer .widget-footer.ifnopadding, #sidebar aside.ifnopadding div {padding: 0;}
+   #footer .widget-footer.ifnopadding h3 { margin: 10px}
 		
 	#sidebar .widget-sidebar ul,
 	#sidebar .widget-sidebar div {padding: 10px;}
@@ -371,7 +386,7 @@ input.wysija-email { border: 1px solid #ababac; padding: 0; width: 150px; height
      .wysija_lists .disabled { opacity: 0.5; filter: alpha(opacity=50); }
 */
 	  
-#footer {}
+#footer { font-size: 12px;}
   #footer .container {background-color: transparent; display: block; padding: 0; /* margin-bottom: 10px */}
   	#footer .footer-all-block {background-color: #fff; padding: 10px 10px 0 0; width: auto;}
   	#footer .widget-footer {background-color: #f2f2f2; float: left; margin: 0 0 10px 10px;  padding: 10px;}

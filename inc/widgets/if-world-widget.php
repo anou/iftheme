@@ -28,18 +28,18 @@ class If_World_Links extends WP_Widget {
 		// prints the form on the widgets page
 		$defaults = array('title'=>__("Numeric IF",'iftheme'), 'links' => $links);
 		$instance = wp_parse_args( (array) $instance, $defaults ); 
-		?>
+  ?>
 		<p>
 			<label for="<?php echo $this->get_field_id('title'); ?>"><?php _e('Title','iftheme')?></label>
-			<input type="text" name="<?php echo $this->get_field_name('title') ?>" id="<?php echo $this->get_field_id('title') ?> " value="<?php echo $instance['title'] ?>" size="20" />
+			<input type="text" name="<?php echo $this->get_field_name('title') ?>" id="<?php echo $this->get_field_id('title') ?> " value="<?php echo $instance['title'] ?>" />
 		</p>
 		<?php $i = 0; 
 		  foreach ($links as $url => $link_title) : ?> 
   		  <p>
-        	<label style="width:35px; display:inline-block" for="<?php echo $this->get_field_id('links').'-'.$i.'-url'; ?>"><?php _e('URL','iftheme')?></label>
-        	<input type="text" name="<?php echo $this->get_field_name('links').'['.$i.']'.'[url]' ?>" id="<?php echo $this->get_field_id('links').'-'.$i.'-url'; ?>" value="<?php echo $instance['links'][$i]['url'] ?>" size="20" /><br />
-    			<label style="width:35px; display:inline-block" for="<?php echo $this->get_field_id('links').'-'.$i.'-label'; ?>"><?php _e('Label','iftheme')?></label>
-    			<input type="text" name="<?php echo $this->get_field_name('links').'['.$i.']'.'[label]' ?>" id="<?php echo $this->get_field_id('links').'-'.$i.'-label' ?> " value="<?php echo $instance['links'][$i]['label'] ?>" size="20" />
+    			<label for="<?php echo $this->get_field_id('links').'-'.$i.'-label'; ?>"><?php _e('Label','iftheme')?></label>
+    			<input type="text" name="<?php echo $this->get_field_name('links').'['.$i.']'.'[label]' ?>" id="<?php echo $this->get_field_id('links').'-'.$i.'-label' ?> " value="<?php echo $instance['links'][$i]['label'] ?>"  style="width:100%" />
+        	<label for="<?php echo $this->get_field_id('links').'-'.$i.'-url'; ?>"><?php _e('URL','iftheme')?></label>
+        	<input type="text" name="<?php echo $this->get_field_name('links').'['.$i.']'.'[url]' ?>" id="<?php echo $this->get_field_id('links').'-'.$i.'-url'; ?>" value="<?php echo $instance['links'][$i]['url'] ?>"  style="width:100%" /><br />
   		  </p>
 		<?php $i++; 
 		  endforeach; ?>
@@ -65,9 +65,9 @@ class If_World_Links extends WP_Widget {
 		echo $before_widget;
 		echo $before_title.$title.$after_title; ?>
 		<ul class="xoxo blogroll">
-  		<?php   $lz = $instance ? $instance['links'] : linksTab();
+  		<?php  $lz = isset($instance['links']) ? $instance['links'] : linksTab();
   		  foreach ($lz as $k => $tab) : ?>
-  		<li><a href="<?php echo $tab['url'];?>" title="<?php echo $tab['label'];?>" target="_blank"><?php echo $tab['label'];?></a></li>
+  		<?php if(strlen($tab['url'])):?><li><a href="<?php echo $tab['url'];?>" title="<?php echo $tab['label'];?>" target="_blank"><?php echo $tab['label'];?></a></li><?php endif;?>
   		<?php endforeach;?>
 		</ul>
 
@@ -126,4 +126,5 @@ function linksTab(){
 }
 
 add_action('widgets_init', 'ifworld_links_load_widgets');
+
 ?>

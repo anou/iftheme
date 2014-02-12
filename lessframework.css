@@ -160,6 +160,7 @@ body .container.header {padding: 30px 10px 10px;}
 	#footer .widget-footer.footer-logo {width: 128px; padding: 15px 10px; min-height: 228px; background-position: 10px 220px;}
 	#footer .widget-footer.footer-logo img {width: 130px; }
 	#footer .widget-footer {width: 130px; min-height: 218px;}
+	#footer .widget-footer.ifnopadding {width: 150px;}
 	
 ::selection {
 	background: #c6d8cd;
@@ -239,6 +240,7 @@ img::-moz-selection {
 		#footer .container {width: 440px}
 		body #footer .widget-footer.footer-logo {width: 420px; margin-bottom: 10px; background-position: 383px 60px; min-height: 80px; padding-bottom: 0;}
 		#footer .widget-footer {width: 400px; min-height: 1px;}
+		#footer .widget-footer.ifnopadding {width: 420px;}
 
 			#title {
 				height: 60px !important;
@@ -389,7 +391,7 @@ img::-moz-selection {
 		#footer .container {width: 300px}
 		body #footer .widget-footer.footer-logo {width: 280px; margin-bottom: 10px; background-position: 243px 60px; min-height: 80px; padding-bottom: 0;}
 		#footer .widget-footer {width: 260px; min-height: 1px;}
-	
+    #footer .widget-footer.ifnopadding {width: 280px;}
 	
 	.gigantic {
 		font-size: 68px;
