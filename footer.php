@@ -14,23 +14,27 @@
   		</div>
   		
 		  <div class="footer-all-block clearfix">
-<?php if (!function_exists('dynamic_sidebar') ||  ! dynamic_sidebar( 'Footer' )) : ?><!--Wigitized Footer-->
-      <?php if(!$multi): ?><div class="widget-footer">&nbsp;</div><?php endif;?>
+    <?php if (!function_exists('dynamic_sidebar') ||  ! dynamic_sidebar( 'Footer' )) : ?><!--Wigitized Footer-->
+    		
 		    <div class="widget-footer footer-pages">
 				  <?php the_widget('WP_Widget_Pages','title='.get_bloginfo('description'),'before_title=<h3>&after_title=</h3>'); ?>
 				</div>
 
-		<?php if($multi): ?>
-			<div class="widget-footer footer-antenna">
-				<h3><?php _e('Local antennas','iftheme');?></h3>
-				<ul><?php get_if_top_categ(array('orderby' => 'name')); ?></ul>
-			</div>
-		<?php endif;?>
-			
-			<div class="widget-footer footer-links">
-				<?php the_widget('If_World_Links'); ?>
-			</div>
-			<?php endif; ?>
+  		<?php if($multi): ?>
+  			<div class="widget-footer footer-antenna">
+  				<h3><?php _e('Local antennas','iftheme');?></h3>
+  				<ul><?php get_if_top_categ(array('orderby' => 'name')); ?></ul>
+  			</div>
+  		<?php else: //one antenna ?>
+  			<div class="widget-footer footer-links">
+  				<?php the_widget('If_Mobile'); ?>
+  			</div>
+  		<?php endif;?>
+  			
+  			<div class="widget-footer footer-links">
+  				<?php the_widget('If_World_Links'); ?>
+  			</div>
+    <?php endif; //end dynamic_sidebar ?>
 		  </div><!-- /.footer-all-block -->
 
 		</div><!--.container-->

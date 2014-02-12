@@ -334,7 +334,11 @@ input.wysija-email { border: 1px solid #ababac; padding: 0; width: 150px; height
 		#sidebar .ifworldlinks ul li a {color: #fff; }
 		
   #sidebar .ifmobile .ifmobile-content {padding:0 10px}
-   div.ifmobile-apps { padding: 0 !important; }
+  .ifmobile {line-height:1.3em}
+  .ifmobile-content p { margin: 0 0 0.5em;}
+  #sidebar .ifmobile-content p { margin: 0.8em 0;}
+   div.ifmobile-apps { padding: 0 !important; margin-top: 8px;}
+   #sidebar div.ifmobile-apps { margin-top: 12px;}
    .ifmobile a {text-align: center; display: inline-block; max-width: 100%;}
    div.ifmobile-apps a { display: inline-block; vertical-align: middle; width: 50%; float: left;}
    div.ifmobile-apps a img { display: inline; }

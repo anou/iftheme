@@ -58,7 +58,7 @@ class If_Mobile extends WP_Widget {
 		
 		extract($args);
 
-		$title = apply_filters('widget_title', isset($instance['title']) ? $instance['title'] : __("Numeric IF",'iftheme'));
+		$title = apply_filters('widget_title', isset($instance['title']) ? $instance['title'] : __("IFMobile",'iftheme'));
   	$links = IFMobile_links();
   	$lang = defined('ICL_LANGUAGE_CODE') ? ICL_LANGUAGE_CODE : get_site_lang();
 
@@ -85,7 +85,7 @@ class If_Mobile extends WP_Widget {
     		  <?php echo $k == 1 ? '<div class="ifmobile-apps">' : '';?>
     		    <a href="<?php echo $tab['url'];?>" title="<?php echo $links[$k]['label'];?>" target="_blank">
       		    
-      		    <?php if($k == 0): //IFMOBILE webpage ?><img src="<?php echo get_bloginfo('stylesheet_directory') . '/inc/images/ifmobile-widget.png'?>" alt="IFmobile" /><?php _e('To know more about', 'iftheme');?> <?php echo $links[$k]['label'];?><br /><br /><?php endif; ?>
+      		    <?php if($k == 0): //IFMOBILE webpage ?><img src="<?php echo get_bloginfo('stylesheet_directory') . '/inc/images/ifmobile-widget.png'?>" alt="IFmobile" /><?php _e('To know more about', 'iftheme');?> <?php echo $links[$k]['label'];?><br /><?php endif; ?>
       		    
       		    <?php if($k == 1): //APPLE STORE. Attention Apple seams to have particular country code to there badges... ?><img src="<?php echo get_bloginfo('stylesheet_directory') . '/inc/images/apple-badges/Download_on_the_App_Store_Badge_' . strtoupper($lang) . '_135x40.png';?>" alt="<?php _e('Download on the App Store', 'iftheme');?>" /><?php endif; ?>
       		    
