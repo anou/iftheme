@@ -2,15 +2,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Institut Français theme\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-02-12 20:59+0100\n"
-"PO-Revision-Date: 2014-02-12 21:01+0100\n"
+"POT-Creation-Date: 2014-02-13 09:14+0100\n"
+"PO-Revision-Date: 2014-02-13 09:16+0100\n"
 "Last-Translator: David Thomas <anou@smol.org>\n"
 "Language-Team: smol <anou@smol.org>\n"
 "Language: fr_FR\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Poedit-KeywordsList: __;_e;_x;_ex;_n;sprintf\n"
+"X-Poedit-KeywordsList: __;_e;_x;_ex;_n\n"
 "X-Poedit-Basepath: .\n"
 "X-Poedit-SourceCharset: UTF-8\n"
 "X-Generator: Poedit 1.6.4\n"
@@ -205,19 +205,6 @@ msgstr "Sélectionner"
 #: ../../iftheme/functions.php:644 ../../iftheme/inc/theme-classes.php:39
 msgid "Image"
 msgstr "Image"
-
-#: ../../iftheme/functions.php:763
-#: ../../iftheme/inc/calendar/classe_calendrier.php:541
-#: ../../iftheme/inc/calendar/classe_calendrier.php:545
-#: ../../iftheme/inc/calendar/classe_calendrier.php:547
-#: ../../iftheme/inc/calendar/classe_calendrier.php:552
-#: ../../iftheme/inc/calendar/classe_calendrier.php:554
-#: ../../iftheme/inc/calendar/classe_calendrier.php:559
-#: ../../iftheme/inc/calendar/classe_calendrier.php:563
-#: ../../iftheme/inc/calendar/classe_calendrier.php:566
-#, php-format
-msgid "%02d"
-msgstr "%02d"
 
 #: ../../iftheme/functions.php:902
 #, php-format
@@ -663,22 +650,6 @@ msgstr "Nov."
 #: ../../iftheme/inc/calendar/classe_calendrier.php:135
 msgid "Dec."
 msgstr "Déc."
-
-#: ../../iftheme/inc/calendar/classe_calendrier.php:385
-#: ../../iftheme/inc/calendar/classe_calendrier.php:390
-#, php-format
-msgid "%s-%s"
-msgstr "%s-%s"
-
-#: ../../iftheme/inc/calendar/classe_calendrier.php:510
-#, php-format
-msgid "%04d-%02d-%02d"
-msgstr "%04d-%02d-%02d"
-
-#: ../../iftheme/inc/calendar/classe_calendrier.php:652
-#, php-format
-msgid "%s %04d"
-msgstr "%s %04d"
 
 #: ../../iftheme/inc/events/if-events.php:25
 msgid "Event information"
@@ -1403,6 +1374,18 @@ msgstr "Tous les articles de blog"
 #, php-format
 msgid "Permanent Link to %s"
 msgstr "Lien permanent pour %s"
+
+#~ msgid "%02d"
+#~ msgstr "%02d"
+
+#~ msgid "%s-%s"
+#~ msgstr "%s-%s"
+
+#~ msgid "%04d-%02d-%02d"
+#~ msgstr "%04d-%02d-%02d"
+
+#~ msgid "%s %04d"
+#~ msgstr "%s %04d"
 
 #~ msgid "Or there is no category in this language"
 #~ msgstr "Ou il n'y a aucune catégorie dans cette langue"

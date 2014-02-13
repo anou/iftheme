@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Institut Français theme\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-02-12 21:02+0100\n"
-"PO-Revision-Date: 2014-02-12 21:03+0100\n"
+"POT-Creation-Date: 2014-02-13 09:16+0100\n"
+"PO-Revision-Date: 2014-02-13 09:16+0100\n"
 "Last-Translator: David Thomas <anou@smol.org>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -1133,6 +1133,18 @@ msgstr ""
 
 #: ../../iftheme/inc/widgets/if-mobile-widget.php:39
 msgid "URL for"
+msgstr ""
+
+#: ../../iftheme/inc/widgets/if-mobile-widget.php:82
+#, php-format
+msgid ""
+"Download IFmobile app to get notified about all the events of the "
+"<strong>Institut français %s </strong>"
+msgstr ""
+
+#: ../../iftheme/inc/widgets/if-mobile-widget.php:88
+#, php-format
+msgid "To know more about %s"
 msgstr ""
 
 #: ../../iftheme/inc/widgets/if-mobile-widget.php:90

@@ -79,13 +79,13 @@ class If_Mobile extends WP_Widget {
 		echo $before_widget;
 		echo $before_title.$title.$after_title;?>
 		<div class="ifmobile-content">
-  		<p><?php sprintf('Download IFmobile app to get notified about all the events of the <strong>Institut français %s </strong>', get_bloginfo('description'));?></p>
+  		<p><?php sprintf(__('Download IFmobile app to get notified about all the events of the <strong>Institut français %s </strong>', 'iftheme'), get_bloginfo('description'));?></p>
     		<?php $lz = $instance ? $instance['links'] : IFMobile_links();
     		  foreach ($lz as $k => $tab) : ?>
     		  <?php echo $k == 1 ? '<div class="ifmobile-apps">' : '';?>
     		    <a href="<?php echo $tab['url'];?>" title="<?php echo $links[$k]['label'];?>" target="_blank">
       		    
-      		    <?php if($k == 0): //IFMOBILE webpage ?><img src="<?php echo get_bloginfo('stylesheet_directory') . '/inc/images/ifmobile-widget.png'?>" alt="IFmobile" /><?php sprintf('To know more about %s', $links[$k]['label']);?><br /><?php endif; ?>
+      		    <?php if($k == 0): //IFMOBILE webpage ?><img src="<?php echo get_bloginfo('stylesheet_directory') . '/inc/images/ifmobile-widget.png'?>" alt="IFmobile" /><?php sprintf(__('To know more about %s', 'iftheme'), $links[$k]['label']);?><br /><?php endif; ?>
       		    
       		    <?php if($k == 1): //APPLE STORE. Attention Apple seams to have particular country code to there badges... ?><img src="<?php echo get_bloginfo('stylesheet_directory') . '/inc/images/apple-badges/Download_on_the_App_Store_Badge_' . strtoupper($lang) . '_135x40.png';?>" alt="<?php _e('Download on the App Store', 'iftheme');?>" /><?php endif; ?>
       		    
