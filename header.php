@@ -155,15 +155,16 @@ global $current_user; get_currentuserinfo();
 					</aside>
 				<?php endif;?>
 				<?php $hmenupages = isset($options['theme_options_setting_hmenupage']) ? $options['theme_options_setting_hmenupage'] : 1;
-				if ($hmenupages) : //0 is NULL?>
+				if ($hmenupages && !is_plugin_active( 'underconstruction/underConstruction.php' ) ) : //0 is NULL?>
   				<aside id="header-pages-menu" class="widget">
   					<?php wp_page_menu('show_home=0'); /* outputs the pages menu */ ?>
   				</aside>
   		  <?php endif;?>
-				
+				<?php if( !is_plugin_active( 'underconstruction/underConstruction.php' ) ):?>
 				<aside id="header-search" class="widget">
 					<?php get_search_form(); /* outputs the default Wordpress search form */ ?>
 				</aside>
+				<?php endif;?>
 			 <?php endif ?>
 			</div>
 			<div class="clear"></div>

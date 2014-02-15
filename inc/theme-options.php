@@ -1,8 +1,8 @@
 <?php
 /**
  * Institut Français Theme Options
- * inspired by Institut Français Theme Options file. Thanks !
  */
+
 
 //declare a global var to know if we have a simple or multi-antennas website
 global $multi;
@@ -43,7 +43,9 @@ add_action( 'admin_print_styles-appearance_page_theme_options', 'iftheme_admin_e
 function iftheme_theme_options_init() {
 	global $multi;
 	global $current_user; get_currentuserinfo();
-  	$antenna = get_antenna();  
+
+ 	$antenna = get_antenna();  
+
 	register_setting(
 		'iftheme_options',       // Options group, see settings_fields() call in iftheme_theme_options_render_page()
 		'iftheme_theme_options_'.$antenna, // Database option, see iftheme_get_theme_options()
@@ -58,7 +60,7 @@ function iftheme_theme_options_init() {
 		'theme_options' // Menu slug, used to uniquely identify the page; see iftheme_theme_options_add_page()
 	);
 	
-	if($multi && $current_user->ID === 1) {
+	if($multi && $current_user->caps['administrator']) {
 		//adding a section for the Country hompage if exist (multi-antenna site)
 		add_settings_section(
 			'homepage', // Unique identifier for the settings section
@@ -69,14 +71,19 @@ function iftheme_theme_options_init() {
 	}
 	// Add the section to theme options settings so we can add our fields to it.
 	//Only for admin (user 1) -- SPECIAL SETTINGS
-	if($current_user->ID === 1) {
+	if($current_user->caps['administrator']) {
 	  add_settings_section('special_setting_section', __('Special settings','iftheme'), 'special_setting_section_callback_function','theme_options');
 	  add_settings_field('theme_options_setting_header', __("Display header's menu pages",'iftheme'),'theme_options_setting_header_callback_function','theme_options','special_setting_section');
 	  add_settings_field('theme_options_wysija_embed', __("Use MailPoet Newsletter's theme form",'iftheme'),'theme_options_setting_wysija_embed_callback_function','theme_options','special_setting_section');
 	  
+	  	if ( is_plugin_active( 'underconstruction/underConstruction.php' ) ){
+          add_settings_field('theme_options_underconstruction_page', __("Under construction Page",'iftheme'),'theme_options_setting_underconstruction_page_callback_function','theme_options','special_setting_section');
+  	
+      }
+	  
 	  //TODO: ADD choice of bg color : array(#ADA59A,#ECB813,#FF4B00,#BAC900,#595959,#D2204C,#55BCBE,#3E647E)
   }
-	//if($current_user->ID === 1) {
+	//if($current_user->caps['administrator']) {
   add_settings_section('social_setting_section', __('Social sites on the web','iftheme'), 'social_setting_section_callback_function','theme_options');
   //}
 	
@@ -109,7 +116,7 @@ function iftheme_theme_options_init() {
 	add_settings_field('theme_options_setting_instagram', __('Instagram Page','iftheme'),'theme_options_setting_instagram_callback_function','theme_options','social_setting_section');
 
 	// Register our individual settings fields for country hompage if multi-antenna site
-	if($multi && $current_user->ID === 1) {
+	if($multi && $current_user->caps['administrator']) {
 		add_settings_field('bg_frame_country', __( "Country's background frame", 'iftheme' ), 'iftheme_settings_field_bg_frames_country', 'theme_options', 'homepage' );
 		add_settings_field( 'theme_home_categ_country', __( "Displayed country's homepage categories", 'iftheme' ), 'iftheme_settings_field_home_categories_country', 'theme_options', 'homepage' );//categories on homepage
 	add_settings_field( 'theme_home_nb_events_country', __( "Number of events for each category displayed on country's homepage:", 'iftheme' ), 'iftheme_settings_field_nb_events_country', 'theme_options', 'homepage' );//number of posts on homepage
@@ -264,6 +271,7 @@ function iftheme_get_default_theme_options() {
 		'theme_home_nb_events' => '5',
 		'theme_options_setting_hmenupage' => '1',
 		'theme_options_setting_wysija_embed' => '1',
+		'theme_options_setting_underconstruction' => '',
 	);
 	
 	if ($pays) {
@@ -411,7 +419,9 @@ function theme_options_setting_header_callback_function() {
 	<input name="iftheme_theme_options_<?php echo $antenna;?>[theme_options_setting_hmenupage]" id="theme_options_setting_hmenupage" type="checkbox"  value="1" <?php checked( $checked, 1 ); ?> />&nbsp;<span><?php _e("Check this box to display the header's pages menu", 'iftheme');?></span>
 <?php 
 }
-//wysija form embed in theme
+/*
+ * wysija/mailpoet form embed in theme
+ */
 function theme_options_setting_wysija_embed_callback_function() {
 	$antenna = get_antenna();
 	$options = iftheme_get_theme_options();
@@ -420,6 +430,28 @@ function theme_options_setting_wysija_embed_callback_function() {
 ?>
 	<input name="iftheme_theme_options_<?php echo $antenna;?>[theme_options_setting_wysija_embed]" id="theme_options_setting_wysija_embed" type="checkbox"  value="1" <?php checked( $checked, 1 ); ?> />&nbsp;<span><?php _e("Check this box to use and display the MailPoet Newsletters (formerly Wysija) subscription form embedded in the IF theme", 'iftheme');?></span>
 <?php 
+}
+
+/*
+ * Function for under construction page if needed
+ */
+function theme_options_setting_underconstruction_page_callback_function() {
+	$antenna = get_antenna();
+	$options = iftheme_get_theme_options();
+	$defaults = iftheme_get_default_theme_options();
+  $selected = isset($options['theme_options_setting_underconstruction']) ? $options['theme_options_setting_underconstruction'] : $defaults['theme_options_setting_underconstruction']; 
+  ?>
+	<?php 
+	  $args = array(
+	    'name' => 'iftheme_theme_options_' . $antenna . '[theme_options_setting_underconstruction]',
+	    'id' => 'theme_options_setting_underconstruction',
+	    'show_option_none' => __('Select', 'iftheme'),
+	    'selected' => $selected,
+	  );
+	  wp_dropdown_pages($args);
+  ?>
+	<span><?php _e("Please select an Under construction Landing page", 'iftheme');?></span>
+<?php
 }
 
 // —————-Settings section callback function social networks
@@ -536,6 +568,11 @@ function iftheme_theme_options_validate( $input ) {
 	$output['theme_options_setting_hmenupage'] = isset($input['theme_options_setting_hmenupage']) ? $input['theme_options_setting_hmenupage'] : 0;
 	//wysija embedded sub. form
 	$output['theme_options_setting_wysija_embed'] = isset($input['theme_options_setting_wysija_embed']) ? $input['theme_options_setting_wysija_embed'] : 0;
+	//Under construction Landing page
+  if ( isset( $input['theme_options_setting_underconstruction'] ) )
+		$output['theme_options_setting_underconstruction'] = $input['theme_options_setting_underconstruction'];
+//d($_POST);
+//d($input);
 
   //SOCIAL NETWORKS
 	if ( isset( $input['theme_options_setting_facebook'] ) )

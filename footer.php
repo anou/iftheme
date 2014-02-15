@@ -17,7 +17,9 @@
     <?php if (!function_exists('dynamic_sidebar') ||  ! dynamic_sidebar( 'Footer' )) : ?><!--Wigitized Footer-->
     		
 		    <div class="widget-footer footer-pages">
+		    <?php if ( !is_plugin_active( 'underconstruction/underConstruction.php' ) ):?>
 				  <?php the_widget('WP_Widget_Pages','title='.get_bloginfo('description'),'before_title=<h3>&after_title=</h3>'); ?>
+        <?php endif; ?>
 				</div>
 
   		<?php if($multi): ?>
