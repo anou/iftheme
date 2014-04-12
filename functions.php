@@ -1531,7 +1531,7 @@ function iftheme_content_nav( $html_id, $archives = TRUE ) {
 	global $wp_query;
 	$html_id = esc_attr( $html_id );
 	
-	if ( $wp_query->max_num_pages > 1 ) : ?>
+	if ( $wp_query->max_num_pages >= 1 ) : ?>
 	<?php 
 	  //Archives pages query
 	  $archive_query = new WP_Query(array(

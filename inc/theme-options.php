@@ -305,7 +305,7 @@ function iftheme_settings_field_bg_frames($pays = NULL) {
 		<input type="radio" name="iftheme_theme_options_<?php echo $antenna;?>[bg_frame<?php echo $pays ? '_'.$pays : '';?>]" value="<?php echo esc_attr( $frame['value'] ); ?>" <?php checked( $pays ? $options['bg_frame_country'] : $options['bg_frame'], $frame['value'] ); ?> />
 		<span><?php echo $frame['thumbnail'] ? $frame['label'] : ''; ?></span>
 		<div style="background: transparent url('<?php echo esc_url( $frame['thumbnail'] ); ?>') repeat left top; width: 130px; height: 60px; margin-top:5px">
-  		<?php if ( !$frame['thumbnail'] ) :?> <h3 style="margin:7px 0 0;"><?php _e($frame['label'], 'iftheme') ;?></h3><?php endif; ?>
+  		<?php if ( !$frame['thumbnail'] ) :?> <h3 style="margin:0;"><?php _e($frame['label'], 'iftheme') ;?></h3><?php endif; ?>
 		</div>
 	</label>
 	</div>
@@ -377,17 +377,15 @@ function iftheme_settings_field_nb_events_country() {
  */
 function iftheme_settings_field_background_img($pays = NULL) {
 	global $section;
-	//var_dump($section);
 
 	$antenna = get_antenna();
 	$options = iftheme_get_theme_options();
-	//echo '<pre>';print_r($options);echo '</pre>';
 	?>
 		<div class="layout image-background_img-option background-img">
 			<label for="background_img" class="description">
 				<input id="background_img<?php echo $pays ? '_'.$pays:'';?>" class="background_img" type="text" size="36" name="iftheme_theme_options_<?php echo $antenna;?>[background_img<?php echo $pays ? '_'.$pays : '';?>]" value="<?php echo $pays ? esc_attr( $options['background_img_country'] ) : esc_attr( $options['background_img'] ); ?>" /><?php //TODO : hide image when uploading a new one !!!?>
 				<button id="upload_image_button<?php echo $pays ? '_'.$pays : '';?>" type="button" class="upload-button"><?php _e('Upload image', 'iftheme');?></button>
-				<div><?php _e('Choose your background image', 'iftheme'); ?></div>
+				<span style="display:inline-block; margin: 5px 0"><?php _e('Choose your background image', 'iftheme'); ?></span>
 			</label>
 			
 			<?php if($options['background_img'] && !$section): ?><span class="actual-img"><?php _e('Actual Image', 'iftheme');?></span><div class="bg-img-preview"><img src="<?php echo esc_attr( $options['background_img'] ); ?>" alt="" width="150" /></div> <?php endif;?>

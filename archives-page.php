@@ -26,9 +26,27 @@
 	
 <?php // Display blog posts
 
+/*
 		$temp = &$wp_query;
 		$wp_query = null;
-		$wp_query = new WP_Query(); $wp_query->query('showposts=' . get_option('posts_per_page') . '&paged=' . $paged . $cat);
+*/
+    $archives_args = array(
+       'posts_per_page' =>  get_option('posts_per_page'),
+       'paged' =>  $paged . $cat,
+       'meta_key' => 'if_events_startdate',
+       'orderby' => 'meta_value_num',
+       'order' => 'ASC',
+       'meta_query' => array(
+      		array(
+      		   'key' => 'if_events_enddate',
+      		   'value' => strtotime('yesterday'),
+      		   'compare' => '<=',
+      		   'type' => 'numeric'
+      		  )
+        )
+     );		
+     
+     $wp_query = new WP_Query($archives_args);
 ?>
 	<h2><?php echo $subtitle;?></h2>
 
@@ -72,9 +90,10 @@
   			var end = moment.unix(<?php echo $raw_data['end'];?>).format('ll');
   			var time = '<?php echo $raw_data['time'];?>';
   			
-  			start = start.replace(startYear, '');
+  			//Show year in archives
+  			//start = start.replace(startYear, '');
   			thisPostStart.text(start);
-  			end = end.replace(endYear, '');
+        //end = end.replace(endYear, '');
   			end = end !== start ? end : time;
   			
   			if (end) if(end !== start) thisPostEnd.text(' / '+end);

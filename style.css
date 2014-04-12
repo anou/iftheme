@@ -343,7 +343,7 @@ input.wysija-email { border: 1px solid #ababac; padding: 0; width: 150px; height
    div.ifmobile-apps a { display: inline-block; vertical-align: middle; width: 50%; float: left;}
    div.ifmobile-apps a img { display: inline; }
    
-   #sidebar aside.ifnopadding, #footer .widget-footer.ifnopadding, #sidebar aside.ifnopadding div {padding: 0;}
+   #sidebar aside.ifnopadding, #footer .widget-footer.ifnopadding, #sidebar aside.ifnopadding div {padding: 0; box-shadow: none;}
    #footer .widget-footer.ifnopadding h3 { margin: 10px}
 		
 	#sidebar .widget-sidebar ul,
@@ -571,6 +571,8 @@ body #sidebar .widget-sidebar .partners div {padding: 0;}
 .nav-previous a, .nav-next a { color: #fff; padding: 5px 10px; display: inline-block;}
 .nav-previous a:hover, .nav-next a:hover { background-image: url(images/bg-post-title.png); color: #fff}
 
+
+.navigation { min-height: 10px; }
 .nav-previous{	float: right; }
 .nav-next { float: left; }
 

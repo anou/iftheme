@@ -81,12 +81,12 @@
 			<div id="ajax_calendrier"><?php  include( get_template_directory() . '/inc/calendar/calendrier.php'); ?></div>
 		</aside>
 		
-		<?php if ( !is_plugin_active( 'underconstruction/underConstruction.php' ) ):?>
+		<?php //if ( !is_plugin_active( 'underconstruction/underConstruction.php' ) ):?>
   		<?php if ( !function_exists('dynamic_sidebar') || !dynamic_sidebar($sidebar)) : ?><?php endif; ?>
   		
   		<?php if(!is_front_page() && $multi):?>
   			<?php if ( !function_exists('dynamic_sidebar') || !dynamic_sidebar('Sidebar')) : ?><?php endif; ?>
   		<?php endif; ?>
-    <?php endif; ?>
+    <?php //endif; ?>
 
 </div><!--sidebar-->

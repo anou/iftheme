@@ -171,6 +171,9 @@
   			<?php  wp_list_categories('title_li=&use_desc_for_title=0&hide_empty=0&depth=1&child_of='.get_query_var('cat')); ?>
 			</ul>
 		<?php endif;?>
+		
+		<?php iftheme_content_nav( 'nav-top' ); //next-prev nav ?>
+
 		<!-- POSTS -->
 		<?php if (have_posts() && !empty($data['posts'])) : ?> 
 
