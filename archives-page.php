@@ -24,12 +24,8 @@
   <p><?php the_content();?></p>
 	<?php endwhile; endif;  ?>
 	
-<?php // Display blog posts
-
-/*
-		$temp = &$wp_query;
-		$wp_query = null;
-*/
+<?php //Display ended posts/events
+    
     $archives_args = array(
        'posts_per_page' =>  get_option('posts_per_page'),
        'paged' =>  $paged . $cat,
@@ -45,8 +41,10 @@
       		  )
         )
      );		
-     
-     $wp_query = new WP_Query($archives_args);
+    
+    if ( $ifcat ) $archives_args['cat'] = $ifcat;
+
+    $wp_query = new WP_Query($archives_args);
 ?>
 	<h2><?php echo $subtitle;?></h2>
 
