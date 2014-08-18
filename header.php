@@ -24,6 +24,9 @@ $c = get_query_var('cat');
 
 global $current_user; get_currentuserinfo();
 
+global $if_front;
+$if_front = is_front_page();
+
 ?>
 <!DOCTYPE html>
 <html <?php language_attributes(); ?>>
