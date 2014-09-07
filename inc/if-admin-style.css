@@ -22,3 +22,5 @@
 
 #if_book_desc_tbl {height: 200px !important}
 #if_book_desc_ifr {height: 100px !important}
+
+.simplePanelImagePreview img { width: 200px !important; }

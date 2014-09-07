@@ -14,7 +14,7 @@
   		</div>
   		
 		  <div class="footer-all-block clearfix">
-    <?php if (!function_exists('dynamic_sidebar') ||  ! dynamic_sidebar( 'Footer' )) : ?><!--Wigitized Footer-->
+    <?php if (!function_exists('dynamic_sidebar') ||  !dynamic_sidebar( 'Footer' )) : ?><!--Wigitized Footer-->
     		
 		    <div class="widget-footer footer-pages">
 		    <?php //if ( !is_plugin_active( 'underconstruction/underConstruction.php' ) ):?>

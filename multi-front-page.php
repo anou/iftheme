@@ -44,8 +44,17 @@
 			
 			</div><!-- /#slides -->
 		</div><!-- /#slider -->
+
+
 	<?php endwhile; ?>
 	<?php /*end query slider*/ wp_reset_query(); ?>
+	
+  <div class="widget-front-container clearfix">
+  <?php if (!function_exists('dynamic_sidebar') ||  !dynamic_sidebar( 'Front-page' )) : ?><!--Wigitized Footer-->
+  <?php endif; //end dynamic_sidebar ?>
+  </div>
+
+	
 	<?php else :?><div class="msg warning"><?php _e("You don't have any <em>Slider</em> recorded yet. <a href=\"/wp-admin/post-new.php?post_type=if_slider\">Add one now ?</a>"); ?></div>
 	<?php endif; ?>
 				
@@ -62,7 +71,10 @@
     ?>
 			<div id="home-list">
 			<?php foreach($home_cat as $id):?>
-				<?php $cat = get_category($id); $antparent = get_cat_name(get_root_category($id));?>
+				<?php $id = function_exists('icl_object_id') ? icl_object_id($id,'category',true) : $id;
+				  $cat = get_category($id); 
+				  $antparent = get_cat_name(get_root_category($id));
+				?>
 				<div class="block-home">
 					<h2 class="posts-category"><?php echo $cat->name;?> / <?php echo $antparent;?></h2>
 					<?php //alter query

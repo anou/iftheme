@@ -1,15 +1,29 @@
-<?php global $antenna; global  $multi; global $options; global $c; global $antenna_op;
+<?php global $antenna, $multi, $options, $c, $antenna_op, $if_front;
 
 	$cat_slug = is_front_page() || is_home() ? NULL : get_cat_slug($antenna);
 	
 	if($multi){
 		$sidebar = !$cat_slug ? 'Sidebar' : 'Sidebar '.$cat_slug; 
 	} else { $sidebar = 'Sidebar';}
-
 ?>
 <div id="sidebar">
 			<?php  //NEWSLETTER FORM
-  		$wysija_embedded = isset($options['theme_options_setting_wysija_embed']) ? $options['theme_options_setting_wysija_embed'] : 1;
+			$wysija_embedded = 1; //default to 1 = Form NL from IFtheme is displayed
+			
+			if ($multi) {
+			  if ( $if_front ) {
+			    // Get admin categ. Only admin can configure country homepage
+          $categAdmin = get_cat_if_user(1);
+  			  $wysija_embedded = isset($options[$categAdmin]['theme_options_setting_wysija_embed']) ? $options[$categAdmin]['theme_options_setting_wysija_embed'] : $wysija_embedded;
+			  }
+			  else {
+  			  $wysija_embedded = isset($options[$antenna]['theme_options_setting_wysija_embed']) ? $options[$antenna]['theme_options_setting_wysija_embed'] : $wysija_embedded;
+			  }
+			}
+			else { 
+			  $wysija_embedded = isset($options['theme_options_setting_wysija_embed']) ? $options['theme_options_setting_wysija_embed'] : $wysija_embedded; 
+      }
+
 			if(defined('WYSIJA') && $wysija_embedded) {
 				$modelList = &WYSIJA::get("list","model");
 				$arrayOfMailingLists = $modelList->get(false,array('is_enabled'=>1));

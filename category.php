@@ -66,7 +66,13 @@
 	<?php endwhile; ?>
 	<?php /*end query slider*/ wp_reset_query(); ?>
 	<?php endif; ?>
-		
+
+  <div class="widget-front-container clearfix">
+  <?php if (!function_exists('dynamic_sidebar') ||  !dynamic_sidebar( 'Front-page' )) : ?><!--Wigitized Footer-->
+  <?php endif; //end dynamic_sidebar ?>
+  </div>
+
+
 	<?php //get displayed home categories for antenna
 		$home_cat = isset($options[$original]['theme_home_categ']) ? $options[$original]['theme_home_categ'][0] : '';
 		
@@ -74,6 +80,7 @@
 		if($home_cat):?>
 			<div id="home-list">
 			<?php foreach($home_cat as $id): ?>
+				<?php $id = function_exists('icl_object_id') ? icl_object_id($id,'category',true) : $id; ?>
 				<?php $cat = get_the_category_by_ID($id); ?>
 				<div class="block-home">
 					<h2 class="posts-category"><?php echo $cat;?></h2>

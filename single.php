@@ -57,7 +57,7 @@
 						<div class="slider"><h3><?php echo $values['title'];?></h3><a href="<?php echo $values['link'];?>" title="<?php echo $values['link'];?>"><img src="<?php echo $img[0]; ?>" width="<?php echo $img[1]; ?>" height="<?php echo $img[2]; ?>" alt="" /></a></div>
 					  <?php endforeach;?>
 					  
-					<?php else :?>
+					<?php else : ?>
 						<?php the_content(); ?>
 					<?php endif;?>
 				

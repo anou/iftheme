@@ -1174,6 +1174,7 @@ if ( function_exists('register_sidebar') ) {
 */
 
 
+
 	// Sidebar Widget for each antenna. Default to one only.
 	global $current_user; get_currentuserinfo();
 	$a_users = get_antenna_users();
@@ -1212,6 +1213,7 @@ if ( function_exists('register_sidebar') ) {
 		}
 	}
 
+
 	// Footer Widget
 	// Location: at the right of the footer, next to the logo
 	register_sidebar(array('name'=>'Footer',
@@ -1221,7 +1223,15 @@ if ( function_exists('register_sidebar') ) {
 		'after_title' => '</h3>',
 	));
 	
-	
+		// Front Widget
+	// Location: just under the slider zone on front pages
+	register_sidebar(array('name'=>'Front-page',
+		'before_widget' => '<aside id="%1$s" class="widget-area widget-front %2$s">',
+		'after_widget' => '</aside>',
+		'before_title' => '<h3>',
+		'after_title' => '</h3>',
+	));
+
 	// The Alert Widget
 	// Location: displayed on the top of the home page, right after the header, right before the loop, within the content area
 /*
@@ -1574,4 +1584,6 @@ function iftheme_content_nav( $html_id, $archives = TRUE ) {
 }
 endif;
 
+add_filter( 'term_description', 'shortcode_unautop');
+add_filter( 'term_description', 'do_shortcode' );
  

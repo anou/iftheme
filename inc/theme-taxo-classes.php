@@ -32,7 +32,7 @@ $custom_category->addImage('categ_img',array('name'=> __('Download an image for 
 $custom_category->addCheckbox('categ_children',array('name'=> __('Display sub-categories','iftheme'), 'desc'=>__("Check this box if you want to display a list of child categories",'iftheme')));
 //Display children checkbox
 $check = true;
-//d($_GET);
+
 if(isset($_GET['taxonomy']) && $_GET['taxonomy'] == 'category' ){
 	$check = isset($_GET['tag_ID']) ? get_tax_meta($_GET['tag_ID'],'categ_posts') : true;
 }

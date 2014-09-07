@@ -157,7 +157,22 @@ $if_front = is_front_page();
 						<?php languages_list_header(); /* outputs the language switcher */ ?>
 					</aside>
 				<?php endif;?>
-				<?php $hmenupages = isset($options['theme_options_setting_hmenupage']) ? $options['theme_options_setting_hmenupage'] : 1;
+  			<?php  //MENU PAGES IN HEADER (theme option)
+  			$hmenupages = 1; //default to 1 = displayed
+  			
+  			if ($multi) {
+  			  if ( $if_front ) {
+  			    // Get admin categ. Only admin can configure country homepage
+            $categAdmin = get_cat_if_user(1);
+    			  $hmenupages = isset($options[$categAdmin]['theme_options_setting_hmenupage']) ? $options[$categAdmin]['theme_options_setting_hmenupage'] : $wysija_embedded;
+  			  }
+  			  else {
+    			  $hmenupages = isset($options[$antenna]['theme_options_setting_hmenupage']) ? $options[$antenna]['theme_options_setting_hmenupage'] : $hmenupages;
+  			  }
+  			}
+  			else { 
+  			  $hmenupages = isset($options['theme_options_setting_hmenupage']) ? $options['theme_options_setting_hmenupage'] : $hmenupages; 
+        }
 				//if ($hmenupages && !is_plugin_active( 'underconstruction/underConstruction.php' ) ) : //0 is NULL
 				if ( $hmenupages ) : //0 is NULL?>
   				<aside id="header-pages-menu" class="widget">
