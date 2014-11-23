@@ -11,14 +11,9 @@
 			$wysija_embedded = 1; //default to 1 = Form NL from IFtheme is displayed
 			
 			if ($multi) {
-			  if ( $if_front ) {
-			    // Get admin categ. Only admin can configure country homepage
-          $categAdmin = get_cat_if_user(1);
-  			  $wysija_embedded = isset($options[$categAdmin]['theme_options_setting_wysija_embed']) ? $options[$categAdmin]['theme_options_setting_wysija_embed'] : $wysija_embedded;
-			  }
-			  else {
-  			  $wysija_embedded = isset($options[$antenna]['theme_options_setting_wysija_embed']) ? $options[$antenna]['theme_options_setting_wysija_embed'] : $wysija_embedded;
-			  }
+		    // Get admin categ. Only admin can configure country homepage
+        $categAdmin = get_cat_if_user(1);
+			  $wysija_embedded = isset($options[$categAdmin]['theme_options_setting_wysija_embed']) ? $options[$categAdmin]['theme_options_setting_wysija_embed'] : $wysija_embedded;
 			}
 			else { 
 			  $wysija_embedded = isset($options['theme_options_setting_wysija_embed']) ? $options['theme_options_setting_wysija_embed'] : $wysija_embedded; 
