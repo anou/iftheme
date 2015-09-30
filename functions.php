@@ -447,12 +447,24 @@ add_filter('body_class','iftheme_body_class');
 //style for the wysiwyg
 add_editor_style('style.css');
 
-//get top level categories
+/**
+ * get top level categories
+ */
 function get_root_category($category_id) {
-	$parent_cats = get_category_parents($category_id);
-	//print_r($parent_cats);
-	if(!is_object($parent_cats)) $split_arr = explode('/', $parent_cats);
-  	return get_cat_id($split_arr[0]);
+  $rootID = false; //OR 1 ? > maybe admin categ ?
+  //returns cat's name
+	//$parent_cats = get_category_parents($category_id);
+	//returns cat's slug
+	$parent_cats = get_category_parents($category_id, false, '/', true);
+//if( is_super_admin() ) d($parent_cats);
+	if(!is_object($parent_cats)) {
+	  $split_arr = explode('/', $parent_cats);
+	  //$return = get_cat_id($split_arr[0]);
+	  $catObj = get_category_by_slug($split_arr[0]);
+	  $rootID = $catObj->term_id;
+  }
+  
+  return $rootID;
 }
 
 //function to get depth category

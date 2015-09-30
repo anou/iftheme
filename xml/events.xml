@@ -1,6 +1,37 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<listevenements><evenement><id>385</id><titre>Cours adultes : session de septembre</titre><imageurl/><videourl/><description>Inscriptions possibles dès le 15 août!
+<listevenements>
+  <evenement>
+    <id>385</id>
+    <titre>Cours adultes : session de septembre</titre>
+    <imageurl/>
+    <videourl/>
+    <description>Inscriptions possibles dès le 15 août!
 Le Diplôme d’Etudes en Langue Française (DELF) et le Diplôme Approfondi de Langue Française (DALF) sont les diplômes officiels délivrés par le ministère français de l’Éducation nationale, pour certifier les compétences en français des candidats étrangers et des Français originaires d’un pays non francophone et non titulaires d’un diplôme de l’enseignement secondaire ou supérieur public français. Les épreuves peuvent être présentées dans plus de 1000 centres d’examens agrées répartis dans 164 pays dont la France.
-Le DELF et le DALF se composent de 6 diplômes indépendants, correspondant aux six niveaux duCadre européen de référence pour les langues. Depuis le 1er septembre 2005, il existe également une version du DELF destinée à un public adolescent scolarisé dans un établissement scolaire public ou privé. La structure des examens est la même que celle du DELF dans sa version « tous publics » (pour adultes), seuls les thématiques et les supports diffèrent et sont adaptés aux publics scolaires.</description><datepub>17/12/2012</datepub><datedebut>02/07/2012</datedebut><datefin>31/08/2013</datefin><disciplines>35</disciplines><lieu>salle 247 bât c (à côté de la salle 246)</lieu><adresse/><adressecomplement/><codepostal/><ville>Nouillorque City</ville><pays>BHR</pays><longitude>2.3522219000000177</longitude><latitude>48.856614</latitude><horaires>00:00</horaires><tel/><email/><lien1/><lien2/><lien3/><url>http://if-final.wp.anou.dev.smol.org/?p=385</url></evenement><evenement><id>20</id><titre>Ciné en plein air au Latéral Park de Nouillorque</titre><imageurl/><videourl/><description>Latéral Park
+Le DELF et le DALF se composent de 6 diplômes indépendants, correspondant aux six niveaux duCadre européen de référence pour les langues. Depuis le 1er septembre 2005, il existe également une version du DELF destinée à un public adolescent scolarisé dans un établissement scolaire public ou privé. La structure des examens est la même que celle du DELF dans sa version « tous publics » (pour adultes), seuls les thématiques et les supports diffèrent et sont adaptés aux publics scolaires.</description>
+    <datepub>17/12/2012</datepub>
+    <datedebut>02/07/2012</datedebut>
+    <datefin>31/08/2013</datefin>
+    <disciplines>35</disciplines>
+    <lieu>salle 247 bât c (à côté de la salle 246)</lieu>
+    <adresse/>
+    <adressecomplement/>
+    <codepostal/>
+    <ville>Nouillorque City</ville>
+    <pays>BHR</pays>
+    <longitude>2.3522219000000177</longitude>
+    <latitude>48.856614</latitude>
+    <horaires>00:00</horaires>
+    <tel/>
+    <email/>
+    <lien1/>
+    <lien2/>
+    <lien3/>
+    <url>http://if-final.wp.anou.dev.smol.org/?p=385</url>
+  </evenement>
+  
+  <evenement>
+    <id>20</id><titre>Ciné en plein air au Latéral Park de Nouillorque</titre><imageurl/><videourl/><description>Latéral Park
 Le Lorem Ipsum est simplement du faux texte employé dans la composition et la mise en page avant impression. Le Lorem Ipsum est le faux texte standard de l'imprimerie depuis les années 1500, quand un peintre anonyme assembla ensemble des morceaux de texte pour réaliser un livre spécimen de polices de texte. Il n'a pas fait que survivre cinq siècles, mais s'est aussi adapté à la bureautique informatique, sans que son contenu n'en soit modifié. Il a été popularisé dans les années 1960 grâce à la vente de feuilles Letraset contenant des passages du Lorem Ipsum, et, plus récemment, par son inclusion dans des applications de mise en page de texte, comme Aldus PageMaker. Pourquoi l'utiliser?
-On sait depuis longtemps que travailler avec du texte lisible et contenant du sens est source de distractions, et empêche de se concentrer sur la mise en page elle-même. L'avantage du Lorem Ipsum sur un texte générique comme 'Du texte. Du texte. Du texte.' est qu'il possède une distribution de lettres plus ou moins normale, et en tout cas comparable avec celle du français standard. De nombreuses suites logicielles de mise en page ou éditeurs de sites Web ont fait du Lorem Ipsum leur faux texte par défaut, et une recherche pour 'Lorem Ipsum' vous conduira vers de nombreux sites qui n'en sont encore qu'à leur phase de construction. Plusieurs versions sont apparues avec le temps, parfois par accident, souvent intentionnellement (histoire d'y rajouter de petits clins d'oeil, voire des phrases embarassantes).</description><datepub>19/08/2012</datepub><datedebut>22/05/2013</datedebut><datefin>22/05/2013</datefin><disciplines>3</disciplines><lieu>Latéral Park</lieu><adresse/><adressecomplement/><codepostal/><ville>Barcelone</ville><pays>ATA</pays><longitude>2.1699187000000393</longitude><latitude>41.387917</latitude><horaires>05:00</horaires><tel/><email/><lien1/><lien2/><lien3/><url>http://if-final.wp.anou.dev.smol.org/?p=20</url></evenement></listevenements>
+On sait depuis longtemps que travailler avec du texte lisible et contenant du sens est source de distractions, et empêche de se concentrer sur la mise en page elle-même. L'avantage du Lorem Ipsum sur un texte générique comme 'Du texte. Du texte. Du texte.' est qu'il possède une distribution de lettres plus ou moins normale, et en tout cas comparable avec celle du français standard. De nombreuses suites logicielles de mise en page ou éditeurs de sites Web ont fait du Lorem Ipsum leur faux texte par défaut, et une recherche pour 'Lorem Ipsum' vous conduira vers de nombreux sites qui n'en sont encore qu'à leur phase de construction. Plusieurs versions sont apparues avec le temps, parfois par accident, souvent intentionnellement (histoire d'y rajouter de petits clins d'oeil, voire des phrases embarassantes).</description><datepub>19/08/2012</datepub><datedebut>22/05/2013</datedebut><datefin>22/05/2013</datefin><disciplines>3</disciplines><lieu>Latéral Park</lieu><adresse/><adressecomplement/><codepostal/><ville>Barcelone</ville><pays>ATA</pays><longitude>2.1699187000000393</longitude><latitude>41.387917</latitude><horaires>05:00</horaires><tel/><email/><lien1/><lien2/><lien3/><url>http://if-final.wp.anou.dev.smol.org/?p=20</url>
+  </evenement>
+</listevenements>

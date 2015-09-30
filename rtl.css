@@ -45,7 +45,7 @@ body {
 div.block-home { float: right; margin:0 0 20px 10px}
 
 
-#sidebar {float: left;}
+#sidebar {float: left; margin: 0 10px 10px 0;}
  
  p.wysija-instruct { background: transparent url(images/fleche-nl-rtl.png) no-repeat left bottom; padding: 0 0 0 20px; float: left;}
  .widget_wysija .wysija-submit {float: left;}
@@ -59,3 +59,6 @@ div.block-home { float: right; margin:0 0 20px 10px}
 /*SLIDERS*/
 #slider .caption {right: auto; left: 0; padding:3px 15px 11px 40px; }
 #slider .pagination li {margin: 0 0 0 5px;}
+
+
+#smol-logo { right: auto; left: 20px}

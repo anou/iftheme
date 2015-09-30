@@ -27,6 +27,8 @@ Find the docs here: https://github.com/anou/iftheme-docs
 
 Open IF-theme_base.pdf (french) or IF-theme_base_EN.pdf (english) and you'll know everything!
 
+IMPORTANT: When uploading IF theme folder on your server, it must named **iftheme/** (NOT iftheme-master/!!!)
+
 Contact
 =======
 You can contact me via: anou(at)smol.org

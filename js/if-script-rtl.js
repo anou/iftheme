@@ -22,6 +22,11 @@ $(window).load(function() {
 $(window).resize(setWings);
 	
 $(document).ready(function() {
+ /* Get the window's width, and check whether it is narrower than 480 pixels */
+  var windowWidth = $(window).width();
+
+
+
 	function realWidth(obj){
 	    var clone = obj.clone();
 	    clone.css("visibility","hidden");
@@ -30,6 +35,9 @@ $(document).ready(function() {
 	    clone.remove();
 	    return width;
 	}
+
+	//OL numbers in blue IF
+	$('ol li').wrapInner('<span style="color:#231F20;"> </span>').css('color','#008AC9');
 
     //SLIDER
     if($('#slides').length){
@@ -56,7 +64,26 @@ $(document).ready(function() {
 		});
     
     }
-
+    
+    //PARTNERS
+    if ($('.partners').length) {
+	    $(function(){
+	      $(".partners").slides({
+	        container: 'partners_container',
+	        generatePagination: false,
+	        effect: 'fade',
+	        pagination: false,
+			preload: true,
+			preloadImage: 'http://'+window.location.hostname+'/wp-content/themes/iftheme/images/slide/loading.gif',
+			play: 7000,
+			pause: 2500,
+			hoverPause: true,
+			slideSpeed: 700,
+	      });
+	    });
+	  }
+	
+	
 
 
 	if($('blockquote').length) {
@@ -64,15 +91,15 @@ $(document).ready(function() {
 		$('blockquote').prepend('<span class="open" />');
 		$('blockquote').append('<span class="close" />');
 	}
-	
+ if( windowWidth > 767){
 	if($('.featured-thumbnail').length){
 		
 		var thumbs = $('.featured-thumbnail');
 		thumbs.each(function(){
-			$(this).next('.top-block').css({'float':'left','width':'390px','margin-bottom':'15px'});
-			var newH = $(this).closest('article').height();
+			$(this).next('.top-block').css({'float':'left','width':'400px','margin-bottom':'15px'});
+			var newH = $(this).closest('article').outerHeight();
 			if($(this).height() < newH ) {
-				$(this).height(newH+2);
+				$(this).css('min-height',newH+(newH/3));
 				
 			} else if($(this).height() >= newH ) {
 				$(this).closest('article').height($(this).height());
@@ -80,20 +107,65 @@ $(document).ready(function() {
 			}
 		});
 	}
+ }
 	
 	//main menu
-	$('nav#antennes').css('height','30px');
-    if($('nav#antennes ul li.current-cat ul.children').length || $('nav#antennes ul li.current-cat-parent ul.children').length) { //console.log('bih');
-    	//$('ul.children').removeClass('active').hide();
-	    $('nav#antennes').css('height','60px');
-	    $('nav#antennes ul li.current-cat ul.children').show();
-	    $('nav#antennes ul li.current-cat-parent ul.children').show();
+	//$('nav#antennes').css('height','30px');
+	  
+ 
+ if (windowWidth > 767){
+  if($('nav#antennes ul li.current-cat ul.children').length || $('nav#antennes ul li.current-cat-parent ul.children').length) { //console.log($('.children'));
+    $('ul li.current-cat-parent ul.children, ul li.current-cat ul.children').appendTo('nav#antennes').show();
+    $('ul li.current-cat-parent ul.children, ul li.current-cat ul.children').show();
+  }
+  if( $('.children li').hasClass('current-cat-parent')) {
+    $('ul li.current-cat-parent ul.children').appendTo('nav#antennes').show();
+    $('.children li.current-cat-parent').closest('ul').closest('.cat-item').addClass('current-cat-parent');
+    $('.children li.current-cat-parent').closest('ul.children').show();
+  }
+}
+//responsive select
+
+if (windowWidth <= 767) {
+  /* Clone our navigation */
+  var mainNavigation = $('nav#antennes').clone();
+
+  /* Replace unordered list with a "select" element to be populated with options, and create a variable to select our new empty option menu */
+  $('nav#antennes').html('<select class="menu"></select>');
+  
+  var selectMenu = $('select.menu');
+ 
+  /* Navigate our nav clone for information needed to populate options */
+  $(mainNavigation).children('ul').children('li').each(function() {
+    /* Get top-level link and text */
+    var href = $(this).children('a').attr('href');
+    var text = $(this).children('a').text();
+
+    /* Append this option to our "select" */
+    $(selectMenu).append('<option value="'+href+'">'+text+'</option>');
+
+    /* Check for "children" and navigate for more options if they exist */
+    if ($(this).children('ul').length > 0) {
+       $(this).children('ul').children('li').each(function() {
+          /* Get child-level link and text */
+          var href2 = $(this).children('a').attr('href');
+          var text2 = $(this).children('a').text();
+
+          /* Append this option to our "select" */
+          $(selectMenu).append('<option value="'+href2+'">--- '+text2+'</option>');
+       });
     }
-    if( $('.children li').hasClass('current-cat-parent')) { //console.log('bah');
-    	$('nav#antennes').css('height','60px');
-	    $('.children li.current-cat-parent').closest('ul').closest('.cat-item').addClass('current-cat-parent');
-	    $('.children li.current-cat-parent').closest('ul.children').show();
-    } 
+ });
+
+}
+
+/* When our select menu is changed, change the window location to match the value of the selected option. */
+$(selectMenu).change(function() {
+   location = this.options[this.selectedIndex].value;
+});
+
+
+
     
     //display category children
     if($('.display-children').length){
@@ -110,14 +182,14 @@ $(document).ready(function() {
 	    })
     }
     
-    if($('.breadcrumbs').length){
-	   $('.breadcrumbs').find('> a:first-child').html('<img src="http://'+window.location.hostname+'/wp-content/themes/iftheme/images/pict-home.png" alt="'+$('.breadcrumbs').find('> a:first-child').text()+'" />'); 
+    if($('.breadcrumbs').length){ 
+	   $('.breadcrumbs').find('> a:first-child').html('<img src="'+ bInfo.bTheme + '/images/pict-home.png" alt="'+$('.breadcrumbs').find('> a:first-child').text()+'" />'); 
 	   
 	   if($('.archive.date').length){ 
 		   $('.breadcrumbs').html( $('.breadcrumbs').find('> a:first-child').html());
 	   }
-	   if($('.home').length){ 
-		   $('.breadcrumbs').html('<img src="http://'+window.location.hostname+'/wp-content/themes/iftheme/images/pict-home-on.png" alt="" />');
+	   if($('.accueil').length){ 
+		   $('.breadcrumbs').html('<img src="'+ bInfo.bTheme + '/images/pict-home-on.png" alt="" />');
 	   }
     }
     
@@ -132,6 +204,7 @@ $(document).ready(function() {
 	    //.wysija-msg.ajax
     }
     if($(".wysija_lists .checkbox").length){
+/*
 	    $(".wysija_lists .checkbox").unbind('click');
 		//styling checkboxes
 		$(".wysija_lists .checkbox").each(function() {
@@ -161,20 +234,70 @@ $(document).ready(function() {
 			}
 		});
 		
-		$('form.widget_wysija').submit(function(){
-			//console.log($(".wysija_lists input.checkbox").attr('checked'));
-		});
-	} else { $('input.wysija-email').css({ width: '233px'}); }
+*/
+	} else { $('input.wysija-email').css({ width: '220px'}); }
     
     //homepages
+  if(windowWidth > 767){
     if($('.block-home').length) { //for all possible options see http://masonry.desandro.com/docs/options.html
-	    $('#home-list').masonry({
+      var $container = $('#home-list');
+
+      $container.imagesLoaded( function(){
+        $container.masonry({
+          isRTL : true, //for Right-To-Left language
+          itemSelector : '.block-home',
+          columnWidth : 320
+        });
+      });
+    }
+  }
+    //more then 3 blocks in footer widget area
+    if($('.footer-all-block .widget-area').length > 3) { //for all possible options see http://masonry.desandro.com/docs/options.html
+	    $('.footer-all-block').masonry({
 		    // options
 		    isRTL : true, //for Right-To-Left language
-		    itemSelector : '.block-home',
-		    columnWidth : 320
+		    itemSelector : '.widget-footer'
 		});
     }
+
+
+	//header page menu
+	$('#header-pages-menu ul').each(function(){
+	 
+	  var list = $(this),
+	  currentCountry = bInfo['bDesc'],//cf. header.php for the bInfo array
+	  select = $(document.createElement('select')).insertBefore($(this).hide());
+	  
+	  //$('<option>'+currentCountry+'</option>').appendTo(select);
+	  
+	  $('<option>'+ifvarJS.select_txt+'</option>').appendTo(select);
+	  
+	  $('>li a', this).each(function(){
+	   // var target = $(this).attr('target'),
+	    option = $(document.createElement('option'))
+	     .appendTo(select)
+	     .val(this.href)
+	     .html($(this).html());
+	     
+	     });
+	     
+	   $(select).chosen().change(
+	     function(){
+	     var target = $(this).attr('target');
+	       if (target==='_blank'){
+	         window.open($(this).val());
+	       }
+	       else{
+	         window.location.href=$(this).val();
+	       }
+	   });
+
+
+
+	  list.remove();
+	  
+	});
+
     
 });//end document.ready
 	

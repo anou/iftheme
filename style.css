@@ -509,14 +509,14 @@ input.wysija-email { border: 1px solid #ababac; padding: 0; width: 150px; height
 	Pagination
 */
 
-#slider .pagination { margin:0; position: absolute; bottom:30px; z-index: 501; right:-99999px;}
+#slider .pagination { margin:0; position: absolute; bottom:30px; z-index: 501; right:-99999px; margin-right: 2px;}
 
 #slider .pagination li {float:left;	margin:0 5px 0 0; list-style:none none;}
 
 #slider .pagination li a {
 	display:block;
-	width:10px;
-	height:30px;
+	width: 10px;
+	height: 30px;
 	background-color:#fff;
 	float:left;
 	overflow:hidden;
@@ -534,14 +534,16 @@ input.wysija-email { border: 1px solid #ababac; padding: 0; width: 150px; height
 	position: absolute;
 	right: 0;
 	bottom: 30px;
-	height: 16px;
-	padding: 6px 40px 8px 15px;
+/* 	height: 16px; */
+	padding: 6px 40px 5px 15px;
 	background: #fff url(images/bg-post-title.png) repeat left top;	
 	width: auto;
 	font-size: 16px;
 	font-family: 'dinMed',sans-serif;
 	color: #fff;
 	text-shadow: none;
+	min-height: 19px;
+	max-width: 70%;
 }
 /*PARTNERS*/
 body #sidebar .widget-sidebar .partners {padding: 0; margin-bottom: -10px; border: 1px solid #D3D3D3;}
