@@ -10,7 +10,7 @@
  
 class If_World_Links extends WP_Widget {
 	
-	function If_World_Links() {
+	function __construct() {
 		$widget_ops = array(
 			'classname' => 'ifworldlinks',
 			'description' => __("Displays a list of links related to the Institut Français",'iftheme'),
@@ -20,7 +20,13 @@ class If_World_Links extends WP_Widget {
 			'height' => 250,
 			'id_base' => 'ifworldlinks-widget'
 		);
-		$this->WP_Widget('ifworldlinks-widget', __('Institut Français links', 'iftheme'), $widget_ops, $control_ops);
+// 		$this->WP_Widget('ifworldlinks-widget', __('Institut Français links', 'iftheme'), $widget_ops, $control_ops);
+    parent::__construct( 
+        'ifworldlinks' . '-widget' , 
+         __('Institut Français links', 'iftheme'), 
+        $widget_ops, 
+        $control_ops 
+    );
 	}
 	
 	function form ($instance) {

@@ -9,8 +9,8 @@
  */
   
 class If_Antennas extends WP_Widget {
-	
-	function If_Antennas() {
+
+	function __construct() {
 		$widget_ops = array(
 			'classname' => 'ifantennas',
 			'description' => __("Displays a list of all the local antennas",'iftheme'),
@@ -20,15 +20,22 @@ class If_Antennas extends WP_Widget {
 			'height' => 250,
 			'id_base' => 'ifantennas-widget'
 		);
-		$this->WP_Widget('ifantennas-widget', __('Local antennas', 'iftheme'), $widget_ops, $control_ops);
+		//$this->WP_Widget('ifantennas-widget', __('Local antennas', 'iftheme'), $widget_ops, $control_ops);
+    parent::__construct( 
+        'ifantennas' . '-widget' , 
+        __('Local antennas', 'iftheme'), 
+        $widget_ops, 
+        $control_ops 
+    );
 	}
 	
 	function form ($instance) {
 		// prints the form on the widgets page
 		$defaults = array('title'=> __('Local antennas','iftheme'));
-		$instance = wp_parse_args( (array) $instance, $defaults ); ?>
+		$instance = wp_parse_args( (array) $instance, $defaults ); 
+?>
 		<p>
-			<label for="<?php echo $this->get_field_id('title'); ?>"><?php __('Title','iftheme')?></label>
+			<label for="<?php echo $this->get_field_id('title'); ?>"><?php _e('Title','iftheme')?></label>
 			<input type="text" name="<?php echo $this->get_field_name('title') ?>" id="<?php echo $this->get_field_id('title') ?> " value="<?php echo $instance['title'] ?>" size="20" />
 		</p>
 		<p>
@@ -48,8 +55,8 @@ class If_Antennas extends WP_Widget {
 	function widget ($args,$instance) {
 	// used when the sidebar calls in the widget
 		extract($args);
-		
-		$title = apply_filters('widget_title', empty( $instance['title'] ) ? $name : $instance['title'], $instance, $this->id_base);
+    $default_title = __('Local antennas','iftheme');
+		$title = apply_filters('widget_title', empty( $instance['title'] ) ? $default_title : $instance['title'], $instance, $this->id_base);
 		
 		//print the widget for the widget area
 		echo $before_widget;

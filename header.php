@@ -68,7 +68,7 @@ $if_front = is_front_page();
 			bInfo['bName'] = "<?php bloginfo('name');?>"; 
 			bInfo['bDesc'] = "<?php bloginfo('description');?>"; 
 			bInfo['bLang'] = "<?php bloginfo('language');?>"; 
-			bInfo['bRtl'] = "<?php bloginfo('text_direction');?>"; 
+			bInfo['bRtl'] = "<?php echo is_rtl() ? 'rtl' : false; ?>"; 
 			bInfo['bTheme'] = "<?php bloginfo('stylesheet_directory');?>"; 
 	</script>
 
@@ -87,7 +87,7 @@ $if_front = is_front_page();
 	
 	<link rel="stylesheet" type="text/css" media="all" href="<?php bloginfo( 'template_url' ); ?>/lessframework.css" />
 	<link rel="stylesheet" type="text/css" media="all" href="<?php bloginfo( 'stylesheet_url' ); ?>" />
-	<?php if(get_bloginfo('text_direction') =='rtl'):?><link rel="stylesheet" type="text/css" media="all" href="<?php bloginfo( 'template_directory' );?>/rtl.css" /><?php endif;?>
+	<?php if( is_rtl() ):?><link rel="stylesheet" type="text/css" media="all" href="<?php bloginfo( 'template_directory' );?>/rtl.css" /><?php endif;?>
 
 	<style type="text/css">
 		<?php if(!is_date() && !is_404() && !is_search() && !is_page() && $multi && (!is_front_page() || !is_home())) : ?> #top-menu-antennes ul li.cat-item-<?php echo $antenna;?> a { color: #008ac9; } <?php endif;?>

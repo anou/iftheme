@@ -30,23 +30,26 @@
 			$slides = $part;
 		}
 		
-	} elseif('post' == get_post_type()) { 
+	} elseif('post' == get_post_type() || 'news' == get_post_type()) { 
 
-			$data = get_meta_if_post();
+			$data = apply_filters('if_event_data', get_meta_if_post());
+      $news = isset($data['type']) && $data['type'] == 'news' ? true : false;
+      $data['start'] = $news ? $data['subhead'] : $data['start'];
+      if( !$data['start'] && $news ) $data['start'] = __('News', 'iftheme');
 			$start = '<span class="start">' . $data['start'] . '</span>';
 			$end = '<span class="end">' . $data['end'] . '</span>'; 
 			$book = $data['booking'];
 			$town = $data['city']; 
-	}
+	} 	
 ?>
 <div id="content">
 	<?php if ( have_posts() ) while ( have_posts() ) : the_post(); ?>
 		<div id="post-<?php the_ID(); ?>" <?php post_class('post'); ?>>
 
 			<article class="post">
-				<?php if($start):?><div class="infos-post bxshadow"><?php echo $start ? $start . $end .' - ' : ''; ?><?php echo $multi ? get_cat_name($antenna) : $town;?></div><?php endif;?>
+				<?php if($start):?><div class="infos-post bxshadow"><?php echo $start ? $start . $end : ''; ?><?php echo $multi && !$news ? ' - ' . get_cat_name($antenna) :  !$news ? ' - ' . $town : '';?></div><?php endif;?>
 				<h1><a href="<?php the_permalink() ?>" title="<?php the_title(); ?>" rel="bookmark"><?php the_title(); ?></a></h1>
-				<small><?php edit_post_link(__('Edit this entry', 'iftheme')); ?></small>
+				<small><?php edit_post_link( sprintf(__('Edit this %s', 'iftheme'), get_post_type()) ); ?></small>
 				<?php if ( has_post_thumbnail() ) { echo '<div class="featured-post-img">'; the_post_thumbnail('post-img'); echo '</div>'; } ?>
 				<div class="post-content">
 					

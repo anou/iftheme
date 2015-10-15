@@ -11,7 +11,6 @@
 // 0. Base
 
 add_action('admin_init', 'if_functions_css');
-
 function if_functions_css() {
 	wp_enqueue_style('if-functions-css', get_bloginfo('template_directory') . '/inc/events/css/if-functions.css');
 }
@@ -20,7 +19,6 @@ function if_functions_css() {
 // 4. Show Meta-Box
 
 add_action( 'admin_init', 'if_events_create' );
-
 function if_events_create() {
     add_meta_box('if_events_meta', __('Event information','iftheme'), 'if_events_meta', 'post');
     add_meta_box('if_events_mobile', __('Additional event information','iftheme'), 'if_events_mobile', 'post');
@@ -231,7 +229,6 @@ function if_events_mobile () {
 // 5. Save Data
 
 add_action ('save_post', 'save_if_events');
-
 function save_if_events() {
 
     global $post;
@@ -343,7 +340,6 @@ function save_if_events() {
 // 6. Customize Update Messages
 
 add_filter('post_updated_messages', 'events_updated_messages');
-
 function events_updated_messages( $messages ) {
 
   global $post, $post_ID;

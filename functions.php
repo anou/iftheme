@@ -410,13 +410,14 @@ function get_antennas_details(){
 			$options[$categ] = get_option('iftheme_theme_options_' . $antenna, iftheme_get_default_theme_options() );//cf. theme-options.php for keys of the option array
 
 			//unset country options for non admin user
+			//@todo: posibility to have multiple admin. Maybe check user's roles more then his ID
 			if($o->ID != 1) { 
 				unset($options[$categ]['bg_frame_country']);
 				unset($options[$categ]['background_img_country']);
 				unset($options[$categ]['theme_home_categ_country']);
 			}
 			//adding useful infos to $options
-			$options[$categ]['aid'] = !$categ ? NULL : $categ;
+			$options[$categ]['aid'] = !$categ ? null : $categ;
 			$options[$categ]['slug'] = $antenna;
 		}
 	}
@@ -504,7 +505,10 @@ function get_current_antenna(){
 	} elseif(is_single()){
 		//get the category id of post
 		$cats = get_the_category();
-		//get root category (antenna)
+    //return default categ if none found
+    if( empty($cats) ) return $categ_admin;
+//     if( empty($cats) ) return 'front';
+    //get root category (antenna)
 		//if post has multiple categories, no problem we only need to get the root categ.
 		$current_id = defined('ICL_LANGUAGE_CODE') ? icl_object_id(get_root_category($cats[0]->term_id),'category',true,$default_lg) : get_root_category($cats[0]->term_id);
 	}
@@ -531,6 +535,8 @@ function get_current_parent_categ(){
 	} elseif(is_single()){
 		//get the category id of post
 		$cats = get_the_category();
+    if( empty($cats) ) return $categ_admin;
+//     if( empty($cats) ) return 'front';
 		//get root category (antenna)
 		//if post has multiple categories, no problem we only need to get the root categ.
 		$current_id = get_root_category($cats[0]->term_id);
@@ -734,7 +740,7 @@ function if_display_posts_listing ( $query ) {
 	if( $query->is_main_query() && is_category() && !is_admin() ) {
 	
 	$value = mktime(23, 59, 59, date('m'), date('d')-1, date('Y')); //yesterday
-	$value2 = mktime(); //last hour of the last past 24 hours
+	$value2 = time(); //last hour of the last past 24 hours
 	$value3 = mktime(0,0,0,date("m"),date("d")+1,date("Y")); //tomorrow
 	$compare = '>=';
 	$compare2 = '<=';
@@ -764,8 +770,8 @@ function if_display_posts_on_archive_pages( $query ) {
 	if( $query->is_main_query() && $query->is_archive && !is_admin() && !$query->is_category) {
 
 		$year = $query->query['year'];
-		$month = isset($query->query['monthnum']) ? $query->query['monthnum'] : NULL;
-		$day = isset($query->query['day']) ? $query->query['day'] : NULL;
+		$month = isset($query->query['monthnum']) ? $query->query['monthnum'] : null;
+		$day = isset($query->query['day']) ? $query->query['day'] : null;
 		
 		if($query->is_year){
 			$value = array(mktime(0, 0, 0, 01, 01, $year), mktime(23, 59, 59, 12, 31, $year));
@@ -827,6 +833,7 @@ add_action( 'pre_get_posts', 'if_display_posts_on_archive_pages' );
 function get_meta_if_post($pid = ''){
 	global $post;
 	$pid = !$pid ? $post->ID : $pid;
+  $data['post_id'] = $pid;//for ref.
 	
 	setlocale(LC_ALL, get_locale());
 
@@ -836,25 +843,25 @@ function get_meta_if_post($pid = ''){
 	$top_categ = get_root_category($post_categs[0]);//getting top category
   $data['antenna_id'] = $top_categ;
 	
-	$start = $meta['if_events_startdate'][0];
-	$end = $meta['if_events_enddate'][0];
+	$start = isset($meta['if_events_startdate']) ? $meta['if_events_startdate'][0] : null;
+	$end = isset($meta['if_events_enddate']) ? $meta['if_events_enddate'][0] : null;
 		
-	if($end <= $start ) {$end = FALSE;}
+	$end = $end <= $start ? false : $end;
 
-	$end = !empty($end) ? utf8_encode(strftime('%d %b',$end)) : NULL;
-	$time = $meta['if_events_time'][0];
+	$end = !empty($end) ? utf8_encode(strftime('%d %b',$end)) : null;
+	$time = isset($meta['if_events_time']) ? $meta['if_events_time'][0] : null;
 	
 
-	$data['start'] = !empty($start) ? utf8_encode(strftime('%d %b',$start)) : NULL;
+	$data['start'] = !empty($start) ? utf8_encode(strftime('%d %b',$start)) : null;
 	$data['end'] = !$end ? (strlen($time) ? ' / '.$time : '') : ' / '.$end;  
 	$data['time'] = $time;
 	
 	//add featured img id if exist
 	$img = isset($meta['_thumbnail_id']) ?$meta['_thumbnail_id'] : array();
-	$data['img'] = !empty($img) ? $img[0] : NULL;
+	$data['img'] = !empty($img) ? $img[0] : null;
 	
 	//booking infos
-	$book =  isset($meta['if_book_enable']) ? $meta['if_book_enable'][0] : '';
+	$book =  isset($meta['if_book_enable']) ? $meta['if_book_enable'][0] : null;
 	if($book == 'on'){
 		$data['booking'] = $book;
 		$data['book_mail'] = $meta['if_book_mail'][0];
@@ -864,23 +871,23 @@ function get_meta_if_post($pid = ''){
 	}
 	
 	//infos (about)
-	$data['disciplines'] = unserialize($meta['if_events_disciplines'][0]);
-	$data['lieu'] = $meta['if_events_lieu'][0];
-	$data['adresse'] = $meta['if_events_adresse'][0];
-	$data['adressebis'] = $meta['if_events_adresse_bis'][0];
-	$data['zip'] = $meta['if_events_zip'][0];
-	$data['city'] = $meta['if_events_city'][0];
+	$data['disciplines'] = isset($meta['if_events_disciplines']) ? unserialize($meta['if_events_disciplines'][0]) : null;
+	$data['lieu'] = isset($meta['if_events_lieu']) ? $meta['if_events_lieu'][0] : null;
+	$data['adresse'] = isset($meta['if_events_adresse']) ? $meta['if_events_adresse'][0] : null;
+	$data['adressebis'] = isset($meta['if_events_adresse_bis']) ? $meta['if_events_adresse_bis'][0] : null;
+	$data['zip'] = isset($meta['if_events_zip']) ? $meta['if_events_zip'][0] : null;
+	$data['city'] = isset($meta['if_events_city']) ? $meta['if_events_city'][0] : null;
 	
-	$data['pays'] = $meta['if_events_pays'][0];//TODO check code ISO to print Country
+	$data['pays'] = isset($meta['if_events_pays']) ? $meta['if_events_pays'][0] : null;//TODO check code ISO to print Country
 	
-	$data['longitude'] = $meta['if_events_long'][0];
-	$data['latitude'] = $meta['if_events_lat'][0];
-	$data['schedule'] = isset($meta['if_events_hour']) ? $meta['if_events_hour'][0] : '';//field schedule. not used for now.
-	$data['tel'] = $meta['if_events_tel'][0];
-	$data['event_mail'] = $meta['if_events_mmail'][0];
-	$data['link1'] = $meta['if_events_link1'][0];
-	$data['link2'] = $meta['if_events_link2'][0];
-	$data['link3'] = $meta['if_events_link3'][0];
+	$data['longitude'] = isset($meta['if_events_long']) ? $meta['if_events_long'][0] : null;
+	$data['latitude'] = isset($meta['if_events_lat']) ? $meta['if_events_lat'][0] : null;
+	$data['schedule'] = isset($meta['if_events_hour']) ? $meta['if_events_hour'][0] : null;//field schedule. not used for now.
+	$data['tel'] = isset($meta['if_events_tel']) ? $meta['if_events_tel'][0] : null;
+	$data['event_mail'] = isset($meta['if_events_mmail']) ? $meta['if_events_mmail'][0] : null;
+	$data['link1'] = isset($meta['if_events_link1']) ? $meta['if_events_link3'][0] : null;
+	$data['link2'] = isset($meta['if_events_link2']) ? $meta['if_events_link3'][0] : null;
+	$data['link3'] = isset($meta['if_events_link3']) ? $meta['if_events_link3'][0] : null;
 
 	return $data;
 }
@@ -929,18 +936,18 @@ function get_meta_raw_if_post($pid=''){
 	//setlocale(LC_ALL,'LANGUAGE CODE'); =>TODO get the current language code
 	
 	$start = get_post_meta($pid, 'if_events_startdate', false);
-	$data['start'] = !empty($start[0]) ? $start[0] : NULL;
+	$data['start'] = !empty($start[0]) ? $start[0] : null;
 
 	$end = get_post_meta($pid, 'if_events_enddate', false);
-	$data['end'] = !empty($end[0]) ? $end[0] : NULL;
+	$data['end'] = !empty($end[0]) ? $end[0] : null;
 	
 	$time = get_post_meta($pid, 'if_events_time', false);
-	/* $data['time'] = !empty($time[0]) && $time[0] != '00:00' ? $time[0] : NULL; */
-	$data['time'] = !empty($time[0]) ? $time[0] : NULL;
+	/* $data['time'] = !empty($time[0]) && $time[0] != '00:00' ? $time[0] : null; */
+	$data['time'] = !empty($time[0]) ? $time[0] : null;
 	
 	//add featured img id if exist
 	$img = get_post_meta($pid, '_thumbnail_id', false);
-	$data['img'] = !empty($img[0]) ? $img[0] : NULL;
+	$data['img'] = !empty($img[0]) ? $img[0] : null;
 	
 	$data['title'] = get_the_title($pid);
 
@@ -1228,7 +1235,9 @@ if ( function_exists('register_sidebar') ) {
 
 	// Footer Widget
 	// Location: at the right of the footer, next to the logo
-	register_sidebar(array('name'=>'Footer',
+	register_sidebar(array(
+	  'name'=>'Footer',
+	  'id' => 'footer',
 		'before_widget' => '<aside id="%1$s" class="widget-area widget-footer %2$s">',
 		'after_widget' => '</aside>',
 		'before_title' => '<h3>',
@@ -1237,7 +1246,9 @@ if ( function_exists('register_sidebar') ) {
 	
 		// Front Widget
 	// Location: just under the slider zone on front pages
-	register_sidebar(array('name'=>'Front-page',
+	register_sidebar(array(
+	  'name'=>'Front-page',
+	  'id' => 'front-page',
 		'before_widget' => '<aside id="%1$s" class="widget-area widget-front %2$s">',
 		'after_widget' => '</aside>',
 		'before_title' => '<h3>',
@@ -1303,18 +1314,20 @@ if(function_exists('icl_get_languages')) {
 	}
 	add_filter('the_generator', 'wb_remove_version');
 	
-	
-	// Removes Trackbacks from the comment cout
+	// Removes Trackbacks from the comment count
 	add_filter('get_comments_number', 'comment_count', 0);
-	function comment_count( $count ) {
-		if ( ! is_admin() ) {
-			global $id;
-			$comments_by_type = &separate_comments(get_comments('status=approve&post_id=' . $id));
-			return count($comments_by_type['comment']);
-		} else {
-			return $count;
-		}
-	}
+  function comment_count( $count ) {
+    if ( ! is_admin() ) {
+      global $id;
+      $get_comments = get_comments('status=approve&post_id=' . $id);
+
+      $comments_by_type = separate_comments($get_comments);
+
+      return count($comments_by_type['comment']);
+    } else {
+      return $count;
+    }
+  }
 
 	// invite rss subscribers to comment
 	function rss_comment_footer($content) {
@@ -1525,7 +1538,7 @@ add_action('admin_menu','wphidenag');
  *
  * Alternative à file_get_contents()
  */
-function curl_get($url, array $get = NULL, array $options = array()) {    
+function curl_get($url, array $get = null, array $options = array()) {    
     $defaults = array( 
         CURLOPT_URL => $url. (strpos($url, '?') === FALSE ? '?' : ''). http_build_query($get), 
         CURLOPT_HEADER => 0, 
@@ -1562,7 +1575,6 @@ function iftheme_content_nav( $html_id, $archives = TRUE ) {
       'meta_key'   => '_wp_page_template',
       'meta_value' => 'archives-page.php'
     ));
-
     // The Loop
     if ( $archive_query->have_posts() ) {
      	while ( $archive_query->have_posts() ) {
@@ -1574,7 +1586,7 @@ function iftheme_content_nav( $html_id, $archives = TRUE ) {
         $cat = !is_integer(get_query_var('cat')) ? 'all' : get_query_var('cat');
 
         $link_to_archives = add_query_arg('ifcat', $cat, get_permalink( $archivesID ));
-        $categ = $cat != 'all' ? get_category($cat) : NULL;
+        $categ = $cat != 'all' ? get_category($cat) : null;
         $link_title = $categ ? $categ->name : '';
     	}
     } else {

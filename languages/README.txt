@@ -2,10 +2,10 @@
  * INSTRUCTION FOR THEME TRANSLATION
  */
 
-- use the default.pot file for translation in your language
+- use the xx_XX.pot file for translation in your language
 - open with poedit for example
 - translate all strings
-- save your changes into a file (save as) named : LANG_CODE.po
+- save your changes into a file (save as) named : lang_CODE.po (ex.: fr_FR.po)
 (find the LANG_CODE here : http://codex.wordpress.org/WordPress_in_Your_Language)
 - put it in the theme languages folder
 
@@ -18,4 +18,6 @@ msgstr "YOUR TRANSLATION HERE"
 
 ...etc...
 
-when you're finish save as LANG_CODE.po and put it in theme languages folder.
+when you're finish save as lang_CODE.po and put it in theme languages folder.
+
+Thanks to you for sending me the final .po file so I can integrate it in the IF Theme package.

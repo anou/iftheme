@@ -1,6 +1,7 @@
-<div id="content"><span style="color:#ccc" class="none"> Home Page MULTI-ANTENNA </span>
+<div id="content">
 	
 	<?php if($multi): //HOME PAGE Antennas ?>
+<span style="color:green" class="none"> Main Home Page MULTI-ANTENNA </span>
 	<?php $args_slider = array(
 			'post_type'=> 'if_slider',
 			'order'    => 'DESC',
@@ -57,13 +58,12 @@
 	
 	<?php else :?><div class="msg warning"><?php _e("You don't have any <em>Slider</em> recorded yet. <a href=\"/wp-admin/post-new.php?post_type=if_slider\">Add one now ?</a>"); ?></div>
 	<?php endif; ?>
-				
+
 	<?php 
 	  // Get admin categ. Only admin can configure country homepage
 	  $categAdmin = get_cat_if_user(1);
 	  // Get displayed home categories for antenna.
-		$home_cat = isset($options[$categAdmin]['theme_home_categ_country']) ? $options[$categAdmin]['theme_home_categ_country'][0] : '';
-		
+		$home_cat = isset($options[$categAdmin]['theme_home_categ_country']) ? $options[$categAdmin]['theme_home_categ_country'][0] : false;
 		if($home_cat):
     /**
      * Homepage country
@@ -92,22 +92,60 @@
                      'compare' => '>=',
                  )
              )
-           );					
-					query_posts($args); ?>
-					
-					<?php if (have_posts()) : while (have_posts()) : the_post(); ?>
+          );
+           
+          $event_query = new WP_Query( $args ); 
+
+          include_once( ABSPATH . 'wp-admin/includes/plugin.php' );
+          // check for IF plugin
+          if ( is_plugin_active( 'ifplugin/ifplugin.php' ) ) {
+            //plugin is activated
+            
+            $news_args = array(
+              'cat' => $id,
+              'post_type' => array('news'),
+              'meta_key' => '_ifp_news_date',
+              'orderby' => 'meta_value_num',
+              'order' => 'ASC',
+              'meta_query' => array(
+                array(
+                   'key' => '_ifp_news_date',
+                   'value' => $time,
+                   'compare' => '>=',
+                )
+              )
+            );
+            $posts_ids = array();
+            $news_query = new WP_Query( $news_args );
+            $posts = array_merge($event_query->posts, $news_query->posts);
+            foreach($posts as $obj) {
+              $posts_ids[] = (int)$obj->ID;
+            }
+
+            $event_query = new WP_Query(array('cat' => $id, 'post__in' => $posts_ids, 'post_type' => array('news', 'post'), 'orderby' => 'post__in'));
+          }
+           ?>
+					<?php if ($event_query->have_posts()) : while ($event_query->have_posts()) : $event_query->the_post(); ?>
 						<?php //prepare data 
 								$pid = get_the_ID();
-								$data = get_meta_if_post($pid);
-								$start = $data['start'];
+								$data = apply_filters('if_event_data', get_meta_if_post($pid));
+								$type = isset($data['type']) ? $data['type'] : false;
+								$classes = 'post-single-home clearfix';
+								$classes .= $type ? ' ' . $type : '';
+								$classes = apply_filters('if_event_classes', $classes);
+								
+								$start = $type == 'news' ? $data['subhead'] : $data['start'];
 								$end = $data['end'];
 								$antenna_id = $data['antenna_id'];
+								$town = $data['city'];
 						?>
-						<article class="post-single-home clearfix" id="post-<?php the_ID();?>">
+						<article class="<?php echo $classes;?>" id="post-<?php the_ID();?>">
 							<div class="top-block">
 							  <div class="date-time">
 								  <?php if($start):?><span class="start"><?php echo $start;?></span><span class="end"><?php echo $end;?></span><?php endif;?>
-                  <span class="post-antenna"><?php echo 'page' == get_post_type() ? bloginfo('description') : ' - ' . get_cat_name($antenna_id);?></span>
+                   <?php if('news' != $type):?>
+                    <span class="post-antenna"><?php echo 'page' == get_post_type() ? bloginfo('description') : !$town ? ' - ' . get_cat_name($antenna_id) : ' - ' . $town;?></span>
+                   <?php endif;?>
 						    </div><!-- /.date-time -->
 								<h3 class="post-title"><a href="<?php the_permalink() ?>" title="<?php the_title(); ?>" rel="bookmark"><?php the_title(); ?></a></h3>
 							</div><!-- /.top-block -->
@@ -144,7 +182,7 @@
         			
       			</script>
 					<?php endwhile; ?>
-					<?php wp_reset_query();?>
+					<?php wp_reset_postdata();?>
 
 					<?php else: ?>
 						<div class="no-results bxshadow">
@@ -160,11 +198,8 @@
 			</div><!--noResults-->
 		<?php endif; ?>	
 	
-	<?php else: 
-    /** 
-     * Page for 1 category 
-     */
-    ?>
+	<?php else: //Page for 1 category ?>
+<span style="color:purple" class="">Home Page ONE ANTENNA/CATEGORY </span>
 		<?php //prepare data (key are img, children, posts)
 			$data = get_categ_data(get_query_var('cat'));
 		?>

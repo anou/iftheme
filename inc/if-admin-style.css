@@ -24,3 +24,9 @@
 #if_book_desc_ifr {height: 100px !important}
 
 .simplePanelImagePreview img { width: 200px !important; }
+
+.desc-field { display: inline-block; }
+
+.edit-tags-php .wp-editor-wrap { width: auto; }
+
+label { font-weight: bold !important; }

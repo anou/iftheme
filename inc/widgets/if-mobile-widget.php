@@ -10,7 +10,7 @@
  
 class If_Mobile extends WP_Widget {
 	
-	function If_Mobile() {
+	function __construct() {
 		$widget_ops = array(
 			'classname' => 'ifmobile',
 			'description' => __("Widget for the Institut Français Mobile app.",'iftheme'),
@@ -20,7 +20,13 @@ class If_Mobile extends WP_Widget {
 			'height' => 250,
 			'id_base' => 'ifmobile-widget'
 		);
-		$this->WP_Widget('ifmobile-widget', __('Institut Français Mobile', 'iftheme'), $widget_ops, $control_ops);
+// 		$this->WP_Widget('ifmobile-widget', __('Institut Français Mobile', 'iftheme'), $widget_ops, $control_ops);
+    parent::__construct( 
+        'ifmobile-' . '-widget' , 
+        __('Institut Français Mobile', 'iftheme'), 
+        $widget_ops, 
+        $control_ops 
+    );
 	}
 	
 	function form ($instance) {

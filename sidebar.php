@@ -18,9 +18,10 @@
 			else { 
 			  $wysija_embedded = isset($options['theme_options_setting_wysija_embed']) ? $options['theme_options_setting_wysija_embed'] : $wysija_embedded; 
       }
-
-			if(defined('WYSIJA') && $wysija_embedded) {
-				$modelList = &WYSIJA::get("list","model");
+      
+      $wysija = defined('WYSIJA');
+			if($wysija && $wysija_embedded) {
+				$modelList = WYSIJA::get("list","model");
 				$arrayOfMailingLists = $modelList->get(false,array('is_enabled'=>1));
 				
 				$nbMailingLists = count($arrayOfMailingLists);

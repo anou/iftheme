@@ -10,7 +10,7 @@
  
 class If_Antenna_Categ extends WP_Widget {
 	
-	function If_Antenna_Categ() {
+	function __construct() {
 		$widget_ops = array(
 			'classname' => 'ifantennacateg',
 			'description' => __("Displays a list of category's children, related to the current antenna",'iftheme'),
@@ -20,7 +20,13 @@ class If_Antenna_Categ extends WP_Widget {
 			'height' => 250,
 			'id_base' => 'ifantennacateg-widget'
 		);
-		$this->WP_Widget('ifantennacateg-widget', __("Antenna's categories", 'iftheme'), $widget_ops, $control_ops);
+// 		$this->WP_Widget('ifantennacateg-widget', __("Antenna's categories", 'iftheme'), $widget_ops, $control_ops);
+    parent::__construct( 
+        'ifantennacateg' . '-widget' , 
+        __("Antenna's categories", 'iftheme'), 
+        $widget_ops, 
+        $control_ops 
+    );
 	}
 	
 	function form ($instance) {

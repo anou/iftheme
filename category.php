@@ -1,5 +1,5 @@
 <?php get_header(); ?>
-<div id="content"><span style="color:#ccc" class="none"> Home Page ONE ANTENNA in MULTI </span>
+<div id="content">
 <?php 
   	  global $sitepress;
   	  $default_lg = isset($sitepress) ? $sitepress->get_default_language() : get_site_lang();
@@ -9,7 +9,9 @@
 	    $original = function_exists('icl_object_id') ? icl_object_id($currenta, 'category', true, $default_lg) : $currenta;
 	
 	if(get_query_var('cat') === $currenta && $multi):?>
-	
+
+<span style="color:blue" class="none"> Home Page ONE ANTENNA in MULTI </span>
+
 	<?php $args_slider = array(
   			'post_type'=> 'if_slider',
   			'order'    => 'DESC',
@@ -21,9 +23,9 @@
         ),
 			);
 			
-  		query_posts( $args_slider );
+  		$slider_query = new WP_Query( $args_slider );
 	?>
-	<?php if (have_posts()) : while (have_posts()) : the_post(); ?>
+	<?php if ($slider_query->have_posts()) : while ($slider_query->have_posts()) : $slider_query->the_post(); ?>
 	<?php //get slider data
 			$dslide = get_meta_slider($post->ID);
 			$slides = array();
@@ -64,18 +66,17 @@
 		</div><!-- /#slider -->
 		<?php } ?>
 	<?php endwhile; ?>
-	<?php /*end query slider*/ wp_reset_query(); ?>
+	<?php wp_reset_postdata();?>
 	<?php endif; ?>
 
   <div class="widget-front-container clearfix">
-  <?php if (!function_exists('dynamic_sidebar') ||  !dynamic_sidebar( 'Front-page' )) : ?><!--Wigitized Footer-->
+  <?php if (!function_exists('dynamic_sidebar') ||  !dynamic_sidebar( 'Front-page' )) : ?>
   <?php endif; //end dynamic_sidebar ?>
   </div>
 
-
 	<?php //get displayed home categories for antenna
-		$home_cat = isset($options[$original]['theme_home_categ']) ? $options[$original]['theme_home_categ'][0] : '';
 		
+		$home_cat = isset($options[$original]['theme_home_categ']) ? $options[$original]['theme_home_categ'][0] : '';
 
 		if($home_cat):?>
 			<div id="home-list">
@@ -101,19 +102,59 @@
                  )
              )
            );					
-					query_posts($args); ?>
+          $event_query = new WP_Query( $args ); ?>
 
-					<?php if (have_posts()) : while (have_posts()) : the_post(); ?>
-						<article class="post-single-home clearfix" id="post-<?php the_ID();?>">
-							<?php //prepare data 
-									$pid = get_the_ID();
-									$data = get_meta_if_post($pid);
-									$start = $data['start'];
-									$end = $data['end'];
-									$town = $data['city'];
-							?>
+          <?php include_once( ABSPATH . 'wp-admin/includes/plugin.php' );
+          // check for IF plugin
+          if ( is_plugin_active( 'ifplugin/ifplugin.php' ) ) {
+            //plugin is activated
+            
+            $news_args = array(
+              'cat' => $id,
+              'post_type' => array('news'),
+              'meta_key' => '_ifp_news_date',
+              'orderby' => 'meta_value_num',
+              'order' => 'ASC',
+              'meta_query' => array(
+                array(
+                   'key' => '_ifp_news_date',
+                   'value' => $time,
+                   'compare' => '>=',
+                )
+              )
+            );
+            $posts_ids = array();
+            $news_query = new WP_Query( $news_args );
+            $posts = array_merge($event_query->posts, $news_query->posts);
+            foreach($posts as $obj) {
+              $posts_ids[] = (int)$obj->ID;
+            }
+
+            $event_query = new WP_Query(array('cat' => $id, 'post__in' => $posts_ids, 'post_type' => array('news', 'post'), 'orderby' => 'post__in'));
+          } ?>
+
+					<?php if ($event_query->have_posts()) : while ($event_query->have_posts()) : $event_query->the_post(); ?>
+						<?php //prepare data 
+								$pid = get_the_ID();
+								$data = apply_filters('if_event_data', get_meta_if_post($pid));
+								$type = isset($data['type']) ? $data['type'] : false;
+								$classes = 'post-single-home clearfix';
+								$classes .= $type ? ' ' . $type : '';
+								$classes = apply_filters('if_event_classes', $classes);
+								
+								$start = $type == 'news' ? $data['subhead'] : $data['start'];
+								$end = $data['end'];
+								$antenna_id = $data['antenna_id'];
+								$town = $data['city'];
+						?>
+						<article class="<?php echo $classes;?>" id="post-<?php the_ID();?>">
 							<div class="top-block">
-								<?php if($start):?><div class="date-time"><span class="start"><?php echo $start;?></span><span class="end"><?php echo $end;?></span><?php endif;?> - <span class="post-antenna"><?php echo $multi ? get_cat_name($antenna) : $town;?></span></div>
+							  <div class="date-time">
+								  <?php if($start):?><span class="start"><?php echo $start;?></span><span class="end"><?php echo $end;?></span><?php endif;?>
+                   <?php if('news' != $type):?>
+                    <span class="post-antenna"><?php echo 'page' == get_post_type() ? bloginfo('description') : !$town ? ' - ' . get_cat_name($antenna_id) : ' - ' . $town;?></span>
+                   <?php endif;?>
+						    </div><!-- /.date-time -->
 								<h3 class="post-title"><a href="<?php the_permalink() ?>" title="<?php the_title(); ?>" rel="bookmark"><?php the_title(); ?></a></h3>
 							</div>
 							<?php if ( has_post_thumbnail() ) : /* loades the post's featured thumbnail, requires Wordpress 3.0+ */ ?>
@@ -149,7 +190,7 @@
         			
       			</script>
 					<?php endwhile; ?>
-					<?php wp_reset_query();?>
+					<?php wp_reset_postdata();?>
 
 					<?php else: ?>
 						<div class="no-results bxshadow">
@@ -168,7 +209,10 @@
 	<?php else: //Page category ------------------------ ?>
 		<?php //get data from categ (key are img, children, posts)
 			$data = get_categ_data(get_query_var('cat'));
-		?><span class="none" style="color:red;">HOME PAGE 1 category</span>
+		?>
+
+<span class="none" style="color:red;">HOME PAGE 1 category</span>
+
 			<h1><?php echo single_cat_title( '', false ); ?></h1>
 			<?php if(!empty($data['img'])) : $img = wp_get_attachment_image_src( $data['img']['id'],'categ-img');?><div class="categ-image"><img src="<?php echo $img[0]; ?>" width="<?php echo $img[1]; ?>" height="<?php echo $img[2]; ?>" alt="" /></div><?php endif;?>
 			<div class="description"><?php echo category_description(); /* displays the category's description from the Wordpress admin */ ?></div>
@@ -188,7 +232,7 @@
 			<?php while (have_posts()) : the_post(); ?>
 			<?php //prepare data 
 				//$pid = get_the_ID();
-				$pid =$post->ID;
+				$pid = $post->ID;
 				$data = get_meta_if_post($pid);
 				$start = $data['start'];
 				$end = $data['end'];
@@ -198,7 +242,7 @@
 				<?php if ( has_post_thumbnail() ) { /* loades the post's featured thumbnail, requires Wordpress 3.0+ */ echo '<div class="featured-thumbnail">'; the_post_thumbnail('listing-post'); echo '</div>'; } ?>
 				<div class="top-block bxshadow">
 					<div class="date-time">
-						<?php if($start):?><span class="start"><?php echo $start;?></span><span class="end"><?php echo $end;?></span><?php endif;?> - <span class="post-antenna"><?php echo $multi ? get_cat_name($antenna) : $town;?></span>
+						<?php if($start):?><span class="start"><?php echo $start;?></span><span class="end"><?php echo $end;?></span><?php endif;?> - <span class="post-antenna"><?php echo !$town ? get_cat_name($antenna) : $town;?></span>
 					</div>
 					<h2><a href="<?php the_permalink() ?>" title="<?php the_title(); ?>" rel="bookmark"><?php the_title(); ?></a></h2>
 				</div>
@@ -236,7 +280,64 @@
 		<?php endwhile; ?>
 		
 		<?php iftheme_content_nav( 'nav-below' ); //next-prev nav ?>
-
+    <!-- NEWS -->
+    <?php
+    /**
+     * Detect plugin. For use on Front End only.
+     */
+    include_once( ABSPATH . 'wp-admin/includes/plugin.php' );
+    // check for plugin using plugin name
+    if ( is_plugin_active( 'ifplugin/ifplugin.php' ) ) :
+       //plugin is activated
+      $time = (time() - (60*60*24));
+      $news_args = array(
+        'cat' => get_query_var('cat'),
+        'post_type' => array('news'),
+        'meta_key' => '_ifp_news_date',
+        'orderby' => 'meta_value_num',
+        'order' => 'ASC',
+        'meta_query' => array(
+          array(
+             'key' => '_ifp_news_date',
+             'value' => $time,
+             'compare' => '>=',
+          )
+        )
+      );
+      $posts_ids = array();
+      $news_query = new WP_Query( $news_args );
+      if ($news_query->have_posts()) : ?> 
+  			<h2 class="upcoming"><?php _e('News','iftheme');?></h2>
+      <?php while ($news_query->have_posts()) : $news_query->the_post(); ?>
+    			<?php //prepare data 
+    				$pid = get_the_ID();
+    				//$pid = $post->ID;
+						$data = apply_filters('if_event_data', get_meta_if_post($pid));
+						$subhead = $data['subhead'];
+//     				$start = $data['start'];
+//     				$end = $data['end'];
+						$classes = 'post-single clearfix';
+						$classes .= isset($data['type']) ? ' ' . $data['type'] : '';
+						$classes = apply_filters('if_event_classes', $classes);
+          ?>
+    			<article class="<?php echo $classes;?>" id="post-<?php the_ID();?>">
+    				<?php if ( has_post_thumbnail() ) { /* loades the post's featured thumbnail, requires Wordpress 3.0+ */ echo '<div class="featured-thumbnail">'; the_post_thumbnail('listing-post'); echo '</div>'; } ?>
+    				<div class="top-block bxshadow">
+    					<div class="date-time">
+    						<?php if($start):?><span class="start"><?php echo $subhead;?></span><?php endif;?>
+    					</div>
+    					<h2><a href="<?php the_permalink() ?>" title="<?php the_title(); ?>" rel="bookmark"><?php the_title(); ?></a></h2>
+    				</div>
+    				<div class="post-excerpt">
+    					<?php the_excerpt(); /* the excerpt is loaded to help avoid duplicate content issues */ ?>
+    				</div>
+    				<div class="post-meta"><?php the_category(', ') ?></div>
+    			</article><!--.post-single-->
+      <?php endwhile; ?>
+    <?php endif; ?>
+    <?php wp_reset_postdata();?>
+   <?php endif; ?>
+    
 		<!-- OLD POSTS -->
 		<?php elseif (!have_posts() && !empty($data['posts'])) : 
   		//list old post/event from this category
@@ -252,14 +353,14 @@
         'cat' => get_query_var('cat')
         );
   			
-    		query_posts( $args_alternative );
+    		$query_alter = new WP_Query( $args_alternative );
 		
-		if(have_posts()) : ?> 
+		if($query_alter->have_posts()) : ?> 
 			<h2 class="upcoming"><?php _e('Archives','iftheme');?></h2>
-			<?php while (have_posts()) : the_post(); ?>
+			<?php while ($query_alter->have_posts()) : $query_alter->the_post(); ?>
 			<?php //prepare data 
 				//$pid = get_the_ID();
-				$pid =$post->ID;
+				$pid = $post->ID;
 				$data = get_meta_if_post($pid);
 				$start = $data['start'];
 				$end = $data['end'];  
@@ -308,7 +409,7 @@
       <?php iftheme_content_nav( 'nav-below' ); //next-prev nav ?>
 
   		<?php endif;?>		
-  		<?php wp_reset_query();?>
+    <?php wp_reset_postdata();?>
  		<?php else: /* ?>
 			<div class="no-results bxshadow">
 				<p><?php _e('No post in this category','iftheme'); ?></p>

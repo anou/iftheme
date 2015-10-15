@@ -349,14 +349,16 @@ input.wysija-email { border: 1px solid #ababac; padding: 0; width: 150px; height
    #sidebar aside.ifnopadding, #footer .widget-footer.ifnopadding, #sidebar aside.ifnopadding div {padding: 0; box-shadow: none;}
    #footer .widget-footer.ifnopadding h3 { margin: 10px}
 		
-	#sidebar .widget-sidebar ul,
-	#sidebar .widget-sidebar div {padding: 10px;}
-	#sidebar .widget-sidebar .wysija-msg {padding: 0}
+	#sidebar .widget-sidebar ul {padding: 10px;}
+/* 	#sidebar .widget-sidebar div {padding: 10px;} */ 
+	#sidebar .widget-sidebar .wysija-msg,
+	#sidebar .widget-sidebar div.textwidget {padding: 0}
 		#sidebar-search {}
 		#sidebar-nav {}
 		#sidebar-archives {}
 		#sidebar-meta {		}
 		.widget {margin-bottom: 10px}
+
 		
 	#sidebar aside#sidebar-newsletter {width: auto; padding: 10px; border: 1px solid #e4e5e5}
 	#sidebar aside#sidebar-newsletter div {padding: 0}
@@ -514,12 +516,12 @@ input.wysija-email { border: 1px solid #ababac; padding: 0; width: 150px; height
 #slider .pagination li {float:left;	margin:0 5px 0 0; list-style:none none;}
 
 #slider .pagination li a {
-	display:block;
+	display: block;
 	width: 10px;
-	height: 30px;
-	background-color:#fff;
-	float:left;
-	overflow:hidden;
+	height: 31px;
+	background-color: #fff;
+	float: left;
+	overflow: hidden;
 	text-indent: -99px;
 }
 
@@ -534,8 +536,8 @@ input.wysija-email { border: 1px solid #ababac; padding: 0; width: 150px; height
 	position: absolute;
 	right: 0;
 	bottom: 30px;
-/* 	height: 16px; */
-	padding: 6px 40px 5px 15px;
+	height: auto;
+	padding: 6px 40px 6px 15px;
 	background: #fff url(images/bg-post-title.png) repeat left top;	
 	width: auto;
 	font-size: 16px;
@@ -543,10 +545,10 @@ input.wysija-email { border: 1px solid #ababac; padding: 0; width: 150px; height
 	color: #fff;
 	text-shadow: none;
 	min-height: 19px;
-	max-width: 70%;
+	max-width: 80%;
 }
 /*PARTNERS*/
-body #sidebar .widget-sidebar .partners {padding: 0; margin-bottom: -10px; border: 1px solid #D3D3D3;}
+body #sidebar .widget-sidebar .partners {padding: 0; /* margin-bottom: -10px; */ border: 1px solid #D3D3D3;}
 body #sidebar .widget-sidebar .partners div {padding: 0;}
 .partners_container { height:150px; }
 .partners_container div {
@@ -609,13 +611,11 @@ html[xmlns] .clearfix {
 #content h2,
 #content .description h2,
 #content .post h2,
-.mceContentBody h2
- {font-family: "dinMed";font-size:28px;font-weight: normal;text-transform: uppercase;text-align: left}
+.mceContentBody h2 {font-family: "dinMed";font-size:28px;font-weight: normal;text-transform: uppercase;text-align: left}
 
 #content .description h3,
 #content .post h3,
-.mceContentBody h3
- {font-family: "dinMed";font-size:22px;font-weight: normal;text-transform: uppercase;text-align: left}
+.mceContentBody h3 {font-family: "dinMed";font-size:22px;font-weight: normal;text-transform: uppercase;text-align: left}
 
 #content .description .chapo,
 #content .post .chapo,

@@ -36,7 +36,7 @@ $check = true;
 if(isset($_GET['taxonomy']) && $_GET['taxonomy'] == 'category' ){
 	$check = isset($_GET['tag_ID']) ? get_tax_meta($_GET['tag_ID'],'categ_posts') : true;
 }
-$custom_category->addCheckbox('categ_posts',array('name'=> __('Display Posts','iftheme'), 'desc'=>__("Uncheck this box if you want disable the display of the category's posts",'iftheme'), 'std' => $check));
+$custom_category->addCheckbox('categ_posts',array('name'=> __('Display Posts','iftheme'), 'desc'=>__("Check this box if you want to display a list of the category's posts",'iftheme'), 'std' => $check));
 //hidden field
 //to avoid conflict with wpml plugin
 //global $current_user; get_currentuserinfo();

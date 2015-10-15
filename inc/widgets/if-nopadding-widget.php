@@ -10,7 +10,7 @@
  
 class If_No_Padding extends WP_Widget {
 	
-	function If_No_Padding() {
+	function __construct() {
 		$widget_ops = array(
 			'classname' => 'ifnopadding',
 			'description' => __("Widget for IF RSS",'iftheme'),
@@ -20,7 +20,13 @@ class If_No_Padding extends WP_Widget {
 			'height' => 250,
 			'id_base' => 'ifnopadding-widget'
 		);
-		$this->WP_Widget('ifnopadding-widget', __('Institut Français RSS', 'iftheme'), $widget_ops, $control_ops);
+// 		$this->WP_Widget('ifnopadding-widget', __('Institut Français RSS', 'iftheme'), $widget_ops, $control_ops);
+    parent::__construct( 
+        'ifnopadding' . '-widget' , 
+        __('Institut Français RSS', 'iftheme'), 
+        $widget_ops, 
+        $control_ops 
+    );
 	}
 	
 	function form ($instance) {

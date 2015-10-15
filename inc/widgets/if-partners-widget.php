@@ -10,7 +10,7 @@
  
 class If_Antenna_Partners extends WP_Widget {
 	
-	function If_Antenna_Partners() {
+	function __construct() {
 		$widget_ops = array(
 			'classname' => 'ifantennapartners',
 			'description' => __("Displays a list of antenna's partners logo, related to the current antenna",'iftheme'),
@@ -20,7 +20,13 @@ class If_Antenna_Partners extends WP_Widget {
 			'height' => 250,
 			'id_base' => 'ifantennapartners-widget'
 		);
-		$this->WP_Widget('ifantennapartners-widget', __("Antenna's partners", 'iftheme'), $widget_ops, $control_ops);
+// 		$this->WP_Widget('ifantennapartners-widget', __("Antenna's partners", 'iftheme'), $widget_ops, $control_ops);
+    parent::__construct( 
+        'ifantennapartners' . '-widget' , 
+        __("Antenna's partners", 'iftheme'), 
+        $widget_ops, 
+        $control_ops 
+    );
 	}
 	
 	function form ($instance) {
