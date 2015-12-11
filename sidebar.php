@@ -86,11 +86,6 @@
 		<?php endif; ?>
 		<?php endif; ?>
 		
-		<!-- CALENDAR -->
-		<aside id="sidebar-calendar" class="widget ifworldlinks bxshadow">
-			<div id="ajax_calendrier"><?php  include( get_template_directory() . '/inc/calendar/calendrier.php'); ?></div>
-		</aside>
-		
 		<?php //if ( !is_plugin_active( 'underconstruction/underConstruction.php' ) ):?>
   		<?php if ( !function_exists('dynamic_sidebar') || !dynamic_sidebar($sidebar)) : ?><?php endif; ?>
   		
