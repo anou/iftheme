@@ -4,7 +4,8 @@
 	<?php require_once( 'multi-front-page.php' );?>
 
 <?php else :?>
-	<div id="content"><span class="none" style="color:gray"><i>FRONT FOR SINGLE ANTENNA</i></span>
+	<!-- Front for Single Antenna -->
+	<div id="content">
 <?php 	
   	  global $sitepress;
   	  $default_lg = isset($sitepress) ? $sitepress->get_default_language() : get_site_lang();
