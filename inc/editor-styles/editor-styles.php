@@ -12,10 +12,15 @@ http://plugins.svn.wordpress.org/tinymce-advanced/branches/tinymce-kit/tinymce-k
 /**
  * Add "Styles" drop-down
  */ 
-add_filter( 'mce_buttons_2', 'if_mce_editor_buttons' );
-
-function if_mce_editor_buttons( $buttons ) {
+add_filter( 'mce_buttons_2', 'if_mce2_editor_buttons' );
+function if_mce2_editor_buttons( $buttons ) {
     array_unshift( $buttons, 'styleselect' );
+    return $buttons;
+}
+
+add_filter( 'mce_buttons', 'if_mce_editor_buttons' );
+function if_mce_editor_buttons( $buttons ) {
+
     return $buttons;
 }
 

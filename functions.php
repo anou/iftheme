@@ -864,8 +864,8 @@ function get_meta_if_post($pid = ''){
 	$book =  isset($meta['if_book_enable']) ? $meta['if_book_enable'][0] : null;
 	if($book == 'on'){
 		$data['booking'] = $book;
-		$data['book_mail'] = $meta['if_book_mail'][0];
-		$data['book_desc'] = $meta['if_book_desc'][0];
+		$data['book_mail'] = isset($meta['if_book_mail']) ? $meta['if_book_mail'][0] : null;
+		$data['book_desc'] = isset($meta['if_book_desc']) ? $meta['if_book_desc'][0] : null;
 	} else {
 		$data['booking'] = "close";
 	}

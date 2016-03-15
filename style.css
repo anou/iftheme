@@ -125,7 +125,7 @@ table { width: 100%; border-collapse: collapse; border-spacing: 0; border: 1px s
 th, td {text-align: left; border: 1px solid #008ac9; padding: 5px 10px;}
 th {background-clip: #f2f2f2;}
 
-#content ul {margin: 0 0 0 15px;}
+#content ul, #content ol { margin: 0 0 0 15px; }
 
 #content h1 {font-size: 34px; text-transform: uppercase; color: #008ac9; font-family: 'dinMed',sans-serif;margin-bottom: 5px}
 
