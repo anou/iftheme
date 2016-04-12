@@ -207,6 +207,8 @@ $if_front = is_front_page();
 	  </header>
 	</div><!--#header-->
 	<div class="container main-container">
-		<div class="breadcrumbs">
-			<?php if(function_exists('bcn_display')) { bcn_display(); }?>
-		</div>
+		<?php if(function_exists('bcn_display') && !is_front_page()) : ?>
+			<div class="breadcrumbs">
+				<?php bcn_display(); ?>
+			</div>
+		<?php endif; ?>
