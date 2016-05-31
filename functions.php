@@ -44,7 +44,8 @@ add_action('init', 'if_init');
 add_action( 'admin_notices', 'iftheme_categtouser_error_notice' );
 function iftheme_categtouser_error_notice($raw = false){
   global $current_screen;
-  global $current_user; get_currentuserinfo();
+  global $current_user;
+  $current_user = wp_get_current_user();
   $usercat = get_cat_if_user($current_user->ID);
   
   if ( $current_screen->base == 'appearance_page_theme_options' && !$usercat ) {
@@ -108,6 +109,7 @@ function iftheme_setup() {
 	require_once( get_template_directory() . "/inc/widgets/if-antennas-widget.php");
 	require_once( get_template_directory() . "/inc/widgets/if-mobile-widget.php");
 	require_once( get_template_directory() . "/inc/widgets/if-nopadding-widget.php");
+// 	require_once( get_template_directory() . "/inc/widgets/calendar/if-calendar-widget.php"); @TODO: dev the widget with new class calendar
 
 	//include antenna categories widget
 	require_once( get_template_directory() . "/inc/editor-styles/editor-styles.php");
@@ -146,7 +148,9 @@ define('IF_CATEGORY_FIX_FIELDS', 'my_category_fields_option');
 
 // your fields (the form)
 function if_fix_category_fields($tag) {
-    global $current_user; get_currentuserinfo();
+      global $current_user;
+  $current_user = wp_get_current_user();
+
     $tag_extra_fields = get_option(IF_CATEGORY_FIX_FIELDS);
     
     ?>
@@ -201,7 +205,7 @@ function get_site_lang() {
 
 
 //get level 1 (key=0) categories.
-function get_if_top_categ($args=array()){
+function get_if_top_categ( $args = array() ) {
 	
 	$default_args = array(
 		'hide_empty' => 0,
@@ -239,7 +243,7 @@ function get_if_level2_categ($raw = false, $args = array()) {
   		'hide_empty' => 0,
   		'parent' 	 => get_current_parent_categ(),
     );
-  	return get_terms( 'category', $default_args);
+  	return apply_filters('iftheme_nav', get_terms( 'category', $default_args));
 	}
 	
 }
@@ -358,7 +362,9 @@ function get_cat_if_user_lang($uid){
 //Get info for IF Antenna
 //only useful for theme option page (must be logged)
 function get_antenna(){
-	global $current_user; get_currentuserinfo();
+	  global $current_user;
+  $current_user = wp_get_current_user();
+
 	$antenna = get_cat_slug(get_cat_if_user($current_user->ID));
 	
 	return $antenna;
@@ -377,12 +383,12 @@ function get_antenna_users() {
 
 //Verify if it's a Multi antennas site
 function multi_antennas() {
-	$output = FALSE;
+	$multi = false;
 	$nb = count(get_antenna_users());
 	//if count(get_antenna_users()) == 1, than it means that we have only 1 antenna, the administrator one.
-	if($nb>1) $output = TRUE;
+	if( $nb > 1 ) $multi = true;
 	
-	return $output;
+	return $multi;
 }
 
 //Get the antennas details & options settings
@@ -506,7 +512,7 @@ function get_current_antenna(){
 		//get the category id of post
 		$cats = get_the_category();
     //return default categ if none found
-    if( empty($cats) ) return $categ_admin;
+    if( empty($cats) ) return $current_id;
 //     if( empty($cats) ) return 'front';
     //get root category (antenna)
 		//if post has multiple categories, no problem we only need to get the root categ.
@@ -535,7 +541,7 @@ function get_current_parent_categ(){
 	} elseif(is_single()){
 		//get the category id of post
 		$cats = get_the_category();
-    if( empty($cats) ) return $categ_admin;
+    if( empty($cats) ) return $current_id;
 //     if( empty($cats) ) return 'front';
 		//get root category (antenna)
 		//if post has multiple categories, no problem we only need to get the root categ.
@@ -547,9 +553,9 @@ function get_current_parent_categ(){
 
 //get meta data from category
 function get_categ_data($cid){
-	$data['img'] = get_tax_meta($cid,'categ_img');
-	$data['children'] = get_tax_meta($cid,'categ_children');
-	$data['posts'] = get_tax_meta($cid,'categ_posts');
+	$data['img'] = get_term_meta($cid,'categ_img');
+	$data['children'] = get_term_meta($cid,'categ_children');
+	$data['posts'] = get_term_meta($cid,'categ_posts');
 	
 	return $data;
 }
@@ -594,16 +600,19 @@ if ( ! function_exists( 'post_is_in_descendant_category' ) ) {
  */
 //Add css&js files to admin 
 function load_custom_wp_admin_style(){
-        wp_register_style( 'custom_wp_admin_css', get_bloginfo('stylesheet_directory') . '/inc/if-admin-style.css', false, '1.0.0' );
-        wp_enqueue_style( 'custom_wp_admin_css' );
-        wp_register_script( 'custom_wp_admin_js', get_bloginfo('stylesheet_directory') . '/inc/if-admin-script.js', false, '1.0.0' );
-        wp_enqueue_script( 'custom_wp_admin_js' );
-        
-        $test_user_categ = iftheme_categtouser_error_notice(true);
-        if($test_user_categ){ 
-          $params = array('id' => 'submit');
-          wp_localize_script( 'custom_wp_admin_js', 'ifAdmin', $params );
-        }
+  //font-awesome
+	wp_enqueue_style( 'font_awesome', get_stylesheet_directory_uri() . '/fonts/font-awesome/css/font-awesome.min.css', array(), '4.6.1' );
+
+  wp_register_style( 'custom_wp_admin_css', get_bloginfo('stylesheet_directory') . '/inc/if-admin-style.css', false, '1.0.0' );
+  wp_enqueue_style( 'custom_wp_admin_css' );
+  wp_register_script( 'custom_wp_admin_js', get_bloginfo('stylesheet_directory') . '/inc/if-admin-script.js', false, '1.0.0' );
+  wp_enqueue_script( 'custom_wp_admin_js' );
+  
+  $test_user_categ = iftheme_categtouser_error_notice(true);
+  if($test_user_categ){ 
+    $params = array('id' => 'submit');
+    wp_localize_script( 'custom_wp_admin_js', 'ifAdmin', $params );
+  }
 }
 add_action('admin_enqueue_scripts', 'load_custom_wp_admin_style');
 
@@ -616,7 +625,9 @@ add_action('admin_head', 'load_inline_js_to_admin');
 
 //Add inline css to admin for displaying right widget sidebar zone to users
 function load_inline_css_to_admin(){
-	global $current_user; get_currentuserinfo();
+	  global $current_user;
+  $current_user = wp_get_current_user();
+
 	$out = '<style type="text/css">';
 	$out .= '#widgets-right .widgets-holder-wrap {display:none}';
 	$out .= $current_user->ID == 1 ? '#widgets-right .widgets-holder-wrap {display:block}':'#widgets-right .widgets-holder-wrap.sidebar-'.get_cat_if_user($current_user->ID).' {display:block}';
@@ -629,6 +640,9 @@ add_action('admin_head', 'load_inline_css_to_admin');
 
 //Add theme  JS
 function if_scripts() {
+  //font-awesome
+	wp_enqueue_style( 'font_awesome_front', get_stylesheet_directory_uri() . '/fonts/font-awesome/css/font-awesome.min.css', array(), '4.6.1' );
+
 	wp_enqueue_script("jquery");
 	wp_enqueue_script('chosen',	get_template_directory_uri() . '/js/chosen/chosen.jquery.js');
     wp_register_style( 'chosen_css', get_bloginfo('stylesheet_directory') . '/js/chosen/chosen.css', false, '1.0.0' );
@@ -667,7 +681,7 @@ function if_manage_categ_columns($columns) {
 
 function manage_category_custom_fields($val, $column_name, $term_id) {
 	if ($column_name == 'categ_image') {
-		$cat_data = get_tax_meta($term_id,'categ_img');
+		$cat_data = get_term_meta($term_id,'categ_img');
 		//array key : id,src
 		if(isset($cat_data['src'])) echo '<img src="'.$cat_data['src'].'" alt="'.get_cat_name($term_id).'" width="50" />';
 	}
@@ -675,7 +689,9 @@ function manage_category_custom_fields($val, $column_name, $term_id) {
 add_action('manage_category_custom_column','manage_category_custom_fields',10,3);
 
 function if_restrict_categories($categories) {
-	global $current_user; get_currentuserinfo();
+	  global $current_user;
+  $current_user = wp_get_current_user();
+
 	
 	$a = get_cat_if_user_lang($current_user->ID);
 
@@ -830,7 +846,7 @@ function if_display_posts_on_archive_pages( $query ) {
 add_action( 'pre_get_posts', 'if_display_posts_on_archive_pages' );
 
 //get meta data of post for display on page
-function get_meta_if_post($pid = ''){
+function get_meta_if_post( $pid = '', $archive = false ){
 	global $post;
 	$pid = !$pid ? $post->ID : $pid;
   $data['post_id'] = $pid;//for ref.
@@ -845,14 +861,17 @@ function get_meta_if_post($pid = ''){
 	
 	$start = isset($meta['if_events_startdate']) ? $meta['if_events_startdate'][0] : null;
 	$end = isset($meta['if_events_enddate']) ? $meta['if_events_enddate'][0] : null;
+	
+	$date_format = $archive ? '%d %b %Y' : '%d %b';
 		
 	$end = $end <= $start ? false : $end;
 
-	$end = !empty($end) ? utf8_encode(strftime('%d %b',$end)) : null;
+	$end = !empty($end) ? utf8_encode(strftime($date_format,$end)) : null;
 	$time = isset($meta['if_events_time']) ? $meta['if_events_time'][0] : null;
 	
+	$date_format = !$end || ( strftime('%Y',$end) == strftime('%Y',$start) )? $date_format : '%d %b';
 
-	$data['start'] = !empty($start) ? utf8_encode(strftime('%d %b',$start)) : null;
+	$data['start'] = !empty($start) ? utf8_encode(strftime($date_format,$start)) : null;
 	$data['end'] = !$end ? (strlen($time) ? ' / '.$time : '') : ' / '.$end;  
 	$data['time'] = $time;
 	
@@ -900,7 +919,7 @@ function get_meta_slider($pid=''){
 	$data['frontpage'] = get_post_meta($pid, 'is_country', false);
 	
 	//imgz
-	$tab_imgz = get_post_meta($post->ID,'re_');
+	$tab_imgz = get_post_meta($post->ID,'re_slider');
 	
 	foreach($tab_imgz[0] as $k => $vals){
 		$data['slides']['slide-'.$k] = $vals;
@@ -915,7 +934,7 @@ function get_meta_partners($pid=''){
 	$data['antenna'] = get_post_meta($pid, 'partner_antenna', false);
 	
 	//imgz
-	$tab_imgz = get_post_meta($pid,'re_');
+	$tab_imgz = get_post_meta($pid,'re_partner');
 	
 	if(!$tab_imgz[0]) { 
 		$data = '<div class="msg warning">'. sprintf( __('Your content <em>Partner</em> is empty. <a href="/wp-admin/post.php?post=%s&action=edit"> >Edit</a>','iftheme') , $pid ) .'</div>'; 
@@ -929,12 +948,11 @@ function get_meta_partners($pid=''){
 }
 
 //for use in php
-function get_meta_raw_if_post($pid=''){
+function get_meta_raw_if_post( $pid = '' ) {
 	global $post;
 	$pid = !$pid ? $post->ID : $pid;
 	
 	//setlocale(LC_ALL,'LANGUAGE CODE'); =>TODO get the current language code
-	
 	$start = get_post_meta($pid, 'if_events_startdate', false);
 	$data['start'] = !empty($start[0]) ? $start[0] : null;
 
@@ -1012,10 +1030,11 @@ function get_booking_form() {
 	}
 }
 /*
- * Add custom Post type
+ * Add custom Post types
  */
 
 function create_post_type() {
+
 	// for homepages sliders
 	register_post_type( 'if_slider',
 		array(
@@ -1091,7 +1110,9 @@ function remove_editor_menu() {
 add_action('_admin_menu', 'remove_editor_menu', 1);
 
 function if_remove_menu_pages() {
-	global $current_user; get_currentuserinfo();
+	  global $current_user;
+  $current_user = wp_get_current_user();
+
 	//all users
 	remove_menu_page('edit-comments.php');
 	remove_submenu_page( 'themes.php', 'nav-menus.php' );
@@ -1175,7 +1196,7 @@ function showMessage($message, $errormsg = false) {
 } 
    
 function categMsg(){
-   showMessage(__("You must ask your administrator to select a user's category", 'iftheme'));
+   showMessage(__("You must ask your administrator to select a user's category", 'iftheme'), true);
 }
 
 // enables wigitized sidebars
@@ -1195,7 +1216,9 @@ if ( function_exists('register_sidebar') ) {
 
 
 	// Sidebar Widget for each antenna. Default to one only.
-	global $current_user; get_currentuserinfo();
+  global $current_user;
+  $current_user = wp_get_current_user();
+
 	$a_users = get_antenna_users();
 	
 
@@ -1269,7 +1292,51 @@ if ( function_exists('register_sidebar') ) {
 
 //custom language switcher
 //Must have installed WPML plugin (cf. http://wpml.org)
-if(function_exists('icl_get_languages')) {
+
+if( array_key_exists( 'wpml_active_languages', $GLOBALS['wp_filter']) ) {
+  function languages_list_header(){
+    global $wp, $sitepress;
+    $current_url = add_query_arg(array(),$wp->request);
+    $linkto = false;
+    
+    $languages = apply_filters( 'wpml_active_languages', NULL, 'skip_missing=0&orderby=code&link_empty_to=' . $linkto );
+    if(!empty($languages)){
+        
+        echo '<div id="header_language_list"><ul>';
+        
+        foreach($languages as $l){
+          
+        	$class = $l['active'] ? 'class="active"':'';
+            echo '<li '.$class.'>';
+            if(!$l['active']) {
+              if( is_post_type_archive( 'sheet' ) || is_tax( 'sheets_topics' ) ) {
+                switch ( $sitepress->get_setting( 'language_negotiation_type' )) {
+                  case '1':
+                    $lg = $sitepress->get_default_language();
+                    $code = $l['language_code'] == $lg ? '' :  '/' . $l['language_code'];
+                  break;  
+                  case '2':
+                    $code = '/' . $l['language_code'];
+                  break;
+                  default:
+                }
+                $linkto = $code . '/'.$current_url;
+              }
+              $url = $linkto ? $linkto : $l['url'];
+              echo '<a href="'.$url.'">';
+            }
+            //echo icl_disp_language($l['native_name'], $l['translated_name']);
+            echo icl_disp_language($l['language_code'],'');
+            if(!$l['active']) echo '</a>';
+            echo '</li>';
+        }
+        
+        echo '</ul></div>';
+    }
+  }
+}
+elseif(function_exists('icl_get_languages')) {
+
 	function languages_list_header(){ //cf. http://wpml.org/documentation/getting-started-guide/language-setup/custom-language-switcher/
 	    $languages = icl_get_languages('skip_missing=0&orderby=code');
 
@@ -1400,6 +1467,7 @@ function if_login_logo_url(){
 add_filter('login_headerurl', 'if_login_logo_url');
 	
 // session handling
+/*
 add_action('init', 'if_StartSession', 1);
 add_action('wp_logout', 'if_EndSession');
 add_action('wp_login', 'if_EndSession');
@@ -1413,6 +1481,7 @@ function if_StartSession() {
 function if_EndSession() {
     session_destroy ();
 }
+*/
 
 /**
  * Create XML for mobile phones
@@ -1444,7 +1513,6 @@ function createXML(){
     $image = wp_get_attachment_image_src( get_post_thumbnail_id( $row->ID ), 'post-img' );
     $xml .= '<imageurl>' . $image[0] . '</imageurl>';	//URL image à la une
     $xml .= '<videourl></videourl>';
-    //$xml .= '<description>' .get_excerpt_by_id($row->ID) . '</description>'; 	// "the_excerpt" (! pas de HTML !)
     $xml .= '<description>' . strip_tags(strip_shortcodes(html_entity_decode($row->post_content,ENT_COMPAT, 'UTF-8'))) . '</description>'; 	// "the_content !!!" (! pas de HTML !)
     $xml .= '<datepub>' . mysql2date('d/m/Y',$row->post_date) . '</datepub>'; //format dd/mm/yyyy - date de publication  => post date WP
     $xml .= '<datedebut>' . mysql2date('d/m/Y', date_i18n('Y-m-d H:i:s',$meta_values['if_events_startdate'][0])) . '</datedebut>'; //date début event
@@ -1495,43 +1563,6 @@ if (!wp_next_scheduled('if_task_hook')) {
   wp_schedule_event( time(), 'daily', 'if_task_hook' );
 }
 add_action ( 'if_task_hook', 'createXML' );
-//add_action ( 'init', 'createXML' );
-
-/**
- * Useful function for createXML function.
- * Can be used some other places ;-)
- */
-function get_excerpt_by_id($post_id){
-  $the_post = get_post($post_id); //Gets post ID
-  $the_excerpt = $the_post->post_content; //Gets post_content to be used as a basis for the excerpt
-  $excerpt_length = 35; //Sets excerpt length by word count
-  $the_excerpt = strip_tags(strip_shortcodes($the_excerpt)); //Strips tags and images
-  $words = explode(' ', $the_excerpt, $excerpt_length + 1);
-  if(count($words) > $excerpt_length) :
-  array_pop($words);
-  array_push($words, '…');
-  $the_excerpt = implode(' ', $words);
-  endif;
-  //$the_excerpt = '<p>' . $the_excerpt . '</p>';//no need of hmtl tags
-  return $the_excerpt;
-}
-
-function createMenu(){
-  return wp_create_nav_menu('if_menu_fix');
-}
-add_action ( 'init', 'createMenu' );
-
-/**
- * Function to hide update notices
- *
- * Comment or Uncomment to show/hide notices
- */
-/*
-function wphidenag() {
-  remove_action( 'admin_notices', 'update_nag', 3 );
-}
-add_action('admin_menu','wphidenag');
-*/
 
 /**
  * function curl
@@ -1610,4 +1641,34 @@ endif;
 
 add_filter( 'term_description', 'shortcode_unautop');
 add_filter( 'term_description', 'do_shortcode' );
- 
+
+
+add_action('admin_bar_menu', 'add_toolbar_items', 100); 
+function add_toolbar_items($admin_bar){
+  $admin_bar->add_menu( array(
+      'id'    => 'them-options-item',
+      'href'  => '/wp-admin/themes.php?page=theme_options',
+      'title' => __('Theme options', 'iftheme'),
+    )
+  );
+
+/*
+  $admin_bar->add_menu( array(
+    'id'    => 'my-sub-item',
+    'parent' => 'my-item',
+    'title' => 'My Sub Menu Item',
+    'href'  => '#',
+    'meta'  => array(
+      'title' => __('My Sub Menu Item'),
+      'target' => '_blank',
+      'class' => 'my_menu_item_class'
+      ),
+    )
+  );
+*/
+}
+
+add_filter('bcn_add_post_type_arg', 'iftheme_post_type_arg_filt', 10, 3);
+function iftheme_post_type_arg_filt($add_query_arg, $type, $taxonomy) {
+    return false;
+}

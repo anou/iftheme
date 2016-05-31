@@ -11,16 +11,33 @@
 // 0. Base
 
 add_action('admin_init', 'if_functions_css');
-
 function if_functions_css() {
 	wp_enqueue_style('if-functions-css', get_bloginfo('template_directory') . '/inc/events/css/if-functions.css');
 }
 
+add_action( 'init', 'change_post_name' );
+function change_post_name() {
+  //change default Post type name to Event
+  global $wp_post_types;
+  $labels = &$wp_post_types['post']->labels;
+  $labels->name = __('Events', 'iftheme');
+  $labels->singular_name = __('Event', 'iftheme');
+  $labels->add_new = __('Add Event', 'iftheme');
+  $labels->add_new_item = __('Add Event', 'iftheme');
+  $labels->edit_item = __('Edit Event', 'iftheme');
+  $labels->new_item = __('Event', 'iftheme');
+  $labels->view_item = __('View Event', 'iftheme');
+  $labels->search_items = __('Search Events', 'iftheme');
+  $labels->not_found = __('No Events found', 'iftheme');
+  $labels->not_found_in_trash = __('No Events found in Trash', 'iftheme');
+  $labels->all_items = __('All Events', 'iftheme');
+  $labels->menu_name = __('Events', 'iftheme');
+  $labels->name_admin_bar = __('Event', 'iftheme');
+}
 
 // 4. Show Meta-Box
 
 add_action( 'admin_init', 'if_events_create' );
-
 function if_events_create() {
     add_meta_box('if_events_meta', __('Event information','iftheme'), 'if_events_meta', 'post');
     add_meta_box('if_events_mobile', __('Additional event information','iftheme'), 'if_events_mobile', 'post');
@@ -68,7 +85,9 @@ function if_events_mobile () {
 
     // - grab data -
     global $post;
-    global $current_user; get_currentuserinfo();
+      global $current_user;
+  $current_user = wp_get_current_user();
+
     $antenna = get_cat_name( get_cat_if_user($current_user->ID) );
     
     $custom = get_post_custom($post->ID);

@@ -3,7 +3,9 @@
 //for post customization
 require_once("meta-box-class/my-meta-box-class.php");
 
-global $current_user; get_currentuserinfo();
+  global $current_user;
+  $current_user = wp_get_current_user();
+
 
 /*
 * configure your meta box
@@ -42,7 +44,7 @@ $repeater_fields[] = $slider->addImage('image_slide',array('name'=> __('Image', 
 * Then just add the fields to the repeater block
 */
 //repeater block
-$slider->addRepeaterBlock('re_',array('inline' => true, 'name' => __('Slider Images', 'iftheme'),'fields' => $repeater_fields));
+$slider->addRepeaterBlock('re_slider',array('inline' => true, 'name' => __('Slider Images', 'iftheme'),'fields' => $repeater_fields));
 //hidden field
 //to assign the slider to antenna
 $slider->addHidden('slide_antenna', array('name'=> 'antenna', 'std'=>get_cat_if_user($current_user->ID)),false);
@@ -74,7 +76,7 @@ $repeater_fields_p[] = $partner->addText('partner_title',array('name'=> __('Name
 $repeater_fields_p[] = $partner->addText('link_to_partner',array('name'=> __('Link', 'iftheme')),true);
 $repeater_fields_p[] = $partner->addImage('image_logo',array('name'=> __('Logo', 'iftheme')),true);
 //repeater block
-$partner->addRepeaterBlock('re_',array('inline' => true, 'name' => __('Partners logos', 'iftheme'),'fields' => $repeater_fields_p));
+$partner->addRepeaterBlock('re_partner',array('inline' => true, 'name' => __('Partners logos', 'iftheme'),'fields' => $repeater_fields_p));
 //hidden field
 //to assign the slider to antenna
 $partner->addHidden('partner_antenna', array('name'=> 'antenna', 'std'=>get_cat_if_user($current_user->ID)),false);

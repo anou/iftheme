@@ -123,8 +123,8 @@ $(document).ready(function() {
 	//$('nav#antennes').css('height','30px');
 	  
  
- if (windowWidth > 767){
-  if($('nav#antennes ul li.current-cat ul.children').length || $('nav#antennes ul li.current-cat-parent ul.children').length) { //console.log($('.children'));
+if (windowWidth > 767){
+  if($('nav#antennes ul li.current-cat ul.children').length || $('nav#antennes ul li.current-cat-parent ul.children').length) {
     $('ul li.current-cat-parent ul.children, ul li.current-cat ul.children').appendTo('nav#antennes').show();
     $('ul li.current-cat-parent ul.children, ul li.current-cat ul.children').show();
   }
@@ -133,6 +133,15 @@ $(document).ready(function() {
     $('.children li.current-cat-parent').closest('ul').closest('.cat-item').addClass('current-cat-parent');
     $('.children li.current-cat-parent').closest('ul.children').show();
   }
+  
+  //uncomment to display sub-menu on mouseover
+/*
+  $('nav#antennes ul:not(.children) li.cat-item').each(function(){ 
+    $(this).hover( function() {
+      $(this).find('ul.children').stop( true, true ).slideToggle('fast');
+    });
+  });
+*/
 }
 //responsive select
 
@@ -193,10 +202,10 @@ $(selectMenu).change(function() {
     }
     
     if($('.breadcrumbs').length){ 
-	   $('.breadcrumbs').find('> a:first-child').html('<img src="'+ bInfo.bTheme + '/images/pict-home.png" alt="'+$('.breadcrumbs').find('> a:first-child').text()+'" />'); 
+	   $('.breadcrumbs').find('a.home').html('<img src="'+ bInfo.bTheme + '/images/pict-home.png" alt="'+ $('.breadcrumbs').find('a.home').text() + '" />'); 
 	   
 	   if($('.archive.date').length){ 
-		   $('.breadcrumbs').html( $('.breadcrumbs').find('> a:first-child').html());
+		   $('.breadcrumbs').html( $('.breadcrumbs').find('a.home').parent().html());
 	   }
 	   if($('.accueil').length){ 
 		   $('.breadcrumbs').html('<img src="'+ bInfo.bTheme + '/images/pict-home-on.png" alt="" />');
@@ -249,13 +258,26 @@ $(selectMenu).change(function() {
     
     //homepages
   if(windowWidth > 767){
-    if($('.block-home').length) { //for all possible options see http://masonry.desandro.com/docs/options.html
+    if($('.block-home').length && !$('.sheets').length ) { //for all possible options see http://masonry.desandro.com/docs/options.html
       var $container = $('#home-list');
 
       $container.imagesLoaded( function(){
         $container.masonry({
           itemSelector : '.block-home',
-          columnWidth : 320
+          columnWidth : 310,
+          gutter : 10
+        });
+      });
+    }
+    
+    if($('.block-home').length && $('.sheets').length ) { //for all possible options see http://masonry.desandro.com/docs/options.html
+      var $container = $('#home-list');
+
+      $container.imagesLoaded( function(){
+        $container.masonry({
+          itemSelector : '.block-home',
+          columnWidth : 205,
+          gutter : 7
         });
       });
     }
@@ -265,7 +287,7 @@ $(selectMenu).change(function() {
 	    $('.footer-all-block').masonry({
 		    // options
 		    itemSelector : '.widget-footer',
-		});
+		  });
     }
 
 

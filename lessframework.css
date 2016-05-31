@@ -305,7 +305,42 @@ img::-moz-selection {
 		font-size: 11px;
 		line-height: 16px;
 	}
-	
+	.custom-frontpage #logo { max-width: 135px; }
+	.custom-frontpage #content { padding: 10px 0 !important; }
+	.custom-frontpage a div.custom-home-block {
+    width: 48%;
+    min-height: 165px;
+    margin: 10px 0;  
+    padding: 0 0 30px;
+    background-position: 0 160px !important;  
+  }
+  #content .custom-home-block h2 {
+  	padding: 0 0 75px;
+  	max-width: 100%;
+  	margin: 20px auto 5px;
+  	font-size: 20px !important;
+  	line-height: 20px;
+  	min-height: 40px;
+  }
+  #content .custom-home-block h2::after {
+  	width: 30px;
+  	height: 45px;
+  	bottom: 20px;
+  	left: 38%;
+  	background-size: contain;
+  }
+  #content .custom-home-block .icones {
+  	max-width: 97%;
+  	margin: 0 auto;
+  }
+  .custom-frontpage .social-networks { margin-top: 15px  }
+	.custom-frontpage .social-networks ul li{ margin: 0 7px !important; }
+  .custom-frontpage .container.main-container	{ padding: 10px; }
+  
+  article.post-single-home { width: 290px !important;}
+
+
+
 }
 
 
@@ -430,7 +465,41 @@ img::-moz-selection {
 		font-size: 11px;
 		line-height: 16px;
 	}
-	
+	.custom-frontpage #logo { max-width: 135px; }
+	.custom-frontpage #content { padding: 10px 0 !important; }
+	.custom-frontpage a div.custom-home-block {
+    width: 48%;
+    min-height: 165px;
+    margin: 10px 0;  
+    padding: 0 0 30px;
+    background-position: 0 160px !important;  
+  }
+  #content .custom-home-block h2 {
+  	padding: 0 0 75px;
+  	max-width: 100%;
+  	margin: 20px auto 5px;
+  	font-size: 20px !important;
+  	line-height: 20px;
+  	min-height: 40px;
+  }
+  #content .custom-home-block h2::after {
+  	width: 30px;
+  	height: 45px;
+  	bottom: 20px;
+  	left: 38%;
+  	background-size: contain;
+  }
+  #content .custom-home-block .icones {
+  	max-width: 97%;
+  	margin: 0 auto;
+  }
+  .custom-frontpage .social-networks { margin-top: 15px  }
+	.custom-frontpage .social-networks ul li{ margin: 0 7px !important; }
+  .custom-frontpage .container.main-container	{ padding: 5px !important; }
+  
+  article.post-single-home { width: 290px !important;}
+
+  
 }
 
 /*	Retina media query.

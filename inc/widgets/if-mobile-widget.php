@@ -95,7 +95,9 @@ class If_Mobile extends WP_Widget {
       		    
       		    <?php if($k == 1): //APPLE STORE. Attention Apple seams to have particular country code to there badges... ?><img src="<?php echo get_bloginfo('stylesheet_directory') . '/inc/images/apple-badges/Download_on_the_App_Store_Badge_' . strtoupper($lang) . '_135x40.png';?>" alt="<?php _e('Download on the App Store', 'iftheme');?>" /><?php endif; ?>
       		    
-      		    <?php if($k == 2): //GOOGLE PLAY ?><img src="https://developer.android.com/images/brand/<?php echo $lang;?>_generic_rgb_wo_45.png" alt="<?php _e('Get it on Google Play','iftheme');?>" /><?php endif; ?>
+      		    <?php if($k == 2): //GOOGLE PLAY to have more badges cf: https://play.google.com/intl/en_us/badges/?>
+      		      <img src="<?php echo get_bloginfo('stylesheet_directory') . '/inc/images/google/google-play-badge_' . $lang . '.png'?>" alt="<?php _e('Get it on Google Play','iftheme');?>" />
+      		    <?php endif; ?>
             </a>
     		  <?php echo $k == 2 ? '</div>' : '';?>
     		<?php endforeach;?>

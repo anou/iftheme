@@ -1,18 +1,20 @@
 <div id="content">
 	
 	<?php if($multi): //HOME PAGE Antennas ?>
-<span style="color:green" class="none"> Main Home Page MULTI-ANTENNA </span>
+
+<?php if(is_super_admin()):?><span class="none" style="position:fixed; bottom:0; right:0; background-color: yellow; color:green; z-index:1000; opacity:0.5"><i>Main Home Page MULTI-ANTENNA (multi-front-page.php)</i></span><?php endif;?>
+
 	<?php $args_slider = array(
-			'post_type'=> 'if_slider',
-			'order'    => 'DESC',
-			'meta_key' => 'is_country',
-			'meta_value' => 'on',
-			'posts_per_page' => 1
+  			'post_type'=> 'if_slider',
+  			'order'    => 'DESC',
+  			'meta_key' => 'is_country',
+  			'meta_value' => 'on',
+  			'posts_per_page' => 1
 			);
 			
-			query_posts( $args_slider );
+  		$slider_query = new WP_Query( $args_slider );
 	?>
-	<?php if (have_posts()) : while (have_posts()) : the_post(); ?>
+	<?php if( $slider_query->have_posts() ): while( $slider_query->have_posts() ): $slider_query->the_post(); ?>
 	<?php //get slider data
 			$dslide = get_meta_slider($post->ID);
 			foreach($dslide['slides'] as $s => $vals){
@@ -29,10 +31,19 @@
 				<!-- slides_container  -->
 				<div class="slides_container">
 				<?php foreach($slides as $slide => $values):
-						  $img = wp_get_attachment_image_src( $values['img'],'slider');
+            $url = isset($values['link']) ? parse_url( $values['link'], PHP_URL_HOST ) : false;
+            $blank = true;
+            if( $url ) {
+              if( $url == $_SERVER['HTTP_HOST'] ) $blank = false;
+            }
+					  $img = wp_get_attachment_image_src( $values['img'],'slider');
 				 if($img) : ?>
 					<div class="slide">
-						<a href="<?php echo $values['link'];?>" title="<?php echo $values['link'];?>"><img src="<?php echo $img[0]; ?>" width="<?php echo $img[1]; ?>" height="<?php echo $img[2]; ?>" alt="" /></a><div class="caption"><?php echo $values['title'];?></div>
+						<?php if($url) : ?>
+						  <a href="<?php echo $values['link'];?>" title="<?php echo $values['link'];?>" <?php echo $blank ? 'target="_blank"' : ''; ?>><img src="<?php echo $img[0]; ?>" width="<?php echo $img[1]; ?>" height="<?php echo $img[2]; ?>" alt="" /></a>
+						<?php else : ?>
+						  <img src="<?php echo $img[0]; ?>" width="<?php echo $img[1]; ?>" height="<?php echo $img[2]; ?>" alt="" />
+						<?php endif; ?><div class="caption"><?php echo $values['title'];?></div>
 					</div><!-- /.slide -->
 					
 				<?php endif; endforeach;?>
@@ -45,10 +56,8 @@
 			
 			</div><!-- /#slides -->
 		</div><!-- /#slider -->
-
-
 	<?php endwhile; ?>
-	<?php /*end query slider*/ wp_reset_query(); ?>
+	<?php wp_reset_postdata();//end $slider_query?>
 	
   <div class="widget-front-container clearfix">
   <?php if (!function_exists('dynamic_sidebar') ||  !dynamic_sidebar( 'Front-page' )) : ?><!--Wigitized Footer-->
@@ -199,12 +208,13 @@
 		<?php endif; ?>	
 	
 	<?php else: //Page for 1 category ?>
-<span style="color:purple" class="">Home Page ONE ANTENNA/CATEGORY </span>
+<?php if(is_super_admin()):?><span class="none" style="position:fixed; bottom:0; left:0; background-color: yellow; color:purple; z-index:1000; opacity:0.5"><i>Home Page ONE ANTENNA/CATEGORY (multi-front-page.php)</i></span><?php endif;?>
+
 		<?php //prepare data (key are img, children, posts)
 			$data = get_categ_data(get_query_var('cat'));
 		?>
 			<h1><?php echo single_cat_title( '', false ); ?></h1>
-			<?php if(!empty($data['img'])) : $img = wp_get_attachment_image_src( $data['img']['id'],'categ-img');?>
+			<?php if(!empty($data['img'])) : $img = wp_get_attachment_image_src( $data['img'][0]['id'],'categ-img');?>
 			  <div class="categ-image">
 			    <img src="<?php echo $img[0]; ?>" width="<?php echo $img[1]; ?>" height="<?php echo $img[2]; ?>" alt="" />
 			  </div>

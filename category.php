@@ -3,14 +3,13 @@
 <?php 
   	  global $sitepress;
   	  $default_lg = isset($sitepress) ? $sitepress->get_default_language() : get_site_lang();
-  	  //$default_lg = isset($sitepress) ? $sitepress->get_default_language() : 'fr';//assuming that 'fr' should be default language
 
   	  $currenta = get_current_parent_categ();
 	    $original = function_exists('icl_object_id') ? icl_object_id($currenta, 'category', true, $default_lg) : $currenta;
 	
 	if(get_query_var('cat') === $currenta && $multi):?>
 
-<span style="color:blue" class="none"> Home Page ONE ANTENNA in MULTI </span>
+<?php if(is_super_admin()):?><span style="color:blue" class="none"> Home Page ONE ANTENNA in MULTI </span><?php endif;?>
 
 	<?php $args_slider = array(
   			'post_type'=> 'if_slider',
@@ -27,44 +26,49 @@
 	?>
 	<?php if ($slider_query->have_posts()) : while ($slider_query->have_posts()) : $slider_query->the_post(); ?>
 	<?php //get slider data
-			$dslide = get_meta_slider($post->ID);
-			$slides = array();
-
-			if(empty($dslide['frontpage'])) { 
-
-  			foreach($dslide['slides'] as $s => $vals){
-  				$slides[$s]['title'] = $vals['slide_title'];
-  				$slides[$s]['link'] = $vals['url_img_slide']; 
-  				$slides[$s]['img'] = $vals['image_slide']['id']; 
-  			}
-
-  			$slides = array_reverse($slides);
-  		
-	?>
+    $dslide = get_meta_slider($post->ID);
+    $slides = array();
+    
+    if( empty($dslide['frontpage']) ) : 
+    
+    	foreach($dslide['slides'] as $s => $vals){
+    		$slides[$s]['title'] = $vals['slide_title'];
+    		$slides[$s]['link'] = $vals['url_img_slide']; 
+    		$slides[$s]['img'] = $vals['image_slide']['id']; 
+    	}
+    	$slides = array_reverse($slides);
+	?><!-- SLIDER -->
 		<div id="slider">
 			<div id="slides"><!-- #slides -->
-			
-			<?php if(!empty($slides)):?>
+			<?php if( !empty($slides) ): ?>
 				<!-- slides_container  -->
 				<div class="slides_container">
-				<?php foreach($slides as $slide => $values):
-						  $img = wp_get_attachment_image_src( $values['img'],'slider');
-				 if($img) : ?>
+				<?php foreach( $slides as $slide => $values ):
+            $url = isset($values['link']) ? parse_url( $values['link'], PHP_URL_HOST ) : false;
+
+            $blank = $url && $url == $_SERVER['HTTP_HOST'] ? false : true;
+
+					  $img = wp_get_attachment_image_src( $values['img'], 'slider' );
+
+				 if( $img ): ?>
 					<div class="slide">
-						<a href="<?php echo $values['link'];?>" title="<?php echo $values['link'];?>"><img src="<?php echo $img[0]; ?>" width="<?php echo $img[1]; ?>" height="<?php echo $img[2]; ?>" alt="" /></a><div class="caption"><?php echo $values['title'];?></div>
+						<?php if( $url ) : ?>
+						  <a href="<?php echo $values['link'];?>" title="<?php echo $values['link'];?>" <?php echo $blank ? 'target="_blank"' : ''; ?>><img src="<?php echo $img[0]; ?>" width="<?php echo $img[1]; ?>" height="<?php echo $img[2]; ?>" alt="" /></a>
+						<?php else : ?>
+						  <img src="<?php echo $img[0]; ?>" width="<?php echo $img[1]; ?>" height="<?php echo $img[2]; ?>" alt="" />
+						<?php endif; ?>
+						<div class="caption"><?php echo $values['title'];?></div>
 					</div><!-- /.slide -->
 					
-				<?php endif; endforeach; ?>
-				
+				<?php endif; endforeach;?>
 				</div><!-- /.slides_container -->
 				<a href="#" class="prev none"><img src="<?php bloginfo('template_directory');?>/images/slide/arrow-prev.png" width="24" height="43" alt="Arrow Prev"></a>
 				<a href="#" class="next none"><img src="<?php bloginfo('template_directory');?>/images/slide/arrow-next.png" width="24" height="43" alt="Arrow Next"></a>
-	  
+
 			<?php endif;?>
-			
 			</div><!-- /#slides -->
 		</div><!-- /#slider -->
-		<?php } ?>
+		<?php endif; ?>
 	<?php endwhile; ?>
 	<?php wp_reset_postdata();?>
 	<?php endif; ?>
@@ -206,15 +210,15 @@
 			</div><!--noResults-->
 		<?php endif; ?>	
 	
-	<?php else: //Page category ------------------------ ?>
+<?php else: /******************** Page category ********************/ ?>
+  
+  <?php if(is_super_admin()):?><span class="none" style="color:red;"><i>HOME PAGE 1 category</i></span><?php endif;?>
+
 		<?php //get data from categ (key are img, children, posts)
 			$data = get_categ_data(get_query_var('cat'));
 		?>
-
-<span class="none" style="color:red;">HOME PAGE 1 category</span>
-
 			<h1><?php echo single_cat_title( '', false ); ?></h1>
-			<?php if(!empty($data['img'])) : $img = wp_get_attachment_image_src( $data['img']['id'],'categ-img');?><div class="categ-image"><img src="<?php echo $img[0]; ?>" width="<?php echo $img[1]; ?>" height="<?php echo $img[2]; ?>" alt="" /></div><?php endif;?>
+			<?php if(!empty($data['img'])) : $img = wp_get_attachment_image_src( $data['img'][0]['id'],'categ-img'); ?><div class="categ-image"><img src="<?php echo $img[0]; ?>" width="<?php echo $img[1]; ?>" height="<?php echo $img[2]; ?>" alt="" /></div><?php endif;?>
 			<div class="description"><?php echo category_description(); /* displays the category's description from the Wordpress admin */ ?></div>
 		<!-- Child categories -->
 		<?php if(!empty($data['children'])):?>
@@ -225,8 +229,8 @@
 		
 		<?php iftheme_content_nav( 'nav-top' ); //next-prev nav ?>
 
-		<!-- POSTS -->
-		<?php if (have_posts() && !empty($data['posts'])) : ?> 
+<!-- POSTS -->
+<?php if (have_posts() && !empty($data['posts'])) : ?> 
 
 			<h2 class="upcoming"><?php _e('Agenda','iftheme');?></h2>
 			<?php while (have_posts()) : the_post(); ?>
@@ -280,14 +284,15 @@
 		<?php endwhile; ?>
 		
 		<?php iftheme_content_nav( 'nav-below' ); //next-prev nav ?>
-    <!-- NEWS -->
-    <?php
+<?php endif; ?>
+<!-- NEWS -->
+<?php
     /**
      * Detect plugin. For use on Front End only.
      */
     include_once( ABSPATH . 'wp-admin/includes/plugin.php' );
     // check for plugin using plugin name
-    if ( is_plugin_active( 'ifplugin/ifplugin.php' ) ) :
+    if ( is_plugin_active( 'ifplugin/ifplugin.php' ) ) : 
        //plugin is activated
       $time = (time() - (60*60*24));
       $news_args = array(
@@ -320,7 +325,7 @@
 						$classes .= isset($data['type']) ? ' ' . $data['type'] : '';
 						$classes = apply_filters('if_event_classes', $classes);
           ?>
-    			<article class="<?php echo $classes;?>" id="post-<?php the_ID();?>">
+    			<article class="<?php echo $classes;?>" id="news-<?php the_ID();?>">
     				<?php if ( has_post_thumbnail() ) { /* loades the post's featured thumbnail, requires Wordpress 3.0+ */ echo '<div class="featured-thumbnail">'; the_post_thumbnail('listing-post'); echo '</div>'; } ?>
     				<div class="top-block bxshadow">
     					<div class="date-time">
@@ -339,7 +344,7 @@
    <?php endif; ?>
     
 		<!-- OLD POSTS -->
-		<?php elseif (!have_posts() && !empty($data['posts'])) : 
+		<?php if (!have_posts() && !empty($data['posts'])) : 
   		//list old post/event from this category
    	  $args_alternative = array(
   			'meta_query' => array(
@@ -361,11 +366,11 @@
 			<?php //prepare data 
 				//$pid = get_the_ID();
 				$pid = $post->ID;
-				$data = get_meta_if_post($pid);
+				$data = get_meta_if_post($pid, true);
 				$start = $data['start'];
 				$end = $data['end'];  
 			?>			 
-			<article class="post-single clearfix" id="post-<?php the_ID();?>">
+			<article class="post-single clearfix" id="oldpost-<?php the_ID();?>">
 				<?php if ( has_post_thumbnail() ) { /* loades the post's featured thumbnail, requires Wordpress 3.0+ */ echo '<div class="featured-thumbnail">'; the_post_thumbnail('listing-post'); echo '</div>'; } ?>
 				<div class="top-block bxshadow">
 					<div class="date-time">

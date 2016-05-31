@@ -2,7 +2,7 @@
 	<div class="clear"></div>
 	</div><!--.container-->
 	<!-- div for bevel angle -->
-	<div class="container for-angle"><div id="smol-logo"><a href="http://smol.org" target="_blank" title="Theme by smol. Studio de création sympathique."><img src="<?php bloginfo('template_url')?>/images/smol-logo-mini.png" alt="smol" /></a></div><div class="left-corner"></div></div>
+	<div class="container for-angle"><div id="smol-logo"><a href="http://smol.org" target="_blank" title="By smol. Studio de création sympathique."><img src="<?php bloginfo('template_url')?>/images/smol-logo-mini.png" alt="smol" /></a></div><div class="left-corner"></div></div>
 
 	<div id="footer">
 	  <footer>

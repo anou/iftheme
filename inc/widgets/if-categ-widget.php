@@ -30,7 +30,9 @@ class If_Antenna_Categ extends WP_Widget {
 	}
 	
 	function form ($instance) {
-		global $current_user; get_currentuserinfo();
+		  global $current_user;
+  $current_user = wp_get_current_user();
+
 		//get antenna ID
 		$aid = get_cat_if_user_lang($current_user->ID);
 

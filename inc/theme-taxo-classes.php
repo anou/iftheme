@@ -1,9 +1,12 @@
 <?php
 //include the main class file
 // for category customization
+require_once("Tax-meta-class/migration/tax_to_term_meta.php");
 require_once("Tax-meta-class/Tax-meta-class.php");
 
-global $current_user; get_currentuserinfo();
+  global $current_user;
+  $current_user = wp_get_current_user();
+
  
 /*
 * configure taxonomy custom fields
@@ -34,12 +37,14 @@ $custom_category->addCheckbox('categ_children',array('name'=> __('Display sub-ca
 $check = true;
 
 if(isset($_GET['taxonomy']) && $_GET['taxonomy'] == 'category' ){
-	$check = isset($_GET['tag_ID']) ? get_tax_meta($_GET['tag_ID'],'categ_posts') : true;
+	$check = isset($_GET['tag_ID']) ? get_term_meta($_GET['tag_ID'],'categ_posts') : true;
 }
 $custom_category->addCheckbox('categ_posts',array('name'=> __('Display Posts','iftheme'), 'desc'=>__("Check this box if you want to display a list of the category's posts",'iftheme'), 'std' => $check));
 //hidden field
 //to avoid conflict with wpml plugin
-//global $current_user; get_currentuserinfo();
+//  global $current_user;
+  $current_user = wp_get_current_user();
+
 //$custom_category->addHidden('cur_user',array('name'=> 'current user', 'std'=>$current_user->ID));
 //$custom_category->addText('cur_user',array('name'=> 'current user', 'std'=>$current_user->ID));
 

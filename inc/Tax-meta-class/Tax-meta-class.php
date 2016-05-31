@@ -9,8 +9,8 @@
  * This class is derived from My-Meta-Box (https://github.com/bainternet/My-Meta-Box script) which is 
  * a class for creating custom meta boxes for WordPress. 
  * 
- * @version 1.9.9
- * @copyright 2012 Ohad Raz 
+ * @version 2.1.0
+ * @copyright 2012-2015 Ohad Raz 
  * @author Ohad Raz (email: admin@bainternet.info)
  * @link http://en.bainternet.info
  * 
@@ -177,214 +177,9 @@ class Tax_Meta_Class {
     if ( ! $this->has_field( 'image' ) && ! $this->has_field( 'file' ) )
       return;
     
-    // Add data encoding type for file uploading.  
-    add_action( 'admin_footer', array( $this, 'add_enctype' ) );
-    
     // Make upload feature work event when custom post type doesn't support 'editor'
-    wp_enqueue_script( 'media-upload' );
-    wp_enqueue_script('thickbox');
-    add_thickbox();
     wp_enqueue_script( 'jquery-ui-core' );
     wp_enqueue_script( 'jquery-ui-sortable' );
-    
-    // Add filters for media upload.
-    add_filter( 'media_upload_gallery', array( $this, 'insert_images' ) );
-    add_filter( 'media_upload_library', array( $this, 'insert_images' ) );
-    add_filter( 'media_upload_image',   array( $this, 'insert_images' ) );
-  }
-  
-  /**
-   * Add data encoding type for file uploading
-   *
-   * @since 1.0
-   * @access public
-   */
-  public function add_enctype () {
-   ?> 
-   <script>
-      jQuery(document).ready(function(){
-         jQuery("#edittag").attr('enctype','multipart/form-data');
-      });
-   </script>
-   <?php
-  }
-  
-  /**
-   * Process images added to meta field.
-   *
-   * Modified from Faster Image Insert plugin.
-   *
-   * @return void
-   * @author Cory Crowley
-   */
-  public function insert_images() {
-    
-    // If post variables are empty, return.
-    if ( ! isset( $_POST['at-insert'] ) || empty( $_POST['attachments'] ) )
-      return;
-    
-    // Security Check
-    check_admin_referer( 'media-form' );
-    
-    // Create Security Nonce
-    $nonce = wp_create_nonce( 'at_ajax_delete' );
-    
-    // Get Post Id and Field Id
-    $term_id = $_POST['post_id'];
-    $id = $_POST['field_id'];
-    
-    // Modify the insertion string
-    $html = '';
-    foreach( $_POST['attachments'] as $attachment_id => $attachment ) {
-      
-      // Strip Slashes
-      $attachment = stripslashes_deep( $attachment );
-      
-      // If not selected or url is empty, continue in loop.
-      if ( empty( $attachment['selected'] ) || empty( $attachment['url'] ) )
-        continue;
-        
-      $li    = "<li id='item_{$attachment_id}'>";
-      $li   .= "<img src='{$attachment['url']}' alt='image_{$attachment_id}' />";
-      //$li   .= "<a title='" . __( 'Delete this image' ) . "' class='at-delete-file' href='#' rel='{$nonce}|{$term_id}|{$id}|{$attachment_id}'>" . __( 'Delete' ) . "</a>";
-      $li   .= "<a title='" . __( 'Delete this image','tax-meta') . "' class='at-delete-file' href='#' rel='{$nonce}|{$term_id}|{$id}|{$attachment_id}'><img src='" . $this->SelfPath. "/images/delete-16.png' alt='" . __( 'Delete','tax-meta') . "' /></a>";
-      $li   .= "<input type='hidden' name='{$id}[]' value='{$attachment_id}' />";
-      $li   .= "</li>";
-      $html .= $li;
-      
-    } // End For Each
-    
-    return media_send_to_editor( $html );
-    
-  }
-  
-  /**
-   * Delete attachments associated with the post.
-   *
-   * @since 1.0
-   * @access public
-   *
-   * @param string $term_id 
-   */
-  public function delete_attachments( $term_id ) {
-    
-    // Get Attachments
-    $attachments = get_posts( array( 'numberposts' => -1, 'post_type' => 'attachment', 'post_parent' => $term_id ) );
-    
-    // Loop through attachments, if not empty, delete it.
-    if ( ! empty( $attachments ) ) {
-      foreach ( $attachments as $att ) {
-        wp_delete_attachment( $att->ID );
-      }
-    }
-    
-  }
-  
-  /**
-   * Ajax callback for deleting files.
-   * 
-   * Modified from a function used by "Verve Meta Boxes" plugin ( http://goo.gl/aw64H )
-   *
-   * @since 1.0
-   * @access public 
-   */
-  public function delete_file() {
-    // If data is not set, die.
-    if ( ! isset( $_POST['data'] ) )
-      die();
-      
-    list($nonce, $term_id, $key, $attach_id) = explode('|', $_POST['data']);
-    $term_id = $_POST['tag_id'];
-    $arrKey = (int)$_POST['idx'];
-    if ( ! wp_verify_nonce( $nonce, 'at_ajax_delete_file' ) )
-      die( '1' );
-    
-    $saved = $this->get_tax_meta($term_id,$key,true);
-    $index = array_search($attach_id, $saved);
-    unset($saved[$index]);
-    wp_delete_attachment( $attach_id );
-    if (count($saved) > 0){
-      $this->update_tax_meta($term_id,$key,$saved);
-      die('0');
-    }
-    $this->delete_tax_meta( $term_id, $key);
-    die( '0' );
-  }
-  /**
-  * Ajax callback for deleting files.
-  * Modified from a function used by "Verve Meta Boxes" plugin (http://goo.gl/LzYSq)
-  * @since 1.0
-  * @access public
-  */
-  public function wp_ajax_delete_image() {
-    $term_id = isset( $_GET['post_id'] ) ? intval( $_GET['post_id'] ) : 0;
-    $field_id = isset( $_GET['field_id'] ) ? $_GET['field_id'] : 0;
-    $attachment_id = isset( $_GET['attachment_id'] ) ? intval( $_GET['attachment_id'] ) : 0;
-    $ok = false;
-    $remove_meta_only = apply_filters("tax_meta_class_delete_image",true);
-    if (strpos($field_id, '[') === false){
-      check_admin_referer( "at-delete-mupload_".urldecode($field_id));
-      if ($term_id > 0)
-        $this->delete_tax_meta( $term_id, $field_id );
-      if (!$remove_meta_only)
-        $ok = wp_delete_attachment( $attachment_id );
-      else
-        $ok = true;
-    }else{
-      $f = explode('[',urldecode($field_id));
-      $f_fiexed = array();
-      foreach ($f as $k => $v){
-        $f[$k] = str_replace(']','',$v);
-      }
-      $saved = $this->get_tax_meta($term_id,$f[0],true);
-      if (isset($saved[$f[1]][$f[2]])){
-        unset($saved[$f[1]][$f[2]]);
-        if ($term_id > 0)
-          update_post_meta($term_id,$f[0],$saved);
-        if (!$remove_meta_only)
-          $ok = wp_delete_attachment( $attachment_id );
-        else
-          $ok = true;
-      }
-    }
-
-    
-    
-    if ( $ok ){
-      echo json_encode( array('status' => 'success' ));
-      die();
-    }else{
-      echo json_encode(array('message' => __( 'Cannot delete file. Something\'s wrong.','tax-meta')));
-      die();
-    }
-  }
-  
-  /**
-   * Ajax callback for reordering Images.
-   *
-   * @since 1.0
-   * @access public
-   */
-  public function reorder_images() {
-    
-    if ( ! isset( $_POST['data'] ) )
-      die();
-      
-    list( $order, $term_id, $key, $nonce ) = explode( '|', $_POST['data'] );
-    
-    if ( ! wp_verify_nonce( $nonce, 'at_ajax_reorder' ) )
-      die( '1' );
-      
-    parse_str( $order, $items );
-    $items = $items['item'];
-    $order = 1;
-    foreach ( $items as $item ) {
-      wp_update_post( array( 'ID' => $item, 'post_parent' => $term_id, 'menu_order' => $order ) );
-      $order++;
-    }
-    
-    die( '0' );
-  
   }
   
   /**
@@ -397,8 +192,8 @@ class Tax_Meta_Class {
     
     if ( $this->has_field( 'color' ) && $this->is_edit_page() ) {
       // Enqueu built-in script and style for color picker.
-      wp_enqueue_style( 'farbtastic' );
-      wp_enqueue_script( 'farbtastic' );
+      wp_enqueue_style( 'wp-color-picker' );
+      wp_enqueue_script( 'wp-color-picker' );
     }
     
   }
@@ -413,8 +208,7 @@ class Tax_Meta_Class {
     
     if ( $this->has_field( 'date' ) && $this->is_edit_page() ) {
       // Enqueu JQuery UI, use proper version.
-      wp_enqueue_style( 'tmc-jquery-ui-css', 'http://ajax.googleapis.com/ajax/libs/jqueryui/' . $this->get_jqueryui_ver() . '/themes/base/jquery-ui.css' );
-      wp_enqueue_script( 'tmc-jquery-ui', 'https://ajax.googleapis.com/ajax/libs/jqueryui/' . $this->get_jqueryui_ver() . '/jquery-ui.min.js', array( 'jquery' ) );
+      $this->enqueue_jqueryui();
     }
     
   }
@@ -430,12 +224,9 @@ class Tax_Meta_Class {
     if ( $this->has_field( 'time' ) && $this->is_edit_page() ) {
       
       // Enqueu JQuery UI, use proper version.
-      wp_enqueue_style( 'tmc-jquery-ui-css', 'https://ajax.googleapis.com/ajax/libs/jqueryui/' . $this->get_jqueryui_ver() . '/themes/base/jquery-ui.css', array(),false,true);
-      wp_enqueue_script( 'tmc-jquery-ui', 'https://ajax.googleapis.com/ajax/libs/jqueryui/' . $this->get_jqueryui_ver() . '/jquery-ui.min.js', array( 'jquery' ),false,true );
-      wp_enqueue_script( 'at-timepicker', 'https://github.com/trentrichardson/jQuery-Timepicker-Addon/raw/master/jquery-ui-timepicker-addon.js', array( 'tmc-jquery-ui' ),false,true );
-    
-    }
-    
+      $this->enqueue_jqueryui();
+      wp_enqueue_script( 'at-timepicker', '//cdnjs.cloudflare.com/ajax/libs/jquery-ui-timepicker-addon/1.4.5/jquery-ui-timepicker-addon.min.js', array( 'tmc-jquery-ui' ),false,true );
+    }    
   }
   
   /**
@@ -497,14 +288,20 @@ class Tax_Meta_Class {
    * @access public 
    */
   public function show($term_id) {
-    
+    $term_id = is_object($term_id)? $term_id->term_id: $term_id;
     wp_nonce_field( basename(__FILE__), 'tax_meta_class_nonce' );
     
     foreach ( $this->_fields as $field ) {
     $multiple = isset($field['multiple'])? $field['multiple'] : false;
-      $meta = $this->get_tax_meta( $term_id, $field['id'], !$multiple );
+    $name = $field['id'];
+    //wordpress 4.4 term meta support
+    if ( function_exists('get_term_meta')){
+      $meta = get_term_meta($term_id, $name, !$multiple );
+    }else{
+      $meta = $this->get_tax_meta( $term_id, $name, !$multiple  );
+    }
     $meta = ( $meta !== '' ) ? $meta : (isset($field['std'])? $field['std'] : '');
-      if ('image' != $field['type'] && $field['type'] != 'repeater')
+    if ('image' != $field['type'] && $field['type'] != 'repeater')
         $meta = is_array( $meta ) ? array_map( 'esc_attr', $meta ) : esc_attr( $meta );
       
       echo '<tr class="form-field">';
@@ -534,7 +331,7 @@ class Tax_Meta_Class {
       if (count($meta) > 0 && is_array($meta) ){
          foreach ($meta as $me){
            //for labling toggles
-           $mmm =  ($me[$field])? $me[$field['fields'][0]['id']]: "";
+           $mmm =  isset($me[$field['fields'][0]['id']])? $me[$field['fields'][0]['id']]: "";
            echo '<div class="at-repater-block">'.$mmm.'<br/><table class="repeater-table" style="display: none;">';
            if ($field['inline']){
              echo '<tr class="at-inline" VALIGN="top">';
@@ -699,25 +496,25 @@ class Tax_Meta_Class {
     if (isset($field['group'])){
       if ($group == 'end'){
         if ( isset($field['desc']) && $field['desc'] != '' ) {
-          echo "<div class='desc-field'>{$field['desc']}</div></td>";
+          echo "<p class='description'>{$field['desc']}</p></td>";
         } else {
           echo "</td>";
         }
       }else {
         if ( isset($field['desc']) && $field['desc'] != '' ) {
-          echo "<div class='desc-field'>{$field['desc']}</div><br/>";  
+          echo "<p class='description'>{$field['desc']}</p><br/>";  
         }else{
           echo '<br/>';
         }  
       }    
     }else{
       if ( isset($field['desc']) && $field['desc'] != '' ) {
-        echo "<div class='desc-field'>{$field['desc']}</div>";
+        echo "<p class='description'>{$field['desc']}</p>";
       }
       if ($this->_form_type == 'edit'){
-        echo '<td>';  
+        echo '</td>';  
       }else{
-        echo '<td></div>';
+        echo '</td></div>';
       }
     }
   }
@@ -866,35 +663,29 @@ class Tax_Meta_Class {
    * @access public
    */
   public function show_field_file( $field, $meta ) {
-    
-    if ( ! is_array( $meta ) )
-      $meta = (array) $meta;
-
     $this->show_field_begin( $field, $meta );
-      echo "{$field['desc']}<br />";
+	wp_enqueue_script('jquery-ui-sortable');
+	wp_enqueue_media();
+	$std      = isset($field['std'])? $field['std'] : array('id' => '', 'url' => '');
+	$multiple = isset($field['multiple'])? $field['multiple'] : false;
+	$multiple = ($multiple)? "multiFile '" : "";
+	$name     = esc_attr( $field['id'] );
+	$value    = isset($meta['id']) ? $meta : $std;
+	$has_file = (empty($value['url']))? false : true;
+	$type     = isset($field['mime_type'])? $field['mime_type'] : '';
+	$ext      = isset($field['ext'])? $field['ext'] : '';
+	$type     = (is_array($type)? implode("|",$type) : $type);
+	$ext      = (is_array($ext)? implode("|",$ext) : $ext);
+	$id       = $field['id'];
+	$li       = ($has_file)? "<li><a href='{$value['url']}' target='_blank'>{$value['url']}</a></li>": "";
 
-      if ( !empty( $meta )  && count($meta) > 0 && !$this->is_array_empty($meta) ) {
-        $nonce = wp_create_nonce( 'at_ajax_delete_file' );
-        echo '<div style="margin-bottom: 10px"><strong>' . __('Uploaded files','tax-meta') . '</strong></div>';
-        echo '<ol class="at-upload">';
-        foreach ( $meta as $att ) {
-          // if (wp_attachment_is_image($att)) continue; // what's image uploader for?
-          echo "<li>" . wp_get_attachment_link( $att, '' , false, false, ' ' ) . " (<a class='at-delete-file' href='#' rel='{$nonce}||{$field['id']}|{$att}'>" . __( 'Delete','tax-meta' ) . "</a>)</li>";
-        }
-        echo '</ol>';
-      }
-
-      // show form upload
-    echo "<div class='at-file-upload-label'> \n
-      <strong>" . __( 'Upload new files','tax-meta' ) . "</strong>\n
-    </div>\n";
-    echo "<div class='new-files'>\n
-      <div class='file-input'>\n
-        <input type='file' name='{$field['id']}[]' />\n
-      </div><!-- End .file-input -->\n
-      <a class='at-add-file button' href='#'>" . __( 'Add more files','tax-meta' ) . "</a>\n
-      </div><!-- End .new-files -->\n";
-    echo "</td>";
+	echo "<span class='simplePanelfilePreview'><ul>{$li}</ul></span>";
+	echo "<input type='hidden' name='{$name}[id]' value='{$value['id']}'/>";
+	echo "<input type='hidden' name='{$name}[url]' value='{$value['url']}'/>";
+	if ($has_file)
+		echo "<input type='button' class='{$multiple} button simplePanelfileUploadclear' id='{$id}' value='Remove File' data-mime_type='{$type}' data-ext='{$ext}'/>";
+	else
+		echo "<input type='button' class='{$multiple} button simplePanelfileUpload' id='{$id}' value='Upload File' data-mime_type='{$type}' data-ext='{$ext}'/>";
     $this->show_field_end( $field, $meta );
   }
   
@@ -908,23 +699,32 @@ class Tax_Meta_Class {
    */
   public function show_field_image( $field, $meta ) {
     $this->show_field_begin( $field, $meta );
-    $html = wp_nonce_field( "at-delete-mupload_{$field['id']}", "nonce-delete-mupload_".$field['id'], false, false );
-    if (is_array($meta)){
-      if(isset($meta[0]) && is_array($meta[0]))
-      $meta = $meta[0];
-    }
-    if (is_array($meta) && isset($meta['src']) && $meta['src'] != ''){
-      $html .= "<span class='mupload_img_holder'><img src='".$meta['src']."' style='height: 150px;width: 150px;' /></span>";
-      $html .= "<input type='hidden' name='".$field['id']."[id]' id='".$field['id']."[id]' value='".$meta['id']."' />";
-      $html .= "<input type='hidden' name='".$field['id']."[src]' id='".$field['id']."[src]' value='".$meta['src']."' />";
-      $html .= "<input class='at-delete_image_button' type='button' rel='".$field['id']."' value='Delete Image' />";
-    }else{
-      $html .= "<span class='mupload_img_holder'></span>";
-      $html .= "<input type='hidden' name='".$field['id']."[id]' id='".$field['id']."[id]' value='' />";
-      $html .= "<input type='hidden' name='".$field['id']."[src]' id='".$field['id']."[src]' value='' />";
-      $html .= "<input class='at-upload_image_button' type='button' rel='".$field['id']."' value='Upload Image' />";
-    }
-    echo $html;
+    wp_enqueue_script('jquery-ui-sortable');
+    wp_enqueue_media();
+    $std          = isset($field['std'])? $field['std'] : array('id' => '', 'url' => '');
+    $name         = esc_attr( $field['id'] );
+    $value        = isset($meta['id']) ? $meta : $std;
+    //backwords capability
+    if (!isset($value['url']))
+    $value['url'] = '';
+    if (!isset($value['id']))
+    $value['id'] = '';
+    $value['url'] = isset($value['src'])? $value['src']: $value['url'];
+    $has_image    = empty($value['url'])? false : true;
+    $w            = isset($field['width'])? $field['width'] : 'auto';
+    $h            = isset($field['height'])? $field['height'] : 'auto';
+    $PreviewStyle = "style='width: $w; height: $h;". ( (!$has_image)? "display: none;'": "'");
+    $id           = $field['id'];
+    $multiple     = isset($field['multiple'])? $field['multiple'] : false;
+    $multiple     = ($multiple)? "multiFile " : "";
+
+    echo "<span class='simplePanelImagePreview'><img {$PreviewStyle} src='{$value['url']}'><br/></span>";
+    echo "<input type='hidden' name='{$name}[id]' value='{$value['id']}'/>";
+    echo "<input type='hidden' name='{$name}[url]' value='{$value['url']}'/>";
+    if ($has_image)
+    echo "<input class='{$multiple} button  simplePanelimageUploadclear' id='{$id}' value='".__('Remove Image')."' type='button'/>";
+    else
+    echo "<input class='{$multiple} button simplePanelimageUpload' id='{$id}' value='".__('Upload Image')."' type='button'/>";
     $this->show_field_end( $field, $meta );
   }
   
@@ -942,10 +742,7 @@ class Tax_Meta_Class {
       $meta = '#';
       
     $this->show_field_begin( $field, $meta );
-      echo "<input class='at-color' type='text' name='{$field['id']}' id='{$field['id']}' value='{$meta}' size='8' />";
-    //  echo "<a href='#' class='at-color-select button' rel='{$field['id']}'>" . __( 'Select a color' ) . "</a>";
-      echo "<input type='button' class='at-color-select button' rel='{$field['id']}' value='" . __( 'Select a color','tax-meta' ) . "'/>";
-      echo "<div style='display:none' class='at-color-picker' rel='{$field['id']}'></div>";
+    echo '<input class="at-color" type="text" name="'.$field['id'].'" value="'.esc_attr($meta).'"/>';
     $this->show_field_end($field, $meta);
     
   }
@@ -1083,7 +880,7 @@ class Tax_Meta_Class {
    * @access public 
    */
   public function save( $term_id ) {
-    
+
     // check if the we are coming from quick edit issue #38 props to Nicola Peluchetti.
     if (isset($_REQUEST['action'])  &&  $_REQUEST['action'] == 'inline-save-tax') {
       return $term_id;
@@ -1102,8 +899,14 @@ class Tax_Meta_Class {
       
       $name = $field['id'];
       $type = $field['type'];
-      $old = $this->get_tax_meta( $term_id, $name, ! $field['multiple'] );
-      $new = ( isset( $_POST[$name] ) ) ? $_POST[$name] : ( ( $field['multiple'] ) ? array() : '' );
+      $multiple = isset($field['multiple'])? $field['multiple']: false;
+      //wordpress 4.4 term meta support
+      if ( function_exists('get_term_meta')){
+        $old = get_term_meta($term_id, $name, !$multiple );
+      }else{
+          $old = $this->get_tax_meta( $term_id, $name, !$multiple  );
+      }
+      $new = ( isset( $_POST[$name] ) ) ? $_POST[$name] : ( ( $multiple ) ? array() : '' );
             
 
       // Validate meta value
@@ -1138,11 +941,20 @@ class Tax_Meta_Class {
    */
   public function save_field( $term_id, $field, $old, $new ) {
     $name = $field['id'];
-    $this->delete_tax_meta( $term_id, $name );
+    //wordpress 4.4 term meta support
+    if ( function_exists('get_term_meta')){ 
+      delete_term_meta($term_id, $name);
+    }else{
+      $this->delete_tax_meta( $term_id, $name );
+    }
     if ( $new === '' || $new === array() ) 
       return;
     
-    $this->update_tax_meta( $term_id, $name, $new );
+    if ( function_exists('update_term_meta')){ 
+      update_term_meta( $term_id, $name, $new );
+    }else{
+      $this->update_tax_meta( $term_id, $name, $new );
+    }
   }  
   
   /**
@@ -1157,11 +969,20 @@ class Tax_Meta_Class {
    */
   public function save_field_image( $term_id, $field, $old, $new ) {
     $name = $field['id'];
-    $this->delete_tax_meta( $term_id, $name );
-    if ( $new === '' || $new === array() || $new['id'] == '' || $new['src'] == '') 
+    if ( function_exists('delete_term_meta')){ 
+      delete_term_meta($term_id, $name);
+    }else{
+      $this->delete_tax_meta( $term_id, $name );
+    }
+
+    if ( $new === '' || $new === array() || $new['id'] == '' || $new['url'] == '') 
       return;
     
-    $this->update_tax_meta( $term_id, $name, $new );
+    if ( function_exists('update_term_meta')){ 
+      update_term_meta( $term_id, $name, $new );
+    }else{
+      $this->update_tax_meta( $term_id, $name, $new );
+    }
   }
   
   /*
@@ -1208,14 +1029,26 @@ class Tax_Meta_Class {
           $temp[] = $n;
       }
       if (isset($temp) && count($temp) > 0 && !$this->is_array_empty($temp)){
-        $this->update_tax_meta($term_id,$field['id'],$temp);
+        if ( function_exists('update_term_meta')){ 
+          update_term_meta( $term_id,$field['id'],$temp );
+        }else{
+          $this->update_tax_meta( $term_id,$field['id'],$temp );
+        }
       }else{
         //  remove old meta if exists
-        $this->delete_tax_meta($term_id,$field['id']);
+        if ( function_exists('delete_term_meta')){ 
+          delete_term_meta($term_id, $field['id']);
+        }else{
+          $this->delete_tax_meta($term_id,$field['id']);
+        }
       }
     }else{
       //  remove old meta if exists
-      $this->delete_tax_meta($term_id,$field['id']);
+      if ( function_exists('delete_term_meta')){ 
+        delete_term_meta($term_id, $field['id']);
+      }else{
+        $this->delete_tax_meta($term_id,$field['id']);
+      }      
     }
   }
   
@@ -1232,78 +1065,21 @@ class Tax_Meta_Class {
   public function save_field_file( $term_id, $field, $old, $new ) {
 
     $name = $field['id'];
-    if ( empty( $_FILES[$name] ) && !is_array($old)){
+    if ( function_exists('delete_term_meta')){ 
+      delete_term_meta($term_id, $name);
+    }else{
       $this->delete_tax_meta($term_id,$name);
-      return;
     }
-    $temp = $this->get_tax_meta($term_id,$name,true);
-    $temp = is_array($temp) ? $temp : array();
-    $this->fix_file_array( $_FILES[$name] );
-    foreach ( $_FILES[$name] as $position => $fileitem ) {
-
-      $file = wp_handle_upload( $fileitem, array( 'test_form' => false ) );
-      if ( empty( $file['file'] ) ) 
-        continue;
-      $filename = $file['file'];
-
-      $attachment = array(
-        'post_mime_type' => $file['type'],
-        'guid' => $file['url'],
-        'post_parent' => $term_id,
-        'post_title' => preg_replace('/\.[^.]+$/', '', basename( $filename ) ),
-        'post_content' => ''
-      );
-
-      $id = wp_insert_attachment( $attachment, $filename);
-
-      if ( ! is_wp_error( $id ) ) {
-        wp_update_attachment_metadata( $id, wp_generate_attachment_metadata( $id, $filename ) );
-            $temp[] = $id;  // save file's url in meta fields
-      } // End if
-    } // End foreach
-    if (count($temp) > 0)
-    $this->update_tax_meta( $term_id, $name, $temp);
-  }
-  
-  /**
-   * Save repeater File Field.
-   * @param string $term_id 
-   * @param string $field 
-   * @param string $old 
-   * @param string $new 
-   * @since 1.0
-   * @access public
-   */
-  public function save_field_file_repeater( $term_id, $field, $old, $new ) {
-  
-    $name = $field['id'];
-    if ( empty( $_FILES[$name] ) ) 
+    if ( $new === '' || $new === array() || $new['id'] == '' || $new['url'] == '') 
       return;
-    $this->fix_file_array( $_FILES[$name] );
-    foreach ( $_FILES[$name] as $position => $fileitem ) {
-      
-      $file = wp_handle_upload( $fileitem, array( 'test_form' => false ) );
-      if ( empty( $file['file'] ) ) 
-        continue;
-      $filename = $file['file'];
-
-      $attachment = array(
-        'post_mime_type' => $file['type'],
-        'guid' => $file['url'],
-        'post_parent' => $term_id,
-        'post_title' => preg_replace('/\.[^.]+$/', '', basename( $filename ) ),
-        'post_content' => ''
-      );
-      
-      $id = wp_insert_attachment( $attachment, $filename);
-      
-      if ( ! is_wp_error( $id ) ) {
-        
-        wp_update_attachment_metadata( $id, wp_generate_attachment_metadata( $id, $filename ) );
-        return $id;  // return file's url in meta fields
-      } // End if
-    } // End foreach
+    
+    if ( function_exists('update_term_meta')){ 
+      update_term_meta( $term_id, $name, $new);
+    }else{
+      $this->update_tax_meta( $term_id, $name, $new );
+    }
   }
+  
   
   /**
    * Add missed values for meta box.
@@ -1399,12 +1175,34 @@ class Tax_Meta_Class {
     
     global $wp_version;
     
+    if ( version_compare( $wp_version, '4.0', '>=') ) {
+      return '1.11.2';
+    }
+    if ( version_compare( $wp_version, '3.9', '>=') ) {
+      return '1.10.4';
+    }
+    if ( version_compare( $wp_version, '3.8', '>=') ) {
+      return '1.10.3';
+    }
+    if ( version_compare( $wp_version, '3.5', '>=') ) {
+      return '1.9.2';
+    }
     if ( version_compare( $wp_version, '3.1', '>=') ) {
       return '1.8.10';
     }
     
-    return '1.7.3';
-  
+    return '1.7.3';  
+  }
+
+  /**
+   * Enqueue JQuery UI version.
+   *
+   * @since 2.0.2
+   * @access public
+   */
+  public function enqueue_jqueryui(){
+    wp_enqueue_style( 'tmc-jquery-ui-css', 'http://ajax.googleapis.com/ajax/libs/jqueryui/' . $this->get_jqueryui_ver() . '/themes/'.apply_filters('tmc_jquery_ui_theme','smoothness').'/jquery-ui.css' );
+    wp_enqueue_script( 'tmc-jquery-ui', 'https://ajax.googleapis.com/ajax/libs/jqueryui/' . $this->get_jqueryui_ver() . '/jquery-ui.min.js', array( 'jquery' ) );
   }
   
   /**
@@ -1789,9 +1587,8 @@ class Tax_Meta_Class {
    *  @access public
    *  @param $id string  field id, i.e. the meta key
    *  @param $options mixed|array options of taxonomy field
-   *    'post_type' =>    // post type name, 'post' (default) 'page' or any custom post type
    *    'type' =>  // how to show posts? 'select' (default) or 'checkbox_list'
-   *    'args' =>  // arguments to query posts, see http://goo.gl/is0yK default ('posts_per_page' => -1)  
+   *    'args' =>  // arguments to query posts, see http://goo.gl/is0yK default ('posts_per_page' => -1, 'post_type' => 'post')  
    *  @param $args mixed|array
    *    'name' => // field name/label string optional
    *    'desc' => // field description, string optional
@@ -1800,8 +1597,7 @@ class Tax_Meta_Class {
    *  @param $repeater bool  is this a field inside a repeatr? true|false(default)
    */
   public function addPosts($id,$options,$args,$repeater=false){
-    $q = array('posts_per_page' => -1);
-    $temp = array('post_type' =>'post','type'=>'select','args'=>$q);
+    $temp = array('type'=>'select','args'=> array('posts_per_page' => -1, 'post_type' =>'post') );
     $options = array_merge($temp,$options);
     $new_field = array('type' => 'posts','id'=> $id,'desc' => '','name' => 'Posts Field','options'=> $options,'multiple' => false);
     $new_field = array_merge($new_field, $args);
@@ -1898,7 +1694,7 @@ class Tax_Meta_Class {
   
 
   /**
-   * deletetaxonomy_metadata
+   * delete_taxonomy_metadata
    * 
    * delete meta on term deletion
    *
@@ -1910,6 +1706,9 @@ class Tax_Meta_Class {
    */
   public function delete_taxonomy_metadata($term,$term_id) {
     delete_option( 'tax_meta_'.$term_id );
+    if ( function_exists( 'delete_term_meta') ){
+      delete_term_meta( $term_id );
+    }
   }
 
   
@@ -1966,49 +1765,55 @@ endif; // End Check Class Exists
 /*
  * meta functions for easy access:
  */
+//get term meta field
+if (!function_exists('get_tax_meta')){
+	function get_tax_meta($term_id,$key,$multi = false){
+		$t_id = (is_object($term_id))? $term_id->term_id: $term_id;
+		$m = get_option( 'tax_meta_'.$t_id);  
+		if (isset($m[$key])){
+			return $m[$key];
+		}else{
+			return '';
+		}
+	}
+}
 
-  //get term meta field
-  if (!function_exists('get_tax_meta')){
-    function get_tax_meta($term_id,$key,$multi = false){
-      $t_id = (is_object($term_id))? $term_id->term_id: $term_id;
-      $m = get_option( 'tax_meta_'.$t_id);  
-      if (isset($m[$key])){
-        return $m[$key];
-      }else{
-        return '';
-      }
-    }
-  }
+//delete meta
+if (!function_exists('delete_tax_meta')){
+	function delete_tax_meta($term_id,$key){
+		$m = get_option( 'tax_meta_'.$term_id);
+		if (isset($m[$key])){
+			unset($m[$key]);
+		}
+		update_option('tax_meta_'.$term_id,$m);
+	}
+}
 
-  //delete meta
-  if (!function_exists('delete_tax_meta')){
-    function delete_tax_meta($term_id,$key){
-      $m = get_option( 'tax_meta_'.$term_id);
-      if (isset($m[$key])){
-        unset($m[$key]);
-      }
-      update_option('tax_meta_'.$term_id,$m);
-    }
-  }
-  
-  //update meta
-  if (!function_exists('update_tax_meta')){
-    function update_tax_meta($term_id,$key,$value){
-      $m = get_option( 'tax_meta_'.$term_id);
-      $m[$key] = $value;
-      update_option('tax_meta_'.$term_id,$m);
-    }
-  }
+//update meta
+if (!function_exists('update_tax_meta')){
+	function update_tax_meta($term_id,$key,$value){
+		$m = get_option( 'tax_meta_'.$term_id);
+		$m[$key] = $value;
+		update_option('tax_meta_'.$term_id,$m);
+	}
+}
 
-  //get term meta field and strip slashes
-  if (!function_exists('get_tax_meta_strip')){
-    function get_tax_meta_strip($term_id,$key,$multi = false){
-      $t_id = (is_object($term_id))? $term_id->term_id: $term_id;
-      $m = get_option( 'tax_meta_'.$t_id);  
-      if (isset($m[$key])){
-        return is_array($m[$key])? $m[$key] : stripslashes($m[$key]);
-      }else{
-        return '';
-      }
-    }
-  }
+//get term meta field and strip slashes
+if (!function_exists('get_tax_meta_strip')){
+	function get_tax_meta_strip($term_id,$key,$multi = false){
+		$t_id = (is_object($term_id))? $term_id->term_id: $term_id;
+		$m = get_option( 'tax_meta_'.$t_id);  
+		if (isset($m[$key])){
+			return is_array($m[$key])? $m[$key] : stripslashes($m[$key]);
+		}else{
+			return '';
+		}
+	}
+}
+//get all meta fields of a term
+if (!function_exists('get_tax_meta_all')){
+	function get_tax_meta_all( $term_id){
+		$t_id = (is_object($term_id))? $term_id->term_id: $term_id;
+		return get_option( 'tax_meta_'.$t_id,array());
+	}
+}

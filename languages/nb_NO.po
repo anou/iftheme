@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Institut Français theme\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-10-09 12:05+0200\n"
-"PO-Revision-Date: 2015-10-09 12:06+0200\n"
+"POT-Creation-Date: 2015-10-07 12:30+0200\n"
+"PO-Revision-Date: 2015-10-07 12:32+0200\n"
 "Last-Translator: David THOMAS <anou@smol.org>\n"
 "Language-Team: \n"
 "Language: nb_NO\n"
@@ -30,7 +30,7 @@ msgid "Please check your URL or use the search form below."
 msgstr "Sjekk URL-adressen eller bruk søkefeltet"
 
 #: ../../iftheme/archive.php:14 ../../iftheme/archives-page.php:21
-#: ../../iftheme/category.php:359
+#: ../../iftheme/category.php:321
 msgid "Archives"
 msgstr "Arkiv"
 
@@ -80,20 +80,20 @@ msgstr "%1$s på %2$s"
 msgid "No comments by "
 msgstr "Ingen kommentarer fra"
 
-#: ../../iftheme/category.php:197 ../../iftheme/index.php:148
-#: ../../iftheme/multi-front-page.php:186
+#: ../../iftheme/category.php:158 ../../iftheme/index.php:148
+#: ../../iftheme/multi-front-page.php:185
 msgid "No post for the moment"
 msgstr "Ingen nye innlegg for øyeblikket"
 
-#: ../../iftheme/category.php:205
+#: ../../iftheme/category.php:166
 msgid "No post for the moment and/or no homepage category selected"
 msgstr "Ingen innlegg for øyeblikket/ingen kategori er valgt"
 
-#: ../../iftheme/category.php:231
+#: ../../iftheme/category.php:192
 msgid "Agenda"
 msgstr "Kalender"
 
-#: ../../iftheme/category.php:310 ../../iftheme/single.php:38
+#: ../../iftheme/category.php:272
 msgid "News"
 msgstr "Aktuelt"
 
@@ -197,7 +197,7 @@ msgstr ""
 msgid "You must assign a category to this user : "
 msgstr "Du må tilegne en kategori til denne brukeren:"
 
-#: ../../iftheme/functions.php:635 ../../iftheme/inc/events/if-events.php:200
+#: ../../iftheme/functions.php:635 ../../iftheme/inc/events/if-events.php:202
 #: ../../iftheme/inc/theme-options.php:446
 msgid "Select"
 msgstr "Velg"
@@ -643,57 +643,57 @@ msgstr "Nov."
 msgid "Dec."
 msgstr "Des."
 
-#: ../../iftheme/inc/events/if-events.php:23
+#: ../../iftheme/inc/events/if-events.php:25
 msgid "Event information"
 msgstr "Informasjon om arrangementet"
 
-#: ../../iftheme/inc/events/if-events.php:24
+#: ../../iftheme/inc/events/if-events.php:26
 msgid "Additional event information"
 msgstr "Tilleggsinformasjon om arrangementet"
 
-#: ../../iftheme/inc/events/if-events.php:58
+#: ../../iftheme/inc/events/if-events.php:60
 msgid "Start Date"
 msgstr "Startdato"
 
-#: ../../iftheme/inc/events/if-events.php:58
-#: ../../iftheme/inc/events/if-events.php:59
-#: ../../iftheme/inc/events/if-events.php:182
-#: ../../iftheme/inc/events/if-events.php:192
-#: ../../iftheme/inc/events/if-events.php:196
+#: ../../iftheme/inc/events/if-events.php:60
+#: ../../iftheme/inc/events/if-events.php:61
+#: ../../iftheme/inc/events/if-events.php:184
+#: ../../iftheme/inc/events/if-events.php:194
 #: ../../iftheme/inc/events/if-events.php:198
-#: ../../iftheme/inc/events/if-events.php:208
-#: ../../iftheme/inc/events/if-events.php:211
-#: ../../iftheme/inc/events/if-events.php:223
-#: ../../iftheme/inc/events/if-events.php:389
+#: ../../iftheme/inc/events/if-events.php:200
+#: ../../iftheme/inc/events/if-events.php:210
+#: ../../iftheme/inc/events/if-events.php:213
+#: ../../iftheme/inc/events/if-events.php:225
+#: ../../iftheme/inc/events/if-events.php:393
 msgid "Mandatory field"
 msgstr "Obligatorisk felt"
 
-#: ../../iftheme/inc/events/if-events.php:59
+#: ../../iftheme/inc/events/if-events.php:61
 msgid "End Date"
 msgstr "Sluttdato"
 
-#: ../../iftheme/inc/events/if-events.php:60
+#: ../../iftheme/inc/events/if-events.php:62
 msgid "Time"
 msgstr "Tid"
 
-#: ../../iftheme/inc/events/if-events.php:60
+#: ../../iftheme/inc/events/if-events.php:62
 msgid ""
 "<em>Use 24h format (7pm = 19:00). Use the \"Time field\" only if \"End date"
 "\" is equal to \"Start date\"</em>"
 msgstr ""
 
-#: ../../iftheme/inc/events/if-events.php:105
-#: ../../iftheme/inc/events/if-events.php:128
+#: ../../iftheme/inc/events/if-events.php:107
+#: ../../iftheme/inc/events/if-events.php:130
 msgid ""
 "You must ask your server's administrator if the function <i style=\"color:red"
 "\">file_get_contents()</i> can be used without limitation"
 msgstr ""
 
-#: ../../iftheme/inc/events/if-events.php:182
+#: ../../iftheme/inc/events/if-events.php:184
 msgid "Disciplines"
 msgstr "Kategorier"
 
-#: ../../iftheme/inc/events/if-events.php:183
+#: ../../iftheme/inc/events/if-events.php:185
 msgid ""
 "The proposed disciplines are useful for the mobile application only and have "
 "<b>no impact on your website</b>"
@@ -701,110 +701,110 @@ msgstr ""
 "De anbefalte kategoriene kan kun ses via mobilapp og har\"\"<b>ingen "
 "innvirkning på din webside</b>"
 
-#: ../../iftheme/inc/events/if-events.php:192
+#: ../../iftheme/inc/events/if-events.php:194
 msgid "Place"
 msgstr "Sted"
 
-#: ../../iftheme/inc/events/if-events.php:193
+#: ../../iftheme/inc/events/if-events.php:195
 msgid "Address"
 msgstr "Adresse"
 
-#: ../../iftheme/inc/events/if-events.php:194
+#: ../../iftheme/inc/events/if-events.php:196
 msgid "Additional address"
 msgstr "Tilleggsadresse"
 
-#: ../../iftheme/inc/events/if-events.php:195
+#: ../../iftheme/inc/events/if-events.php:197
 msgid "Zip code"
 msgstr "Postnummer"
 
-#: ../../iftheme/inc/events/if-events.php:196
+#: ../../iftheme/inc/events/if-events.php:198
 msgid "City"
 msgstr "By"
 
-#: ../../iftheme/inc/events/if-events.php:198
+#: ../../iftheme/inc/events/if-events.php:200
 msgid "Country"
 msgstr "Land"
 
-#: ../../iftheme/inc/events/if-events.php:208
+#: ../../iftheme/inc/events/if-events.php:210
 msgid "Get longitude & latitude"
 msgstr ""
 
-#: ../../iftheme/inc/events/if-events.php:208
+#: ../../iftheme/inc/events/if-events.php:210
 msgid ""
 "<em>Type here the full address of your event. <b>Press \"tab\" key</b> to "
 "get/modify the longitude and latitude</em>"
 msgstr ""
 
-#: ../../iftheme/inc/events/if-events.php:211
+#: ../../iftheme/inc/events/if-events.php:213
 msgid "Longitude"
 msgstr ""
 
-#: ../../iftheme/inc/events/if-events.php:211
+#: ../../iftheme/inc/events/if-events.php:213
 msgid "Latitude"
 msgstr ""
 
-#: ../../iftheme/inc/events/if-events.php:211
+#: ../../iftheme/inc/events/if-events.php:213
 msgid "Zoom"
 msgstr "Zoom"
 
-#: ../../iftheme/inc/events/if-events.php:216
+#: ../../iftheme/inc/events/if-events.php:218
 msgid "Phone number"
 msgstr "Telefonnummer"
 
-#: ../../iftheme/inc/events/if-events.php:217
+#: ../../iftheme/inc/events/if-events.php:219
 #: ../../iftheme/inc/theme-classes.php:100
 msgid "Email"
 msgstr "E-post"
 
-#: ../../iftheme/inc/events/if-events.php:218
-#: ../../iftheme/inc/events/if-events.php:219
 #: ../../iftheme/inc/events/if-events.php:220
+#: ../../iftheme/inc/events/if-events.php:221
+#: ../../iftheme/inc/events/if-events.php:222
 #: ../../iftheme/inc/theme-classes.php:74
 msgid "Link"
 msgstr "Link"
 
-#: ../../iftheme/inc/events/if-events.php:223
+#: ../../iftheme/inc/events/if-events.php:225
 msgid "Mandatory fields"
 msgstr "Obligatoriske felt"
 
-#: ../../iftheme/inc/events/if-events.php:349
+#: ../../iftheme/inc/events/if-events.php:353
 #, php-format
 msgid "Event updated. <a href=\"%s\">View item</a>"
 msgstr ""
 
-#: ../../iftheme/inc/events/if-events.php:350
+#: ../../iftheme/inc/events/if-events.php:354
 msgid "Custom field updated."
 msgstr ""
 
-#: ../../iftheme/inc/events/if-events.php:351
+#: ../../iftheme/inc/events/if-events.php:355
 msgid "Custom field deleted."
 msgstr ""
 
-#: ../../iftheme/inc/events/if-events.php:352
+#: ../../iftheme/inc/events/if-events.php:356
 msgid "Event updated."
 msgstr "Oppdatert arrangement."
 
 #. translators: %s: date and time of the revision
-#: ../../iftheme/inc/events/if-events.php:354
+#: ../../iftheme/inc/events/if-events.php:358
 #, php-format
 msgid "Event restored to revision from %s"
 msgstr ""
 
-#: ../../iftheme/inc/events/if-events.php:355
+#: ../../iftheme/inc/events/if-events.php:359
 #, php-format
 msgid "Event published. <a href=\"%s\">View event</a>"
 msgstr ""
 
-#: ../../iftheme/inc/events/if-events.php:356
+#: ../../iftheme/inc/events/if-events.php:360
 msgid "Event saved."
 msgstr "Lagret arrangement."
 
-#: ../../iftheme/inc/events/if-events.php:357
+#: ../../iftheme/inc/events/if-events.php:361
 #, php-format
 msgid "Event submitted. <a target=\"_blank\" href=\"%s\">Preview event</a>"
 msgstr ""
 
-#: ../../iftheme/inc/events/if-events.php:358
+#: ../../iftheme/inc/events/if-events.php:362
 #, php-format
 msgid ""
 "Event scheduled for: <strong>%1$s</strong>. <a target=\"_blank\" href=\"%2$s"
@@ -812,32 +812,32 @@ msgid ""
 msgstr ""
 
 #. translators: Publish box date format, see http://php.net/date
-#: ../../iftheme/inc/events/if-events.php:360
+#: ../../iftheme/inc/events/if-events.php:364
 msgid "M j, Y @ G:i"
 msgstr " j M Y @ G:i"
 
-#: ../../iftheme/inc/events/if-events.php:361
+#: ../../iftheme/inc/events/if-events.php:365
 #, php-format
 msgid "Event draft updated. <a target=\"_blank\" href=\"%s\">Preview event</a>"
 msgstr ""
 
-#: ../../iftheme/inc/events/if-events.php:388
+#: ../../iftheme/inc/events/if-events.php:392
 msgid "You must tell where this event takes place."
 msgstr "Fyll inn hvor arrangementet finner sted."
 
-#: ../../iftheme/inc/events/if-events.php:390
+#: ../../iftheme/inc/events/if-events.php:394
 msgid "Longitude is required and must be a valid decimal"
 msgstr ""
 
-#: ../../iftheme/inc/events/if-events.php:391
+#: ../../iftheme/inc/events/if-events.php:395
 msgid "Latitude is required and must be a valid decimal"
 msgstr ""
 
-#: ../../iftheme/inc/events/if-events.php:392
+#: ../../iftheme/inc/events/if-events.php:396
 msgid "Must be like: <b>http://www.my-link.ext</b>"
 msgstr ""
 
-#: ../../iftheme/inc/events/if-events.php:393
+#: ../../iftheme/inc/events/if-events.php:397
 msgid "You must check at least one discipline !"
 msgstr ""
 
@@ -1261,21 +1261,21 @@ msgstr "URL"
 msgid "No post for the moment & no homepage category selected"
 msgstr ""
 
-#: ../../iftheme/multi-front-page.php:59
+#: ../../iftheme/multi-front-page.php:58
 msgid ""
 "You don't have any <em>Slider</em> recorded yet. <a href=\"/wp-admin/post-"
 "new.php?post_type=if_slider\">Add one now ?</a>"
 msgstr ""
 
-#: ../../iftheme/multi-front-page.php:194
+#: ../../iftheme/multi-front-page.php:193
 msgid "No post for the moment & no configuration options"
 msgstr ""
 
-#: ../../iftheme/multi-front-page.php:218
+#: ../../iftheme/multi-front-page.php:220
 msgid "Coming soon"
 msgstr "Kommer snart"
 
-#: ../../iftheme/page.php:8 ../../iftheme/single.php:52
+#: ../../iftheme/page.php:8 ../../iftheme/single.php:51
 #: ../../iftheme/under-construction-IF.php:26
 msgid "Edit this entry"
 msgstr "Rediger innlegget"
@@ -1307,11 +1307,11 @@ msgstr "Din e-post"
 msgid "Join-us"
 msgstr "Følg oss"
 
-#: ../../iftheme/single.php:77
+#: ../../iftheme/single.php:76
 msgid "Useful informations"
 msgstr "Nyttig informasjon"
 
-#: ../../iftheme/single.php:96
+#: ../../iftheme/single.php:95
 msgid "Booking"
 msgstr "Bestilling"
 

@@ -1,10 +1,20 @@
 <?php get_header(); ?>
 
-<?php if($multi) : ?>
+<?php //for debug
+  //if(!is_super_admin()) $custom_hp = false; 
+?>
+
+<?php if( $multi && !$custom_hp ) : ?>
 	<?php require_once( 'multi-front-page.php' );?>
+  <?php get_sidebar(); ?>
+
+<?php elseif( $custom_hp ) : ?>
+	<?php require_once( 'custom-frontpage.php' );	?>
+
 
 <?php else :?>
-	<div id="content"><span class="none" style="color:gray"><i>FRONT FOR SINGLE ANTENNA</i></span>
+	<div id="content">
+  <?php if(is_super_admin()):?><span class="none" style="position:fixed; bottom:0; left:0; background-color: yellow; color:green; z-index:1000; opacity: 0.5;"><i>FRONT FOR SINGLE ANTENNA (index.php)</i></span><?php endif;?>
 <?php 	
   	  global $sitepress;
   	  $default_lg = isset($sitepress) ? $sitepress->get_default_language() : get_site_lang();
@@ -20,9 +30,9 @@
   			'posts_per_page' => 1
 			);
 			
-			query_posts( $args_slider );
+  		$slider_query = new WP_Query( $args_slider );
 	?>
-	<?php if (have_posts()) : while (have_posts()) : the_post(); ?>
+	<?php if( $slider_query->have_posts() ): while( $slider_query->have_posts() ): $slider_query->the_post(); ?>
 	<?php //get slider data
 			$dslide = get_meta_slider($post->ID);
 			foreach($dslide['slides'] as $s => $vals){
@@ -39,10 +49,19 @@
 				<!-- slides_container  -->
 				<div class="slides_container">
 				<?php foreach($slides as $slide => $values):
-						  $img = wp_get_attachment_image_src( $values['img'],'slider');
+            $url = isset($values['link']) ? parse_url( $values['link'], PHP_URL_HOST ) : false;
+            $blank = true;
+            if( $url ) {
+              if( $url == $_SERVER['HTTP_HOST'] ) $blank = false;
+            }
+					  $img = wp_get_attachment_image_src( $values['img'],'slider');
 				 if($img) : ?>
 					<div class="slide">
-						<a href="<?php echo $values['link'];?>" title="<?php echo $values['link'];?>"><img src="<?php echo $img[0]; ?>" width="<?php echo $img[1]; ?>" height="<?php echo $img[2]; ?>" alt="" /></a><div class="caption"><?php echo $values['title'];?></div>
+						<?php if($url) : ?>
+						  <a href="<?php echo $values['link'];?>" title="<?php echo $values['link'];?>" <?php echo $blank ? 'target="_blank"' : ''; ?>><img src="<?php echo $img[0]; ?>" width="<?php echo $img[1]; ?>" height="<?php echo $img[2]; ?>" alt="" /></a>
+						<?php else : ?>
+						  <img src="<?php echo $img[0]; ?>" width="<?php echo $img[1]; ?>" height="<?php echo $img[2]; ?>" alt="" />
+						<?php endif; ?><div class="caption"><?php echo $values['title'];?></div>
 					</div><!-- /.slide -->
 					
 				<?php endif; endforeach;?>
@@ -56,7 +75,7 @@
 			</div><!-- /#slides -->
 		</div><!-- /#slider -->
 	<?php endwhile; ?>
-	<?php /*end query slider*/ wp_reset_query(); ?>		
+	<?php wp_reset_postdata();//end $slider_query?>
 	<?php endif; ?>
 		
 		
@@ -92,57 +111,95 @@
                  )
              )
            );					
-					query_posts($args); ?>
+          $event_query = new WP_Query( $args ); ?>
+      <?php //check for ifplugin
+          include_once( ABSPATH . 'wp-admin/includes/plugin.php' );
+          // check for IF plugin
+          if ( is_plugin_active( 'ifplugin/ifplugin.php' ) ) {
+            //plugin is activated
+            
+            $news_args = array(
+              'cat' => $id,
+              'post_type' => array('news'),
+              'meta_key' => '_ifp_news_date',
+              'orderby' => 'meta_value_num',
+              'order' => 'ASC',
+              'meta_query' => array(
+                array(
+                   'key' => '_ifp_news_date',
+                   'value' => $time,
+                   'compare' => '>=',
+                )
+              )
+            );
+            $posts_ids = array();
+            $news_query = new WP_Query( $news_args );
+            $posts = array_merge($event_query->posts, $news_query->posts);
+            foreach($posts as $obj) {
+              $posts_ids[] = (int)$obj->ID;
+            }
 
-					<?php if (have_posts()) : while (have_posts()) : the_post(); ?>
-						<article class="post-single-home clearfix" id="post-<?php the_ID();?>">
-							<?php //prepare data 
-									$pid = get_the_ID();
-									$data = get_meta_if_post($pid);
-									$start = $data['start'];
-									$end = $data['end'];  
-									$town = $data['city'];
-							?>
-							<div class="top-block">
-								<?php if($start):?><div class="date-time"><span class="start"><?php echo $start;?></span><span class="end"><?php echo $end;?></span><?php endif;?> - <span class="post-antenna"><?php echo $multi ? get_cat_name($antenna) : $town;?></span></div>
-								<h3 class="post-title"><a href="<?php the_permalink() ?>" title="<?php the_title(); ?>" rel="bookmark"><?php the_title(); ?></a></h3>
-							</div>
-							<?php if ( has_post_thumbnail() ) : /* loades the post's featured thumbnail, requires Wordpress 3.0+ */ ?>
-								<div class="featured-thumbnail-home"><a href="<?php the_permalink() ?>" title="<?php the_title(); ?>" rel="bookmark"><?php echo  the_post_thumbnail('home-block');?></a></div>
-							<?php else : ?>
-								<div class="post-excerpt">
-									<?php the_excerpt(); /* the excerpt is loaded to help avoid duplicate content issues */ ?>
-								</div>
-							<?php endif;?>
-						</article><!--.post-single-->
-
-      			<?php //prepare data for dates in JS 
-      			   $raw_data = get_meta_raw_if_post($pid);
-      			?>
-      			<script type="text/javascript">
-      			  var lang = (typeof(icl_lang) != "undefined" && icl_lang !== null) ? icl_lang : bInfo['bLang'].substr(0,2); //TODO: check if bInfo['bLang'] is construct like this xx-XX...
-      			  moment.lang(lang);
-      			  
-      			  var startYear = new Date(<?php echo $raw_data['start'];?>*1000).getFullYear();
-      			  var endYear = new Date(<?php echo $raw_data['end'];?>*1000).getFullYear();
-        			var thisPostStart = jQuery("#post-<?php the_ID();?> .start");
-        			var thisPostEnd = jQuery("#post-<?php the_ID();?> .end");
-        			
-        			var start = moment.unix(<?php echo $raw_data['start'];?>).format('ll');
-        			var end = moment.unix(<?php echo $raw_data['end'];?>).format('ll');
-        			var time = '<?php echo $raw_data['time'];?>';
-        			
-        			start = start.replace(startYear, '');
-        			thisPostStart.text(start);
-        			end = end.replace(endYear, '');
-        			end = end !== start ? end : time;
-        			
-        			if (end) if(end !== start) thisPostEnd.text(' / '+end);
-        			
-      			</script>
-
+            $event_query = new WP_Query(array('cat' => $id, 'post__in' => $posts_ids, 'post_type' => array('news', 'post'), 'orderby' => 'post__in'));
+          }
+      ?>
+      <?php if ($event_query->have_posts()) : while ($event_query->have_posts()) : $event_query->the_post(); ?>
+    			<?php //prepare data 
+    					$pid = get_the_ID();
+    					$data = apply_filters('if_event_data', get_meta_if_post($pid));
+    					$type = isset($data['type']) ? $data['type'] : false;
+    					$classes = 'post-single-home clearfix';
+    					$classes .= $type ? ' ' . $type : '';
+    					$classes = apply_filters('if_event_classes', $classes);
+    					
+    					$start = $type == 'news' ? $data['subhead'] : $data['start'];
+    					$end = $data['end'];
+    					$antenna_id = $data['antenna_id'];
+    					$town = $data['city'];
+    			?>
+    			<article class="<?php echo $classes;?>" id="post-<?php the_ID();?>">
+    				<div class="top-block">
+    				  <div class="date-time">
+    					  <?php if($start):?><span class="start"><?php echo $start;?></span><span class="end"><?php echo $end;?></span><?php endif;?>
+                 <?php if('news' != $type):?>
+                  <span class="post-antenna"><?php echo 'page' == get_post_type() ? bloginfo('description') : !$town ? ' - ' . get_cat_name($antenna_id) : ' - ' . $town;?></span>
+                 <?php endif;?>
+    			    </div><!-- /.date-time -->
+    					<h3 class="post-title"><a href="<?php the_permalink() ?>" title="<?php the_title(); ?>" rel="bookmark"><?php the_title(); ?></a></h3>
+    				</div><!-- /.top-block -->
+    				
+    				<?php if ( has_post_thumbnail() ) : /* loades the post's featured thumbnail, requires Wordpress 3.0+ */ ?>
+    					<div class="featured-thumbnail-home"><a href="<?php the_permalink() ?>" title="<?php the_title(); ?>" rel="bookmark"><?php echo the_post_thumbnail('home-block');?></a></div>
+    				
+    				<?php else : ?>
+    					<div class="post-excerpt"><?php the_excerpt(); ?></div>
+    				<?php endif;?>
+    			</article><!--.post-single-->
+    			<?php //prepare data for dates in JS 
+    			   $raw_data = get_meta_raw_if_post($pid);
+    			?>
+    			<script type="text/javascript">
+    			  var lang = (typeof(icl_lang) != "undefined" && icl_lang !== null) ? icl_lang : bInfo['bLang'].substr(0,2); //TODO: check if bInfo['bLang'] is construct like this xx-XX...
+    			  moment.lang(lang);
+    			  
+    			  var startYear = new Date(<?php echo $raw_data['start'];?>*1000).getFullYear();
+    			  var endYear = new Date(<?php echo $raw_data['end'];?>*1000).getFullYear();
+      			var thisPostStart = jQuery("#post-<?php the_ID();?> .start");
+      			var thisPostEnd = jQuery("#post-<?php the_ID();?> .end");
+      			
+      			var start = moment.unix(<?php echo $raw_data['start'];?>).format('ll');
+      			var end = moment.unix(<?php echo $raw_data['end'];?>).format('ll');
+      			var time = '<?php echo $raw_data['time'];?>';
+      			
+      			start = start.replace(startYear, '');
+      			thisPostStart.text(start);
+      			end = end.replace(endYear, '');
+      			end = end !== start ? end : time;
+      			
+      			if (end) if(end !== start) thisPostEnd.text(' / '+end);
+      			
+    			</script>
 					<?php endwhile; ?>
-					<?php wp_reset_query();?>
+					<?php wp_reset_postdata();?>
 					<?php else: ?>
 						<div class="no-results bxshadow">
 							<p><?php _e('No post for the moment','iftheme'); ?></p>
@@ -158,7 +215,7 @@
 			</div><!--noResults-->
 		<?php endif; ?>	
 	</div><!--#content-->
+<?php get_sidebar(); ?>
 	
 <?php endif;?>
-<?php get_sidebar(); ?>
 <?php get_footer(); ?>

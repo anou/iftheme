@@ -33,16 +33,16 @@
 
 				$widgetdata = array (
 				   'widget_id' => 'wysija-nl-php-1',//form identifier important when many subscription forms on the same page
-				   'title' =>  __('Newsletter','iftheme'),//title of widget
-				   'instruction' => __('Subscribe','iftheme'), // instruction to be displayed on top of the widget
+				   'title' =>  __('Newsletter', 'iftheme'),//title of widget
+				   'instruction' => __('Subscribe', 'iftheme'), // instruction to be displayed on top of the widget
 				   'lists' =>  $lists, //array of list_id to which you want to subscribe your users
 				   'lists_name' => $names, //array of lists names ( array(list_id => name) )
 				   'submit' => __('OK','iftheme'),//name of the subscribe button
-				   'success' => __('You’ve successfully subscribed. Check your inbox now to confirm your subscription.','iftheme'),//success message returned when registered
+				   'success' => __('You’ve successfully subscribed. Check your inbox now to confirm your subscription.', 'iftheme'),//success message returned when registered
 				   'customfields' => array ( //optional array of custom fields to be displayed lastname, firstname, email
-				        //'firstname' => array ('column_name' => 'firstname','label' => 'Prénom'),
-				        //'lastname' => array ('column_name' => 'lastname','label' => 'Nom'),
-				        'email' => array ('label' => __('Your Email','iftheme'))
+				        'firstname' => array ('column_name' => 'firstname','label' => __('First name', 'iftheme')),
+				        'lastname' => array ('column_name' => 'lastname','label' => __('Last name', 'iftheme')),
+				        'email' => array ('label' => __('Your Email', 'iftheme'))
 				   ),
 				   'labelswithin' => 'labels_within', //parameter to put the label of the custom field as a default value of the field
 				   'before_title' => '<h3>',
@@ -87,10 +87,21 @@
 		<?php endif; ?>
 		
 		<!-- CALENDAR -->
+		<?php $calendar_on = 1;
+			if ($multi) {
+		    // Get admin categ. Only admin can configure country homepage
+        $categAdmin = get_cat_if_user(1);
+			  $calendar_on = isset($options[$categAdmin]['theme_options_setting_calendar']) ? $options[$categAdmin]['theme_options_setting_calendar'] : $calendar_on;
+			}
+			else { 
+			  $calendar_on = isset($options['theme_options_setting_calendar']) ? $options['theme_options_setting_calendar'] : $calendar_on; 
+      }
+  		if( $calendar_on ) :
+    ?>
 		<aside id="sidebar-calendar" class="widget ifworldlinks bxshadow">
 			<div id="ajax_calendrier"><?php  include( get_template_directory() . '/inc/calendar/calendrier.php'); ?></div>
 		</aside>
-		
+		<?php endif; ?>
 		<?php //if ( !is_plugin_active( 'underconstruction/underConstruction.php' ) ):?>
   		<?php if ( !function_exists('dynamic_sidebar') || !dynamic_sidebar($sidebar)) : ?><?php endif; ?>
   		

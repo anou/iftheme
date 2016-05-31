@@ -30,7 +30,9 @@ class If_Antenna_Partners extends WP_Widget {
 	}
 	
 	function form ($instance) {
-		global $current_user; get_currentuserinfo();
+		  global $current_user;
+  $current_user = wp_get_current_user();
+
 		//get antenna ID
 		$aid = get_cat_if_user($current_user->ID);
 		//get antenna's partners

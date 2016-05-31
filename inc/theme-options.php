@@ -42,7 +42,9 @@ add_action( 'admin_print_styles-appearance_page_theme_options', 'iftheme_admin_e
  */
 function iftheme_theme_options_init() {
 	global $multi;
-	global $current_user; get_currentuserinfo();
+	  global $current_user;
+  $current_user = wp_get_current_user();
+
 
  	$antenna = get_antenna();  
 
@@ -71,15 +73,18 @@ function iftheme_theme_options_init() {
 	}
 	// Add the section to theme options settings so we can add our fields to it.
 	//Only for admin (user 1) -- SPECIAL SETTINGS
-	if($current_user->caps['administrator']) {
-	  add_settings_section('special_setting_section', __('Special settings','iftheme'), 'special_setting_section_callback_function','theme_options');
-	  add_settings_field('theme_options_setting_header', __("Display header's menu pages",'iftheme'),'theme_options_setting_header_callback_function','theme_options','special_setting_section');
-	  add_settings_field('theme_options_wysija_embed', __("Use MailPoet Newsletter's theme form",'iftheme'),'theme_options_setting_wysija_embed_callback_function','theme_options','special_setting_section');
+	if( $current_user->caps['administrator'] ) {
+	  add_settings_section('special_setting_section', __('Special settings','iftheme'), 'special_setting_section_callback_function', 'theme_options');
+	  add_settings_field('theme_options_setting_header', __("Display header's menu pages",'iftheme'), 'theme_options_setting_header_callback_function', 'theme_options','special_setting_section');
+	  add_settings_field('theme_options_wysija_embed', __("Use MailPoet Newsletter's theme form",'iftheme'), 'theme_options_setting_wysija_embed_callback_function', 'theme_options','special_setting_section');
+	  add_settings_field('theme_options_calendar', __("Calendar",'iftheme'), 'theme_options_setting_calendar_callback_function', 'theme_options','special_setting_section');
+  	// Custom frontpage
+    add_settings_field('custom_hp', __('Custom front page', 'iftheme'), 'iftheme_settings_field_checkbox_hp', 'theme_options', 'special_setting_section');
 	  
-	  	if ( is_plugin_active( 'underconstruction/underConstruction.php' ) ){
-          add_settings_field('theme_options_underconstruction_page', __("Under construction Page",'iftheme'),'theme_options_setting_underconstruction_page_callback_function','theme_options','special_setting_section');
-  	
-      }
+    if ( is_plugin_active( 'underconstruction/underConstruction.php' ) ){
+        add_settings_field('theme_options_underconstruction_page', __("Under construction Page",'iftheme'),'theme_options_setting_underconstruction_page_callback_function','theme_options','special_setting_section');
+    
+    }
 	  
 	  //TODO: ADD choice of bg color : array(#ADA59A,#ECB813,#FF4B00,#BAC900,#595959,#D2204C,#55BCBE,#3E647E)
   }
@@ -95,11 +100,15 @@ function iftheme_theme_options_init() {
 		'theme_options', // Menu slug, used to uniquely identify the page; see iftheme_theme_options_add_page()
 		'general' // Settings section. Same as the first argument in the add_settings_section() above
 	);
-
-	add_settings_field( 'theme_home_categ', __( 'Displayed home categories', 'iftheme' ), 'iftheme_settings_field_home_categories', 'theme_options', 'general' );//categories on homepage
-	add_settings_field( 'theme_home_nb_events', __( 'Number of events for each category displayed on homepage:', 'iftheme' ), 'iftheme_settings_field_nb_events', 'theme_options', 'general' );//number of posts on homepage
-	add_settings_field('background_img', __('Background image','iftheme'), 'iftheme_settings_field_background_img', 'theme_options', 'general'); // Background image
-
+  //categories on homepage
+	add_settings_field( 'theme_home_categ', __( 'Displayed home categories', 'iftheme' ), 'iftheme_settings_field_home_categories', 'theme_options', 'general' );
+	//number of posts on homepage
+	add_settings_field( 'theme_home_nb_events', __( 'Number of events for each category displayed on homepage:', 'iftheme' ), 'iftheme_settings_field_nb_events', 'theme_options', 'general' );
+	// Background image
+  add_settings_field('background_img', __('Background image','iftheme'), 'iftheme_settings_field_background_img', 'theme_options', 'general');
+  // Content types on homepage
+  //add_settings_field('hp_types', __('Content types','iftheme'), 'iftheme_settings_field_hp_types', 'theme_options', 'general'); 
+	
 	// Add the field with the names and function to use for our new
 	// settings, put it in our new section
 	//facebook
@@ -215,8 +224,10 @@ function iftheme_bg_frames() {
 /**
  * Returns an array of categories to choose for homepage for Institut Français.
  */
-function iftheme_home_categories($pays=NULL) { 
-	global $current_user; get_currentuserinfo();
+function iftheme_home_categories( $pays = NULL ) { 
+  global $current_user;
+  $current_user = wp_get_current_user();
+
 	global $sitepress;
 	$default_lg = isset($sitepress) ? $sitepress->get_default_language() : get_site_lang();
 	$antenna_id = get_cat_if_user($current_user->ID);
@@ -231,19 +242,21 @@ function iftheme_home_categories($pays=NULL) {
 	  //get only second level categories
 	  //if($level == 1){
 	  //get all except the level 0 ones
-	    if($category->parent){
-      	$home_categ_options[$category->term_id] = array(
-      		'value' => function_exists('icl_object_id') ? icl_object_id($category->term_id, 'category', TRUE, $default_lg) : $category->term_id,
-      		'label' => $category->name,
-      		'antenne' => $pays ? get_cat_name(get_root_category($category->term_id)) : NULL,
-      		'level' => $level,
-      	);
-      	
-      	if($pays) $root_categ[get_root_category($category->term_id)] = get_root_category($category->term_id);
-      }
+    if($category->parent){
+    	$home_categ_options[$category->term_id] = array(
+    		'value' => function_exists('icl_object_id') ? icl_object_id($category->term_id, 'category', TRUE, $default_lg) : $category->term_id,
+    		'label' => $category->name,
+    		'antenne' => $pays ? get_cat_name(get_root_category($category->term_id)) : NULL,
+    		'level' => $level,
+    	);
+    	
+    	if($pays) $root_categ[get_root_category($category->term_id)] = get_root_category($category->term_id);
     }
-    
-    if($pays) foreach($root_categ as $k => $id){ unset($home_categ_options[$k]); }
+  }
+  
+  if( $pays ) {
+    foreach( $root_categ as $k => $id ) { unset($home_categ_options[$k]); }
+  }
     
 	return apply_filters( 'iftheme_home_categories', $home_categ_options );
 }
@@ -271,6 +284,7 @@ function iftheme_get_default_theme_options() {
 		'theme_home_nb_events' => '5',
 		'theme_options_setting_hmenupage' => '1',
 		'theme_options_setting_wysija_embed' => '1',
+		'theme_options_setting_calendar' => '1',
 		'theme_options_setting_underconstruction' => '',
 	);
 	
@@ -321,11 +335,11 @@ function iftheme_settings_field_bg_frames_country() {
 /**
  * Renders the homepage categories setting fields.
  */
-function iftheme_settings_field_home_categories($pays=NULL) {
+function iftheme_settings_field_home_categories( $pays = NULL ) {
   $antenna = get_antenna();
 	$options = iftheme_get_theme_options();
 	
-	$categz = $pays ? iftheme_home_categories($pays) : iftheme_home_categories();
+	$categz = $pays ? iftheme_home_categories( $pays ) : iftheme_home_categories();
 
   if (!empty($categz)) { 
    foreach ( $categz as $home_categ ) {
@@ -342,6 +356,7 @@ function iftheme_settings_field_home_categories($pays=NULL) {
     } 
   } else { echo '<span class="warning">'.__('You must create some child categories','iftheme').' > <a href="/wp-admin/edit-tags.php?taxonomy=category">'.__('Categories').'</a></span>';}
 }
+
 function iftheme_settings_field_home_categories_country() {
 	global $pays;
 	iftheme_settings_field_home_categories($pays);
@@ -351,7 +366,7 @@ function iftheme_settings_field_home_categories_country() {
  * Renders the number of event displayed on homepage settings
  */
 
-function iftheme_settings_field_nb_events($pays=NULL) {
+function iftheme_settings_field_nb_events( $pays = NULL ) {
   $antenna = get_antenna();
 	$options = iftheme_get_theme_options(); 
 	$nb_events = $pays ?  $options['theme_home_nb_events_' . $pays] : $options['theme_home_nb_events'];
@@ -375,7 +390,7 @@ function iftheme_settings_field_nb_events_country() {
 /**
  * Renders the background_img image setting fields.
  */
-function iftheme_settings_field_background_img($pays = NULL) {
+function iftheme_settings_field_background_img( $pays = NULL ) {
 	global $section;
 
 	$antenna = get_antenna();
@@ -401,6 +416,60 @@ function iftheme_settings_field_background_img_country() {
 	iftheme_settings_field_background_img($pays);
 }
 
+/**
+ * Custom frontpage checkbox
+ */
+function iftheme_settings_field_checkbox_hp() {
+ 
+	$antenna = get_antenna();
+	$options = iftheme_get_theme_options();
+  $value = isset($options['custom_hp']) && !empty($options['custom_hp']) ? $options['custom_hp'] : 0;
+   
+  $html = '<input type="checkbox" id="checkbox_hp" name="iftheme_theme_options_' . $antenna . '[custom_hp]" ' . checked( $value, 'on', false ) . '/>';
+  $html .= '<label for="checkbox_hp">' . __('Check this box to use a custom frontpage.', 'iftheme') . '</label>';
+  $html .= '<p class="description">' . __('You must create/edit a file named "custom-frontpage.php"', 'iftheme') . '</p>';
+   
+  echo $html;
+ 
+} // end sandbox_checkbox_element_callback
+
+/**
+ * Renders the homepage content types setting field.
+ */
+function iftheme_settings_field_hp_types( $pays = NULL ) {
+  $antenna = get_antenna();
+	$options = iftheme_get_theme_options();
+	
+  $args = array(
+     'public'   => true,
+     '_builtin' => false
+  );
+    
+  $output = 'objects'; // 'names' or 'objects' (default: 'names')
+  $operator = 'and'; // 'and' or 'or' (default: 'and')
+    
+  $post_types = get_post_types( $args, $output, $operator );
+  if ( !empty($post_types) ) { 
+   
+   foreach ( $post_types as $post_type ) {
+    $slug = $post_type->rewrite['slug'];
+	  if( !$slug ) continue;
+	  $keyCateg = $pays ? 'theme_hp_types_country' : 'theme_hp_types';
+	  
+	  $checked = isset($options[$keyCateg][0][$slug]) ? $options[$keyCateg][0][$slug] : '';
+		?>
+		<div class="layout image-checkbox-option theme-home-categ">
+		<label class="description">
+			<input type="checkbox" name="iftheme_theme_options_<?php echo $antenna;?>[theme_hp_types<?php echo $pays ? '_'.$pays : '';?>][<?php echo $slug;?>]" value="<?php echo $slug; ?>" <?php checked( $checked, $slug ); ?> />
+			<span><?php echo $post_type->name; ?></span> <?php /* if(isset($post_type['antenne'])):?><span class="small">(<?php echo $post_type['antenne']; ?>)</span><?php endif; */?>
+		</label>
+		</div>
+		<?php
+    } 
+  } else { echo 'NOTHING'; }
+}
+
+
 //---------- SPECIAL settings -------------//
 // Settings section callback function special settings
 function special_setting_section_callback_function() {
@@ -414,7 +483,7 @@ function theme_options_setting_header_callback_function() {
 	
   $checked = isset($options['theme_options_setting_hmenupage']) ? $options['theme_options_setting_hmenupage'] : $defaults['theme_options_setting_hmenupage'];
 ?>
-	<input name="iftheme_theme_options_<?php echo $antenna;?>[theme_options_setting_hmenupage]" id="theme_options_setting_hmenupage" type="checkbox"  value="1" <?php checked( $checked, 1 ); ?> />&nbsp;<span><?php _e("Check this box to display the header's pages menu", 'iftheme');?></span>
+	<input name="iftheme_theme_options_<?php echo $antenna;?>[theme_options_setting_hmenupage]" id="theme_options_setting_hmenupage" type="checkbox"  value="1" <?php checked( $checked, 1 ); ?> />&nbsp;<span><?php _e("Check this box to display in the header the page's menu dropdown", 'iftheme');?></span>
 <?php 
 }
 /*
@@ -426,7 +495,19 @@ function theme_options_setting_wysija_embed_callback_function() {
 	$defaults = iftheme_get_default_theme_options();
   $checked = isset($options['theme_options_setting_wysija_embed']) ? $options['theme_options_setting_wysija_embed'] : $defaults['theme_options_setting_wysija_embed'];
 ?>
-	<input name="iftheme_theme_options_<?php echo $antenna;?>[theme_options_setting_wysija_embed]" id="theme_options_setting_wysija_embed" type="checkbox"  value="1" <?php checked( $checked, 1 ); ?> />&nbsp;<span><?php _e("Check this box to use and display the MailPoet Newsletters (formerly Wysija) subscription form embedded in the IF theme", 'iftheme');?></span>
+	<input name="iftheme_theme_options_<?php echo $antenna;?>[theme_options_setting_wysija_embed]" id="theme_options_setting_wysija_embed" type="checkbox"  value="1" <?php checked( $checked, 1 ); ?> />&nbsp;<span><?php _e("Check this box to use and display the MailPoet Newsletters (formerly Wysija) subscription form embedded in IF theme", 'iftheme');?></span>
+<?php 
+}
+/*
+ * default calendar in sidebar
+ */
+function theme_options_setting_calendar_callback_function() {
+	$antenna = get_antenna();
+	$options = iftheme_get_theme_options();
+	$defaults = iftheme_get_default_theme_options();
+  $checked = isset($options['theme_options_setting_calendar']) ? $options['theme_options_setting_calendar'] : $defaults['theme_options_setting_calendar'];
+?>
+	<input name="iftheme_theme_options_<?php echo $antenna;?>[theme_options_setting_calendar]" id="theme_options_setting_calendar" type="checkbox"  value="1" <?php checked( $checked, 1 ); ?> />&nbsp;<span><?php _e("Check this box to display in the sidebar the default calendar of IF theme", 'iftheme');?></span>
 <?php 
 }
 
@@ -566,11 +647,14 @@ function iftheme_theme_options_validate( $input ) {
 	$output['theme_options_setting_hmenupage'] = isset($input['theme_options_setting_hmenupage']) ? $input['theme_options_setting_hmenupage'] : 0;
 	//wysija embedded sub. form
 	$output['theme_options_setting_wysija_embed'] = isset($input['theme_options_setting_wysija_embed']) ? $input['theme_options_setting_wysija_embed'] : 0;
+	//default calendar
+	$output['theme_options_setting_calendar'] = isset($input['theme_options_setting_calendar']) ? $input['theme_options_setting_calendar'] : 0;
+	//custom HP
+	$output['custom_hp'] = isset($input['custom_hp']) ? $input['custom_hp'] : 0;
+
 	//Under construction Landing page
   if ( isset( $input['theme_options_setting_underconstruction'] ) )
 		$output['theme_options_setting_underconstruction'] = $input['theme_options_setting_underconstruction'];
-//d($_POST);
-//d($input);
 
   //SOCIAL NETWORKS
 	if ( isset( $input['theme_options_setting_facebook'] ) )

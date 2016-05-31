@@ -30,3 +30,8 @@
 .edit-tags-php .wp-editor-wrap { width: auto; }
 
 label { font-weight: bold !important; }
+
+.form-wrap label { display: inline-block; }
+
+
+.wp-editor-wrap { width: 100% !important; }

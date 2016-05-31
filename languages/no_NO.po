@@ -1,0 +1,1326 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: Institut Français theme\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2014-02-13 09:16+0100\n"
+"PO-Revision-Date: 2014-07-10 12:04+0100\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Poedit-KeywordsList: __;_e;_x;_ex;_n\n"
+"X-Poedit-Basepath: .\n"
+"X-Poedit-SourceCharset: UTF-8\n"
+"X-Generator: Poedit 1.6.5\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"Language: nb_NO\n"
+"X-Poedit-SearchPath-0: ../../iftheme\n"
+
+#: ../../iftheme/404.php:5
+msgid "Error 404 Not Found"
+msgstr "Feilmelding 404. Ikke funnet"
+
+#: ../../iftheme/404.php:7
+msgid "Oops. Fail. The page cannot be found."
+msgstr "Oops. Her har det skjedd en feil. Siden kan ikke vises"
+
+#: ../../iftheme/404.php:8
+msgid "Please check your URL or use the search form below."
+msgstr "Sjekk URL-adressen eller bruk søkefeltet"
+
+#: ../../iftheme/archive.php:14 ../../iftheme/archives-page.php:21
+#: ../../iftheme/category.php:248
+msgid "Archives"
+msgstr "Arkiv"
+
+#: ../../iftheme/archive.php:88 ../../iftheme/archives-page.php:85
+#: ../../iftheme/search.php:56
+msgid "No results"
+msgstr "Ingen resultat"
+
+#: ../../iftheme/archives-page.php:16
+msgid "All categories"
+msgstr "Alle kategorier"
+
+#: ../../iftheme/author.php:11
+msgid "About:"
+msgstr "Om:"
+
+#: ../../iftheme/author.php:20
+msgid "Recent Posts by "
+msgstr "Nye innlegg fra"
+
+#: ../../iftheme/author.php:32
+msgid "Written on "
+msgstr "Skrevet den"
+
+#: ../../iftheme/author.php:32
+msgid " at "
+msgstr "på"
+
+#: ../../iftheme/author.php:33
+msgid "Categories: "
+msgstr "Kategorier:"
+
+#: ../../iftheme/author.php:38
+msgid "No posts by "
+msgstr "Ingen nye innlegg fra"
+
+#: ../../iftheme/author.php:43
+msgid "Recent Comments by "
+msgstr "Nye kommentarer fra"
+
+#: ../../iftheme/author.php:51
+#, fuzzy, php-format
+msgid "%1$s on %2$s"
+msgstr "%1$s på %2$s"
+
+#: ../../iftheme/author.php:53
+msgid "No comments by "
+msgstr "Ingen kommentarer fra"
+
+#: ../../iftheme/category.php:149 ../../iftheme/index.php:148
+#: ../../iftheme/multi-front-page.php:139
+msgid "No post for the moment"
+msgstr "Ingen nye innlegg for øyeblikket"
+
+#: ../../iftheme/category.php:157
+msgid "No post for the moment and/or no homepage category selected"
+msgstr "Ingen innlegg for øyeblikket/ingen kategori er valgt"
+
+#: ../../iftheme/category.php:177
+msgid "Agenda"
+msgstr "Kalender"
+
+#: ../../iftheme/comments.php:15
+msgid "No comments"
+msgstr "Ingen kommentarer"
+
+#: ../../iftheme/comments.php:15
+msgid "One comment"
+msgstr "En kommentar"
+
+#: ../../iftheme/comments.php:15
+#, php-format
+msgid "% comments"
+msgstr "%  kommentarer"
+
+#: ../../iftheme/comments.php:23
+msgid "Your comment is awaiting approval."
+msgstr "Din kommentar venter på godkjenning"
+
+#: ../../iftheme/comments.php:51
+msgid "No comments yet. You should be kind and add one!"
+msgstr "Ingen kommentarer enda. Legg igjen din kommentar!"
+
+#: ../../iftheme/comments.php:57
+msgid "Our apologies, you must be"
+msgstr "Vi beklager, du må være"
+
+#: ../../iftheme/comments.php:57
+msgid "logged in"
+msgstr "innlogget"
+
+#: ../../iftheme/comments.php:57
+#, fuzzy
+msgid "to post a comment."
+msgstr "skriv en kommentar."
+
+#: ../../iftheme/comments.php:60
+msgid "Logged in as"
+msgstr "Du er logget inn som"
+
+#: ../../iftheme/comments.php:60
+msgid "Log out"
+msgstr "Logg ut"
+
+#: ../../iftheme/comments.php:62
+msgid "Allowed HTML tags:"
+msgstr "Tillatte HTML tags:"
+
+#: ../../iftheme/comments.php:64
+#: ../../iftheme/inc/IF-class/class-IF-terms-list-table.php:103
+#: ../../iftheme/inc/IF-class/class-IF-terms-list-table.php:343
+msgid "Name"
+msgstr "Navn"
+
+#: ../../iftheme/comments.php:68
+msgid "Mail (will not be shared)"
+msgstr "E-post (vil ikke bli delt videre)"
+
+#: ../../iftheme/comments.php:72
+msgid "Website"
+msgstr "Nettside"
+
+#: ../../iftheme/comments.php:77
+msgid "Comment"
+msgstr "Kommentar"
+
+#: ../../iftheme/comments.php:86
+#, fuzzy
+msgid "By submitting a comment you grant"
+msgstr "Ved å legge igjen kommentar tillater du at"
+
+#: ../../iftheme/comments.php:86
+msgid ""
+"a perpetual license to reproduce your words and name/web site in "
+"attribution. Inappropriate and irrelevant comments will be removed at an "
+"admin’s discretion. Your email is used for verification purposes only, it "
+"will never be shared."
+msgstr ""
+
+#: ../../iftheme/comments.php:89
+msgid "The comments are closed."
+msgstr "Kommentarfeltet er stengt"
+
+#: ../../iftheme/footer.php:25
+#: ../../iftheme/inc/widgets/if-antennas-widget.php:23
+#: ../../iftheme/inc/widgets/if-antennas-widget.php:28
+msgid "Local antennas"
+msgstr "Lokale antenner"
+
+#: ../../iftheme/functions.php:53
+#, php-format
+msgid ""
+"Warning - You must assign a category to the current user <a href=\"%2$s/wp-"
+"admin/users.php\"><b>%1$s</b>!</a>"
+msgstr ""
+"Advarsel: Du må tilegne en kategori til den aktuelle brukeren <a href=\"%2$s/"
+"wp-admin/users.php\"><b>%1$s</b>!</a>"
+
+#: ../../iftheme/functions.php:409
+msgid "You must assign a category to this user : "
+msgstr "Du må tilegne en kategori til denne brukeren:"
+
+#: ../../iftheme/functions.php:623 ../../iftheme/inc/events/if-events.php:202
+msgid "Select"
+msgstr "Velg"
+
+#: ../../iftheme/functions.php:644 ../../iftheme/inc/theme-classes.php:39
+msgid "Image"
+msgstr "Bilde"
+
+#: ../../iftheme/functions.php:902
+#, php-format
+msgid ""
+"Your content <em>Partner</em> is empty. <a href=\"/wp-admin/post.php?post="
+"%s&action=edit\"> >Edit</a>"
+msgstr ""
+"Ditt innhold <em>Samarbeidspartner</em> er tomt. <a href=\"/wp-admin/post."
+"php?post=\"\"%s&action=edit\"> >Edit</a>"
+
+#: ../../iftheme/functions.php:946
+msgid "You must fill in an email !"
+msgstr "E-post adresse mangler!"
+
+#: ../../iftheme/functions.php:946
+msgid "Edit this post"
+msgstr "Rediger dette innlegget"
+
+#: ../../iftheme/functions.php:953
+msgid "The <b>Last name</b> field is required."
+msgstr "<b>Etternavn</b> mangler."
+
+#: ../../iftheme/functions.php:954
+msgid "The <b>First name</b> field is required."
+msgstr "<b>Fornavn</b> mangler."
+
+#: ../../iftheme/functions.php:955
+msgid "The <b>E-mail</b>  field is required."
+msgstr "<b>E-post</b>  mangler."
+
+#: ../../iftheme/functions.php:956
+msgid "The <b>E-mail name</b> field is invalid."
+msgstr "<b>E-posten</b> er ugyldig."
+
+#: ../../iftheme/functions.php:959
+msgid "Invalid verification code."
+msgstr "Ugyldig verifikasjonskode"
+
+#: ../../iftheme/functions.php:963
+msgid "Subcription request to: "
+msgstr "Forespørsel om påmelding til:"
+
+#: ../../iftheme/functions.php:965
+msgid "Subcription from IF Website"
+msgstr "Påmelding"
+
+#: ../../iftheme/functions.php:966
+msgid "Your request has been sent."
+msgstr "Din forespørsel har blitt sendt"
+
+#: ../../iftheme/functions.php:982
+msgid "Last name"
+msgstr "Etternavn"
+
+#: ../../iftheme/functions.php:983
+msgid "First name"
+msgstr "Fornavn"
+
+#: ../../iftheme/functions.php:984
+msgid "E-mail"
+msgstr "E-Post"
+
+#: ../../iftheme/functions.php:985
+msgid "Copy verification code"
+msgstr "Kopier verifikasjonskode"
+
+#: ../../iftheme/functions.php:987
+msgid "Submit"
+msgstr "Legg til"
+
+#: ../../iftheme/functions.php:1004
+msgid "Sliders"
+msgstr "Sliders"
+
+#: ../../iftheme/functions.php:1005
+msgid "Slider"
+msgstr "Slider"
+
+#: ../../iftheme/functions.php:1006
+msgid "Add new slider"
+msgstr "Add new slider"
+
+#: ../../iftheme/functions.php:1007
+msgid "Edit slider"
+msgstr "Edit slider"
+
+#: ../../iftheme/functions.php:1008
+msgid "New slider"
+msgstr "New slider"
+
+#: ../../iftheme/functions.php:1009
+msgid "View slider"
+msgstr "View slider"
+
+#: ../../iftheme/functions.php:1010
+msgid "Search sliders"
+msgstr "Search sliders"
+
+#: ../../iftheme/functions.php:1011
+msgid "No slider found"
+msgstr "No slider found"
+
+#: ../../iftheme/functions.php:1012
+msgid "No sliders found in Trash"
+msgstr "No sliders found in Trash"
+
+#: ../../iftheme/functions.php:1025
+#: ../../iftheme/inc/widgets/if-partners-widget.php:53
+msgid "Partners"
+msgstr "Samarbeidpartnere"
+
+#: ../../iftheme/functions.php:1026
+msgid "Partner"
+msgstr "Samarbeidpartner"
+
+#: ../../iftheme/functions.php:1027
+msgid "Add new partners"
+msgstr "Legg til nye samarbeidspartnere"
+
+#: ../../iftheme/functions.php:1028
+msgid "Edit partner"
+msgstr "Rediger samarbeidspartnere"
+
+#: ../../iftheme/functions.php:1029
+msgid "New partner"
+msgstr "Ny samarbeidspartner"
+
+#: ../../iftheme/functions.php:1030
+msgid "View partner"
+msgstr "Se samarbeidspartner"
+
+#: ../../iftheme/functions.php:1031
+msgid "Search partners"
+msgstr "Søk samarbeidspartnere"
+
+#: ../../iftheme/functions.php:1032
+msgid "No partners found"
+msgstr "Ingen samarbeidspartnere funnet"
+
+#: ../../iftheme/functions.php:1033
+msgid "No partners found in Trash"
+msgstr "Ingen samarbeidspartnere funnet i Søppeldunken"
+
+#: ../../iftheme/functions.php:1159
+msgid "You must ask your administrator to select a user's category"
+msgstr "Be administrator om tillatelse til å velge en brukerkategori"
+
+#: ../../iftheme/functions.php:1183
+msgid "This sidebar is for all antennas only. Only the admin can configure it."
+msgstr ""
+"This sidebar is for all antennas only. Only the admin can configure it."
+
+#: ../../iftheme/functions.php:1204
+#, php-format
+msgid "This sidebar is for %s only"
+msgstr "This sidebar is for %s only"
+
+#: ../../iftheme/functions.php:1301
+#, php-format
+msgid "Comments are open! <a href=\"%s\">Add yours!</a>"
+msgstr "Kommentarfeltet er åpent! <a href=\"%s\">Legg til!</a>"
+
+#: ../../iftheme/functions.php:1312
+msgid "Continue Reading"
+msgstr "Les videre"
+
+#: ../../iftheme/functions.php:1566
+msgid "<span class=\"meta-nav\">&larr;</span> Archives"
+msgstr "<span class=\"meta-nav\">&larr;</span> Arkiv"
+
+#: ../../iftheme/functions.php:1566
+msgid "<span class=\"meta-nav\">&larr;</span> Previous"
+msgstr "<span class=\"meta-nav\">&larr;</span> Forrige"
+
+#: ../../iftheme/functions.php:1569
+msgid "Post navigation"
+msgstr ""
+
+#: ../../iftheme/functions.php:1571
+msgid "Next <span class=\"meta-nav\">&rarr;</span>"
+msgstr "Neste <span class=\"meta-nav\">&rarr;</span>"
+
+#: ../../iftheme/header.php:37
+msgid "Archive |"
+msgstr "Arkiv |"
+
+#: ../../iftheme/header.php:39
+#, php-format
+msgid "Search for &quot;%s&quot; |"
+msgstr "Søk etter &quot;%s&quot; |"
+
+#: ../../iftheme/header.php:43
+msgid "No results - search our archives |"
+msgstr "Ingen resultat - søk i arkivet"
+
+#: ../../iftheme/header.php:128
+msgid "Skip to Content"
+msgstr "Gå til innhold"
+
+#: ../../iftheme/inc/IF-class/class-IF-terms-list-table.php:26
+msgid "Invalid taxonomy"
+msgstr "Ugyldig søkeord"
+
+#: ../../iftheme/inc/IF-class/class-IF-terms-list-table.php:86
+#: ../../iftheme/inc/IF-class/class-IF-terms-list-table.php:265
+#: ../../iftheme/inc/Tax-meta-class/Tax-meta-class.php:250
+#: ../../iftheme/inc/Tax-meta-class/Tax-meta-class.php:882
+#: ../../iftheme/inc/meta-box-class/my-meta-box-class.php:253
+#: ../../iftheme/inc/meta-box-class/my-meta-box-class.php:869
+msgid "Delete"
+msgstr "Slett"
+
+#: ../../iftheme/inc/IF-class/class-IF-terms-list-table.php:104
+msgid "Description"
+msgstr "Beskrivelse"
+
+#: ../../iftheme/inc/IF-class/class-IF-terms-list-table.php:105
+#: ../../iftheme/inc/IF-class/class-IF-terms-list-table.php:348
+msgid "Slug"
+msgstr "Slug"
+
+#: ../../iftheme/inc/IF-class/class-IF-terms-list-table.php:109
+msgid "Links"
+msgstr "Linker"
+
+#: ../../iftheme/inc/IF-class/class-IF-terms-list-table.php:112
+msgid "Posts"
+msgstr "Innlegg"
+
+#: ../../iftheme/inc/IF-class/class-IF-terms-list-table.php:257
+#, php-format
+msgid "Edit &#8220;%s&#8221;"
+msgstr "Rediger &#8220;%s&#8221;"
+
+#: ../../iftheme/inc/IF-class/class-IF-terms-list-table.php:261
+msgid "Edit"
+msgstr "Rediger"
+
+#: ../../iftheme/inc/IF-class/class-IF-terms-list-table.php:262
+msgid "Quick&nbsp;Edit"
+msgstr "Snarvei&nbsp;Redigering"
+
+#: ../../iftheme/inc/IF-class/class-IF-terms-list-table.php:266
+msgid "View"
+msgstr "Se"
+
+#: ../../iftheme/inc/IF-class/class-IF-terms-list-table.php:340
+msgid "Quick Edit"
+msgstr "Snarvei Redigering"
+
+#: ../../iftheme/inc/IF-class/class-IF-terms-list-table.php:369
+msgid "Cancel"
+msgstr "Avbryte"
+
+#: ../../iftheme/inc/Tax-meta-class/Tax-meta-class.php:250
+#: ../../iftheme/inc/meta-box-class/my-meta-box-class.php:253
+msgid "Delete this image"
+msgstr "Slett dette bildet"
+
+#: ../../iftheme/inc/Tax-meta-class/Tax-meta-class.php:357
+msgid "Cannot delete file. Something's wrong."
+msgstr "Filen kan ikke slettes. Noe gikk galt."
+
+#: ../../iftheme/inc/Tax-meta-class/Tax-meta-class.php:582
+#: ../../iftheme/inc/Tax-meta-class/Tax-meta-class.php:629
+#: ../../iftheme/inc/meta-box-class/my-meta-box-class.php:562
+#: ../../iftheme/inc/meta-box-class/my-meta-box-class.php:607
+msgid "Remove"
+msgstr "Fjern"
+
+#: ../../iftheme/inc/Tax-meta-class/Tax-meta-class.php:595
+#: ../../iftheme/inc/meta-box-class/my-meta-box-class.php:574
+msgid "Add"
+msgstr "Legg til"
+
+#: ../../iftheme/inc/Tax-meta-class/Tax-meta-class.php:878
+#: ../../iftheme/inc/meta-box-class/my-meta-box-class.php:865
+msgid "Uploaded files"
+msgstr "Opplastede filer"
+
+#: ../../iftheme/inc/Tax-meta-class/Tax-meta-class.php:889
+#: ../../iftheme/inc/meta-box-class/my-meta-box-class.php:876
+msgid "Upload new files"
+msgstr "Last opp ny fil"
+
+#: ../../iftheme/inc/Tax-meta-class/Tax-meta-class.php:895
+#: ../../iftheme/inc/meta-box-class/my-meta-box-class.php:882
+msgid "Add more files"
+msgstr "Legg til flere filer"
+
+#: ../../iftheme/inc/Tax-meta-class/Tax-meta-class.php:947
+#: ../../iftheme/inc/meta-box-class/my-meta-box-class.php:932
+msgid "Select a color"
+msgstr "Velg en farge"
+
+#: ../../iftheme/inc/calendar/classe_calendrier.php:129
+msgid "Sunday"
+msgstr "Søndag"
+
+#: ../../iftheme/inc/calendar/classe_calendrier.php:129
+msgid "Monday"
+msgstr "Mandag"
+
+#: ../../iftheme/inc/calendar/classe_calendrier.php:129
+msgid "Tuesday"
+msgstr "Tirsdag"
+
+#: ../../iftheme/inc/calendar/classe_calendrier.php:129
+msgid "Wednesday"
+msgstr "Onsdag"
+
+#: ../../iftheme/inc/calendar/classe_calendrier.php:129
+msgid "Thursday"
+msgstr "Torsdag"
+
+#: ../../iftheme/inc/calendar/classe_calendrier.php:129
+msgid "Friday"
+msgstr "Fredag"
+
+#: ../../iftheme/inc/calendar/classe_calendrier.php:129
+msgid "Saturday"
+msgstr "Lørdag"
+
+#: ../../iftheme/inc/calendar/classe_calendrier.php:131
+msgid "Sun."
+msgstr "Søn."
+
+#: ../../iftheme/inc/calendar/classe_calendrier.php:131
+msgid "Mon."
+msgstr "Man."
+
+#: ../../iftheme/inc/calendar/classe_calendrier.php:131
+msgid "Tue."
+msgstr "Tirs."
+
+#: ../../iftheme/inc/calendar/classe_calendrier.php:131
+msgid "Wed."
+msgstr "Ons."
+
+#: ../../iftheme/inc/calendar/classe_calendrier.php:131
+msgid "Thu."
+msgstr "Tors."
+
+#: ../../iftheme/inc/calendar/classe_calendrier.php:131
+msgid "Fri."
+msgstr "Fre."
+
+#: ../../iftheme/inc/calendar/classe_calendrier.php:131
+msgid "Sat."
+msgstr "Lør."
+
+#: ../../iftheme/inc/calendar/classe_calendrier.php:133
+msgid "January"
+msgstr "Januar"
+
+#: ../../iftheme/inc/calendar/classe_calendrier.php:133
+msgid "February"
+msgstr "Februar"
+
+#: ../../iftheme/inc/calendar/classe_calendrier.php:133
+msgid "March"
+msgstr "Mars"
+
+#: ../../iftheme/inc/calendar/classe_calendrier.php:133
+msgid "April"
+msgstr "April"
+
+#: ../../iftheme/inc/calendar/classe_calendrier.php:133
+#: ../../iftheme/inc/calendar/classe_calendrier.php:135
+msgid "May"
+msgstr "Mai"
+
+#: ../../iftheme/inc/calendar/classe_calendrier.php:133
+msgid "June"
+msgstr "Juni"
+
+#: ../../iftheme/inc/calendar/classe_calendrier.php:133
+msgid "July"
+msgstr "Juli"
+
+#: ../../iftheme/inc/calendar/classe_calendrier.php:133
+msgid "August"
+msgstr "August"
+
+#: ../../iftheme/inc/calendar/classe_calendrier.php:133
+msgid "September"
+msgstr "September"
+
+#: ../../iftheme/inc/calendar/classe_calendrier.php:133
+msgid "October"
+msgstr "Oktober"
+
+#: ../../iftheme/inc/calendar/classe_calendrier.php:133
+msgid "November"
+msgstr "November"
+
+#: ../../iftheme/inc/calendar/classe_calendrier.php:133
+msgid "December"
+msgstr "Desember"
+
+#: ../../iftheme/inc/calendar/classe_calendrier.php:135
+msgid "Jan."
+msgstr "Jan."
+
+#: ../../iftheme/inc/calendar/classe_calendrier.php:135
+msgid "Feb."
+msgstr "Feb."
+
+#: ../../iftheme/inc/calendar/classe_calendrier.php:135
+msgid "Mar."
+msgstr "Mar."
+
+#: ../../iftheme/inc/calendar/classe_calendrier.php:135
+msgid "Apr."
+msgstr "Apr."
+
+#: ../../iftheme/inc/calendar/classe_calendrier.php:135
+msgid "Jun."
+msgstr "Jun."
+
+#: ../../iftheme/inc/calendar/classe_calendrier.php:135
+msgid "Jul."
+msgstr "Jul."
+
+#: ../../iftheme/inc/calendar/classe_calendrier.php:135
+msgid "Aug."
+msgstr "Aug."
+
+#: ../../iftheme/inc/calendar/classe_calendrier.php:135
+msgid "Sep."
+msgstr "Sep."
+
+#: ../../iftheme/inc/calendar/classe_calendrier.php:135
+msgid "Oct."
+msgstr "Okt."
+
+#: ../../iftheme/inc/calendar/classe_calendrier.php:135
+msgid "Nov."
+msgstr "Nov."
+
+#: ../../iftheme/inc/calendar/classe_calendrier.php:135
+msgid "Dec."
+msgstr "Des."
+
+#: ../../iftheme/inc/events/if-events.php:25
+msgid "Event information"
+msgstr "Informasjon om arrangementet"
+
+#: ../../iftheme/inc/events/if-events.php:26
+msgid "Additional event information"
+msgstr "Tilleggsinformasjon om arrangementet"
+
+#: ../../iftheme/inc/events/if-events.php:60
+msgid "Start Date"
+msgstr "Startdato"
+
+#: ../../iftheme/inc/events/if-events.php:60
+#: ../../iftheme/inc/events/if-events.php:61
+#: ../../iftheme/inc/events/if-events.php:184
+#: ../../iftheme/inc/events/if-events.php:194
+#: ../../iftheme/inc/events/if-events.php:198
+#: ../../iftheme/inc/events/if-events.php:200
+#: ../../iftheme/inc/events/if-events.php:210
+#: ../../iftheme/inc/events/if-events.php:213
+#: ../../iftheme/inc/events/if-events.php:225
+#: ../../iftheme/inc/events/if-events.php:393
+msgid "Mandatory field"
+msgstr "Obligatorisk felt"
+
+#: ../../iftheme/inc/events/if-events.php:61
+msgid "End Date"
+msgstr "Sluttdato"
+
+#: ../../iftheme/inc/events/if-events.php:62
+msgid "Time"
+msgstr "Tid"
+
+#: ../../iftheme/inc/events/if-events.php:62
+msgid ""
+"<em>Use 24h format (7pm = 19:00). Use the \"Time field\" only if \"End date"
+"\" is equal to \"Start date\"</em>"
+msgstr ""
+
+#: ../../iftheme/inc/events/if-events.php:107
+#: ../../iftheme/inc/events/if-events.php:130
+msgid ""
+"You must ask your server's administrator if the function <i style=\"color:red"
+"\">file_get_contents()</i> can be used without limitation"
+msgstr ""
+
+#: ../../iftheme/inc/events/if-events.php:184
+msgid "Disciplines"
+msgstr "Kategorier"
+
+#: ../../iftheme/inc/events/if-events.php:185
+msgid ""
+"The proposed disciplines are useful for the mobile application only and have "
+"<b>no impact on your website</b>"
+msgstr ""
+"De anbefalte kategoriene kan kun ses via mobilapp og har\"\"<b>ingen "
+"innvirkning på din webside</b>"
+
+#: ../../iftheme/inc/events/if-events.php:194
+msgid "Place"
+msgstr "Sted"
+
+#: ../../iftheme/inc/events/if-events.php:195
+msgid "Address"
+msgstr "Adresse"
+
+#: ../../iftheme/inc/events/if-events.php:196
+msgid "Additional address"
+msgstr "Tilleggsadresse"
+
+#: ../../iftheme/inc/events/if-events.php:197
+msgid "Zip code"
+msgstr "Postnummer"
+
+#: ../../iftheme/inc/events/if-events.php:198
+msgid "City"
+msgstr "By"
+
+#: ../../iftheme/inc/events/if-events.php:200
+msgid "Country"
+msgstr "Land"
+
+#: ../../iftheme/inc/events/if-events.php:210
+msgid "Get longitude & latitude"
+msgstr ""
+
+#: ../../iftheme/inc/events/if-events.php:210
+msgid ""
+"<em>Type here the full address of your event. <b>Press \"tab\" key</b> to "
+"get/modify the longitude and latitude</em>"
+msgstr ""
+
+#: ../../iftheme/inc/events/if-events.php:213
+msgid "Longitude"
+msgstr ""
+
+#: ../../iftheme/inc/events/if-events.php:213
+msgid "Latitude"
+msgstr ""
+
+#: ../../iftheme/inc/events/if-events.php:213
+msgid "Zoom"
+msgstr "Zoom"
+
+#: ../../iftheme/inc/events/if-events.php:218
+msgid "Phone number"
+msgstr "Telefonnummer"
+
+#: ../../iftheme/inc/events/if-events.php:219
+#: ../../iftheme/inc/theme-classes.php:100
+msgid "Email"
+msgstr "E-post"
+
+#: ../../iftheme/inc/events/if-events.php:220
+#: ../../iftheme/inc/events/if-events.php:221
+#: ../../iftheme/inc/events/if-events.php:222
+#: ../../iftheme/inc/theme-classes.php:74
+msgid "Link"
+msgstr "Link"
+
+#: ../../iftheme/inc/events/if-events.php:225
+msgid "Mandatory fields"
+msgstr "Obligatoriske felt"
+
+#: ../../iftheme/inc/events/if-events.php:353
+#, php-format
+msgid "Event updated. <a href=\"%s\">View item</a>"
+msgstr ""
+
+#: ../../iftheme/inc/events/if-events.php:354
+msgid "Custom field updated."
+msgstr ""
+
+#: ../../iftheme/inc/events/if-events.php:355
+msgid "Custom field deleted."
+msgstr ""
+
+#: ../../iftheme/inc/events/if-events.php:356
+msgid "Event updated."
+msgstr "Oppdatert arrangement."
+
+#: ../../iftheme/inc/events/if-events.php:358
+#, php-format
+msgid "Event restored to revision from %s"
+msgstr ""
+
+#: ../../iftheme/inc/events/if-events.php:359
+#, php-format
+msgid "Event published. <a href=\"%s\">View event</a>"
+msgstr ""
+
+#: ../../iftheme/inc/events/if-events.php:360
+msgid "Event saved."
+msgstr "Lagret arrangement."
+
+#: ../../iftheme/inc/events/if-events.php:361
+#, php-format
+msgid "Event submitted. <a target=\"_blank\" href=\"%s\">Preview event</a>"
+msgstr ""
+
+#: ../../iftheme/inc/events/if-events.php:362
+#, php-format
+msgid ""
+"Event scheduled for: <strong>%1$s</strong>. <a target=\"_blank\" href=\"%2$s"
+"\">Preview event</a>"
+msgstr ""
+
+#: ../../iftheme/inc/events/if-events.php:364
+msgid "M j, Y @ G:i"
+msgstr " j M Y @ G:i"
+
+#: ../../iftheme/inc/events/if-events.php:365
+#, php-format
+msgid "Event draft updated. <a target=\"_blank\" href=\"%s\">Preview event</a>"
+msgstr ""
+
+#: ../../iftheme/inc/events/if-events.php:392
+msgid "You must tell where this event takes place."
+msgstr "Fyll inn hvor arrangementet finner sted."
+
+#: ../../iftheme/inc/events/if-events.php:394
+msgid "Longitude is required and must be a valid decimal"
+msgstr ""
+
+#: ../../iftheme/inc/events/if-events.php:395
+msgid "Latitude is required and must be a valid decimal"
+msgstr ""
+
+#: ../../iftheme/inc/events/if-events.php:396
+msgid "Must be like: <b>http://www.my-link.ext</b>"
+msgstr ""
+
+#: ../../iftheme/inc/events/if-events.php:397
+msgid "You must check at least one discipline !"
+msgstr ""
+
+#: ../../iftheme/inc/if-user.php:12
+msgid "Antenna"
+msgstr ""
+
+#: ../../iftheme/inc/if-user.php:57
+msgid "Category assigned to this Antenna"
+msgstr ""
+
+#: ../../iftheme/inc/if-user.php:79
+msgid "You must create another top level category to assign to this user"
+msgstr ""
+
+#: ../../iftheme/inc/if-user.php:107
+msgid "Category"
+msgstr "Kategori"
+
+#: ../../iftheme/inc/meta-box-class/my-meta-box-class.php:349
+msgid "Cannot delete file. Something's wrong"
+msgstr "Filen kan ikke slettes. Noe gikk galt."
+
+#: ../../iftheme/inc/theme-classes.php:16
+msgid "Slider images"
+msgstr ""
+
+#: ../../iftheme/inc/theme-classes.php:35
+msgid "Country slider"
+msgstr ""
+
+#: ../../iftheme/inc/theme-classes.php:35
+msgid "Check this box if this slider is for Country homepage"
+msgstr ""
+
+#: ../../iftheme/inc/theme-classes.php:37
+msgid "Title / Description"
+msgstr "Tittel/Beskrivelse"
+
+#: ../../iftheme/inc/theme-classes.php:38
+msgid "URL link for the image"
+msgstr "URL-link til bildet"
+
+#: ../../iftheme/inc/theme-classes.php:45
+msgid "Slider Images"
+msgstr ""
+
+#: ../../iftheme/inc/theme-classes.php:61
+#: ../../iftheme/inc/theme-classes.php:77
+msgid "Partners logos"
+msgstr "Samarbeidspartneres logoer"
+
+#: ../../iftheme/inc/theme-classes.php:73
+msgid "Name of the partner"
+msgstr "Navn på samarbeidspartner"
+
+#: ../../iftheme/inc/theme-classes.php:75
+msgid "Logo"
+msgstr "Logo"
+
+#: ../../iftheme/inc/theme-classes.php:90
+msgid "Booking informations"
+msgstr "Bestillingsinformasjon"
+
+#: ../../iftheme/inc/theme-classes.php:99
+msgid "Open booking"
+msgstr "Åpne bestilling"
+
+#: ../../iftheme/inc/theme-classes.php:99
+msgid "By checking this box, you enable the booking for this event."
+msgstr ""
+"Ved å krysse av i denne boksen aktiveres bestilling for dette arrangementet."
+
+#: ../../iftheme/inc/theme-classes.php:100
+msgid "Email to whom send the booking"
+msgstr "E-post til mottaker av bestilling"
+
+#: ../../iftheme/inc/theme-classes.php:101
+msgid "Details"
+msgstr "Detaljer"
+
+#: ../../iftheme/inc/theme-classes.php:101
+msgid "Some information you want to add at the top of the booking form"
+msgstr ""
+
+#: ../../iftheme/inc/theme-options.php:56
+msgid "Antenna options"
+msgstr "Antenne valg"
+
+#: ../../iftheme/inc/theme-options.php:65
+msgid "Country homepage"
+msgstr "Hjemmeside land"
+
+#: ../../iftheme/inc/theme-options.php:73
+msgid "Special settings"
+msgstr "Spesielle innstillinger"
+
+#: ../../iftheme/inc/theme-options.php:74
+msgid "Display header's menu pages"
+msgstr ""
+
+#: ../../iftheme/inc/theme-options.php:75
+msgid "Use MailPoet Newsletter's theme form"
+msgstr ""
+
+#: ../../iftheme/inc/theme-options.php:80
+msgid "Social sites on the web"
+msgstr ""
+
+#: ../../iftheme/inc/theme-options.php:86
+msgid "Background frame"
+msgstr ""
+
+#: ../../iftheme/inc/theme-options.php:92
+msgid "Displayed home categories"
+msgstr ""
+
+#: ../../iftheme/inc/theme-options.php:93
+msgid "Number of events for each category displayed on homepage:"
+msgstr "Antall arrangementer for hver kategori som vises på hjemmesiden:"
+
+#: ../../iftheme/inc/theme-options.php:94
+msgid "Background image"
+msgstr "Bakgrunnsbilde"
+
+#: ../../iftheme/inc/theme-options.php:99
+msgid "Facebook Page"
+msgstr "Facebook"
+
+#: ../../iftheme/inc/theme-options.php:101
+msgid "Twitter Account"
+msgstr "Twitter-konto"
+
+#: ../../iftheme/inc/theme-options.php:103
+msgid "Google Plus Page"
+msgstr "Google Plus"
+
+#: ../../iftheme/inc/theme-options.php:105
+msgid "Your IF TV Page"
+msgstr "Din IF TV profil"
+
+#: ../../iftheme/inc/theme-options.php:107
+msgid "You Tube Page"
+msgstr "Youtube"
+
+#: ../../iftheme/inc/theme-options.php:109
+msgid "Instagram Page"
+msgstr "Instagram"
+
+#: ../../iftheme/inc/theme-options.php:113
+msgid "Country's background frame"
+msgstr ""
+
+#: ../../iftheme/inc/theme-options.php:114
+msgid "Displayed country's homepage categories"
+msgstr ""
+
+#: ../../iftheme/inc/theme-options.php:115
+msgid "Number of events for each category displayed on country's homepage:"
+msgstr ""
+"Antall arrangementer for hver kategori som vises på landets hjemmeside:"
+
+#: ../../iftheme/inc/theme-options.php:116
+msgid "Country's background image"
+msgstr "Landets bakgrunnsbilde"
+
+#: ../../iftheme/inc/theme-options.php:154
+#: ../../iftheme/inc/theme-options.php:155
+msgid "Theme Options"
+msgstr ""
+
+#: ../../iftheme/inc/theme-options.php:183
+msgid "No frame"
+msgstr ""
+
+#: ../../iftheme/inc/theme-options.php:191
+#, php-format
+msgid "Frame %s"
+msgstr ""
+
+#: ../../iftheme/inc/theme-options.php:199
+msgid "Frame 1"
+msgstr ""
+
+#: ../../iftheme/inc/theme-options.php:335
+msgid "You must create some child categories"
+msgstr ""
+
+#: ../../iftheme/inc/theme-options.php:335 ../../iftheme/sitemap.php:19
+msgid "Categories"
+msgstr "Kategorier"
+
+#: ../../iftheme/inc/theme-options.php:381
+msgid "Upload image"
+msgstr "Last opp bilde"
+
+#: ../../iftheme/inc/theme-options.php:382
+msgid "Choose your background image"
+msgstr "Velg ditt bakgrunnsbilde"
+
+#: ../../iftheme/inc/theme-options.php:385
+#: ../../iftheme/inc/theme-options.php:387
+msgid "Actual Image"
+msgstr "Aktuelt bilde"
+
+#: ../../iftheme/inc/theme-options.php:389
+msgid "No image"
+msgstr "Inget bilde"
+
+#: ../../iftheme/inc/theme-options.php:401
+msgid "In this section you can custom some functionalities."
+msgstr ""
+
+#: ../../iftheme/inc/theme-options.php:411
+msgid "Check this box to display the header's pages menu"
+msgstr ""
+
+#: ../../iftheme/inc/theme-options.php:421
+msgid ""
+"Check this box to use and display the MailPoet Newsletters (formerly Wysija) "
+"subscription form embedded in the IF theme"
+msgstr ""
+
+#: ../../iftheme/inc/theme-options.php:427
+msgid ""
+"This section is where you can save the social networks where readers can "
+"find you on the Internet."
+msgstr ""
+
+#: ../../iftheme/inc/theme-options.php:482
+#, php-format
+msgid "%s Theme Options"
+msgstr ""
+
+#: ../../iftheme/inc/theme-taxo-classes.php:30
+msgid "Download an image for your category"
+msgstr "Last ned et bilde til din kategori"
+
+#: ../../iftheme/inc/theme-taxo-classes.php:32
+msgid "Display sub-categories"
+msgstr "Vis underkategorier"
+
+#: ../../iftheme/inc/theme-taxo-classes.php:32
+msgid "Check this box if you want to display a list of child categories"
+msgstr ""
+
+#: ../../iftheme/inc/theme-taxo-classes.php:39
+msgid "Display Posts"
+msgstr "Vis innlegg"
+
+#: ../../iftheme/inc/theme-taxo-classes.php:39
+msgid ""
+"Uncheck this box if you want disable the display of the category's posts"
+msgstr ""
+
+#: ../../iftheme/inc/widgets/if-antennas-widget.php:16
+msgid "Displays a list of all the local antennas"
+msgstr ""
+
+#: ../../iftheme/inc/widgets/if-antennas-widget.php:31
+#: ../../iftheme/inc/widgets/if-categ-widget.php:56
+#: ../../iftheme/inc/widgets/if-mobile-widget.php:33
+#: ../../iftheme/inc/widgets/if-nopadding-widget.php:32
+#: ../../iftheme/inc/widgets/if-partners-widget.php:43
+#: ../../iftheme/inc/widgets/if-world-widget.php:33
+msgid "Title"
+msgstr "Tittel"
+
+#: ../../iftheme/inc/widgets/if-antennas-widget.php:35
+msgid "This widget displays all the local antennas. No configuration options"
+msgstr ""
+
+#: ../../iftheme/inc/widgets/if-categ-widget.php:16
+msgid "Displays a list of category's children, related to the current antenna"
+msgstr ""
+
+#: ../../iftheme/inc/widgets/if-categ-widget.php:23
+msgid "Antenna's categories"
+msgstr "Antenne kategorier"
+
+#: ../../iftheme/inc/widgets/if-categ-widget.php:51
+msgid "None"
+msgstr ""
+
+#: ../../iftheme/inc/widgets/if-categ-widget.php:57
+msgid ""
+"You can custom the widget title here. Default is the category name you "
+"choose in the Category parent field below."
+msgstr ""
+
+#: ../../iftheme/inc/widgets/if-categ-widget.php:60
+msgid "Category parent"
+msgstr ""
+
+#: ../../iftheme/inc/widgets/if-mobile-widget.php:16
+msgid "Widget for the Institut Français Mobile app."
+msgstr "Widget for Institut Français mobilapp."
+
+#: ../../iftheme/inc/widgets/if-mobile-widget.php:23
+msgid "Institut Français Mobile"
+msgstr "Institut français mobil"
+
+#: ../../iftheme/inc/widgets/if-mobile-widget.php:29
+#: ../../iftheme/inc/widgets/if-mobile-widget.php:61
+msgid "IFMobile"
+msgstr "IFMobile"
+
+#: ../../iftheme/inc/widgets/if-mobile-widget.php:39
+msgid "URL for"
+msgstr "URL for"
+
+#: ../../iftheme/inc/widgets/if-mobile-widget.php:82
+#, php-format
+msgid ""
+"Download IFmobile app to get notified about all the events of the "
+"<strong>Institut français %s </strong>"
+msgstr ""
+"Last ned IFMobile app for å motta informasjon om alle arrangementer ved"
+"\"\"<strong>Institut français %s </strong>"
+
+#: ../../iftheme/inc/widgets/if-mobile-widget.php:88
+#, php-format
+msgid "To know more about %s"
+msgstr "For å få vite mer om %s"
+
+#: ../../iftheme/inc/widgets/if-mobile-widget.php:90
+msgid "Download on the App Store"
+msgstr "Last ned i App Store"
+
+#: ../../iftheme/inc/widgets/if-mobile-widget.php:92
+msgid "Get it on Google Play"
+msgstr "Last ned via Google Play"
+
+#: ../../iftheme/inc/widgets/if-nopadding-widget.php:16
+msgid "Widget for IF RSS"
+msgstr "Widget for IF RSS"
+
+#: ../../iftheme/inc/widgets/if-nopadding-widget.php:23
+msgid "Institut Français RSS"
+msgstr "Institut Français RSS"
+
+#: ../../iftheme/inc/widgets/if-nopadding-widget.php:28
+#: ../../iftheme/inc/widgets/if-nopadding-widget.php:56
+msgid "IF RSS feed"
+msgstr "IF RSS feed"
+
+#: ../../iftheme/inc/widgets/if-nopadding-widget.php:36
+msgid "Your text"
+msgstr "Din tekst"
+
+#: ../../iftheme/inc/widgets/if-partners-widget.php:16
+msgid ""
+"Displays a list of antenna's partners logo, related to the current antenna"
+msgstr ""
+
+#: ../../iftheme/inc/widgets/if-partners-widget.php:23
+msgid "Antenna's partners"
+msgstr ""
+
+#: ../../iftheme/inc/widgets/if-partners-widget.php:44
+msgid ""
+"You can custom the widget title here. Default is the title of the selected "
+"partner."
+msgstr ""
+
+#: ../../iftheme/inc/widgets/if-partners-widget.php:47
+msgid "Select Partners:"
+msgstr ""
+
+#: ../../iftheme/inc/widgets/if-partners-widget.php:53
+msgid "You must create a Partner in order to use this widget:"
+msgstr ""
+
+#: ../../iftheme/inc/widgets/if-partners-widget.php:85
+msgid "Error"
+msgstr "Feil"
+
+#: ../../iftheme/inc/widgets/if-partners-widget.php:97
+msgid "You must choose a Partner in the widget configuration:"
+msgstr ""
+
+#: ../../iftheme/inc/widgets/if-partners-widget.php:97
+msgid "widgets"
+msgstr "widgets"
+
+#: ../../iftheme/inc/widgets/if-world-widget.php:16
+msgid "Displays a list of links related to the Institut Français"
+msgstr ""
+
+#: ../../iftheme/inc/widgets/if-world-widget.php:23
+msgid "Institut Français links"
+msgstr "Institut Français' linker"
+
+#: ../../iftheme/inc/widgets/if-world-widget.php:29
+#: ../../iftheme/inc/widgets/if-world-widget.php:62
+msgid "Numeric IF"
+msgstr "IF Digital"
+
+#: ../../iftheme/inc/widgets/if-world-widget.php:39
+msgid "Label"
+msgstr "Label"
+
+#: ../../iftheme/inc/widgets/if-world-widget.php:41
+msgid "URL"
+msgstr "URL"
+
+#: ../../iftheme/index.php:157
+msgid "No post for the moment & no homepage category selected"
+msgstr ""
+
+#: ../../iftheme/multi-front-page.php:49
+msgid ""
+"You don't have any <em>Slider</em> recorded yet. <a href=\"/wp-admin/post-"
+"new.php?post_type=if_slider\">Add one now ?</a>"
+msgstr ""
+
+#: ../../iftheme/multi-front-page.php:147
+msgid "No post for the moment & no configuration options"
+msgstr ""
+
+#: ../../iftheme/multi-front-page.php:174
+msgid "Coming soon"
+msgstr "Kommer snart"
+
+#: ../../iftheme/page.php:8 ../../iftheme/single.php:49
+msgid "Edit this entry"
+msgstr "Rediger innlegget"
+
+#: ../../iftheme/sidebar.php:26
+msgid "Newsletter"
+msgstr "Nyhetsbrev"
+
+#: ../../iftheme/sidebar.php:27
+msgid "Subscribe"
+msgstr "Påmelding"
+
+#: ../../iftheme/sidebar.php:30
+msgid "OK"
+msgstr "OK"
+
+#: ../../iftheme/sidebar.php:31
+msgid ""
+"You’ve successfully subscribed. Check your inbox now to confirm your "
+"subscription."
+msgstr ""
+"Du har blitt påmeldt vårt nyhetsbrev. Bekreft påmelding i innboksen din."
+
+#: ../../iftheme/sidebar.php:35
+msgid "Your Email"
+msgstr "Din e-post"
+
+#: ../../iftheme/sidebar.php:66
+msgid "Join-us"
+msgstr "Følg oss"
+
+#: ../../iftheme/single.php:74
+msgid "Useful informations"
+msgstr "Nyttig informasjon"
+
+#: ../../iftheme/single.php:93
+msgid "Booking"
+msgstr "Bestilling"
+
+#: ../../iftheme/sitemap.php:9
+msgid "Pages"
+msgstr "Sider"
+
+#: ../../iftheme/sitemap.php:12
+msgid "RSS Feeds"
+msgstr "RSS Feed"
+
+#: ../../iftheme/sitemap.php:14
+msgid "Main RSS"
+msgstr "Hoved RSS"
+
+#: ../../iftheme/sitemap.php:15
+msgid "Comment Feed"
+msgstr "Kommentar Feed"
+
+#: ../../iftheme/sitemap.php:24
+msgid "All Blog Posts"
+msgstr "Alle innlegg"
+
+#: ../../iftheme/sitemap.php:26
+#, php-format
+msgid "Permanent Link to %s"
+msgstr ""
