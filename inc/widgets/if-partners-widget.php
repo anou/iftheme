@@ -22,7 +22,7 @@ class If_Antenna_Partners extends WP_Widget {
 		);
 // 		$this->WP_Widget('ifantennapartners-widget', __("Antenna's partners", 'iftheme'), $widget_ops, $control_ops);
     parent::__construct( 
-        'ifantennapartners' . '-widget' , 
+        'ifantennapartners-widget' , 
         __("Antenna's partners", 'iftheme'), 
         $widget_ops, 
         $control_ops 

@@ -21,11 +21,19 @@ $section = FALSE;
  * This function is attached to the admin_enqueue_scripts action hook.
  */
 function iftheme_admin_enqueue_scripts( $hook_suffix ) {
-	wp_enqueue_style( 'iftheme-theme-options', get_template_directory_uri() . '/inc/theme-options.css', false, '2012-07-03' );
+	wp_enqueue_style( 'iftheme-theme-options-css', get_template_directory_uri() . '/inc/theme-options.css', false, '2012-07-03' );
 	wp_enqueue_script('media-upload');
 	wp_enqueue_script('thickbox');
-	wp_enqueue_script( 'iftheme-theme-options', get_template_directory_uri() . '/inc/theme-options.js', array( 'jquery','media-upload','thickbox' ), '2011-06-10' );
-	wp_enqueue_style('thickbox');
+  wp_enqueue_style('thickbox');
+
+	wp_register_script('iftheme-theme-options-js', get_template_directory_uri() . '/inc/theme-options.js', array( 'jquery','media-upload','thickbox' ), '2011-06-10');
+  
+  $params = array(
+    'delete_img_txt' => __('You must submit this form to validate your changes!', 'iftheme'),
+  );
+  wp_localize_script( 'iftheme-theme-options-js', 'ifOptions', $params );
+
+	wp_enqueue_script( 'iftheme-theme-options-js' );
 	//wp_enqueue_style( 'farbtastic' );
 }
 add_action( 'admin_print_styles-appearance_page_theme_options', 'iftheme_admin_enqueue_scripts' );
@@ -42,7 +50,7 @@ add_action( 'admin_print_styles-appearance_page_theme_options', 'iftheme_admin_e
  */
 function iftheme_theme_options_init() {
 	global $multi;
-	  global $current_user;
+  global $current_user;
   $current_user = wp_get_current_user();
 
 
@@ -62,7 +70,7 @@ function iftheme_theme_options_init() {
 		'theme_options' // Menu slug, used to uniquely identify the page; see iftheme_theme_options_add_page()
 	);
 	
-	if($multi && $current_user->caps['administrator']) {
+	if( $multi && in_array('administrator', $current_user->caps) ) {
 		//adding a section for the Country hompage if exist (multi-antenna site)
 		add_settings_section(
 			'homepage', // Unique identifier for the settings section
@@ -73,13 +81,18 @@ function iftheme_theme_options_init() {
 	}
 	// Add the section to theme options settings so we can add our fields to it.
 	//Only for admin (user 1) -- SPECIAL SETTINGS
-	if( $current_user->caps['administrator'] ) {
+	if( in_array('administrator', $current_user->caps) ) {
 	  add_settings_section('special_setting_section', __('Special settings','iftheme'), 'special_setting_section_callback_function', 'theme_options');
+	  //Header menu pages
 	  add_settings_field('theme_options_setting_header', __("Display header's menu pages",'iftheme'), 'theme_options_setting_header_callback_function', 'theme_options','special_setting_section');
+	  //Mailpoet NL form
 	  add_settings_field('theme_options_wysija_embed', __("Use MailPoet Newsletter's theme form",'iftheme'), 'theme_options_setting_wysija_embed_callback_function', 'theme_options','special_setting_section');
+	  //Display Calendar
 	  add_settings_field('theme_options_calendar', __("Calendar",'iftheme'), 'theme_options_setting_calendar_callback_function', 'theme_options','special_setting_section');
-  	// Custom frontpage
+  	//Custom frontpage
     add_settings_field('custom_hp', __('Custom front page', 'iftheme'), 'iftheme_settings_field_checkbox_hp', 'theme_options', 'special_setting_section');
+    //header_img
+    add_settings_field('header_img', __('Add Header Image', 'iftheme'), 'iftheme_settings_field_header_img', 'theme_options', 'special_setting_section');
 	  
     if ( is_plugin_active( 'underconstruction/underConstruction.php' ) ){
         add_settings_field('theme_options_underconstruction_page', __("Under construction Page",'iftheme'),'theme_options_setting_underconstruction_page_callback_function','theme_options','special_setting_section');
@@ -102,7 +115,7 @@ function iftheme_theme_options_init() {
 	);
   //categories on homepage
 	add_settings_field( 'theme_home_categ', __( 'Displayed home categories', 'iftheme' ), 'iftheme_settings_field_home_categories', 'theme_options', 'general' );
-	//number of posts on homepage
+	//number of posts on homepage (Pays and Categories)
 	add_settings_field( 'theme_home_nb_events', __( 'Number of events for each category displayed on homepage:', 'iftheme' ), 'iftheme_settings_field_nb_events', 'theme_options', 'general' );
 	// Background image
   add_settings_field('background_img', __('Background image','iftheme'), 'iftheme_settings_field_background_img', 'theme_options', 'general');
@@ -275,6 +288,9 @@ function iftheme_get_default_theme_options() {
 		'bg_frame_country' => 'f1',
 		'background_img' => get_template_directory_uri() . '/images/bg-body-if.jpg',
 		'background_img_country' => get_template_directory_uri() . '/images/bg-body-if.jpg',
+		'custom_hp' => 0,
+		'header_img' => '',
+		'header_img_link' => '',
 		'theme_options_setting_facebook' => '',
 		'theme_options_setting_twitter' => '',
 		'theme_options_setting_googleplus' => '',
@@ -318,7 +334,7 @@ function iftheme_settings_field_bg_frames($pays = NULL) {
 	<label class="description">
 		<input type="radio" name="iftheme_theme_options_<?php echo $antenna;?>[bg_frame<?php echo $pays ? '_'.$pays : '';?>]" value="<?php echo esc_attr( $frame['value'] ); ?>" <?php checked( $pays ? $options['bg_frame_country'] : $options['bg_frame'], $frame['value'] ); ?> />
 		<span><?php echo $frame['thumbnail'] ? $frame['label'] : ''; ?></span>
-		<div style="background: transparent url('<?php echo esc_url( $frame['thumbnail'] ); ?>') repeat left top; width: 130px; height: 60px; margin-top:5px">
+		<div style="background: transparent url('<?php echo esc_url( $frame["thumbnail"] ); ?>') repeat left top; width: 130px; height: 60px; margin-top:5px">
   		<?php if ( !$frame['thumbnail'] ) :?> <h3 style="margin:0;"><?php _e($frame['label'], 'iftheme') ;?></h3><?php endif; ?>
 		</div>
 	</label>
@@ -398,16 +414,23 @@ function iftheme_settings_field_background_img( $pays = NULL ) {
 	?>
 		<div class="layout image-background_img-option background-img">
 			<label for="background_img" class="description">
-				<input id="background_img<?php echo $pays ? '_'.$pays:'';?>" class="background_img" type="text" size="36" name="iftheme_theme_options_<?php echo $antenna;?>[background_img<?php echo $pays ? '_'.$pays : '';?>]" value="<?php echo $pays ? esc_attr( $options['background_img_country'] ) : esc_attr( $options['background_img'] ); ?>" /><?php //TODO : hide image when uploading a new one !!!?>
+				<input id="background_img<?php echo $pays ? '_'.$pays:'';?>" class="image-field" type="text" size="36" name="iftheme_theme_options_<?php echo $antenna;?>[background_img<?php echo $pays ? '_'.$pays : '';?>]" value="<?php echo $pays ? esc_attr( $options['background_img_country'] ) : esc_attr( $options['background_img'] ); ?>" /><?php //TODO : hide image when uploading a new one !!!?>
 				<button id="upload_image_button<?php echo $pays ? '_'.$pays : '';?>" type="button" class="upload-button"><?php _e('Upload image', 'iftheme');?></button>
 				<span style="display:inline-block; margin: 5px 0"><?php _e('Choose your background image', 'iftheme'); ?></span>
 			</label>
 			
-			<?php if($options['background_img'] && !$section): ?><span class="actual-img"><?php _e('Actual Image', 'iftheme');?></span><div class="bg-img-preview"><img src="<?php echo esc_attr( $options['background_img'] ); ?>" alt="" width="150" /></div> <?php endif;?>
+			<div class="actual-img">
+  			<p><?php _e('Actual Image', 'iftheme');?></p>
+  			<br />
+			<?php if($options['background_img'] && !$section): ?>
+			  <div class="bg-img-preview" style="background: transparent url('<?php echo esc_attr( $options["background_img"] ); ?>') no-repeat center center; background-size: contain;"></div>
+      <?php endif;?>
 			
-			<?php if($options['background_img_country'] && $section): ?><span class="actual-img"><?php _e('Actual Image', 'iftheme');?></span><div class="bg-img-preview"><img src="<?php echo esc_attr( $options['background_img_country'] ); ?>" alt="" width="150" /></div> <?php endif;?>
-			
-			<button type="button" id="reset-bg-img" class="reset-bg-img"><?php _e('No image','iftheme');?></button>
+			<?php if($options['background_img_country'] && $section): ?>
+			  <div class="bg-img-preview" style="background: transparent url('<?php echo esc_attr( $options["background_img_country"] ); ?>') no-repeat center center; background-size: contain;"></div>
+      <?php endif;?>
+			  <br /><button type="button" class="reset-bg-img"><?php _e('Remove image','iftheme');?></button>
+		  </div>
 		</div>
 	<?php
 }
@@ -417,25 +440,9 @@ function iftheme_settings_field_background_img_country() {
 }
 
 /**
- * Custom frontpage checkbox
- */
-function iftheme_settings_field_checkbox_hp() {
- 
-	$antenna = get_antenna();
-	$options = iftheme_get_theme_options();
-  $value = isset($options['custom_hp']) && !empty($options['custom_hp']) ? $options['custom_hp'] : 0;
-   
-  $html = '<input type="checkbox" id="checkbox_hp" name="iftheme_theme_options_' . $antenna . '[custom_hp]" ' . checked( $value, 'on', false ) . '/>';
-  $html .= '<label for="checkbox_hp">' . __('Check this box to use a custom frontpage.', 'iftheme') . '</label>';
-  $html .= '<p class="description">' . __('You must create/edit a file named "custom-frontpage.php"', 'iftheme') . '</p>';
-   
-  echo $html;
- 
-} // end sandbox_checkbox_element_callback
-
-/**
  * Renders the homepage content types setting field.
  */
+/*
 function iftheme_settings_field_hp_types( $pays = NULL ) {
   $antenna = get_antenna();
 	$options = iftheme_get_theme_options();
@@ -461,13 +468,14 @@ function iftheme_settings_field_hp_types( $pays = NULL ) {
 		<div class="layout image-checkbox-option theme-home-categ">
 		<label class="description">
 			<input type="checkbox" name="iftheme_theme_options_<?php echo $antenna;?>[theme_hp_types<?php echo $pays ? '_'.$pays : '';?>][<?php echo $slug;?>]" value="<?php echo $slug; ?>" <?php checked( $checked, $slug ); ?> />
-			<span><?php echo $post_type->name; ?></span> <?php /* if(isset($post_type['antenne'])):?><span class="small">(<?php echo $post_type['antenne']; ?>)</span><?php endif; */?>
+			<span><?php echo $post_type->name; ?></span> <?php // if(isset($post_type['antenne'])):?><span class="small">(<?php echo $post_type['antenne']; ?>)</span><?php endif; ?>
 		</label>
 		</div>
 		<?php
     } 
   } else { echo 'NOTHING'; }
 }
+*/
 
 
 //---------- SPECIAL settings -------------//
@@ -533,6 +541,58 @@ function theme_options_setting_underconstruction_page_callback_function() {
 <?php
 }
 
+/**
+ * Custom frontpage checkbox
+ */
+function iftheme_settings_field_checkbox_hp() {
+ 
+	$antenna = get_antenna();
+	$options = iftheme_get_theme_options();
+	$defaults = iftheme_get_default_theme_options();
+  $value = isset($options['custom_hp']) ? $options['custom_hp'] : $defaults['custom_hp'];
+   
+  $html = '<input type="checkbox" id="checkbox_hp" name="iftheme_theme_options_' . $antenna . '[custom_hp]" ' . checked( $value, 'on', false ) . '/>';
+  $html .= '<label for="checkbox_hp">' . __('Check this box to use a custom frontpage.', 'iftheme') . '</label>';
+  $html .= '<p class="description" style="color:red">' . __('You must create/edit a file named "custom-frontpage.php" in iftheme/ folder.', 'iftheme') . '</p>';
+   
+  echo $html;
+ 
+} // end sandbox_checkbox_element_callback
+
+
+/**
+ * Header Image setting
+ */
+function iftheme_settings_field_header_img() {
+	$antenna = get_antenna();
+	$options = iftheme_get_theme_options();
+	$defaults = iftheme_get_default_theme_options();
+
+	$value = isset($options['header_img']) ? $options['header_img'] : $defaults['header_img'];
+	$value2 = isset($options['header_img_link']) ? $options['header_img_link'] : $defaults['header_img_link'];	?>
+		
+		<div id="header-img" class="layout">
+			<label for="header_img" class="description">
+				<input id="header_img" class="image-field" type="text" size="36" name="iftheme_theme_options_<?php echo $antenna;?>[header_img]" value="<?php echo esc_attr( $value ); ?>" />
+				<button id="upload_header_img_button" type="button" class="upload-button"><?php _e('Upload Header image', 'iftheme');?></button>
+				<span style="display:inline-block; margin: 5px 0"><?php _e('Image dimensions ratio: 620px X 135px', 'iftheme'); ?></span>
+			</label>
+			<div class="actual-img">
+  			<p><?php _e('Actual Image', 'iftheme');?></p>
+  			<br />
+			<?php if( $value ): ?>
+			  <div class="bg-img-preview" style="background: transparent url('<?php echo esc_attr( $value ); ?>') no-repeat center center; background-size: contain;"></div>
+      <?php endif;?>
+			  <br /><button type="button" class="reset-bg-img"><?php _e('Remove image','iftheme');?></button>
+		  </div>
+      <div class="header-img-link-container">
+        <label for="header_img_link" class="description"><?php _e('Optional link to put on your image','iftheme');?>&nbsp;:&nbsp;<input id="header_img_link" type="text" name="iftheme_theme_options_<?php echo $antenna;?>[header_img_link]" value="<?php echo esc_attr( $value2 ); ?>" /></label>
+      </div>
+
+		</div>
+	<?php
+}
+
 // —————-Settings section callback function social networks
 function social_setting_section_callback_function() {
 	echo '<p><em>'.__('This section is where you can save the social networks where readers can find you on the Internet.','iftheme').'</em></p>';
@@ -586,7 +646,7 @@ function theme_options_setting_instagram_callback_function() {
 /**
  * Returns the options page for Institut Français. *********************
  */
-function iftheme_theme_options_render_page() { ?>
+function iftheme_theme_options_render_page() {?>
 	<div class="wrap">
 		<?php screen_icon('tools'); ?>
 		<?php $theme_name = function_exists( 'wp_get_theme' ) ? wp_get_theme() : get_current_theme(); ?>
@@ -651,6 +711,10 @@ function iftheme_theme_options_validate( $input ) {
 	$output['theme_options_setting_calendar'] = isset($input['theme_options_setting_calendar']) ? $input['theme_options_setting_calendar'] : 0;
 	//custom HP
 	$output['custom_hp'] = isset($input['custom_hp']) ? $input['custom_hp'] : 0;
+	// Header image 
+	$output['header_img'] = isset( $input['header_img'] ) ? $input['header_img'] : '';
+	// Header image link
+	$output['header_img_link'] = isset( $input['header_img_link'] ) ? $input['header_img_link'] : '';
 
 	//Under construction Landing page
   if ( isset( $input['theme_options_setting_underconstruction'] ) )

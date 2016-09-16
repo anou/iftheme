@@ -41,7 +41,7 @@ $if_front = is_front_page();
 <!DOCTYPE html>
 <html <?php language_attributes(); ?>>
 <head>
-
+<?php dev4press_debug_page_request(); ?>
 	<title><?php if ( is_category() ) {
 		echo  single_cat_title().' | '; bloginfo( 'name' );
 	} elseif ( is_tag() ) {
@@ -49,7 +49,7 @@ $if_front = is_front_page();
 	} elseif ( is_archive() ) {
 		  wp_title('|', true, 'right'); bloginfo( 'name' );
 	} elseif ( is_search() ) {
-		  echo sprintf( __('Search for &quot;%s&quot; | ', 'iftheme'), wp_specialchars($s) ); ' '.bloginfo( 'name' );
+		  echo sprintf( __('Search for &quot;%s&quot; | ', 'iftheme'), esc_html($s) ); ' '.bloginfo( 'name' );
 	} elseif ( is_home() ) {
 		  bloginfo( 'name' ); echo ' | '; bloginfo( 'description' );
 	}  elseif ( is_404() ) {
@@ -72,7 +72,7 @@ $if_front = is_front_page();
 	<!--[if lt IE 9]>
 		<script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
   <![endif]-->
-	
+	<script src='https://www.google.com/recaptcha/api.js'></script>
 	<script type="text/javascript"> 
 		var bInfo = new Array(); 
 			bInfo['bName'] = "<?php bloginfo('name');?>"; 
@@ -136,7 +136,16 @@ $if_front = is_front_page();
 	}
 
 	?>
-  	@media only screen and (max-width: 960px) { html body.black {background-image: none !important; background-color: #000 !important;} }
+  	@media only screen and (max-width: 960px) { 
+    	html body.black { background-image: none !important; background-color: #000 !important; }
+  	  header #header-img {
+      	max-width: 100%;
+      	width: 100%;
+      	max-height: 135px;
+      	margin: 5px 0 10px 0 !important;
+      }
+
+    }
 	</style>
 	<!--[if lt IE 9]>
 		<link rel="stylesheet" href="<?php bloginfo('template_directory'); ?>/ie.css" type="text/css" media="all" />
@@ -145,7 +154,8 @@ $if_front = is_front_page();
 </head>
 <body <?php body_class(); ?>>
 <div class="none">
-	<p><a href="#content"><?php _e('Skip to Content'); ?></a></p><?php /* used for accessibility, particularly for screen reader applications */ ?>
+	<p><a href="#content"><?php _e('Skip to Content'); ?></a></p>
+  <?php /* used for accessibility, particularly for screen reader applications */ ?>
 </div><!--.none-->
 <div id="main" <?php if($custom_hp) echo 'class="custom-frontpage"'; ?>><!-- this encompasses the entire Web site -->
 	<div id="header">
@@ -166,6 +176,31 @@ $if_front = is_front_page();
   				<ul><?php get_if_top_categ(array('orderby' => 'name')); ?></ul>
   			</div><!-- /#top-menu-antenne -->
   		<?php endif; ?>
+  		<?php //MENU PAGES && HEADER IMAGE (theme option)
+    			$hmenupages = 1; //default to 1 = displayed
+    			if ($multi) {
+      			$header_img = isset($options[$categAdmin]['header_img']) ? $options[$categAdmin]['header_img'] : false;
+      			$header_img_link = isset($options[$categAdmin]['header_img_link']) ? $options[$categAdmin]['header_img_link'] : false;
+      			
+    			  if ( $if_front ) {
+      			  $hmenupages = isset($options[$categAdmin]['theme_options_setting_hmenupage']) ? $options[$categAdmin]['theme_options_setting_hmenupage'] : $hmenupages;
+    			  }
+    			  else {
+      			  $hmenupages = isset($options[$antenna]['theme_options_setting_hmenupage']) ? $options[$antenna]['theme_options_setting_hmenupage'] : $hmenupages;
+    			  }
+    			}
+    			else { 
+    			  $hmenupages = isset($options['theme_options_setting_hmenupage']) ? $options['theme_options_setting_hmenupage'] : $hmenupages; 
+    			  $header_img = isset($options['header_img']) ? $options['header_img'] : false; 
+    			  $header_img_link = isset($options['header_img_link']) ? $options['header_img_link'] : false; 
+          }
+        ?>
+  		  <!-- header image for tomislav ;-) -->
+  		  <div id="header-img">
+    		  <?php if( $header_img_link ) : ?><a href="<?php echo $header_img_link;?>"><?php endif;?>
+          <img src="<?php echo $header_img; ?>" alt="" />
+     		  <?php if( $header_img_link ) : ?></a><?php endif;?>
+ 		  </div>
   			<!-- Header widget area -->
   			<div id="header-widget" class="widget-area widget-header">
   			 <?php if ( !function_exists('dynamic_sidebar') || !dynamic_sidebar( 'Header' ) ) : // NOT USED ?>
@@ -175,21 +210,7 @@ $if_front = is_front_page();
   						<?php languages_list_header(); /* outputs the language switcher */ ?>
   					</aside>
   				<?php endif;?>
-    			<?php  //MENU PAGES IN HEADER (theme option)
-    			$hmenupages = 1; //default to 1 = displayed
-    			
-    			if ($multi) {
-    			  if ( $if_front ) {
-      			  $hmenupages = isset($options[$categAdmin]['theme_options_setting_hmenupage']) ? $options[$categAdmin]['theme_options_setting_hmenupage'] : $wysija_embedded;
-    			  }
-    			  else {
-      			  $hmenupages = isset($options[$antenna]['theme_options_setting_hmenupage']) ? $options[$antenna]['theme_options_setting_hmenupage'] : $hmenupages;
-    			  }
-    			}
-    			else { 
-    			  $hmenupages = isset($options['theme_options_setting_hmenupage']) ? $options['theme_options_setting_hmenupage'] : $hmenupages; 
-          }
-  				//if ($hmenupages && !is_plugin_active( 'underconstruction/underConstruction.php' ) ) : //0 is NULL
+    			<?php  //if ($hmenupages && !is_plugin_active( 'underconstruction/underConstruction.php' ) ) : //0 is NULL
   				if ( $hmenupages ) : //0 is NULL?>
     				<aside id="header-pages-menu" class="widget">
     					<?php wp_page_menu('show_home=0'); /* outputs the pages menu */ ?>
@@ -205,7 +226,6 @@ $if_front = is_front_page();
   			<div class="clear"></div>
       <?php endif; ?>
   		</div><!--.container.header-->
-  		
   		<div class="container for-angle">
   			<!-- div for bevel angle -->
   			<div class="right-corner"></div>

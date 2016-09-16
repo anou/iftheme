@@ -44,7 +44,7 @@ $(document).ready(function() {
 	    //cf. http://slidesjs.com/ for all options
 	    $('#slides').slides({
 			preload: true,
-			preloadImage: 'http://'+window.location.hostname+'/wp-content/themes/iftheme/images/slide/loading.gif',
+			preloadImage: '//'+window.location.hostname+'/wp-content/themes/iftheme/images/slide/loading.gif',
 			play: 7000,
 			pause: 2500,
 			hoverPause: true,
@@ -74,7 +74,7 @@ $(document).ready(function() {
 	        effect: 'fade',
 	        pagination: false,
 			preload: true,
-			preloadImage: 'http://'+window.location.hostname+'/wp-content/themes/iftheme/images/slide/loading.gif',
+			preloadImage: '//'+window.location.hostname+'/wp-content/themes/iftheme/images/slide/loading.gif',
 			play: 7000,
 			pause: 2500,
 			hoverPause: true,

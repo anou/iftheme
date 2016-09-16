@@ -81,40 +81,41 @@ function if_events_meta () {
     </div>
     <?php
 }
-function if_events_mobile () {
-
-    // - grab data -
-    global $post;
-      global $current_user;
+function if_events_mobile() {
+  // - grab data -
+  global $post;
+  global $current_user;
   $current_user = wp_get_current_user();
 
-    $antenna = get_cat_name( get_cat_if_user($current_user->ID) );
-    
-    $custom = get_post_custom($post->ID);
+  $antenna = get_cat_name( get_cat_if_user($current_user->ID) );
+  
+  $custom = get_post_custom($post->ID);
 
-    $meta_disciplines = isset($custom["if_events_disciplines"]) ? unserialize($custom["if_events_disciplines"][0]) : array();
-    $meta_lieu = isset($custom["if_events_lieu"][0]) ? $custom["if_events_lieu"][0] : NULL;
-    $meta_address = isset($custom["if_events_adresse"][0]) ?  $custom["if_events_adresse"][0] : NULL;
-    $meta_address_bis = isset($custom["if_events_adresse_bis"][0]) ?  $custom["if_events_adresse_bis"][0] : NULL;
-    $meta_zip = isset($custom["if_events_zip"][0]) ?  $custom["if_events_zip"][0] : NULL;
-    $meta_city = isset($custom["if_events_city"]) ? $custom["if_events_city"][0] : $antenna;
-    $meta_pays = isset($custom["if_events_pays"][0]) ? $custom["if_events_pays"][0] : '';
-    $meta_longlat = isset($custom["longlat"][0]) ? $custom["longlat"][0] : '';
-    $meta_long = isset($custom["if_events_long"][0]) ? $custom["if_events_long"][0] : 0;
-    $meta_lat = isset($custom["if_events_lat"][0]) ? $custom["if_events_lat"][0] : 0;
-    $zoom = isset($custom["zoom"][0]) ? $custom["zoom"][0] : 11;
-    //$meta_hour = $custom["if_events_hour"][0];
-    $meta_tel = isset($custom["if_events_tel"][0]) ?  $custom["if_events_tel"][0] : NULL;
-    $meta_mail = isset($custom["if_events_mmail"][0]) ?  $custom["if_events_mmail"][0] : NULL;
-    $meta_link1 = isset($custom["if_events_link1"][0]) ?  $custom["if_events_link1"][0] : NULL;
-    $meta_link2 = isset($custom["if_events_link2"][0]) ?  $custom["if_events_link2"][0] : NULL;
-    $meta_link3 = isset($custom["if_events_link3"][0]) ?  $custom["if_events_link3"][0] : NULL;
-    $meta_url = isset($custom["if_events_url"]) ? $custom["if_events_url"][0] : $post->guid;
+  $meta_disciplines = isset($custom["if_events_disciplines"]) ? unserialize($custom["if_events_disciplines"][0]) : array();
+  $meta_lieu = isset($custom["if_events_lieu"][0]) ? $custom["if_events_lieu"][0] : NULL;
+  $meta_address = isset($custom["if_events_adresse"][0]) ?  $custom["if_events_adresse"][0] : NULL;
+  $meta_address_bis = isset($custom["if_events_adresse_bis"][0]) ?  $custom["if_events_adresse_bis"][0] : NULL;
+  $meta_zip = isset($custom["if_events_zip"][0]) ?  $custom["if_events_zip"][0] : NULL;
+  $meta_city = isset($custom["if_events_city"]) ? $custom["if_events_city"][0] : $antenna;
+  $meta_pays = isset($custom["if_events_pays"][0]) ? $custom["if_events_pays"][0] : '';
+  $meta_longlat = isset($custom["longlat"][0]) ? $custom["longlat"][0] : '';
+  $meta_long = isset($custom["if_events_long"][0]) ? $custom["if_events_long"][0] : 0;
+  $meta_lat = isset($custom["if_events_lat"][0]) ? $custom["if_events_lat"][0] : 0;
+  $zoom = isset($custom["zoom"][0]) ? $custom["zoom"][0] : 11;
+  //$meta_hour = $custom["if_events_hour"][0];
+  $meta_tel = isset($custom["if_events_tel"][0]) ?  $custom["if_events_tel"][0] : NULL;
+  $meta_mail = isset($custom["if_events_mmail"][0]) ?  $custom["if_events_mmail"][0] : NULL;
+  $meta_link1 = isset($custom["if_events_link1"][0]) ?  $custom["if_events_link1"][0] : NULL;
+  $meta_link2 = isset($custom["if_events_link2"][0]) ?  $custom["if_events_link2"][0] : NULL;
+  $meta_link3 = isset($custom["if_events_link3"][0]) ?  $custom["if_events_link3"][0] : NULL;
+  $meta_url = isset($custom["if_events_url"]) ? $custom["if_events_url"][0] : $post->guid;
 
     // - output -
   //DISCIPLINES
-  $urld = 'http://api.institutfrancais.com/lib/php/api/getDiscipline.php';
-  $disciplines = file_get_contents($urld);
+  $disciplines = file_get_contents( get_template_directory() . '/inc/events/xml/getDiscipline.xml' );
+
+  if(!$disciplines) { $msg = '<div class="warning">' . __("Please check if <i style=\"color:red;font-family:monospace;\">/iftheme/inc/events/xml/getDiscipline.xml exist. If not create one empty, it should be on next cron run", 'iftheme') . '</div>'; }
+
   //Uncomment to use curl if needed
 /*
   if(!$disciplines) {
@@ -122,10 +123,6 @@ function if_events_mobile () {
     $disciplines = curl_get($urld);
   }
 */
-  
-  if(!$disciplines) {$msg = '<div class="warning">' . __("You must ask your server's administrator if the function <i style=\"color:red\">file_get_contents()</i> can be used without limitation", 'iftheme') . '</div>';}
-
-  
   $disciplines_xml = new DomDocument(); // Instanciation de la classe DomDocument : création d'un nouvel objet
   $disciplines_xml->loadXML($disciplines);
   $elements = $disciplines_xml->getElementsByTagName('disciplines');
@@ -137,18 +134,17 @@ function if_events_mobile () {
      $options_dis[$id] = $value;
   }
   //PAYS
-  $urlp = 'http://api.institutfrancais.com/lib/php/api/getCountry.php';
-  $pays = file_get_contents($urlp);
+  $pays = file_get_contents( get_template_directory() . '/inc/events/xml/getCountry.xml' );
+  
+  if(!$pays) { $msg = '<div class="warning">' . __("Please check if <i style=\"color:red;font-family:monospace;\">/iftheme/inc/events/xml/getCountry.xml exist. If not create one empty, it should be on next cron run", 'iftheme') . '</div>'; }
+
   //Uncomment to use curl if needed
 /*
-  if(!$disciplines) {
+  if(!pays) {
     //cf. functions.php for info
-    $disciplines = curl_get($urlp);
+    $pays = curl_get($urlp);
   }
 */
-  if(!$pays) { 
-    $msg = '<div class="warning">' . __("You must ask your server's administrator if the function <i style=\"color:red\">file_get_contents()</i> can be used without limitation", 'iftheme') . '</div>'; 
-  }
   //if pays ok
   $pays_xml = new DomDocument(); // Instanciation de la classe DomDocument : création d'un nouvel objet
   $pays_xml->loadXML($pays);
@@ -163,7 +159,7 @@ function if_events_mobile () {
   }
 ?>
     <div class="if-meta">
-<script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=false"></script>
+<script type="text/javascript" src="//maps.google.com/maps/api/js?sensor=false"></script>
 <script type="text/javascript">
   function googleMaps (lat, lng, zoom) {
     geocoder = new google.maps.Geocoder();

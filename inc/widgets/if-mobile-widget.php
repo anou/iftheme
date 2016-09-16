@@ -22,7 +22,7 @@ class If_Mobile extends WP_Widget {
 		);
 // 		$this->WP_Widget('ifmobile-widget', __('Institut Français Mobile', 'iftheme'), $widget_ops, $control_ops);
     parent::__construct( 
-        'ifmobile-' . '-widget' , 
+        'ifmobile-widget' , 
         __('Institut Français Mobile', 'iftheme'), 
         $widget_ops, 
         $control_ops 
@@ -87,9 +87,13 @@ class If_Mobile extends WP_Widget {
 		<div class="ifmobile-content">
   		<p><?php printf(__('Download IFmobile app to get notified about all the events of the <strong>Institut français %s </strong>', 'iftheme'), get_bloginfo('description'));?></p>
     		<?php $lz = $instance ? $instance['links'] : IFMobile_links();
-    		  foreach ($lz as $k => $tab) : ?>
+    		  foreach ($lz as $k => $tab) :
+    		    $classe = 'ifmobile'; 
+    		    if($k==1) $classe = 'apple';
+    		    if($k==2) $classe = 'google';
+    		?>
     		  <?php echo $k == 1 ? '<div class="ifmobile-apps">' : '';?>
-    		    <a href="<?php echo $tab['url'];?>" title="<?php echo $links[$k]['label'];?>" target="_blank">
+    		    <a class="<?php echo $classe;?>" href="<?php echo $tab['url'];?>" title="<?php echo $links[$k]['label'];?>" target="_blank">
       		    
       		    <?php if($k == 0): //IFMOBILE webpage ?><img src="<?php echo get_bloginfo('stylesheet_directory') . '/inc/images/ifmobile-widget.png'?>" alt="IFmobile" /><?php printf(__('To know more about %s', 'iftheme'), $links[$k]['label']);?><br /><?php endif; ?>
       		    

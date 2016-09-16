@@ -22,7 +22,7 @@ class If_World_Links extends WP_Widget {
 		);
 // 		$this->WP_Widget('ifworldlinks-widget', __('Institut Français links', 'iftheme'), $widget_ops, $control_ops);
     parent::__construct( 
-        'ifworldlinks' . '-widget' , 
+        'ifworldlinks-widget' , 
          __('Institut Français links', 'iftheme'), 
         $widget_ops, 
         $control_ops 

@@ -30,7 +30,7 @@
 			$slides = $part;
 		}
 		
-	} elseif('post' == get_post_type() || 'news' == get_post_type()) { 
+	} elseif('post' == get_post_type() || 'news' == get_post_type() || 'course' == get_post_type()) { 
 
 			$data = apply_filters('if_event_data', get_meta_if_post());
       $news = isset($data['type']) && $data['type'] == 'news' ? true : false;
@@ -40,9 +40,12 @@
 			$end = '<span class="end">' . $data['end'] . '</span>'; 
 			$book = $data['booking'];
 			$town = $data['city']; 
-	} 	
+	} 
 ?>
+<?php if(is_super_admin()):?><span class="debug" style="position:fixed; bottom:0; left:0; background-color: yellow; color:purple;"> single.php </span><?php endif;?>
+
 <div id="content">
+  
 	<?php if ( have_posts() ) while ( have_posts() ) : the_post(); ?>
 		<div id="post-<?php the_ID(); ?>" <?php post_class('post'); ?>>
 
@@ -50,9 +53,10 @@
 				<?php if($start):?><div class="infos-post bxshadow"><?php echo $start ? $start . $end : ''; ?><?php echo $multi && !$news ? ' - ' . get_cat_name($antenna) :  !$news ? ' - ' . $town : '';?></div><?php endif;?>
 				<h1><a href="<?php the_permalink() ?>" title="<?php the_title(); ?>" rel="bookmark"><?php the_title(); ?></a></h1>
 				<small><?php edit_post_link( sprintf(__('Edit this %s', 'iftheme'), get_post_type()) ); ?></small>
+				
 				<?php if ( has_post_thumbnail() ) { echo '<div class="featured-post-img">'; the_post_thumbnail('post-img'); echo '</div>'; } ?>
+
 				<div class="post-content">
-					
 					<?php if(!empty($slides)):?>
 					  <?php foreach($slides as $slide => $values):
 						  		$img = wp_get_attachment_image_src( $values['img'],'partner');
@@ -71,43 +75,37 @@
 				</div><!--#post-meta-->
 			</article>
 
-		<?php if('post' == get_post_type()): ?>
+		<?php if('post' == get_post_type() || 'course' == get_post_type() ): ?>
 		<!-- ADDITIONAL INFOS -->
 			<div class="booking-container add-infos">
 				<h3 class="booking-title"><span class="picto-book"></span><?php _e("Useful informations",'iftheme'); ?></h3>
 				<div class="form-content bxshadow">
-	            <h4><?php echo $data['lieu'];?></h4>
-	            <p class="date-time"><?php echo $start . $end;?> <?php echo $data['time'] != str_replace(' / ', '', $data['end']) ? ' - ' .$data['time'] : '';?></p>
+	            <h4><?php echo $data['lieu']; ?></h4>
+	            <p class="date-time"><?php echo $start . $end;?> <?php echo $data['time'] != str_replace(' / ', '', $data['end']) && $data['time'] ? ' - ' .$data['time'] : '';?></p>
 	            <p>
 	              <?php echo $data['adresse'] ? $data['adresse'].'<br />':'';?>
 	              <?php echo $data['adressebis'] ? $data['adressebis'].'<br />':'';?>
-	              <?php echo $data['zip'] ? $data['zip'] . ' - ':''; ?> <?php echo $data['city'];?> <?php $data['pays'] ? ' - '.$data['pays']:'';?><br />
+	              <?php echo $data['zip'] ? $data['zip'] . ' - ':''; ?> <?php echo $data['city'];?> <?php //echo $data['pays'] ? ' <br /> '.$data['pays']:'';?><br />
 	              <?php echo $data['tel'] ? $data['tel'].'<br />':'';?>
 	              <?php echo $data['event_mail'] ? '<a href="mailto:'. $data['event_mail'] .'">'. $data['event_mail'] .'</a><br />' : '';?>
 	              <?php echo $data['link1'] ? '<a href="'. $data['link1'] .'" target="_blank">'. $data['link1'] .'</a><br />' : '';?>
 	              <?php echo $data['link2'] ? '<a href="'. $data['link2'] .'" target="_blank">'. $data['link2'] .'</a><br />' : '';?>
 	              <?php echo $data['link3'] ? '<a href="'. $data['link3'] .'" target="_blank">'. $data['link3'] .'</a><br />' : '';?>
+	              <?php //echo 'course' == get_post_type() ? '<br /><p><a class="bxshadow" href="#" title="' . __('Subscribe to this course', 'iftheme') . '">' . __('Subscription form', 'iftheme') . '</a></p>' : '';?>
 				</div>
 			</div><!-- #booking-container -->
 		<?php endif;?>
 		<!-- BOOKING FORM -->
-		<?php if($book == 'on'):?>
+		<?php if($book == 'on'): ?>
 			<div class="booking-container">
 				<h3 class="booking-title"><span class="picto-book"></span><?php _e("Booking",'iftheme');?></h3>
-				<div class="form-content bxshadow clearfix">
+				<div class="form-content bxshadow">
 					<?php echo get_booking_form(); ?>
 				</div>
 			</div><!-- #booking-container -->
 		<?php endif;?>
 			
 		</div><!-- #post-## -->
-
-		<!--
-		<div class="newer-older">
-			<p class="older"><?php //previous_post_link('%link', '&laquo; Previous post') ?></p>
-			<p class="newer"><?php //next_post_link('%link', 'Next Post &raquo;') ?></p>
-		</div>
-		--><!--.newer-older-->
 		
 		<?php //comments_template( '', true ); ?>
 
@@ -117,23 +115,25 @@
 		?>
 		<script type="text/javascript">
 		  var lang = (typeof(icl_lang) != "undefined" && icl_lang !== null) ? icl_lang : bInfo['bLang'].substr(0,2); //TODO: check if bInfo['bLang'] is construct like this xx-XX...
-		  moment.lang(lang);
+		  var startDate = <?php echo $raw_data['start'];?>, endDate = <?php echo $raw_data['end'];?>;
+
+		  moment.locale(lang);
 		  
-		  var startYear = new Date(<?php echo $raw_data['start'];?>*1000).getFullYear();
-		  var endYear = new Date(<?php echo $raw_data['end'];?>*1000).getFullYear();
+		  var startYear = new Date(startDate*1000).getFullYear();
+		  var endYear = new Date(endDate*1000).getFullYear();
 			var thisPostStart = jQuery("#post-<?php the_ID();?> .start");
 			var thisPostEnd = jQuery("#post-<?php the_ID();?> .end");
 			
-			var start = moment.unix(<?php echo $raw_data['start'];?>).format('ll');
-			var end = moment.unix(<?php echo $raw_data['end'];?>).format('ll');
+			var start = moment.unix(startDate).utc().format('ll');
+			var end = moment.unix(endDate).utc().format('ll');
 			var time = '<?php echo $raw_data['time'];?>';
 			
-			start = start.replace(startYear, '');
-			thisPostStart.text(start);
-			end = end.replace(endYear, '');
-			end = end !== start ? end : time;
+			start = start.replace(startYear, '');//remove year from start
+			thisPostStart.text(start);//display start
+			end = end.replace(endYear, '');//remove year from end
+			end = end !== start ? end : time;//if no end, display time
 
-			if (end) if(end !== start) thisPostEnd.text(' / '+end);
+			if (end) if(end !== start) thisPostEnd.text(' / '+end);//display end and prepend a / (slash)
 			
 		</script>
 

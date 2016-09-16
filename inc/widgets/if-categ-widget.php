@@ -22,7 +22,7 @@ class If_Antenna_Categ extends WP_Widget {
 		);
 // 		$this->WP_Widget('ifantennacateg-widget', __("Antenna's categories", 'iftheme'), $widget_ops, $control_ops);
     parent::__construct( 
-        'ifantennacateg' . '-widget' , 
+        'ifantennacateg-widget' , 
         __("Antenna's categories", 'iftheme'), 
         $widget_ops, 
         $control_ops 

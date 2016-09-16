@@ -2,6 +2,7 @@
   //setlocale(LC_ALL, get_locale());
   $q = $wp_query->query;
 ?>
+<!-- Archive -->
 <div id="content">
 	<h1 id="titledate">
 		<?php if ( is_day() ) : /* if the daily archive is loaded */ ?>
@@ -22,7 +23,7 @@
 	  year = year ? true : false;
 
     var lang = (typeof(icl_lang) != "undefined" && icl_lang !== null) ? icl_lang : bInfo['bLang'].substr(0,2); //TODO: check if bInfo['bLang'] is construct like this xx-XX...
-	  moment.lang(lang);
+	  moment.locale(lang);
 	  
 	  var titleDate = jQuery('#titledate').text();
     titleDate = month ? '1 '+titleDate  : titleDate;
@@ -37,7 +38,7 @@
   </script>
 
 	<?php if (have_posts()) : while (have_posts()) : the_post(); ?>
-			<article class="post-single clearfix" id="post-<?php the_ID();?>">
+			<article class="clearfix post-single" id="post-<?php the_ID();?>">
 				<?php //prepare data 
 					$pid = get_the_ID();
 					//$pid =$post->ID;
@@ -46,7 +47,10 @@
 					$end = $data['end'];
 					$antenna_id = $data['antenna_id']; 
 				?>
-				<?php if ( has_post_thumbnail() ) { /* loades the post's featured thumbnail, requires Wordpress 3.0+ */ echo '<div class="featured-thumbnail">'; the_post_thumbnail('listing-post'); echo '</div>'; } ?>
+		<?php if ( has_post_thumbnail() ): ?>
+				  <div class="featured-thumbnail"><?php echo the_post_thumbnail('listing-post'); ?></div>
+				  <div class="list-post-infos">
+		<?php endif; ?>
 				<div class="top-block bxshadow">
 					<div class="date-time">
 						<?php if($start):?><span class="start"><?php echo $start;?></span><span class="end"><?php echo $end;?></span><?php endif;?><span class="post-antenna"><?php if('page' == get_post_type()){ bloginfo('description'); } else { echo ' - '.get_cat_name($antenna_id);}?></span>
@@ -54,15 +58,15 @@
 					<h2><a href="<?php the_permalink() ?>" title="<?php the_title(); ?>" rel="bookmark"><?php the_title(); ?></a></h2>
 				</div>
 				<div class="post-excerpt">
-					<?php the_excerpt(); /* the excerpt is loaded to help avoid duplicate content issues */ ?>
+					<?php the_excerpt(); ?>
 				</div>
 				<div class="post-meta"><?php the_category(', ') ?></div>
-		
+		<?php if ( has_post_thumbnail() ): ?></div><?php endif; ?>
 			</article><!--.post-single-->
 
 			<?php //prepare data for dates in JS 
 			   $raw_data = get_meta_raw_if_post($pid);
-			?>
+	   if( isset($raw_data['start']) && $raw_data['start'] ) : ?>
 			<script type="text/javascript">
 			  
 			  var startYear = new Date(<?php echo $raw_data['start'];?>*1000).getFullYear();
@@ -83,7 +87,9 @@
   			
 			</script>
 
-	<?php endwhile; else:  ?>
+	<?php endif; ?>
+	<?php endwhile; ?>
+	<?php else:  ?>
 		<div class="no-results">
 			<p><?php _e('No results', 'iftheme'); ?></p>
 			<?php get_search_form(); /* outputs the default Wordpress search form */ ?>

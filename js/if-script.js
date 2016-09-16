@@ -44,7 +44,7 @@ $(document).ready(function() {
 	    //cf. http://slidesjs.com/ for all options
 	    $('#slides').slides({
 			preload: true,
-			preloadImage: 'http://'+window.location.hostname+'/wp-content/themes/iftheme/images/slide/loading.gif',
+			preloadImage: '//'+window.location.hostname+'/wp-content/themes/iftheme/images/slide/loading.gif',
 			play: 7000,
 			pause: 2500,
 			hoverPause: true,
@@ -63,7 +63,7 @@ $(document).ready(function() {
 				$('.pagination').animate({ right: animRight},200);
 			},
 			slidesLoaded: function() {
-				$('.caption').animate({right:0},200);//console.log($('.caption').outerWidth());
+				$('.caption').animate({right:0},200);
 				var animRightStart = $('.caption').outerWidth();
 
 				if(windowWidth <= 767) { animRightStart = animRightStart+210; }
@@ -84,7 +84,7 @@ $(document).ready(function() {
 	        effect: 'fade',
 	        pagination: false,
 			preload: true,
-			preloadImage: 'http://'+window.location.hostname+'/wp-content/themes/iftheme/images/slide/loading.gif',
+			preloadImage: '//'+window.location.hostname+'/wp-content/themes/iftheme/images/slide/loading.gif',
 			play: 7000,
 			pause: 2500,
 			hoverPause: true,
@@ -109,7 +109,7 @@ $(document).ready(function() {
 			$(this).next('.top-block').css({'float':'left','width':'400px','margin-bottom':'15px'});
 			var newH = $(this).closest('article').outerHeight();
 			if($(this).height() < newH ) {
-				$(this).css('min-height',newH+(newH/3));
+				$(this).css('min-height',newH );
 				
 			} else if($(this).height() >= newH ) {
 				$(this).closest('article').height($(this).height());
@@ -124,11 +124,11 @@ $(document).ready(function() {
 	  
  
 if (windowWidth > 767){
-  if($('nav#antennes ul li.current-cat ul.children').length || $('nav#antennes ul li.current-cat-parent ul.children').length) {
-    $('ul li.current-cat-parent ul.children, ul li.current-cat ul.children').appendTo('nav#antennes').show();
-    $('ul li.current-cat-parent ul.children, ul li.current-cat ul.children').show();
+  if( $('nav#antennes ul li.current-cat ul.children').length || $('nav#antennes ul li.current-cat-parent ul.children').length || $('nav#antennes ul li.current-cat-ancestor ul.children').length) {
+    $('ul li.current-cat-parent ul.children, ul li.current-cat ul.children, ul li.current-cat-ancestor ul.children').appendTo('nav#antennes').show();
+    $('ul li.current-cat-parent ul.children, ul li.current-cat ul.children, ul li.current-cat-ancestor ul.children').show();
   }
-  if( $('.children li').hasClass('current-cat-parent')) {
+  if( $('.children li').hasClass('current-cat-parent') ) {
     $('ul li.current-cat-parent ul.children').appendTo('nav#antennes').show();
     $('.children li.current-cat-parent').closest('ul').closest('.cat-item').addClass('current-cat-parent');
     $('.children li.current-cat-parent').closest('ul.children').show();

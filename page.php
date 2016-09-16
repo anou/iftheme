@@ -5,7 +5,7 @@
 		<div id="post-<?php the_ID(); ?>" <?php post_class('page'); ?>>
 			<article>
 				<h1><?php the_title(); ?></h1>
-				<small><?php edit_post_link(__('Edit this entry', 'iftheme')); ?></small>
+				<small><?php edit_post_link(__('Edit this page', 'iftheme')); ?></small>
 				<?php if ( has_post_thumbnail() ) { echo '<div class="featured-thumbnail-page">'; the_post_thumbnail('categ-img'); echo '</div>'; } ?>
 	
 				<div class="post-content page-content">

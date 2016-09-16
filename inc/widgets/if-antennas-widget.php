@@ -22,7 +22,7 @@ class If_Antennas extends WP_Widget {
 		);
 		//$this->WP_Widget('ifantennas-widget', __('Local antennas', 'iftheme'), $widget_ops, $control_ops);
     parent::__construct( 
-        'ifantennas' . '-widget' , 
+        'ifantennas-widget' , 
         __('Local antennas', 'iftheme'), 
         $widget_ops, 
         $control_ops 

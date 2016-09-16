@@ -99,7 +99,8 @@ $inscription = array(
 );
 $booking = new AT_Meta_Box($inscription);	
 $booking->addCheckbox('if_book_enable',array('name'=> __('Open booking','iftheme'), 'desc'=>__("By checking this box, you enable the booking for this event.",'iftheme')));
-$booking->addText('if_book_mail',array('name'=> __('Email','iftheme'), 'desc'=>__("Email to whom send the booking",'iftheme')));
+$booking->addCheckbox('if_book_form_enable',array('std' => '', 'name'=> __('Hide contact form','iftheme'), 'desc'=>__("By checking this box, you hide the contact form for this event.",'iftheme')));
+$booking->addText('if_book_mail',array('name'=> __('Email','iftheme'), 'desc'=>__("Email to whom send the booking.",'iftheme')));
 $booking->addWysiwyg('if_book_desc',array('name'=> __('Details','iftheme'), 'desc'=>__("Some information you want to add at the top of the booking form",'iftheme'), 'style' => 'height:150px'));
 $booking->Finish();
 //end INSCRIPTION

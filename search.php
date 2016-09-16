@@ -31,15 +31,15 @@
 			?>
 			<script type="text/javascript">
 			  var lang = (typeof(icl_lang) != "undefined" && icl_lang !== null) ? icl_lang : bInfo['bLang'].substr(0,2); //TODO: check if bInfo['bLang'] is construct like this xx-XX...
-			  moment.lang(lang);
+        moment.locale(lang);
 			  
 			  var startYear = new Date(<?php echo $raw_data['start'];?>*1000).getFullYear();
 			  var endYear = new Date(<?php echo $raw_data['end'];?>*1000).getFullYear();
   			var thisPostStart = jQuery("#post-<?php the_ID();?> .start");
   			var thisPostEnd = jQuery("#post-<?php the_ID();?> .end");
   			
-  			var start = moment.unix(<?php echo $raw_data['start'];?>).format('ll');
-  			var end = moment.unix(<?php echo $raw_data['end'];?>).format('ll');
+  			var start = moment.unix(<?php echo $raw_data['start'];?>).utc().format('ll');
+  			var end = moment.unix(<?php echo $raw_data['end'];?>).utc().format('ll');
   			var time = '<?php echo $raw_data['time'];?>';
   			
   			start = start.replace(startYear, '');

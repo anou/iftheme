@@ -20,12 +20,11 @@ function if_init() {
 	if (!is_admin()) {
 /*
 		wp_deregister_script('jquery');
-		wp_register_script('jquery', ("http://ajax.googleapis.com/ajax/libs/jquery/1.7/jquery.min.js"), false);
+		wp_register_script('jquery', ("//ajax.googleapis.com/ajax/libs/jquery/1.7/jquery.min.js"), false);
 		wp_enqueue_script('jquery');
 */
 		wp_enqueue_script('masonry', get_bloginfo('stylesheet_directory') . '/js/jquery.masonry.min.js', array('jquery'));
-		wp_enqueue_script('moment', get_bloginfo('stylesheet_directory') . '/js/moment.min.js', array('jquery'));
-		wp_enqueue_script('langs', get_bloginfo('stylesheet_directory') . '/js/langs.min.js', array('moment'));
+		wp_enqueue_script('moment', get_bloginfo('stylesheet_directory') . '/js/moment-with-locales.js', array('jquery'));
 
 		//RTL languages
 		if ( is_rtl() ) {
@@ -66,60 +65,60 @@ function iftheme_categtouser_error_notice($raw = false){
 add_action( 'after_setup_theme', 'iftheme_setup' );
 
 if ( ! function_exists( 'iftheme_setup' ) ):
-/**
- * Sets up theme defaults and registers support for various WordPress features.
- *
- * Note that this function is hooked into the after_setup_theme hook, which runs
- * before the init hook. The init hook is too late for some features, such as indicating
- * support post thumbnails.
- *
- * To override iftheme_setup() in a child theme, add your own iftheme_setup to your child theme's
- * functions.php file.
- *
- * @uses load_theme_textdomain() For translation/localization support.
- * @uses add_editor_style() To style the visual editor.
- * @uses add_theme_support() To add support for post thumbnails, automatic feed links, and Post Formats.
- * @uses register_nav_menus() To add support for navigation menus.
- * @uses add_custom_background() To add support for a custom background.
- * @uses add_custom_image_header() To add support for a custom header.
- * @uses register_default_headers() To register the default custom header images provided with the theme.
- * @uses set_post_thumbnail_size() To set a custom post thumbnail size.
- *
- */
-function iftheme_setup() {
-
-	/* Make Institut Français available for translation.
-	 * Translations can be added to the /languages/ directory.
-	 */
-	load_theme_textdomain( 'iftheme', get_template_directory() . '/languages' );
-
-	// Load up our theme options page and related code.
-	require( get_template_directory() . '/inc/theme-options.php' );
-	
-	// Load up our post meta box .
-	require( get_template_directory() . '/inc/events/if-events.php' );
-
-	//include user-role antenna file
-	require_once( get_template_directory() . "/inc/if-user.php");
-
-	//include if widgets
-	require_once( get_template_directory() . "/inc/widgets/if-world-widget.php");
-	require_once( get_template_directory() . "/inc/widgets/if-categ-widget.php");
-	require_once( get_template_directory() . "/inc/widgets/if-partners-widget.php");
-	require_once( get_template_directory() . "/inc/widgets/if-antennas-widget.php");
-	require_once( get_template_directory() . "/inc/widgets/if-mobile-widget.php");
-	require_once( get_template_directory() . "/inc/widgets/if-nopadding-widget.php");
-// 	require_once( get_template_directory() . "/inc/widgets/calendar/if-calendar-widget.php"); @TODO: dev the widget with new class calendar
-
-	//include antenna categories widget
-	require_once( get_template_directory() . "/inc/editor-styles/editor-styles.php");
-	
-	//include the main classes file
-	// for category and post customization
-	require_once( get_template_directory() . "/inc/theme-classes.php");
-	require_once( get_template_directory() . "/inc/theme-taxo-classes.php");
-
-}
+  /**
+   * Sets up theme defaults and registers support for various WordPress features.
+   *
+   * Note that this function is hooked into the after_setup_theme hook, which runs
+   * before the init hook. The init hook is too late for some features, such as indicating
+   * support post thumbnails.
+   *
+   * To override iftheme_setup() in a child theme, add your own iftheme_setup to your child theme's
+   * functions.php file.
+   *
+   * @uses load_theme_textdomain() For translation/localization support.
+   * @uses add_editor_style() To style the visual editor.
+   * @uses add_theme_support() To add support for post thumbnails, automatic feed links, and Post Formats.
+   * @uses register_nav_menus() To add support for navigation menus.
+   * @uses add_custom_background() To add support for a custom background.
+   * @uses add_custom_image_header() To add support for a custom header.
+   * @uses register_default_headers() To register the default custom header images provided with the theme.
+   * @uses set_post_thumbnail_size() To set a custom post thumbnail size.
+   *
+   */
+  function iftheme_setup() {
+  
+  	/* Make Institut Français available for translation.
+  	 * Translations can be added to the /languages/ directory.
+  	 */
+  	load_theme_textdomain( 'iftheme', get_template_directory() . '/languages' );
+  
+  	// Load up our theme options page and related code.
+  	require( get_template_directory() . '/inc/theme-options.php' );
+  	
+  	// Load up our post meta box .
+  	require( get_template_directory() . '/inc/events/if-events.php' );
+  
+  	//include user-role antenna file
+  	require_once( get_template_directory() . "/inc/if-user.php");
+  
+  	//include if widgets
+  	require_once( get_template_directory() . "/inc/widgets/if-world-widget.php");
+  	require_once( get_template_directory() . "/inc/widgets/if-categ-widget.php");
+  	require_once( get_template_directory() . "/inc/widgets/if-partners-widget.php");
+  	require_once( get_template_directory() . "/inc/widgets/if-antennas-widget.php");
+  	require_once( get_template_directory() . "/inc/widgets/if-mobile-widget.php");
+  	require_once( get_template_directory() . "/inc/widgets/if-nopadding-widget.php");
+  // 	require_once( get_template_directory() . "/inc/widgets/calendar/if-calendar-widget.php"); @TODO: dev the widget with new class calendar
+  
+  	//include antenna categories widget
+  	require_once( get_template_directory() . "/inc/editor-styles/editor-styles.php");
+  	
+  	//include the main classes file
+  	// for category and post customization
+  	require_once( get_template_directory() . "/inc/theme-classes.php");
+  	require_once( get_template_directory() . "/inc/theme-taxo-classes.php");
+  
+  }
 endif; // iftheme_setup
 
 /*
@@ -148,20 +147,17 @@ define('IF_CATEGORY_FIX_FIELDS', 'my_category_fields_option');
 
 // your fields (the form)
 function if_fix_category_fields($tag) {
-      global $current_user;
+  global $current_user;
   $current_user = wp_get_current_user();
+  $tag_extra_fields = get_option(IF_CATEGORY_FIX_FIELDS); ?>
 
-    $tag_extra_fields = get_option(IF_CATEGORY_FIX_FIELDS);
-    
-    ?>
+    <table class="form-table">
+      <tr class="form-field">
+          <td><input name="if_fix_field" id="if_fix_field" type="hidden" aria-required="false" value="<?php echo $current_user->ID; ?>" />
+      </tr>
+    </table>
 
-<table class="form-table">
-        <tr class="form-field">
-            <td><input name="if_fix_field" id="if_fix_field" type="hidden" aria-required="false" value="<?php echo $current_user->ID; ?>" />
-        </tr>
-</table>
-
-    <?php
+<?php
 }
 add_filter('edit_category_form', 'if_fix_category_fields');
 
@@ -463,7 +459,6 @@ function get_root_category($category_id) {
 	//$parent_cats = get_category_parents($category_id);
 	//returns cat's slug
 	$parent_cats = get_category_parents($category_id, false, '/', true);
-//if( is_super_admin() ) d($parent_cats);
 	if(!is_object($parent_cats)) {
 	  $split_arr = explode('/', $parent_cats);
 	  //$return = get_cat_id($split_arr[0]);
@@ -551,8 +546,10 @@ function get_current_parent_categ(){
 	return	$current_id;
 }
 
-//get meta data from category
-function get_categ_data($cid){
+/*
+ * get meta data from category
+ */
+function get_categ_data( $cid ){
 	$data['img'] = get_term_meta($cid,'categ_img');
 	$data['children'] = get_term_meta($cid,'categ_children');
 	$data['posts'] = get_term_meta($cid,'categ_posts');
@@ -606,13 +603,13 @@ function load_custom_wp_admin_style(){
   wp_register_style( 'custom_wp_admin_css', get_bloginfo('stylesheet_directory') . '/inc/if-admin-style.css', false, '1.0.0' );
   wp_enqueue_style( 'custom_wp_admin_css' );
   wp_register_script( 'custom_wp_admin_js', get_bloginfo('stylesheet_directory') . '/inc/if-admin-script.js', false, '1.0.0' );
-  wp_enqueue_script( 'custom_wp_admin_js' );
   
   $test_user_categ = iftheme_categtouser_error_notice(true);
   if($test_user_categ){ 
     $params = array('id' => 'submit');
     wp_localize_script( 'custom_wp_admin_js', 'ifAdmin', $params );
   }
+  wp_enqueue_script( 'custom_wp_admin_js' );
 }
 add_action('admin_enqueue_scripts', 'load_custom_wp_admin_style');
 
@@ -657,17 +654,34 @@ function if_scripts() {
   wp_localize_script( $script, 'ifvarJS', $varForJS );
 	
 	wp_enqueue_script('if-ajax',	get_template_directory_uri() . '/inc/calendar/ajax.js');
+	
+	//custom CSS. @todo: add settings for this file to be loaded/included
+  wp_register_style( 'custom_css', get_bloginfo('stylesheet_directory') . '/css/custom.css' );
+  wp_enqueue_style( 'custom_css' );
+
 }
 add_action('wp_enqueue_scripts', 'if_scripts');
 
 
-//columns for posts
+/**
+ * columns for posts (if events)
+ */
 function if_manage_post_columns( $columns ) {
-  //unset($columns['date']);
+  //hide default post date
+  unset($columns['date']);
+  //hide tags column
+  unset($columns['tags']);
+  //add our custom start and end dates to posts admin lists
+  $columns['if_startdate'] = __('Start Date','iftheme');
+  $columns['if_enddate'] = __('End Date','iftheme');
+  
+  $columns['date'] = __('Date');
   return $columns;
 }
 
-//columns for categories
+/**
+ * columns for categories
+ */
 function if_manage_categ_columns($columns) {
 	//hide categ description column
 	unset($columns['description']);
@@ -678,7 +692,58 @@ function if_manage_categ_columns($columns) {
 	return $columns;
 }
 
+/**
+ * Custom column for posts (if events)
+ */
+function manage_post_custom_fields($column_name, $post_id) {
+  switch ( $column_name ) {
+  	case 'if_startdate':
+  		echo date_i18n( get_option( 'date_format' ), get_post_meta( $post_id, 'if_events_startdate', true ) ); 
+ 		break;
+  	case 'if_enddate':
+  		echo date_i18n( get_option( 'date_format' ), get_post_meta( $post_id, 'if_events_enddate', true ) ); 
+ 		break;
+  }	
+}
+add_action('manage_posts_custom_column','manage_post_custom_fields',10,2);
 
+/**
+ * makes custom columns for posts sortable
+ */
+function sortable_if_dates_column( $columns ) {
+  $columns['if_startdate'] = 'startdate';
+  $columns['if_enddate'] = 'enddate';
+
+  //To make a column 'un-sortable' remove it from the array
+  //unset($columns['date']);
+
+  return $columns;
+}
+add_filter( 'manage_edit-post_sortable_columns', 'sortable_if_dates_column' );
+
+/**
+ * Tell WP on what metakey sort IF Dates columns
+ */
+function if_dates_orderby( $query ) {
+  if( ! is_admin() )
+    return;
+
+  $orderby = $query->get( 'orderby');
+
+  if( 'startdate' == $orderby ) {
+    $query->set('meta_key','if_events_startdate');
+    $query->set('orderby','meta_value_num');
+  }
+  if( 'enddate' == $orderby ) {
+    $query->set('meta_key','if_events_enddate');
+    $query->set('orderby','meta_value_num');
+  }
+}
+add_action( 'pre_get_posts', 'if_dates_orderby' );
+
+/**
+ * Custom column for categories
+ */
 function manage_category_custom_fields($val, $column_name, $term_id) {
 	if ($column_name == 'categ_image') {
 		$cat_data = get_term_meta($term_id,'categ_img');
@@ -687,6 +752,27 @@ function manage_category_custom_fields($val, $column_name, $term_id) {
 	}
 }
 add_action('manage_category_custom_column','manage_category_custom_fields',10,3);
+
+/**
+ * Show sticky posts in posts columns
+ */
+/*
+function display_posts_stickiness( $column, $post_id ) {
+  if ($column == 'sticky'){
+    echo '<input type="checkbox" disabled', ( is_sticky( $post_id ) ? ' checked' : ''), '/>';
+  }
+}
+add_action( 'manage_posts_custom_column', 'display_posts_stickiness', 10, 2 );
+*/
+
+/* Add custom column to post list */
+/*
+function add_sticky_column( $columns ) {
+    return array_merge( $columns, array( 'sticky' => __( 'Sticky', 'iftheme' ) ) );
+}
+add_filter( 'manage_posts_columns', 'add_sticky_column' );
+*/
+
 
 function if_restrict_categories($categories) {
 	  global $current_user;
@@ -754,25 +840,34 @@ add_action( 'admin_menu', 'if_remove_meta_boxes' );
 function if_display_posts_listing ( $query ) {
 
 	if( $query->is_main_query() && is_category() && !is_admin() ) {
-	
-	$value = mktime(23, 59, 59, date('m'), date('d')-1, date('Y')); //yesterday
-	$value2 = time(); //last hour of the last past 24 hours
-	$value3 = mktime(0,0,0,date("m"),date("d")+1,date("Y")); //tomorrow
-	$compare = '>=';
-	$compare2 = '<=';
-	
-  $meta_query[] =
-		array(
-		   'key' => 'if_events_enddate',
-		   'value' => strtotime('yesterday'),
-		   'compare' => $compare,
-		   'type' => 'numeric'
-		  );
-		
+
+  	$value = mktime(23, 59, 59, date('m'), date('d')-1, date('Y')); //yesterday
+  	$value2 = time(); //last hour of the last past 24 hours
+  	$value3 = mktime(0,0,0,date("m"),date("d")+1,date("Y")); //tomorrow
+  	$compare = '>=';
+  	$compare2 = '<=';
+  	
+    $meta_query =
+      array(
+        'relation' => 'OR',
+    		array(
+          'key' => 'if_events_enddate',
+          'value' => strtotime('yesterday'),
+          'compare' => $compare,
+          'type' => 'numeric'
+  		  ),
+    		array(
+          'key' => '_courses_enddate',
+          'value' => strtotime('yesterday'),
+          'compare' => $compare,
+          'type' => 'numeric'
+  		  ),
+      );
 		$query->set( 'meta_query', $meta_query );
 		$query->set( 'orderby', 'meta_value_num' );
 		$query->set( 'meta_key', 'if_events_startdate' );
 		$query->set( 'order', 'ASC' );
+		$query->set( 'post_type', array( 'post', 'course' ) );
 	}
 }
 add_action( 'pre_get_posts', 'if_display_posts_listing' );
@@ -850,30 +945,39 @@ function get_meta_if_post( $pid = '', $archive = false ){
 	global $post;
 	$pid = !$pid ? $post->ID : $pid;
   $data['post_id'] = $pid;//for ref.
+  $type = get_post_type( $pid );
+
+  //get prefix
+  switch ($type) {
+    case 'course':
+      $prefix = '_courses';
+    break;  
+    default: $prefix = 'if_events';
+  }
 	
 	setlocale(LC_ALL, get_locale());
 
 	$meta = get_post_meta($pid);
-	
 	$post_categs = wp_get_post_categories($pid);
 	$top_categ = get_root_category($post_categs[0]);//getting top category
   $data['antenna_id'] = $top_categ;
 	
-	$start = isset($meta['if_events_startdate']) ? $meta['if_events_startdate'][0] : null;
-	$end = isset($meta['if_events_enddate']) ? $meta['if_events_enddate'][0] : null;
-	
+	$start = isset($meta[$prefix . '_startdate']) ? $meta[$prefix . '_startdate'][0] : null;
+	$end = isset($meta[$prefix . '_enddate']) ? $meta[$prefix . '_enddate'][0] : null;
 	$date_format = $archive ? '%d %b %Y' : '%d %b';
 		
 	$end = $end <= $start ? false : $end;
 
-	$end = !empty($end) ? utf8_encode(strftime($date_format,$end)) : null;
-	$time = isset($meta['if_events_time']) ? $meta['if_events_time'][0] : null;
-	
-	$date_format = !$end || ( strftime('%Y',$end) == strftime('%Y',$start) )? $date_format : '%d %b';
+	$date_format = !$end || ( strftime('%Y',$end) == strftime('%Y',$start) ) ? $date_format : '%d %b';
 
 	$data['start'] = !empty($start) ? utf8_encode(strftime($date_format,$start)) : null;
+	
+  $end = !empty($end) ? utf8_encode(strftime($date_format,$end)) : null;
+	$time = isset($meta[$prefix . '_time']) ? $meta[$prefix . '_time'][0] : null;
+
 	$data['end'] = !$end ? (strlen($time) ? ' / '.$time : '') : ' / '.$end;  
-	$data['time'] = $time;
+
+  $data['time'] = $time;
 	
 	//add featured img id if exist
 	$img = isset($meta['_thumbnail_id']) ?$meta['_thumbnail_id'] : array();
@@ -883,6 +987,7 @@ function get_meta_if_post( $pid = '', $archive = false ){
 	$book =  isset($meta['if_book_enable']) ? $meta['if_book_enable'][0] : null;
 	if($book == 'on'){
 		$data['booking'] = $book;
+		$data['book_form_off'] = isset($meta['if_book_form_enable']) ? $meta['if_book_form_enable'][0] : false;
 		$data['book_mail'] = isset($meta['if_book_mail']) ? $meta['if_book_mail'][0] : null;
 		$data['book_desc'] = isset($meta['if_book_desc']) ? $meta['if_book_desc'][0] : null;
 	} else {
@@ -890,40 +995,60 @@ function get_meta_if_post( $pid = '', $archive = false ){
 	}
 	
 	//infos (about)
-	$data['disciplines'] = isset($meta['if_events_disciplines']) ? unserialize($meta['if_events_disciplines'][0]) : null;
-	$data['lieu'] = isset($meta['if_events_lieu']) ? $meta['if_events_lieu'][0] : null;
-	$data['adresse'] = isset($meta['if_events_adresse']) ? $meta['if_events_adresse'][0] : null;
-	$data['adressebis'] = isset($meta['if_events_adresse_bis']) ? $meta['if_events_adresse_bis'][0] : null;
-	$data['zip'] = isset($meta['if_events_zip']) ? $meta['if_events_zip'][0] : null;
-	$data['city'] = isset($meta['if_events_city']) ? $meta['if_events_city'][0] : null;
+	$data['disciplines'] = isset($meta[$prefix . '_disciplines']) ? unserialize($meta[$prefix . '_disciplines'][0]) : null;
+	$data['lieu'] = isset($meta[$prefix . '_lieu']) ? $meta[$prefix . '_lieu'][0] : null;
+	$data['adresse'] = isset($meta[$prefix . '_adresse']) ? $meta[$prefix . '_adresse'][0] : null;
+	$data['adressebis'] = isset($meta[$prefix . '_adresse_bis']) ? $meta[$prefix . '_adresse_bis'][0] : null;
+	$data['zip'] = isset($meta[$prefix . '_zip']) ? $meta[$prefix . '_zip'][0] : null;
+	$data['city'] = isset($meta[$prefix . '_city']) ? $meta[$prefix . '_city'][0] : null;
 	
-	$data['pays'] = isset($meta['if_events_pays']) ? $meta['if_events_pays'][0] : null;//TODO check code ISO to print Country
+	$data['pays'] = isset($meta[$prefix . '_pays']) ? $meta[$prefix . '_pays'][0] : null;//TODO check code ISO to print Country
 	
-	$data['longitude'] = isset($meta['if_events_long']) ? $meta['if_events_long'][0] : null;
-	$data['latitude'] = isset($meta['if_events_lat']) ? $meta['if_events_lat'][0] : null;
-	$data['schedule'] = isset($meta['if_events_hour']) ? $meta['if_events_hour'][0] : null;//field schedule. not used for now.
-	$data['tel'] = isset($meta['if_events_tel']) ? $meta['if_events_tel'][0] : null;
-	$data['event_mail'] = isset($meta['if_events_mmail']) ? $meta['if_events_mmail'][0] : null;
-	$data['link1'] = isset($meta['if_events_link1']) ? $meta['if_events_link3'][0] : null;
-	$data['link2'] = isset($meta['if_events_link2']) ? $meta['if_events_link3'][0] : null;
-	$data['link3'] = isset($meta['if_events_link3']) ? $meta['if_events_link3'][0] : null;
+	$data['longitude'] = isset($meta[$prefix . '_long']) ? $meta[$prefix . '_long'][0] : null;
+	$data['latitude'] = isset($meta[$prefix . '_lat']) ? $meta[$prefix . '_lat'][0] : null;
+	$data['schedule'] = isset($meta[$prefix . '_hour']) ? $meta[$prefix . '_hour'][0] : null;//field schedule. not used for now.
+	$data['tel'] = isset($meta[$prefix . '_tel']) ? $meta[$prefix . '_tel'][0] : null;
+	$data['event_mail'] = isset($meta[$prefix . '_mmail']) ? $meta[$prefix . '_mmail'][0] : null;
+	$data['link1'] = isset($meta[$prefix . '_link1']) ? $meta[$prefix . '_link3'][0] : null;
+	$data['link2'] = isset($meta[$prefix . '_link2']) ? $meta[$prefix . '_link3'][0] : null;
+	$data['link3'] = isset($meta[$prefix . '_link3']) ? $meta[$prefix . '_link3'][0] : null;
 
 	return $data;
 }
-//get meta data of slider
-function get_meta_slider($pid=''){
+/**
+ * get meta data for slider
+ */
+function get_meta_slider( $pid = '' ){
 	global $post;
 	$pid = !$pid ? $post->ID : $pid;
+
+  //default $data tab
+  $data = array(
+    'antenna' => array(),
+    'frontpage' => array(),
+    'slides' => array(
+      'slide-0' => array(
+        'slide_title' => __('No images found in your slider', 'iftheme'),
+        'url_img_slide' => '',
+        'image_slide' => array(
+          'id' => false,
+          'url' => false,
+        ), 
+      ),
+    ),
+  );
 		
 	$data['antenna'] = get_post_meta($pid, 'slide_antenna', false);
 	$data['frontpage'] = get_post_meta($pid, 'is_country', false);
 	
 	//imgz
 	$tab_imgz = get_post_meta($post->ID,'re_slider');
-	
-	foreach($tab_imgz[0] as $k => $vals){
-		$data['slides']['slide-'.$k] = $vals;
-	}
+  if( !empty($tab_imgz) ) {
+  	foreach($tab_imgz[0] as $k => $vals){
+  		$data['slides']['slide-'.$k] = $vals;
+  	}
+  }
+
 	return $data;
 }
 //get meta data of partners
@@ -948,18 +1073,23 @@ function get_meta_partners($pid=''){
 }
 
 //for use in php
-function get_meta_raw_if_post( $pid = '' ) {
+function get_meta_raw_if_post( $pid = '' ){
 	global $post;
 	$pid = !$pid ? $post->ID : $pid;
 	
+	$type = get_post_type($post);
+	
+	$prefix = ($type == 'course') ? '_courses' : 'if_events';
+	
 	//setlocale(LC_ALL,'LANGUAGE CODE'); =>TODO get the current language code
-	$start = get_post_meta($pid, 'if_events_startdate', false);
+	
+	$start = get_post_meta($pid, $prefix . '_startdate', false);
 	$data['start'] = !empty($start[0]) ? $start[0] : null;
 
-	$end = get_post_meta($pid, 'if_events_enddate', false);
+	$end = get_post_meta($pid, $prefix . '_enddate', false);
 	$data['end'] = !empty($end[0]) ? $end[0] : null;
 	
-	$time = get_post_meta($pid, 'if_events_time', false);
+	$time = get_post_meta($pid, $prefix . '_time', false);
 	/* $data['time'] = !empty($time[0]) && $time[0] != '00:00' ? $time[0] : null; */
 	$data['time'] = !empty($time[0]) ? $time[0] : null;
 	
@@ -974,65 +1104,101 @@ function get_meta_raw_if_post( $pid = '' ) {
 
 //BOOKING FORM FUNCTION
 function get_booking_form() {
+  global $post;
 	$data = get_meta_if_post();
-
 	$sendto = $data['book_mail'];
-	$desc = $data['book_desc'];
-	
-	if(!$sendto) {
-		$msg = '<div class="warning">'. __('You must fill in an email !','iftheme') .' <a href="'. get_edit_post_link() .'">'. __('Edit this post','iftheme') .'</a></div>';
-		return $msg;
-	} else {
-	
-		$msg = '';
-		
-		if ($_POST) {
-			if(empty($_POST['lname'])) {$err_msg .=  __('The <b>Last name</b> field is required.','iftheme') . ' <br/>';}
-			if(empty($_POST['fname'])) {$err_msg .=  __('The <b>First name</b> field is required.','iftheme') . ' <br/>';}
-			if(empty($_POST['bookmail'])) {$err_msg .=  __('The <b>E-mail</b>  field is required.','iftheme') . ' <br/>';} 
-			else if (!is_email($_POST['bookmail'])) {$err_msg .= __('The <b>E-mail name</b> field is invalid.','iftheme') . ' <br/>';}
-	
-			if (empty($_SESSION['captcha']) || strtolower(trim($_REQUEST['captcha'])) != $_SESSION['captcha']) {
-				$err_msg .=  __('Invalid verification code.','iftheme') . ' <br/>';
-			}
-	
-			if(empty($err_msg)) {
-				$mail_body = __('Subcription request to: ') . get_the_title($post->ID) . "\n\n";
-				$mail_body .= $_POST['fname'] . ' ' . $_POST['lname'] . ' (' . $_POST['bookmail'] . ')';
-				if(wp_mail($sendto, __('Subcription from IF Website','iftheme'), $mail_body)) {
-					$valid_msg = __('Your request has been sent.','iftheme') . ' <br/>';
-				}
-			} 
-			
-		}
-	
-		
-		$form = '';
-		
-		$form .= $desc ? '<div class="bookdesc">'.$desc.'</div>' : '';
-		
-		$form .= '<form action="' . get_permalink($post->ID) . '#booking-form" method="POST" id="booking-form" name="booking-form">';
-		$form .= !empty ($err_msg) ? '<div class="msg warning">' . $err_msg . '</div>' : '';
-		$form .= !empty ($valid_msg) ? '<div class="msg info">' . $valid_msg . '</div>' : '';
-		$form .= '<input type="hidden" id="formkey" name="sendto" value="" />';
-		
-		$form .= '<label for="lname"><span class="label">'. __('Last name','iftheme') .'</span>&nbsp;<input type="text" id="lname" name="lname" value="" class="book-text" /></label>';
-		$form .= '<label for="fname"><span class="label">'. __('First name','iftheme') .'</span>&nbsp;<input type="text" id="fname" name="fname" value="" class="book-text" /></label>';
-		$form .= '<label for="bookmail"><span class="label">'. __('E-mail','iftheme') .'</span>&nbsp;<input type="text" id="bookmail" name="bookmail" value="" class="book-text" /></label>';
-		$form .= '<div id="captcha-container" class="clearfix"><img src="' . get_bloginfo('template_url') . '/inc/captcha/captcha.php" id="captcha-img" />&nbsp;<label for="captcha"><span class="label">'. __('Copy verification code','iftheme') .'</span>&nbsp;<input type="text" id="captcha" name="captcha" autocomplete="off" value="" class="book-text" /></label></div>';
-		
-		$form .= '<input type="submit" id="booksubmit" value="'. __('Submit') .'" class="book-submit" />';
-		
-		$form .= '</form>';
-		
-		return $form;
+	$desc = nl2br( $data['book_desc'] );
+	$form_off = isset($data['book_form_off']) ? $data['book_form_off'] : false;
 
+	$valid_msg = false;
+	
+	//if form submitted and email exist
+	if( $_POST && $sendto ) {
+  	$err_msg = '';
+		//lastname
+		if(empty($_POST['lname'])) { $err_msg .=  __('The <b>Last name</b> field is required.','iftheme') . ' <br/>'; }
+		//firstname
+		if(empty($_POST['fname'])) { $err_msg .=  __('The <b>First name</b> field is required.','iftheme') . ' <br/>'; }
+		//email
+		if(empty($_POST['bookmail'])) { $err_msg .=  __('The <b>E-mail</b>  field is required.','iftheme') . ' <br/>'; }
+		else if( !is_email($_POST['bookmail']) ) { $err_msg .= __('The <b>E-mail name</b> field is invalid.','iftheme') . ' <br/>'; }
+		//message
+		$mail_message = !empty($_POST['message']) ? $_POST['message'] : '';
+
+    if( isset($_POST['g-recaptcha-response']) ){
+      $captcha = $_POST['g-recaptcha-response'];
+    }
+    if(!$captcha){
+      $err_msg .=  __('Please check the captcha checkbox.','iftheme');
+    }
+    else {
+      $secretKey = "6Lc9mykTAAAAAKdtQbxfrRDlhX4SkiBhCLJwzwON";
+      $ip = $_SERVER['REMOTE_ADDR'];
+      $response = file_get_contents("//www.google.com/recaptcha/api/siteverify?secret=".$secretKey."&response=".$captcha."&remoteip=".$ip);
+      $responseKeys = json_decode($response,true);
+
+      if( intval($responseKeys["success"]) !== 1 ) {
+        $err_msg .=  __('Your are not human. Please leave-us alone!','iftheme');
+      } else {
+        $err_msg = $err_msg;  //just in case...
+      }
+    }
+
+		if(empty($err_msg)) {
+			$mail_body = __('Subcription request to: ') . get_the_title($post->ID) . "\n\n";
+			$mail_body .= $_POST['fname'] . ' ' . $_POST['lname'] . ' (' . $_POST['bookmail'] . ")\n\n";
+			$mail_body .= wp_strip_all_tags($mail_message);
+			
+			if( wp_mail($sendto, __('Subcription from IF Website','iftheme'), $mail_body) ) {
+				$valid_msg = __('Your request has been sent.','iftheme') . ' <br/>';
+			} 
+			else {
+				$valid_msg = false;
+				$err_msg .= __('A error occur and your message has not been sent.','iftheme') . ' <br/>';
+			}
+		} 
 	}
+	
+	//display form elements
+	$form = '';
+	$form .= $desc ? '<div class="bookdesc">'.$desc.'</div>' : '';
+	//if reservation form enable
+	if( !$form_off ) {
+		if( !$valid_msg ) {
+  		$form .= '<form action="' . get_permalink($post->ID) . '#booking-form" method="POST" id="booking-form" name="booking-form">';
+  		$form .= !empty( $err_msg ) ? '<div class="msg warning">' . $err_msg . '</div>' : '';
+  		//$form .= '<input type="hidden" id="formkey" name="sendto" value="" />';
+  		
+  		//lastname
+  		$lname = isset($_POST['lname']) ? $_POST['lname'] : '';
+  		$form .= '<label for="lname"><span class="label">'. __('Last name','iftheme') .'</span>&nbsp;<input type="text" id="lname" name="lname" value="' . $lname .'" class="book-text" /></label>';
+  		//firstname
+  		$firstname = isset($_POST['fname']) ? $_POST['fname'] : '';
+  		$form .= '<label for="fname"><span class="label">'. __('First name','iftheme') .'</span>&nbsp;<input type="text" id="fname" name="fname" value="' . $firstname . '" class="book-text" /></label>';
+  		//email
+  		$email = isset($_POST['bookmail']) ? $_POST['bookmail'] : '';
+  		$form .= '<label for="bookmail"><span class="label">'. __('E-mail','iftheme') .'</span>&nbsp;<input type="text" id="bookmail" name="bookmail" value="' . $email . '" class="book-text" /></label>';
+  		//message
+  		$message = isset($_POST['message']) ? wp_strip_all_tags($_POST['message']) : '';
+  		$form .= '<label for="message"><span class="label">'. __('Your message (optional)','iftheme') .'</span></label> <textarea id="message" name="message" class="book-textarea">' . $message . '</textarea>';
+  		
+  		
+  		//Google recaptcha
+  		$form .= '<div class="g-recaptcha" data-sitekey="6Lc9mykTAAAAAH-KmDtGCrgei5grGz2ttE3HWolt"></div>';
+  		
+  		$form .= '<p><input type="submit" id="booksubmit" value="'. __('Submit') .'" class="book-submit" /></p>';
+  		$form .= '</form>';
+    }
+    else {
+      $form .= '<div id="booking-form" class="msg info">' . $valid_msg . '</div>';
+    }
+	}
+	return $form;
 }
+
 /*
  * Add custom Post types
  */
-
 function create_post_type() {
 
 	// for homepages sliders
@@ -1116,10 +1282,10 @@ function if_remove_menu_pages() {
 	//all users
 	remove_menu_page('edit-comments.php');
 	remove_submenu_page( 'themes.php', 'nav-menus.php' );
+  remove_submenu_page( 'edit.php','edit-tags.php?taxonomy=post_tag' );
 	
 	//all but admin
 	if($current_user->ID != 1) {
-		remove_submenu_page( 'edit.php','edit-tags.php?taxonomy=post_tag' );
 		remove_submenu_page( 'themes.php', 'themes.php' );
 		remove_menu_page('tools.php');
 		remove_menu_page('users.php');
@@ -1488,7 +1654,7 @@ function if_EndSession() {
  */
 function createXML(){
   global $wpdb;
-  $time = (time() - (60*60*24));//yesterday
+  $time = ( current_time( 'timestamp' ) - (60*60*24) ) ;
 	$query = "
 		SELECT * 
 		FROM $wpdb->posts wposts, $wpdb->postmeta wpostmeta
@@ -1547,7 +1713,7 @@ function createXML(){
   
   $xml .= '</listevenements>';
 
-  $path = 'wp-content/themes/iftheme/xml/events.xml';
+  $path = dirname(__FILE__) . '/xml/events.xml';
 
   $xml = str_replace(array("&amp;", "&"), array("&", "&amp;"), $xml);
   $sxe = new SimpleXMLElement($xml);
@@ -1555,15 +1721,74 @@ function createXML(){
   $sxe->asXML($path); 
 }
 
+/** CRON JOBS **/
+
+/**
+ * adds a weekly schedules to cron
+ */
+add_filter( 'cron_schedules', 'iftheme_add_weekly_schedule' ); 
+function iftheme_add_weekly_schedule( $schedules ) {
+  $schedules['weekly'] = array(
+    'interval' => 7 * 24 * 60 * 60, //7 days * 24 hours * 60 minutes * 60 seconds
+    'display' => __( 'Once Weekly', 'iftheme' )
+  );
+
+  return $schedules;
+}
+
+
+/**
+ * add cron job to update disciplines and pays locally from api.institutfrancais.com
+ * this prevent event creation/edition from being stuck by 404 returned by api.if
+ */
+if( !wp_next_scheduled( 'if_api_update' ) ) {
+   wp_schedule_event( current_time( 'timestamp', 1 ), 'weekly', 'if_api_update' );
+}
+add_action( 'if_api_update', 'update_ifapi_disciplines_pays' );
+
+function update_ifapi_disciplines_pays() {
+  //files base path
+  $fpath = get_template_directory() . '/inc/events/xml/';
+  
+  $urld = 'http://api.institutfrancais.com/lib/php/api/getDiscipline.php';
+  $disciplines = @file_get_contents($urld);
+  
+  //update /iftheme/inc/events/xml/getDiscipline.xml
+  if($disciplines) {
+    $d_handle = fopen($fpath . 'getDiscipline.xml', 'w'); 
+    fwrite($d_handle, $disciplines);
+    fclose($d_handle);
+  }
+  
+  $urlp = 'http://api.institutfrancais.com/lib/php/api/getCountry.php';
+  $pays = @file_get_contents($urlp);
+  
+  //update /iftheme/inc/events/xml/getCountry.xml
+  if($pays) {
+    $p_handle = fopen($fpath . 'getCountry.xml', 'w'); 
+    fwrite($p_handle, $pays);
+    fclose($p_handle);
+  }
+
+}
+
 /**
  * Cron task daily to generate the XML file
  */
-
 if (!wp_next_scheduled('if_task_hook')) {
-  wp_schedule_event( time(), 'daily', 'if_task_hook' );
+  wp_schedule_event( current_time( 'timestamp', 1 ), 'daily', 'if_task_hook' );
 }
 add_action ( 'if_task_hook', 'createXML' );
 
+
+/**
+ * remove cron jobs on theme deactivation
+ */
+add_action('switch_theme', 'iftheme_deactivation');
+function iftheme_deactivation() {
+	wp_clear_scheduled_hook( 'if_api_update' );
+	wp_clear_scheduled_hook( 'if_task_hook' );
+}
 /**
  * function curl
  *
@@ -1587,57 +1812,62 @@ function curl_get($url, array $get = null, array $options = array()) {
     return $result; 
 }
 
-if ( ! function_exists( 'iftheme_content_nav' ) ) :
 /**
  * Displays navigation to next/previous pages when applicable.
  *
  * FROM Twenty Twelve 1.0 ;-)
  */
-function iftheme_content_nav( $html_id, $archives = TRUE ) {
-	global $wp_query;
-	$html_id = esc_attr( $html_id );
-	
-	if ( $wp_query->max_num_pages >= 1 ) : ?>
-	<?php 
-	  //Archives pages query
-	  $archive_query = new WP_Query(array(
-      'post_type'  => 'page',  //overrides default 'post'
-      'posts_per_page' => 1, //get the latest one because Archives page should be unique.
-      'meta_key'   => '_wp_page_template',
-      'meta_value' => 'archives-page.php'
-    ));
-    // The Loop
-    if ( $archive_query->have_posts() ) {
-     	while ( $archive_query->have_posts() ) {
-    		$archive_query->the_post();
-        //$post_language_information = wpml_get_language_information(get_the_ID());
-        $archivesID = get_the_ID();
-        
-        //get category we are in to pass it to archives page
-        $cat = !is_integer(get_query_var('cat')) ? 'all' : get_query_var('cat');
+if ( !function_exists( 'iftheme_content_nav' ) ) {
+  
+  function iftheme_content_nav( $html_id, $archives = TRUE ) {
+  	global $wp_query;
+  	$html_id = esc_attr( $html_id );
+  	
+  	if ( $wp_query->max_num_pages >= 1 ) : ?>
+  	<?php 
+  	  //Archives pages query
+  	  $archive_query = new WP_Query(array(
+        'post_type'  => 'page',  //overrides default 'post'
+        'posts_per_page' => 1, //get the latest one because Archives page should be unique.
+        'meta_key'   => '_wp_page_template',
+        'meta_value' => 'archives-page.php'
+      ));
+      // The Loop
+      if ( $archive_query->have_posts() ) {
+       	while ( $archive_query->have_posts() ) {
+      		$archive_query->the_post();
+          //$post_language_information = wpml_get_language_information(get_the_ID());
+          $archivesID = get_the_ID();
+          
+          //get category we are in to pass it to archives page
+          $cat = !is_integer(get_query_var('cat')) ? 'all' : get_query_var('cat');
+  
+          $link_to_archives = add_query_arg('ifcat', $cat, get_permalink( $archivesID ));
+          $categ = $cat != 'all' ? get_category($cat) : null;
+          $link_title = $categ ? $categ->name : '';
+      	}
+      } else {
+      	// no posts found
+        $archivesID = FALSE;
+      }
+      /* Restore original Post Data */
+      wp_reset_postdata();
+  
+    	$prev = get_previous_posts_link( __( '<span class="meta-nav">&larr;</span> Previous', 'iftheme' ) );
+    	$next = get_next_posts_link( __( 'Next <span class="meta-nav">&rarr;</span>', 'iftheme' ) );
 
-        $link_to_archives = add_query_arg('ifcat', $cat, get_permalink( $archivesID ));
-        $categ = $cat != 'all' ? get_category($cat) : null;
-        $link_title = $categ ? $categ->name : '';
-    	}
-    } else {
-    	// no posts found
-      $archivesID = FALSE;
-    }
-    /* Restore original Post Data */
-    wp_reset_postdata();
-
-  	$prev = get_previous_posts_link();
-  	$prev_link = !$prev && $archivesID && $archives ? '<a href="' . $link_to_archives . '">' . __( '<span class="meta-nav">&larr;</span> Archives', 'iftheme' ) . ' ' . $link_title . '</a>' : get_previous_posts_link( __( '<span class="meta-nav">&larr;</span> Previous', 'iftheme' ) );
-	?>
-		<nav id="<?php echo $html_id; ?>" class="navigation" role="navigation">
-			<h3 class="assistive-text"><?php _e( 'Post navigation', 'twentytwelve' ); ?></h3>
-			<div class="nav-next alignleft"><?php echo $prev_link ?></div>
-			<div class="nav-previous alignright"><?php next_posts_link( __( 'Next <span class="meta-nav">&rarr;</span>', 'iftheme' ) ); ?></div>
-		</nav><!-- #<?php echo $html_id; ?> .navigation -->
-	<?php endif;
+    	$prev_link = !$prev && $archivesID && $archives ? '<a href="' . $link_to_archives . '">' . __( '<span class="meta-nav">&larr;</span> Archives', 'iftheme' ) . ' ' . $link_title . '</a>' : $prev;
+  	?>
+  		<!-- #<?php echo $html_id; ?> .navigation -->
+  		<nav id="<?php echo $html_id; ?>" class="navigation" role="navigation">
+  			<h3 class="assistive-text"><?php _e( 'Post navigation', 'twentytwelve' ); ?></h3>
+  			<div class="nav-next alignleft"><?php echo $prev_link ?></div>
+  			<div class="nav-previous alignright"><?php echo $next; ?></div>
+  		</nav>
+<?php endif;
+  }
+  
 }
-endif;
 
 add_filter( 'term_description', 'shortcode_unautop');
 add_filter( 'term_description', 'do_shortcode' );
@@ -1672,3 +1902,23 @@ add_filter('bcn_add_post_type_arg', 'iftheme_post_type_arg_filt', 10, 3);
 function iftheme_post_type_arg_filt($add_query_arg, $type, $taxonomy) {
     return false;
 }
+
+
+function dev4press_debug_page_request() {
+  global $wp, $template;
+  
+  echo "\r\n";
+  echo '<!– Request: ';
+  echo empty($wp->request) ? 'None' : esc_html($wp->request);
+  echo ' –>'."\r\n";
+  echo '<!– Matched Rewrite Rule: ';
+  echo empty($wp->matched_rule) ? 'None' : esc_html($wp->matched_rule);
+  echo ' –>'."\r\n";
+  echo '<!– Matched Rewrite Query: ';
+  echo empty($wp->matched_query) ? 'None' : esc_html($wp->matched_query);
+  echo ' –>'."\r\n";
+  echo '<!– Loaded Template: ';
+  echo basename($template);
+  echo ' –>'."\r\n";
+}
+

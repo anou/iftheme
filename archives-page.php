@@ -49,7 +49,7 @@
 	<h2><?php echo $subtitle;?></h2>
 
   <?php if ($wp_query->have_posts()) : while ($wp_query->have_posts()) : $wp_query->the_post(); ?>
-			<article class="post-single clearfix" id="post-<?php the_ID();?>">
+			<article class="clearfix post-single" id="post-<?php the_ID();?>">
 				<?php //prepare data 
 					$pid = get_the_ID();
 					//$pid =$post->ID;
@@ -58,7 +58,10 @@
 					$end = $data['end'];
 					$antenna_id = $data['antenna_id']; 
 				?>
-				<?php if ( has_post_thumbnail() ) { /* loades the post's featured thumbnail, requires Wordpress 3.0+ */ echo '<div class="featured-thumbnail">'; the_post_thumbnail('listing-post'); echo '</div>'; } ?>
+				<?php if ( has_post_thumbnail() ): ?>
+				  <div class="featured-thumbnail"><?php echo the_post_thumbnail('listing-post'); ?></div>
+				  <div class="list-post-infos">
+				<?php endif; ?>
 				<div class="top-block bxshadow">
 					<div class="date-time">
 						<?php if($start):?><span class="start"><?php echo $start;?></span><span class="end"><?php echo $end;?></span><?php endif;?><span class="post-antenna"><?php if('page' == get_post_type()){ bloginfo('description'); } else { echo ' - '.get_cat_name($antenna_id);}?></span>
@@ -69,23 +72,23 @@
 					<?php the_excerpt(); /* the excerpt is loaded to help avoid duplicate content issues */ ?>
 				</div>
 				<div class="post-meta"><?php the_category(', ') ?></div>
-		
+        <?php if ( has_post_thumbnail() ): ?></div><?php endif; ?>
 			</article><!--.post-single-->
 
 			<?php //prepare data for dates in JS 
 			   $raw_data = get_meta_raw_if_post($pid);
-			?>
+	   if( isset($raw_data['start']) && $raw_data['start'] ) : ?>
 			<script type="text/javascript">
 			  var lang = (typeof(icl_lang) != "undefined" && icl_lang !== null) ? icl_lang : bInfo['bLang'].substr(0,2); //TODO: check if bInfo['bLang'] is construct like this xx-XX...
-			  moment.lang(lang);
+        moment.locale(lang);
 			  
 			  var startYear = new Date(<?php echo $raw_data['start'];?>*1000).getFullYear();
 			  var endYear = new Date(<?php echo $raw_data['end'];?>*1000).getFullYear();
   			var thisPostStart = jQuery("#post-<?php the_ID();?> .start");
   			var thisPostEnd = jQuery("#post-<?php the_ID();?> .end");
   			
-  			var start = moment.unix(<?php echo $raw_data['start'];?>).format('ll');
-  			var end = moment.unix(<?php echo $raw_data['end'];?>).format('ll');
+  			var start = moment.unix(<?php echo $raw_data['start'];?>).utc().format('ll');
+  			var end = moment.unix(<?php echo $raw_data['end'];?>).utc().format('ll');
   			var time = '<?php echo $raw_data['time'];?>';
   			
   			//Show year in archives
@@ -97,7 +100,9 @@
   			if (end) if(end !== start) thisPostEnd.text(' / '+end);
   			
 			</script>
-	<?php endwhile; else:  ?>
+	<?php endif; ?>
+	<?php endwhile; ?>
+	<?php else:  ?>
 		<div class="no-results">
 			<p><?php _e('No results', 'iftheme'); ?></p>
 			<?php get_search_form(); /* outputs the default Wordpress search form */ ?>
