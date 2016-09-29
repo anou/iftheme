@@ -9,34 +9,32 @@ global $options;
 $options = get_antennas_details();
 
 // Get admin categ. Only admin can configure country homepage
-$categAdmin = get_cat_if_user(1);
 global $custom_hp;
-$custom_hp = isset($options[$categAdmin]['custom_hp']) ? $options[$categAdmin]['custom_hp'] : false;
-/* $custom_hp = false; */
+$categAdmin = get_cat_if_user(1);
+$custom_hp = isset($options[$categAdmin]['custom_hp']) ? $options[$categAdmin]['custom_hp'] : isset($options['custom_hp']) ? $options['custom_hp'] : false;
+
+global $if_front;
+$if_front = is_front_page();
 
 //check for frontpage
-if( !is_front_page() || !is_home() ) $custom_hp = false;
+if( !$if_front || !is_home() ) $custom_hp = false;
 
 //Make antenna id accessible everywhere
 global $antenna;
 $antenna = get_current_antenna();//returns always the antenna ID in default language... 
-if($multi && is_front_page() && is_home()) { $antenna = 'front'; }
+if($multi && $if_front && is_home()) { $antenna = 'front'; }
 
 global $sitepress;
 $default_lg = isset($sitepress) ? $sitepress->get_default_language() : 'fr';//assuming that 'fr' should be default language
 
 global $antenna_op;
-$antenna_op = function_exists('icl_object_id') ? icl_object_id($antenna, 'category', true, $default_lg) : $antenna;
+$antenna_op = array_key_exists( 'wpml_object_id' , $GLOBALS['wp_filter'] ) ? apply_filters( 'wpml_object_id', $antenna, 'category', true, $default_lg) : $antenna;
 
 global $c;
 $c = get_query_var('cat');
 
 global $current_user; 
 $current_user = wp_get_current_user();
-
-global $if_front;
-$if_front = is_front_page();
-
 ?>
 <!DOCTYPE html>
 <html <?php language_attributes(); ?>>
@@ -100,42 +98,44 @@ $if_front = is_front_page();
 	<?php if( is_rtl() ):?><link rel="stylesheet" type="text/css" media="all" href="<?php bloginfo( 'template_directory' );?>/rtl.css" /><?php endif;?>
 
 	<style type="text/css">
-		<?php if(!is_date() && !is_404() && !is_search() && !is_page() && $multi && (!is_front_page() || !is_home())) : ?> #top-menu-antennes ul li.cat-item-<?php echo $antenna;?> a { color: #008ac9; } <?php endif;?>
-	<?php 
-	if( $multi ) { 
-	  $i = 0; 
-	  $j = count($options);
-	  foreach($options as $k => $vals){
-	  	 $k = function_exists('icl_object_id') ? icl_object_id($k, 'category', true) : $k;
-	  	 printf('body.category-%s {background-image: url(%s) !important}  body.category-%s .sides {background-image: url(%s) !important}',
-		   $k, $vals['background_img'], $k, $vals['bg_frame'] != 'f0' ? get_template_directory_uri() . '/inc/images/frames/'.$vals['bg_frame'] . '.png' : '');
-		 
-		 $i++;
-		 
-		 if($j <= $i){ //home css
-		 	printf('body.home {background-image: url(%s) !important} body.home .sides {background-image: url(%s) !important}', 
-		 		$vals['background_img_country'], $vals['bg_frame'] != 'f0' ? get_template_directory_uri() . '/inc/images/frames/'.$vals['bg_frame_country'] . '.png' : '');
-		 }
-	  }
-	}
-	else {
-    $aid = defined('ICL_LANGUAGE_CODE') ? apply_filters( 'wpml_object_id', $options['aid'], 'category', true ) : $options['aid'];
+		<?php if(!is_date() && !is_404() && !is_search() && !is_page() && $multi && (!$if_front || !is_home())) : ?> 
+		  #top-menu-antennes ul li.cat-item-<?php echo $antenna;?> a { color: #008ac9; } 
+		<?php endif;?>
+  	<?php 
+  	if( $multi ) { 
+  	  $i = 0; 
+  	  $j = count($options);
+  	  foreach($options as $k => $vals){
+         $k = array_key_exists( 'wpml_object_id' , $GLOBALS['wp_filter'] ) ? apply_filters( 'wpml_object_id', $k, 'category', true) : $k;
+  	  	 printf('body.category-%s {background-image: url(%s) !important}  body.category-%s .sides {background-image: url(%s) !important}',
+  		   $k, $vals['background_img'], $k, $vals['bg_frame'] != 'f0' ? get_template_directory_uri() . '/inc/images/frames/'.$vals['bg_frame'] . '.png' : '');
+  		 
+  		 $i++;
+  		 
+  		 if($j <= $i){ //home css
+  		 	printf('body.home {background-image: url(%s) !important} body.home .sides {background-image: url(%s) !important}', 
+  		 		$vals['background_img_country'], $vals['bg_frame'] != 'f0' ? get_template_directory_uri() . '/inc/images/frames/'.$vals['bg_frame_country'] . '.png' : '');
+  		 }
+  	  }
+  	}
+  	else {
+      $aid = array_key_exists( 'wpml_object_id' , $GLOBALS['wp_filter'] ) ? apply_filters( 'wpml_object_id', $options['aid'], 'category', true, $default_lg) : $options['aid'];
 
-    printf('body.category-%s {background-image: url(%s) !important}',
-		        $aid, 
-		        $options['background_img']);
-		printf('body.category-%s .sides {background-image: url(%s) !important}', 
-		        $aid, 
-		        $options['bg_frame'] != 'f0' ? get_template_directory_uri() . '/inc/images/frames/' . $options['bg_frame'] . '.png' : '');
-
-		//for page with category-0
-		echo 'body.category-0 { background-image: url(' . $options['background_img'] . ') !important }';
-		$bg0_img = $options['bg_frame'] != 'f0' ? get_template_directory_uri() . '/inc/images/frames/'.$options['bg_frame'].'.png' : ''; 
-		echo 'body.category-0 .sides {background-image: url(' . $bg0_img  . ') !important}';
-	
-	}
-
-	?>
+      printf('body.category-%s {background-image: url(%s) !important}',
+  		        $aid, 
+  		        $options['background_img']);
+  		printf('body.category-%s .sides {background-image: url(%s) !important}', 
+  		        $aid, 
+  		        $options['bg_frame'] != 'f0' ? get_template_directory_uri() . '/inc/images/frames/' . $options['bg_frame'] . '.png' : '');
+  
+  		//for page with category-0
+  		echo 'body.category-0 { background-image: url(' . $options['background_img'] . ') !important }';
+  		$bg0_img = $options['bg_frame'] != 'f0' ? get_template_directory_uri() . '/inc/images/frames/'.$options['bg_frame'].'.png' : ''; 
+  		echo 'body.category-0 .sides {background-image: url(' . $bg0_img  . ') !important}';
+  	
+  	}
+  
+  	?>
   	@media only screen and (max-width: 960px) { 
     	html body.black { background-image: none !important; background-color: #000 !important; }
   	  header #header-img {
@@ -230,14 +230,13 @@ $if_front = is_front_page();
   			<!-- div for bevel angle -->
   			<div class="right-corner"></div>
     		  <?php $termlevel2 = get_if_level2_categ(true);
-    		  if( !empty($termlevel2) ) : ?>	
+    		  if( !empty( $termlevel2 ) ) : ?>	
     			<?php if( $multi ): //MENU multi antennes ?>
-    				<?php if(!$custom_hp && !is_date() && !is_404() && !is_search() && !is_page() && (!is_front_page() || !is_home())) :?>
-    				  <nav id="antennes" role="navigation"><ul class="menu clearfix"><?php  if(get_if_level2_categ()) get_if_level2_categ(); ?></ul></nav><!-- /#antennes -->
+    				<?php if( !$custom_hp && !is_date() && !is_404() && !is_search() && !is_page() && ( !$if_front || !is_home() ) ): ?>
+    				  <nav id="antennes" role="navigation"><ul class="menu clearfix"><?php  if( get_if_level2_categ() ) echo get_if_level2_categ(); ?></ul></nav><!-- /#antennes -->
     				<?php endif;?>
-    		  
     		  <?php else : ?>
-    				<nav id="antennes" role="navigation"><ul class="menu clearfix"><?php get_if_level2_categ();?></ul></nav><!-- /#antennes -->
+    				<nav id="antennes" role="navigation"><ul class="menu clearfix"><?php echo get_if_level2_categ();?></ul></nav><!-- /#antennes -->
     			<?php endif;?>
     		<?php endif;?>
   		</div><!--/.container.for-angle-->
@@ -245,5 +244,6 @@ $if_front = is_front_page();
 	</div><!--#header-->
 	<div class="container main-container">
 		<div class="breadcrumbs">
-			<?php if( function_exists('bcn_display') ) { bcn_display(); }?>
+  		
+			<?php if( function_exists('bcn_display') ) { bcn_display(); } ?>
 		</div>

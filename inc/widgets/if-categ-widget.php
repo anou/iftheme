@@ -40,7 +40,8 @@ class If_Antenna_Categ extends WP_Widget {
 		$children = get_categories('child_of='.$aid.'&hide_empty=0');
 
     // prints the form on the widgets page
-		$catid = isset($instance['catid']) ? defined('ICL_LANGUAGE_CODE') ? icl_object_id($instance['catid'],'category',false,ICL_LANGUAGE_CODE) : $instance['catid'] : $children[0]->term_id;
+	  $catid = isset($instance['catid']) ? array_key_exists( 'wpml_object_id' , $GLOBALS['wp_filter'] ) ? apply_filters( 'wpml_object_id', $instance['catid'], 'category', false, ICL_LANGUAGE_CODE ) : $instance['catid'] : $children[0]->term_id;
+
 		
 		$defaults = array('catid' => $catid, 'title' => '');
 		$instance = wp_parse_args( (array) $instance, $defaults ); 
@@ -87,7 +88,7 @@ class If_Antenna_Categ extends WP_Widget {
 		$catid = $instance['catid'];
     
     //get cat ID dependent on language
-    $catid = defined('ICL_LANGUAGE_CODE') ? icl_object_id($catid,'category',false,ICL_LANGUAGE_CODE) : $catid;
+    $catid = array_key_exists( 'wpml_object_id' , $GLOBALS['wp_filter'] ) ? apply_filters( 'wpml_object_id', $catid, 'category', false, ICL_LANGUAGE_CODE ) : $catid;
 
 		$name = get_cat_name( $catid );
 		$title = apply_filters('widget_title', empty( $instance['title'] ) ? $name : $instance['title'], $instance, $this->id_base);

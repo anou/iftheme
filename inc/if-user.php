@@ -46,7 +46,8 @@ function extendUser_antenna($user_id){
     }  
     
     foreach($categories as $c => $v){
-      $tid = function_exists('icl_object_id') ? icl_object_id($v->term_id, 'category', true, $default_lg) : $v->term_id;
+      $tid = array_key_exists( 'wpml_object_id' , $GLOBALS['wp_filter'] ) ? apply_filters( 'wpml_object_id', $v->term_id, 'category', true, $default_lg) : $v->term_id;
+
 	    if(isset($usedCateg[$tid]['cat']) && $userID != $usedCateg[$tid]['user']){
 		    unset($categories[$c]);
 	    }
@@ -60,7 +61,8 @@ function extendUser_antenna($user_id){
     <table class="form-table if-form-table">
       <tr>
       <?php foreach($categories as $category) : 
-        $categID = function_exists('icl_object_id') ? icl_object_id($category->term_id, 'category', true, $default_lg) : $category->term_id; ?>
+        $categID = array_key_exists( 'wpml_object_id' , $GLOBALS['wp_filter'] ) ? apply_filters( 'wpml_object_id', $category->term_id, 'category', true, $default_lg) : $category->term_id;
+      ?>
         <th scope="row"><label for="<?php echo $category->slug;?>"><?php echo $category->name; ?></label></th>
         <td><input type="radio" name="categ_to_antenna" value="<?php echo $categID ?>" <?php checked( get_user_meta($userID, "categ_to_antenna", true), $categID ); ?> /></td>
       <?php endforeach; ?>

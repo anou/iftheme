@@ -83,11 +83,11 @@
      */
     ?>
 			<div id="home-list">
-			<?php foreach($home_cat as $id):?>
+			<?php foreach($home_cat as $cid):?>
 				<?php 
-          $id = array_key_exists( 'wpml_object_id' , $GLOBALS['wp_filter'] ) ? apply_filters( 'wpml_object_id', $id, 'category', true ) : $id;
-				  $cat = get_category($id); 
-				  $antparent = get_cat_name(get_root_category($id));
+          $cid = array_key_exists( 'wpml_object_id' , $GLOBALS['wp_filter'] ) ? apply_filters( 'wpml_object_id', $cid, 'category', true ) : $cid;
+				  $cat = get_category($cid); 
+				  $antparent = get_cat_name(get_root_category($cid));
 				?>
 				<div class="block-home">
 					<h2 class="posts-category"><?php echo $cat->name;?> / <?php echo $antparent;?></h2>
@@ -96,7 +96,7 @@
           $paged = get_query_var('paged') ? get_query_var('paged') : 1;
           $post_types = array( 'post' );
           $args = array(
-            'cat' => $id,
+            'cat' => $cid,
             'meta_key' => 'if_events_startdate',
             'orderby' => 'meta_value_num',
             'order' => 'ASC',
@@ -112,69 +112,82 @@
             'post_type' => $post_types
           );
            
-          $event_query = new WP_Query( $args ); ?>
+          $events_query = new WP_Query( $args ); ?>
 
-      <?php include_once( ABSPATH . 'wp-admin/includes/plugin.php' ); ?>
-      <?php // check for Courses plugin
-          if ( is_plugin_active( 'courses/courses.php' ) ) {
-            //plugin is activated
-            $courses_args = array(
-              'cat' => $id,
-              'post_type' => array('course'),
-              'meta_key' => '_courses_startdate',
-              'orderby' => 'meta_value_num',
-              'order' => 'ASC',
-              'meta_query' => array(
-                array(
-                   'key' => '_courses_enddate',
-                   'value' => $time,
-                   'compare' => '>=',
-                )
-              )
-            );
-            $posts_ids = array();
-            $courses_query = new WP_Query( $courses_args );
-            $posts = array_merge($event_query->posts, $courses_query->posts);
-            foreach($posts as $obj) {
-              $posts_ids[] = (int)$obj->ID;
-            }
-            
-            array_push($post_types, 'course');
-            $event_query = !empty($posts_ids) ? new WP_Query(array('post_type' => $post_types, 'post__in' => $posts_ids, 'orderby' => 'post__in', 'paged' => $paged )) : $event_query;
-          }
-      ?>
+    <?php include_once( ABSPATH . 'wp-admin/includes/plugin.php' ); ?>
+<!-- COURSES -->
+   <?php 
+        /**
+         * Detect plugin. For use on Front End only.
+         */
+        if ( is_plugin_active( 'courses/courses.php' ) ) {
+          //plugin is activated
+          //check for Courses plugin & add Courses in query.
+          array_push($post_types, 'course');
+          
+          //@todo: find a way to "merge" meta_key xx_startdate to order by this value
+          $events_courses_query_args = array(
+            'cat' => $cid,
+            'posts_per_page' => $posts_per_page,
+            'paged' => $paged,
+            'orderby' => 'meta_value_num',
+            'order' => 'ASC',
+            'meta_query' => array(
+              'relation' => 'OR',
+              array(
+                 'key' => '_courses_enddate',
+                 'value' => $time,
+                 'compare' => '>=',
+              ),
+              array(
+                 'key' => 'if_events_enddate',
+                 'value' => $time,
+                 'compare' => '>=',
+              ),
+            ),
+            'post_type' => $post_types
+          );
+
+          $events_courses_query = new WP_Query($events_courses_query_args);
+        }
+        //replace query if Courses query exist
+        if( isset( $events_courses_query ) ) $events_query = $events_courses_query; 
+  ?>
       <?php // check for IF plugin
           if ( is_plugin_active( 'ifplugin/ifplugin.php' ) ) {
+            $always_news = isset( $options[$original]['display_news'] ) ? $options[$original]['display_news'] : 0;
             //plugin is activated
             $news_args = array(
-              'cat' => $id,
+              'cat' => $cid,
               'post_type' => array('news'),
               'meta_key' => '_ifp_news_date',
               'orderby' => 'meta_value_num',
               'order' => 'ASC',
-              'meta_query' => array(
+            );
+            if( !$always_news ) {
+              $news_args['meta_query'] = array(
                 array(
                    'key' => '_ifp_news_date',
                    'value' => $time,
                    'compare' => '>=',
                 )
-              )
-            );
+              );
+            }
             $posts_ids = array();
             $news_query = new WP_Query( $news_args );
-            $posts = array_merge($event_query->posts, $news_query->posts);
+            $posts = array_merge($events_query->posts, $news_query->posts);
             foreach($posts as $obj) {
               $posts_ids[] = (int)$obj->ID;
             }
             array_push($post_types, 'news');
-            $event_query = !empty($posts_ids) ? new WP_Query(array('post__in' => $posts_ids, 'post_type' => $post_types, 'orderby' => 'post__in', 'paged' => $paged )) : $event_query;
+            //we add news after the main query
+            $events_query = !empty($posts_ids) ? new WP_Query(array('post__in' => $posts_ids, 'post_type' => $post_types, 'orderby' => 'post__in', 'paged' => $paged )) : $events_query;
           }
       ?>
-
-			<?php if ($event_query->have_posts()) : while ($event_query->have_posts()) : $event_query->the_post(); ?>
+			<?php if ($events_query->have_posts()) : while ($events_query->have_posts()) : $events_query->the_post(); ?>
 				<?php //prepare data 
 						$pid = get_the_ID();
-						$data = apply_filters('if_event_data', get_meta_if_post($pid));
+						$data = get_meta_if_post($pid);
 						$type = isset($data['type']) ? $data['type'] : false;
 						$classes = 'post-single-home clearfix';
 						$classes .= $type ? ' ' . $type : '';
@@ -244,14 +257,12 @@
 		<p><?php _e('No post for the moment & no configuration options','iftheme'); ?></p>
 	</div><!--noResults-->
 <?php endif; ?>	
-	
-
 
 
 <?php else: //Page for 1 category ?>
 
   <?php if(is_super_admin()): //debug ?>
-    <span class="debug" style="position:fixed; bottom:0; left:0; background-color: yellow; color:purple;"> Home Page ONE ANTENNA/CATEGORY </span>
+    <span class="debug" style="position:fixed; bottom:0; left:0; background-color: yellow; color:purple;"> Home Page ONE ANTENNA/CATEGORY (multi-front-page.php)</span>
   <?php endif;?>
 	<?php //prepare data (key are img, children, posts)
 		$data = get_categ_data(get_query_var('cat'));

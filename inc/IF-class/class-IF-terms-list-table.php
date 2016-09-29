@@ -148,8 +148,9 @@ class  IF_Terms_List_Table extends WP_Terms_List_Table {
 		if ( is_taxonomy_hierarchical( $taxonomy ) && !isset( $orderby ) ) {
 			// We'll need the full set of terms then.
 			$args['number'] = $args['offset'] = 0;
+			$args['taxonomy'] = $taxonomy;
 
-			$terms = get_terms( $taxonomy, $args );
+			$terms = get_terms( $args );
 			if ( !empty( $search ) ) // Ignore children on searches.
 				$children = array();
 			else
@@ -158,9 +159,10 @@ class  IF_Terms_List_Table extends WP_Terms_List_Table {
 			// Some funky recursion to get the job done( Paging & parents mainly ) is contained within, Skip it for non-hierarchical taxonomies for performance sake
 			$out .= $this->_rows( $taxonomy, $terms, $children, $offset, $number, $count );
 		} else {
-			$terms = get_terms( $taxonomy, $args );
+			$args['taxonomy'] = $taxonomy;
+			$terms = get_terms( $args );
 			foreach ( $terms as $term )
-				$out .= $this->single_row( $term, 0, $taxonomy );
+  			$out .= $this->single_row( $term, 0, $taxonomy );
 			$count = $number; // Only displaying a single page.
 		}
 

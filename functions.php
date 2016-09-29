@@ -209,40 +209,48 @@ function get_if_top_categ( $args = array() ) {
 		'title_li' => '',
 		'child_of' => 0,
 		'depth' => 1,
-    );
+  );
     
-    if(!empty($args) && is_array($args)) {
-	    $default_args = array_merge($default_args,$args);
-    }
+  if( !empty($args) && is_array($args) ) {
+    $default_args = array_merge($default_args,$args);
+  }
 	
 	wp_list_categories($default_args);
 }
-//get level 2 (key=1) categories.
+/**
+ * get level 2 (key=1) categories.
+ */
 function get_if_level2_categ($raw = false, $args = array()) {
 	
 	$default_args = array(
+  	'taxonomy' => 'category',
 		'hide_empty' => 0,
 		'use_desc_for_title' => 0,
 		'title_li' => '',
 		'child_of' => get_current_parent_categ(),
-		'depth' => 2
-    );
+		'depth' => 2,
+		'echo' => 0
+  );
     
-    if(!empty($args) && is_array($args)) {
-	    $default_args = array_merge($default_args,$args);
-    }
+  if(!empty($args) && is_array($args)) {
+    $default_args = array_merge($default_args,$args);
+  }
+  
 	if (!$raw) {
-  	wp_list_categories($default_args);
+  	return wp_list_categories($default_args);
 	}
 	else {
   	$default_args = array(
+    	'taxonomy' => 'category',
   		'hide_empty' => 0,
   		'parent' 	 => get_current_parent_categ(),
     );
-  	return apply_filters('iftheme_nav', get_terms( 'category', $default_args));
+
+  	return apply_filters('iftheme_nav', get_terms( $default_args));
 	}
 	
 }
+
 
 function str_lreplace($search, $replace, $subject) {
     return preg_replace('~(.*)' . preg_quote($search, '~') . '~', '$1' . $replace, $subject, 1);
@@ -330,14 +338,14 @@ function get_cat_slug($cat_id) {
 
 //Prepare vars for IF category vs antenna system
 function get_cat_if_user($uid){
-	$categ = 0;
+	$categ_id = 0;
 	$user = get_user_meta( $uid );
 
 	//must have assigned a category to user (cf. edit profil page)
-	if(isset($user['categ_to_antenna'])) $categ = $user['categ_to_antenna'][0];
+	if(isset($user['categ_to_antenna'])) $categ_id = $user['categ_to_antenna'][0];
 		
 	//returns an ID
-	return $categ;	
+	return $categ_id;	
 }
 
 /*
@@ -350,7 +358,7 @@ function get_cat_if_user_lang($uid){
 	//must have assigned a category to user (cf. edit profil page)
 	if(isset($user['categ_to_antenna'])) $categ = $user['categ_to_antenna'][0];
 	
-	if(defined('ICL_LANGUAGE_CODE')) $categ = icl_object_id($categ,'category',false,ICL_LANGUAGE_CODE);
+	$categ = array_key_exists( 'wpml_object_id' , $GLOBALS['wp_filter'] ) ? apply_filters( 'wpml_object_id', $categ, 'category', false, ICL_LANGUAGE_CODE) : $categ;
 	
 	//returns an ID (dependant on language if any)
 	return $categ;	
@@ -395,8 +403,8 @@ function get_antennas_details(){
 	$nb = count($users);
 
 	if($nb === 1) {//if only 1 user, we assume that it's the admin user so $user->ID = 1
-		$categ_admin = get_cat_if_user(1);
-		$antenna =  get_cat_slug($categ_admin);
+		$categ_admin = get_cat_if_user(1);//@todo: possibility to select who is the admin.
+		$antenna = get_cat_slug($categ_admin);
 		$options = get_option('iftheme_theme_options_' . $antenna, iftheme_get_default_theme_options() );//cf. theme-options.php for keys of the option array
 		
 		//adding useful infos to $options
@@ -407,7 +415,6 @@ function get_antennas_details(){
 		foreach($users as $k => $o){
 			$categ = get_cat_if_user($o->ID);
 			
-			//$categ = function_exists('icl_object_id') ? icl_object_id($categ, 'category', TRUE) : $categ;
 			$antenna =  get_cat_slug($categ) ? get_cat_slug($categ) : __('You must assign a category to this user : ','iftheme').$o->display_name;
 			$options[$categ] = get_option('iftheme_theme_options_' . $antenna, iftheme_get_default_theme_options() );//cf. theme-options.php for keys of the option array
 
@@ -439,7 +446,7 @@ function iftheme_body_class($classes) {
 	$class = 'category-'. $cid .' black';
 	
 	if (is_home()) $class .= ' accueil';
-	
+
 	// add $class to the $classes array
 	$classes[] = $class;
 	// return the $classes array
@@ -496,54 +503,58 @@ function get_current_antenna(){
 	$default_lg = isset($sitepress) ? $sitepress->get_default_language() : get_site_lang();
 	
 	$categ_admin = get_cat_if_user(1) != 0 ? get_cat_if_user(1) : 1;
-	$current_id = function_exists('icl_object_id') ? icl_object_id($categ_admin, 'category', true, $default_lg) : $categ_admin;//default category
+  $current_id = array_key_exists( 'wpml_object_id' , $GLOBALS['wp_filter'] ) ? apply_filters( 'wpml_object_id', $categ_admin, 'category', true, $default_lg) : $categ_admin;//default category
 
-	if(is_category()) {
+
+	if( is_category() ) {
 		//get root category (antenna)
-	  $current_id = defined('ICL_LANGUAGE_CODE') ? icl_object_id(get_root_category(get_query_var('cat')),'category',true,$default_lg) : get_root_category(get_query_var('cat'));
-
-		//$current_id = function_exists('icl_object_id') ? icl_object_id($current_id, 'category', true, $default_lg) : $current_id;
-	} elseif(is_single()){
+    $current_id = array_key_exists( 'wpml_object_id' , $GLOBALS['wp_filter'] ) ? apply_filters( 'wpml_object_id', get_root_category(get_query_var('cat')), 'category', true, $default_lg) : get_root_category(get_query_var('cat'));
+	} 
+	elseif( is_single() ) {
 		//get the category id of post
 		$cats = get_the_category();
     //return default categ if none found
     if( empty($cats) ) return $current_id;
-//     if( empty($cats) ) return 'front';
     //get root category (antenna)
 		//if post has multiple categories, no problem we only need to get the root categ.
-		$current_id = defined('ICL_LANGUAGE_CODE') ? icl_object_id(get_root_category($cats[0]->term_id),'category',true,$default_lg) : get_root_category($cats[0]->term_id);
+    $current_id = array_key_exists( 'wpml_object_id' , $GLOBALS['wp_filter'] ) ? apply_filters( 'wpml_object_id', get_root_category($cats[0]->term_id), 'category', true, $default_lg) : get_root_category($cats[0]->term_id);
+
 	}
 
 	return	$current_id;
 }
 
-//get current top level category
+/**
+ * get current top level category
+ */
 function get_current_parent_categ(){
 	global $sitepress;
+  $parent_id = 0;
 	$default_lg = isset($sitepress) ? $sitepress->get_default_language() : 'fr';//assuming that 'fr' should be default language
-	
-  
-  $check_top_categ = get_terms( 'category', 'parent=0&hide_empty=0' );
-  //default is category (or translation) from admin (user 1)
+
+  //default is category is first user (admin) category
 	$categ_admin = get_cat_if_user(1) != 0 ? get_cat_if_user(1) : 1;
-	$current_id = function_exists('icl_object_id') ? icl_object_id($categ_admin, 'category', true) : $categ_admin;//default category
-	
-	if(is_category()) {
-		//get root category (antenna)
-	  $current_id = get_root_category(get_query_var('cat'));
 
-		//$current_id = function_exists('icl_object_id') ? icl_object_id($current_id, 'category', true, $default_lg) : $current_id;
-	} elseif(is_single()){
-		//get the category id of post
-		$cats = get_the_category();
-    if( empty($cats) ) return $current_id;
-//     if( empty($cats) ) return 'front';
-		//get root category (antenna)
-		//if post has multiple categories, no problem we only need to get the root categ.
-		$current_id = get_root_category($cats[0]->term_id);
-	}
-
-	return	$current_id;
+	$current_id = array_key_exists( 'wpml_object_id' , $GLOBALS['wp_filter'] ) ? apply_filters( 'wpml_object_id', $categ_admin, 'category', true, $default_lg ) : $categ_admin;
+  	
+  $current_id = get_root_category( $current_id );
+	return $current_id;
+}
+/**
+ * for futur tests
+ */
+function get_current_parent_categ2(){
+  //firstly, load data for your child category
+  $child = get_category(31);
+  //from your child category, grab parent ID
+  $parent = $child->parent;
+/*
+  //load object for parent category
+  $parent_name = get_category($parent);
+  
+  //grab a category name
+  $parent_name = $parent_name->name;
+*/
 }
 
 /*
@@ -635,15 +646,15 @@ function load_inline_css_to_admin(){
 }
 add_action('admin_head', 'load_inline_css_to_admin');
 
-//Add theme  JS
+//Add theme JS & CSS
 function if_scripts() {
   //font-awesome
 	wp_enqueue_style( 'font_awesome_front', get_stylesheet_directory_uri() . '/fonts/font-awesome/css/font-awesome.min.css', array(), '4.6.1' );
 
 	wp_enqueue_script("jquery");
 	wp_enqueue_script('chosen',	get_template_directory_uri() . '/js/chosen/chosen.jquery.js');
-    wp_register_style( 'chosen_css', get_bloginfo('stylesheet_directory') . '/js/chosen/chosen.css', false, '1.0.0' );
-    wp_enqueue_style( 'chosen_css' );
+  wp_register_style( 'chosen_css', get_bloginfo('stylesheet_directory') . '/js/chosen/chosen.css', false, '1.0.0' );
+  wp_enqueue_style( 'chosen_css' );
   
   $script = is_rtl() ? 'if-script-rtl' : 'if-script';
 	wp_enqueue_script($script,	get_template_directory_uri() . '/js/'. $script .'.js',	array('jquery'));
@@ -654,10 +665,10 @@ function if_scripts() {
   wp_localize_script( $script, 'ifvarJS', $varForJS );
 	
 	wp_enqueue_script('if-ajax',	get_template_directory_uri() . '/inc/calendar/ajax.js');
-	
+
 	//custom CSS. @todo: add settings for this file to be loaded/included
   wp_register_style( 'custom_css', get_bloginfo('stylesheet_directory') . '/css/custom.css' );
-  wp_enqueue_style( 'custom_css' );
+  if( file_exists(get_template_directory() . '/css/custom.css') ) wp_enqueue_style( 'custom_css' );
 
 }
 add_action('wp_enqueue_scripts', 'if_scripts');
@@ -698,10 +709,12 @@ function if_manage_categ_columns($columns) {
 function manage_post_custom_fields($column_name, $post_id) {
   switch ( $column_name ) {
   	case 'if_startdate':
-  		echo date_i18n( get_option( 'date_format' ), get_post_meta( $post_id, 'if_events_startdate', true ) ); 
+  	  $stardate = get_post_meta( $post_id, 'if_events_startdate', true );
+  		echo $stardate ? date_i18n( get_option( 'date_format' ), $stardate ) : ''; 
  		break;
   	case 'if_enddate':
-  		echo date_i18n( get_option( 'date_format' ), get_post_meta( $post_id, 'if_events_enddate', true ) ); 
+  	  $enddate = get_post_meta( $post_id, 'if_events_enddate', true );
+  		echo $enddate ? date_i18n( get_option( 'date_format' ), $enddate ) : ''; 
  		break;
   }	
 }
@@ -775,25 +788,22 @@ add_filter( 'manage_posts_columns', 'add_sticky_column' );
 
 
 function if_restrict_categories($categories) {
-	  global $current_user;
+  global $current_user;
   $current_user = wp_get_current_user();
 
-	
 	$a = get_cat_if_user_lang($current_user->ID);
 
 	$onPostPage = (strpos($_SERVER['PHP_SELF'], 'edit-tags.php'));
 	
 	if (is_admin() && $onPostPage && !current_user_can('level_10')) {
-	//if (is_admin() && $onPostPage) {
 		$size = count($categories);
 
 		for ($i = 0; $i < $size; $i++) {
-		 if(is_object($categories[$i])){
-			//if($categories[$i]->parent != $a && $categories[$i]->term_id != $a){
-			if(!cat_is_ancestor_of($a, $categories[$i]->term_id) && $categories[$i]->term_id != $a){
-				unset($categories[$i]);
-			} 
-		 }
+      if(is_object($categories[$i])){
+        if( !cat_is_ancestor_of($a, $categories[$i]->term_id) && $categories[$i]->term_id != $a){
+        	unset($categories[$i]);
+        } 
+      }
 		}
 	}
 
@@ -840,25 +850,15 @@ add_action( 'admin_menu', 'if_remove_meta_boxes' );
 function if_display_posts_listing ( $query ) {
 
 	if( $query->is_main_query() && is_category() && !is_admin() ) {
-
-  	$value = mktime(23, 59, 59, date('m'), date('d')-1, date('Y')); //yesterday
-  	$value2 = time(); //last hour of the last past 24 hours
-  	$value3 = mktime(0,0,0,date("m"),date("d")+1,date("Y")); //tomorrow
-  	$compare = '>=';
-  	$compare2 = '<=';
+  
+    $time = ( current_time( 'timestamp' ) - (60*60*24) );
+    $compare = '>=';
   	
     $meta_query =
       array(
-        'relation' => 'OR',
     		array(
           'key' => 'if_events_enddate',
-          'value' => strtotime('yesterday'),
-          'compare' => $compare,
-          'type' => 'numeric'
-  		  ),
-    		array(
-          'key' => '_courses_enddate',
-          'value' => strtotime('yesterday'),
+          'value' => $time,
           'compare' => $compare,
           'type' => 'numeric'
   		  ),
@@ -866,11 +866,11 @@ function if_display_posts_listing ( $query ) {
 		$query->set( 'meta_query', $meta_query );
 		$query->set( 'orderby', 'meta_value_num' );
 		$query->set( 'meta_key', 'if_events_startdate' );
-		$query->set( 'order', 'ASC' );
+		$query->set( 'order', 'DESC' );
 		$query->set( 'post_type', array( 'post', 'course' ) );
 	}
 }
-add_action( 'pre_get_posts', 'if_display_posts_listing' );
+//add_action( 'pre_get_posts', 'if_display_posts_listing' );
 
 /**
 * Alter main query for archive pages
@@ -948,13 +948,8 @@ function get_meta_if_post( $pid = '', $archive = false ){
   $type = get_post_type( $pid );
 
   //get prefix
-  switch ($type) {
-    case 'course':
-      $prefix = '_courses';
-    break;  
-    default: $prefix = 'if_events';
-  }
-	
+	$prefix = apply_filters('event_prefix', 'if_events' );
+
 	setlocale(LC_ALL, get_locale());
 
 	$meta = get_post_meta($pid);
@@ -1013,7 +1008,7 @@ function get_meta_if_post( $pid = '', $archive = false ){
 	$data['link2'] = isset($meta[$prefix . '_link2']) ? $meta[$prefix . '_link3'][0] : null;
 	$data['link3'] = isset($meta[$prefix . '_link3']) ? $meta[$prefix . '_link3'][0] : null;
 
-	return $data;
+	return apply_filters('if_event_data', $data);
 }
 /**
  * get meta data for slider
@@ -1105,7 +1100,7 @@ function get_meta_raw_if_post( $pid = '' ){
 //BOOKING FORM FUNCTION
 function get_booking_form() {
   global $post;
-	$data = get_meta_if_post();
+	$data = get_meta_if_post($pid);
 	$sendto = $data['book_mail'];
 	$desc = nl2br( $data['book_desc'] );
 	$form_off = isset($data['book_form_off']) ? $data['book_form_off'] : false;
@@ -1854,7 +1849,7 @@ if ( !function_exists( 'iftheme_content_nav' ) ) {
       wp_reset_postdata();
   
     	$prev = get_previous_posts_link( __( '<span class="meta-nav">&larr;</span> Previous', 'iftheme' ) );
-    	$next = get_next_posts_link( __( 'Next <span class="meta-nav">&rarr;</span>', 'iftheme' ) );
+    	$next = get_next_posts_link( __( 'Next <span class="meta-nav">&rarr;</span>', 'iftheme' ), $wp_query->max_num_pages );
 
     	$prev_link = !$prev && $archivesID && $archives ? '<a href="' . $link_to_archives . '">' . __( '<span class="meta-nav">&larr;</span> Archives', 'iftheme' ) . ' ' . $link_title . '</a>' : $prev;
   	?>

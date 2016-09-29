@@ -93,6 +93,10 @@ function iftheme_theme_options_init() {
     add_settings_field('custom_hp', __('Custom front page', 'iftheme'), 'iftheme_settings_field_checkbox_hp', 'theme_options', 'special_setting_section');
     //header_img
     add_settings_field('header_img', __('Add Header Image', 'iftheme'), 'iftheme_settings_field_header_img', 'theme_options', 'special_setting_section');
+    if ( is_plugin_active( 'ifplugin/ifplugin.php' ) ){
+      //display always news
+      add_settings_field('display_news', __('News', 'iftheme'), 'iftheme_settings_field_news_diplay', 'theme_options', 'special_setting_section');
+    }
 	  
     if ( is_plugin_active( 'underconstruction/underConstruction.php' ) ){
         add_settings_field('theme_options_underconstruction_page', __("Under construction Page",'iftheme'),'theme_options_setting_underconstruction_page_callback_function','theme_options','special_setting_section');
@@ -115,8 +119,10 @@ function iftheme_theme_options_init() {
 	);
   //categories on homepage
 	add_settings_field( 'theme_home_categ', __( 'Displayed home categories', 'iftheme' ), 'iftheme_settings_field_home_categories', 'theme_options', 'general' );
-	//number of posts on homepage (Pays and Categories)
+	//number of posts on homepages (Pays and Categories [multi])
 	add_settings_field( 'theme_home_nb_events', __( 'Number of events for each category displayed on homepage:', 'iftheme' ), 'iftheme_settings_field_nb_events', 'theme_options', 'general' );
+	//number of posts in listing (ex: category.php [page category])
+	add_settings_field( 'theme_categ_nb_events', __( 'Number of events in listing displayed on category page:', 'iftheme' ), 'iftheme_settings_nb_list_events', 'theme_options', 'general' );
 	// Background image
   add_settings_field('background_img', __('Background image','iftheme'), 'iftheme_settings_field_background_img', 'theme_options', 'general');
   // Content types on homepage
@@ -244,7 +250,7 @@ function iftheme_home_categories( $pays = NULL ) {
 	global $sitepress;
 	$default_lg = isset($sitepress) ? $sitepress->get_default_language() : get_site_lang();
 	$antenna_id = get_cat_if_user($current_user->ID);
-	$antenna_id = function_exists('icl_object_id') ? icl_object_id($antenna_id, 'category', TRUE) : $antenna_id; //icl_object_id(ID, type, return_original_if_missing,language_code)
+  $antenna_id = array_key_exists( 'wpml_object_id' , $GLOBALS['wp_filter'] ) ? apply_filters( 'wpml_object_id', $antenna_id, 'category', true ) : $antenna_id; //apply_filters( 'wpml_object_id', ID, type, return_original_if_missing, language_code)
 	$args = $pays ? array( 'hide_empty' => 0) : array('child_of' => $antenna_id, 'hide_empty' => 0);
 
 	//$home_categ_options = new array;
@@ -257,7 +263,7 @@ function iftheme_home_categories( $pays = NULL ) {
 	  //get all except the level 0 ones
     if($category->parent){
     	$home_categ_options[$category->term_id] = array(
-    		'value' => function_exists('icl_object_id') ? icl_object_id($category->term_id, 'category', TRUE, $default_lg) : $category->term_id,
+    		'value' => array_key_exists( 'wpml_object_id' , $GLOBALS['wp_filter'] ) ? apply_filters( 'wpml_object_id', $category->term_id, 'category', true, $default_lg ) : $category->term_id,
     		'label' => $category->name,
     		'antenne' => $pays ? get_cat_name(get_root_category($category->term_id)) : NULL,
     		'level' => $level,
@@ -290,6 +296,7 @@ function iftheme_get_default_theme_options() {
 		'background_img_country' => get_template_directory_uri() . '/images/bg-body-if.jpg',
 		'custom_hp' => 0,
 		'header_img' => '',
+		'display_news' => 0,
 		'header_img_link' => '',
 		'theme_options_setting_facebook' => '',
 		'theme_options_setting_twitter' => '',
@@ -298,6 +305,7 @@ function iftheme_get_default_theme_options() {
 		'theme_options_setting_youtube' => '',
 		'theme_options_setting_instagram' => '',
 		'theme_home_nb_events' => '5',
+		'theme_categ_nb_events' => '5',
 		'theme_options_setting_hmenupage' => '1',
 		'theme_options_setting_wysija_embed' => '1',
 		'theme_options_setting_calendar' => '1',
@@ -380,6 +388,8 @@ function iftheme_settings_field_home_categories_country() {
 
 /**
  * Renders the number of event displayed on homepage settings
+ *
+ * @option: theme_home_nb_events_$pays is for homepage pays and homepages antennas (multi)
  */
 
 function iftheme_settings_field_nb_events( $pays = NULL ) {
@@ -391,17 +401,39 @@ function iftheme_settings_field_nb_events( $pays = NULL ) {
 	 $defaults = iftheme_get_default_theme_options();
 	 $nb_events = $pays ?  $defaults['theme_home_nb_events_' . $pays] : $defaults['theme_home_nb_events'];
 	}
-	
+
 	?>
 		<div class="layout image-checkbox-option theme-home-categ">
 			<input name="iftheme_theme_options_<?php echo $antenna;?>[theme_home_nb_events<?php echo $pays ? '_'.$pays : '';?>]" type="number" step="1" min="1" id="theme_home_nb_events<?php echo $pays ? '_'.$pays : '';?>" value="<?php echo $nb_events;?>" class="small-text" />
 		</div>
 <?php }
-
 function iftheme_settings_field_nb_events_country() {
 	global $pays;
 	iftheme_settings_field_nb_events($pays);
 }
+
+/**
+ * Renders the number of event displayed in listing on category's page
+ *
+ * @option: iftheme_settings_nb_list_events_$pays is for listing on categroy's page (multi & single antenna)
+ */
+function iftheme_settings_nb_list_events( $pays = false ) {
+  $antenna = get_antenna();
+	$options = iftheme_get_theme_options();
+  $defaults = iftheme_get_default_theme_options();
+
+	$nb_events = $pays ?  $options['theme_categ_nb_events' . $pays] : isset($options['theme_categ_nb_events']) ? $options['theme_categ_nb_events'] : $defaults['theme_categ_nb_events']; ;
+	
+	if(!$nb_events) { 
+	 $nb_events = $pays ?  $defaults['theme_categ_nb_events' . $pays] : $defaults['theme_categ_nb_events'];
+	}
+
+	?>
+		<div class="layout image-checkbox-option theme-list-categ">
+			<input name="iftheme_theme_options_<?php echo $antenna;?>[theme_categ_nb_events<?php echo $pays ? '_'.$pays : '';?>]" type="number" step="1" min="1" id="theme_categ_nb_events<?php echo $pays ? '_'.$pays : '';?>" value="<?php echo $nb_events;?>" class="small-text" />
+		</div>
+<?php }
+
 
 /**
  * Renders the background_img image setting fields.
@@ -593,6 +625,26 @@ function iftheme_settings_field_header_img() {
 	<?php
 }
 
+/**
+ * News Display setting
+ 
+       add_settings_field('display_news', __('News', 'iftheme'), 'iftheme_settings_field_news_diplay', 'theme_options', 'special_setting_section');
+
+ 
+ */
+function iftheme_settings_field_news_diplay() {
+	$antenna = get_antenna();
+	$options = iftheme_get_theme_options();
+	$defaults = iftheme_get_default_theme_options();
+  $value = isset($options['display_news']) ? $options['display_news'] : $defaults['display_news'];
+   
+  $html = '<input type="checkbox" id="display_news" name="iftheme_theme_options_' . $antenna . '[display_news]" ' . checked( $value, 'on', false ) . '/>';
+  $html .= '<label for="display_news">' . __('Check this box to always display news', 'iftheme') . '</label>';
+  $html .= '<p class="description">' . __('Leave it unchecked to display only news whose date is not passed', 'iftheme') . '</p>';
+   
+  echo $html;
+}
+
 // —————-Settings section callback function social networks
 function social_setting_section_callback_function() {
 	echo '<p><em>'.__('This section is where you can save the social networks where readers can find you on the Internet.','iftheme').'</em></p>';
@@ -686,9 +738,12 @@ function iftheme_theme_options_validate( $input ) {
 	// Home categories 
 	if ( isset( $input['theme_home_categ'] ) && is_array( $input['theme_home_categ'] ) )
 		$output['theme_home_categ'][] = $input['theme_home_categ'];
-	//nb of events homepage
+	//nb of events homepage(s)
 	if ( isset( $input['theme_home_nb_events'] ) && strlen($input['theme_home_nb_events']))
 		$output['theme_home_nb_events'] = $input['theme_home_nb_events'];
+	//nb of events category page(s)
+	if ( isset( $input['theme_categ_nb_events'] ) && strlen($input['theme_categ_nb_events']))
+		$output['theme_categ_nb_events'] = $input['theme_categ_nb_events'];
 
 	// Country Home categories 
 	if ( isset( $input['theme_home_categ_country'] ) && is_array( $input['theme_home_categ_country'] ) )
@@ -715,6 +770,8 @@ function iftheme_theme_options_validate( $input ) {
 	$output['header_img'] = isset( $input['header_img'] ) ? $input['header_img'] : '';
 	// Header image link
 	$output['header_img_link'] = isset( $input['header_img_link'] ) ? $input['header_img_link'] : '';
+	//Display news
+	$output['display_news'] = isset($input['display_news']) ? $input['display_news'] : 0;
 
 	//Under construction Landing page
   if ( isset( $input['theme_options_setting_underconstruction'] ) )

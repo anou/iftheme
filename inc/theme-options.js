@@ -15,7 +15,7 @@
          return false;
     });
     window.send_to_editor = function(html) {
-       imgurl = $('img',html).attr('src');
+       imgurl = $(html).attr('src');
        $(targetfield).val(imgurl).closest('.layout').append('<div class="warning">'+ifOptions.delete_img_txt+'</div>');
        tb_remove();
     }

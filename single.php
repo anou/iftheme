@@ -32,7 +32,7 @@
 		
 	} elseif('post' == get_post_type() || 'news' == get_post_type() || 'course' == get_post_type()) { 
 
-			$data = apply_filters('if_event_data', get_meta_if_post());
+			$data = get_meta_if_post();
       $news = isset($data['type']) && $data['type'] == 'news' ? true : false;
       $data['start'] = $news ? $data['subhead'] : $data['start'];
       if( !$data['start'] && $news ) $data['start'] = __('News', 'iftheme');
@@ -50,7 +50,7 @@
 		<div id="post-<?php the_ID(); ?>" <?php post_class('post'); ?>>
 
 			<article class="post">
-				<?php if($start):?><div class="infos-post bxshadow"><?php echo $start ? $start . $end : ''; ?><?php echo $multi && !$news ? ' - ' . get_cat_name($antenna) :  !$news ? ' - ' . $town : '';?></div><?php endif;?>
+				<?php if( isset($start) ):?><div class="infos-post bxshadow"><?php echo $start ? $start . $end : ''; ?><?php echo $multi && !$news ? ' - ' . get_cat_name($antenna) :  !$news ? ' - ' . $town : '';?></div><?php endif;?>
 				<h1><a href="<?php the_permalink() ?>" title="<?php the_title(); ?>" rel="bookmark"><?php the_title(); ?></a></h1>
 				<small><?php edit_post_link( sprintf(__('Edit this %s', 'iftheme'), get_post_type()) ); ?></small>
 				
@@ -91,18 +91,39 @@
 	              <?php echo $data['link1'] ? '<a href="'. $data['link1'] .'" target="_blank">'. $data['link1'] .'</a><br />' : '';?>
 	              <?php echo $data['link2'] ? '<a href="'. $data['link2'] .'" target="_blank">'. $data['link2'] .'</a><br />' : '';?>
 	              <?php echo $data['link3'] ? '<a href="'. $data['link3'] .'" target="_blank">'. $data['link3'] .'</a><br />' : '';?>
-	              <?php //echo 'course' == get_post_type() ? '<br /><p><a class="bxshadow" href="#" title="' . __('Subscribe to this course', 'iftheme') . '">' . __('Subscription form', 'iftheme') . '</a></p>' : '';?>
+	              <?php if( isset($data['type']) && $data['type'] == 'course' ): //courses data ?>
+  	              <div id="courses-list">
+  	              <?php 
+    	              $teacher = isset($data['teacher']) ? $data['teacher'] : false;
+    	              $special_infos = isset($data['special_infos']) ? $data['special_infos'] : false;
+    	              $courses = isset($data['courses']) ? $data['courses'] : false;
+                  ?>
+                  <?php if( $teacher ):?><p><?php printf(  esc_html__( 'Teacher: %s', 'iftheme' ), $teacher ); ?></p><?php endif;?>
+                  <?php if( $special_infos ):?><div class="special-infos"><?php echo  wpautop(esc_html( $special_infos ), true ); ?></div><?php endif;?>
+                  <?php if( $courses ):?>
+                    <h3><?php esc_html_e('Courses Schedule', 'iftheme');?></h3>
+                    <ul>
+                    <?php foreach( $courses as $k => $course ): ?>
+                      <li class="bxshadow"><?php echo esc_html($course);?></li>
+                    <?php endforeach;?>
+                    </ul>
+                  <?php endif;?>
+  	              <?php //echo '<br /><p><a class="bxshadow" href="#" title="' . __('Subscribe to this course', 'iftheme') . '">' . __('Subscription form', 'iftheme') . '</a></p>';?>
+  	              </div>
+	              <?php endif;?>
+	              
 				</div>
 			</div><!-- #booking-container -->
-		<?php endif;?>
-		<!-- BOOKING FORM -->
-		<?php if($book == 'on'): ?>
-			<div class="booking-container">
-				<h3 class="booking-title"><span class="picto-book"></span><?php _e("Booking",'iftheme');?></h3>
-				<div class="form-content bxshadow">
-					<?php echo get_booking_form(); ?>
-				</div>
-			</div><!-- #booking-container -->
+  		<!-- BOOKING FORM -->
+  		<?php if($book == 'on'): ?>
+  			<div class="booking-container">
+  				<h3 class="booking-title"><span class="picto-book"></span><?php _e("Booking",'iftheme');?></h3>
+  				<div class="form-content bxshadow">
+  					<?php echo get_booking_form(); ?>
+  				</div>
+  			</div><!-- #booking-container -->
+  		<?php endif;?>
+		
 		<?php endif;?>
 			
 		</div><!-- #post-## -->

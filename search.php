@@ -4,7 +4,7 @@
 	<h1><?php the_search_query(); ?></h1>
 
 	<?php if (have_posts()) : while (have_posts()) : the_post(); ?>
-			<article class="post-single clearfix" id="post-<?php the_ID();?>">
+			<article class="clearfix post-single" id="post-<?php the_ID();?>">
 				<?php //prepare data 
 					$pid = get_the_ID();
 					//$pid =$post->ID;
