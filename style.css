@@ -100,7 +100,7 @@ Domain Path: /languages
 }
 
 /* DEBUG help */
-/* .debug { display: none; } */
+.debug { display: none; }
 
 /*GENERAL*/
 body { background: #fff url(images/bg-body-if.jpg) no-repeat fixed center top; font: normal 14px/1.4em "Arial", sans-serif;
@@ -176,7 +176,7 @@ header { }
 	header .widget {margin-bottom: 10px;}
 	#logo-container {float: left; margin-left: 10px}
 	#logo img { display: block; }
-	.tagline {font: normal 1em/1em 'dinMed',sans-serif; text-transform: uppercase; color: #58585A; }
+	.tagline {font: normal 1em/1em 'dinMed',sans-serif; text-transform: uppercase; color: #58585A; margin-top: 3px; }
 	
 	#header-search {text-align: right;}
 	
@@ -781,7 +781,7 @@ html[xmlns] .clearfix {
 }
 
 
-.crunchify-social a.crunchify-link { font-size: 18px; padding: 4px 5px 6px; width: 20px; display: inline-block; text-align: center;}
+.crunchify-social a.crunchify-link { font-size: 18px; padding: 4px 5px 6px; width: 20px; display: inline-block; text-align: center; color: #fff; }
 
 
 @media only screen and (max-width: 800px) {

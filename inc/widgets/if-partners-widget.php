@@ -46,10 +46,12 @@ class If_Antenna_Partners extends WP_Widget {
 		// prints the form on the widgets page
 		$defaults = array('partnersshown'=>0);
 		$instance = wp_parse_args( (array) $instance, $defaults );
+		
+		$title = isset($instance['title']) ? $instance['title'] : '';
 		?>
 		<p>
 			<label for="<?php echo $this->get_field_id('title'); ?>"><?php _e('Title')?></label>
-			<input type="text" name="<?php echo $this->get_field_name('title') ?>" id="<?php echo $this->get_field_id('title') ?> " value="<?php echo $instance['title'] ?>" size="20" /><div class="description"><?php _e("You can custom the widget title here. Default is the title of the selected partner.", 'iftheme');?></div>
+			<input type="text" name="<?php echo $this->get_field_name('title') ?>" id="<?php echo $this->get_field_id('title') ?> " value="<?php echo $title; ?>" size="20" /><div class="description"><?php _e("You can custom the widget title here. Default is the title of the selected partner.", 'iftheme');?></div>
 		</p>
 		<p>
 		  <h4><?php _e("Select Partners:",'iftheme');?></h4>

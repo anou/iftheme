@@ -49,7 +49,7 @@ function if_events_meta () {
 
     global $post;
     $custom = get_post_custom($post->ID);
-    
+
     $meta_sd = !empty($custom["if_events_startdate"][0]) ? $custom["if_events_startdate"][0] : NULL;
     $meta_ed = !empty($custom["if_events_enddate"][0]) ? $custom["if_events_enddate"][0] : NULL;
     $meta_time = !empty($custom["if_events_time"][0]) ? $custom["if_events_time"][0] : NULL;
@@ -88,7 +88,7 @@ function if_events_mobile() {
   $current_user = wp_get_current_user();
 
   $antenna = get_cat_name( get_cat_if_user($current_user->ID) );
-  
+
   $custom = get_post_custom($post->ID);
 
   $meta_disciplines = isset($custom["if_events_disciplines"]) ? unserialize($custom["if_events_disciplines"][0]) : array();
@@ -114,7 +114,7 @@ function if_events_mobile() {
   //DISCIPLINES
   $disciplines = file_get_contents( get_template_directory() . '/inc/events/xml/getDiscipline.xml' );
 
-  if(!$disciplines) { $msg = '<div class="warning">' . __("Please check if <i style=\"color:red;font-family:monospace;\">/iftheme/inc/events/xml/getDiscipline.xml exist. If not create one empty, it should be on next cron run", 'iftheme') . '</div>'; }
+  if(!$disciplines) { $msg = '<div class="warning">' . __("Please check if <i style=\"color:red;font-family:monospace;\">/iftheme/inc/events/xml/getDiscipline.xml</i> exist. If not create one empty, it should be on next cron run", 'iftheme') . '</div>'; }
 
   //Uncomment to use curl if needed
 /*
@@ -135,8 +135,8 @@ function if_events_mobile() {
   }
   //PAYS
   $pays = file_get_contents( get_template_directory() . '/inc/events/xml/getCountry.xml' );
-  
-  if(!$pays) { $msg = '<div class="warning">' . __("Please check if <i style=\"color:red;font-family:monospace;\">/iftheme/inc/events/xml/getCountry.xml exist. If not create one empty, it should be on next cron run", 'iftheme') . '</div>'; }
+
+  if(!$pays) { $msg = '<div class="warning">' . __("Please check if <i style=\"color:red;font-family:monospace;\">/iftheme/inc/events/xml/getCountry.xml</i> exist. If not create one empty, it should be on next cron run", 'iftheme') . '</div>'; }
 
   //Uncomment to use curl if needed
 /*
@@ -159,54 +159,63 @@ function if_events_mobile() {
   }
 ?>
     <div class="if-meta">
-<script type="text/javascript" src="//maps.google.com/maps/api/js?sensor=false"></script>
-<script type="text/javascript">
-  function googleMaps (lat, lng, zoom) {
-    geocoder = new google.maps.Geocoder();
-    var myLatlng = new google.maps.LatLng(lat, lng);
-    var myOptions = {
-      scrollwheel: false,
-      zoom: zoom,
-      center: myLatlng,
-      mapTypeId: google.maps.MapTypeId.ROADMAP
-    }
-    map = new google.maps.Map(document.getElementById("map_canvas"), myOptions);
-    var marker = new google.maps.Marker({
-        position: myLatlng,  
-        map: map
-    });
-    google.maps.event.addListener(map, "center_changed", function(){
-      document.getElementById("if_events_lat").value = map.getCenter().lat();
-      document.getElementById("if_events_long").value = map.getCenter().lng();
-      marker.setPosition(map.getCenter());
-      document.getElementById("zoom").value = map.getZoom();
-    });
-    google.maps.event.addListener(map, "zoom_changed", function(){
-      document.getElementById("zoom").value = map.getZoom();
-    });
-  }
-</script>
-<script type="text/javascript">jQuery(document).ready(function(){
-  //$(".accordion").accordion();
-  //$("#gmaplatlon").validate({rules:{"latitude":{number:true}, "longitude":{number:true}, "zoom":{digits:true,min:0}}, errorPlacement:errorMessages});
-  jQuery("#longlat").change(function(){ geocoder.geocode({"address": jQuery(this).attr("value")}, function(results, status) { if (status == google.maps.GeocoderStatus.OK) { map.setZoom(14); map.setCenter(results[0].geometry.location); } else { alert("Geocode was not successful for the following reason: " + status); } }); });
-  });
-  jQuery(window).load(function(){
-
-    googleMaps(<?php echo $meta_lat;?>,<?php echo $meta_long;?>,<?php echo $zoom;?>);
-  })
-</script>
+      <script type="text/javascript" src="//maps.google.com/maps/api/js?key=AIzaSyCnhiDiac8N3Gi7ATkCo4o5_oFVuiBSasM"></script>
+      <script type="text/javascript">
+        function googleMaps (lat, lng, zoom) {
+          geocoder = new google.maps.Geocoder();
+          var myLatlng = new google.maps.LatLng(lat, lng);
+          var myOptions = {
+            scrollwheel: false,
+            zoom: zoom,
+            center: myLatlng,
+            mapTypeId: google.maps.MapTypeId.ROADMAP
+          }
+          map = new google.maps.Map(document.getElementById("map_canvas"), myOptions);
+          var marker = new google.maps.Marker({
+              position: myLatlng,
+              map: map
+          });
+          google.maps.event.addListener(map, "center_changed", function(){
+            document.getElementById("if_events_lat").value = map.getCenter().lat();
+            document.getElementById("if_events_long").value = map.getCenter().lng();
+            marker.setPosition(map.getCenter());
+            document.getElementById("zoom").value = map.getZoom();
+          });
+          google.maps.event.addListener(map, "zoom_changed", function(){
+            document.getElementById("zoom").value = map.getZoom();
+          });
+        }
+      </script>
+      <script type="text/javascript">
+        jQuery(document).ready(function(){
+          jQuery("#longlat").change( function(){
+            geocoder.geocode(
+              { "address": jQuery(this).attr("value") },
+              function(results, status) {
+                if (status == google.maps.GeocoderStatus.OK) {
+                  map.setZoom(14);
+                  map.setCenter(results[0].geometry.location);
+                }
+                else {
+                  alert("Geocode was not successful for the following reason: " + status);
+                }
+              });
+            });
+        });
+        jQuery(window).load(function(){
+          googleMaps(<?php echo $meta_lat;?>,<?php echo $meta_long;?>,<?php echo $zoom;?>);
+        });
+      </script>
 
         <ul>
             <li>
               <label><?php _e("Disciplines",'iftheme');?>&nbsp;<span style="color:red" title="<?php __("Mandatory field", 'iftheme');?>">*</span></label>
               <span class="description"><em><?php _e('The proposed disciplines are useful for the mobile application only and have <b>no impact on your website</b>', 'iftheme');?></em></span><br style="line-height:2.5em" />
               <div class="container-disciplines"><!-- Disciplines -->
-              <?php if(!$disciplines) {echo $msg;}?>              
-              <?php foreach ($options_dis as $kdis => $valdis) :?>
-                <input type="checkbox" name="if_events_disciplines[]" id="if_events_disciplines-<?php echo $kdis ?>" value="<?php echo $kdis ?>" <?php checked( in_array( $kdis, $meta_disciplines ) ); ?> />&nbsp;<?php echo $valdis;?> 
-              <?php endforeach;?>
-              
+              <?php if(!$disciplines) { echo $msg; } ?>
+                <?php foreach ($options_dis as $kdis => $valdis) :?>
+                  <input type="checkbox" name="if_events_disciplines[]" id="if_events_disciplines-<?php echo $kdis ?>" value="<?php echo $kdis ?>" <?php checked( in_array( $kdis, $meta_disciplines ) ); ?> />&nbsp;<?php echo $valdis;?>
+                <?php endforeach;?>
               </div>
             </li>
             <li><label><?php _e("Place",'iftheme');?>&nbsp;<span style="color:red" title="<?php __("Mandatory field", 'iftheme');?>">*</span></label><input size="50" type="text" name="if_events_lieu" id="if_events_lieu" value="<?php echo $meta_lieu; ?>" /></li>
@@ -217,28 +226,37 @@ function if_events_mobile() {
             <li>
               <label><?php _e("Country",'iftheme');?>&nbsp;<span style="color:red" title="<?php __("Mandatory field", 'iftheme');?>">*</span></label>
               <select name="if_events_pays" id="if_events_pays">
-                <option value=""><?php _e("Select");?></option> 
+                <option value=""><?php _e("Select");?></option>
               <?php foreach ($options_p as $kp => $valp) :?>
-                <option value="<?php echo $kp ?>" <?php selected( $meta_pays, $kp ); ?>><?php echo $valp;?></option> 
+                <option value="<?php echo $kp ?>" <?php selected( $meta_pays, $kp ); ?>><?php echo $valp;?></option>
               <?php endforeach;?>
               </select>
               <?php if(!$pays) {echo $msg;}?>
             </li>
             <li>
               <label><?php _e("Get longitude & latitude",'iftheme');?>&nbsp;<span style="color:red" title="<?php __("Mandatory field", 'iftheme');?>">*</span></label><input size="50" type="text" name="longlat" id="longlat" value="<?php echo $meta_longlat;?>" /><?php _e("<em>Type here the full address of your event. <b>Press \"tab\" key</b> to get/modify the longitude and latitude</em>",'iftheme');?><br /><br /><br /><br />
+
               <div id="map_canvas" style="height:200px; margin:5px 0px; clear:both"></div>
-              <form id="gmaplatlon" method="post" action="">              
-              <fieldset style="margin:10px 0 10px 150px"><li><label style="width:auto"><?php _e("Longitude",'iftheme');?>&nbsp;<span style="color:red" title="<?php __("Mandatory field", 'iftheme');?>">*</span></label>&nbsp;<input type="text" name="if_events_long" id="if_events_long" value="<?php echo $meta_long; ?>" />&nbsp;&nbsp;&nbsp;&nbsp;<label style="width:auto"><?php _e("Latitude",'iftheme');?>&nbsp;<span style="color:red" title="<?php __("Mandatory field", 'iftheme');?>">*</span></label>&nbsp;<input type="text" name="if_events_lat" id="if_events_lat" value="<?php echo $meta_lat; ?>" />&nbsp;<label for="zoom" style="width:auto"><?php _e("Zoom",'iftheme');?></label><input type="text" id="zoom" name="zoom" style="width:25px;" maxlength="50" value="<?php echo $zoom; ?>"></fieldset>
+
+              <form id="gmaplatlon" method="post" action="">
+                <fieldset style="margin:10px 0 10px 150px">
+
+                  <label style="width:auto" for="if_events_long"><?php _e("Longitude",'iftheme');?>&nbsp;<span style="color:red" title="<?php __("Mandatory field", 'iftheme');?>">*</span></label>&nbsp;<input type="text" name="if_events_long" id="if_events_long" value="<?php echo $meta_long; ?>" />
+
+                  <label style="width:auto" for="if_events_lat"><?php _e("Latitude",'iftheme');?>&nbsp;<span style="color:red" title="<?php __("Mandatory field", 'iftheme');?>">*</span></label>&nbsp;<input type="text" name="if_events_lat" id="if_events_lat" value="<?php echo $meta_lat; ?>" />
+
+                  <label for="zoom" style="width:auto"><?php _e("Zoom",'iftheme');?></label><input type="text" id="zoom" name="zoom" style="width:30px;" maxlength="50" value="<?php echo $zoom; ?>" />
+                </fieldset>
               </form>
             </li>
-            
+
             <!--<li><label><?php //_e("Schedules",'iftheme');?></label><input size="50" type="text" name="if_events_hour" id="if_events_hour" value="<?php //echo $meta_hour; ?>" /></li>-->
             <li><label><?php _e("Phone number",'iftheme');?></label><input type="text" name="if_events_tel" id="if_events_tel" value="<?php echo $meta_tel; ?>" /></li>
             <li><label><?php _e("Email", 'iftheme');?></label><input type="text" name="if_events_mmail" id="if_events_mmail" value="<?php echo $meta_mail; ?>" /></li>
             <li><label><?php _e("Link",'iftheme');?> 1</label><input size="50" type="text" name="if_events_link1" id="if_events_link1" value="<?php echo $meta_link1; ?>" /></li>
             <li><label><?php _e("Link",'iftheme');?> 2</label><input size="50" type="text" name="if_events_link2" id="if_events_link2" value="<?php echo $meta_link2; ?>" /></li>
             <li><label><?php _e("Link",'iftheme');?> 3</label><input size="50" type="text" name="if_events_link3" id="if_events_link3" value="<?php echo $meta_link3; ?>" /></li>
-            
+
             <li style="display:none"><!-- post url --><input type="hidden" name="if_events_url" id="if_events_url" value="<?php echo $post->guid; ?>" /></li>
             <li>&nbsp;<span style="color:red" title="<?php __("Mandatory field", 'iftheme');?>">*</span>&nbsp;<em style="color:black"><?php _e("Mandatory fields", 'iftheme');?></em></li>
         </ul>
@@ -254,7 +272,7 @@ function save_if_events() {
 
     global $post;
     //$meta_dis = get_post_meta($post->ID, 'if_events_disciplines');
-    
+
     if ( !current_user_can( 'edit_posts' ) )
     	return $post->ID;
 
@@ -267,9 +285,9 @@ function save_if_events() {
 
     if(isset($_POST["if_events_enddate"])):
         $updateendd = strtotime ( $_POST["if_events_enddate"]);
-        
+
         if($updateendd < $updatestartd) $updateendd = $updatestartd;
-        
+
         update_post_meta($post->ID, "if_events_enddate", $updateendd );
     endif;
 
@@ -277,13 +295,13 @@ function save_if_events() {
         $updatetime = $_POST["if_events_time"];
         update_post_meta($post->ID, "if_events_time", $updatetime );
     endif;
-    
+
     //disciplines
     if(isset($_POST["if_events_disciplines"])):
       $updatedis = $_POST["if_events_disciplines"];
       update_post_meta($post->ID, "if_events_disciplines", $updatedis );
     endif;
-    
+
     if(isset($_POST["if_events_lieu"])):
         $updatelieu = $_POST["if_events_lieu"];
         update_post_meta($post->ID, "if_events_lieu", $updatelieu );
@@ -372,7 +390,7 @@ function events_updated_messages( $messages ) {
     2 => __('Custom field updated.','iftheme'),
     3 => __('Custom field deleted.','iftheme'),
     4 => __('Event updated.','iftheme'),
-    // translators: %s: date and time of the revision 
+    // translators: %s: date and time of the revision
     5 => isset($_GET['revision']) ? sprintf( __('Event restored to revision from %s','iftheme'), wp_post_revision_title( (int) $_GET['revision'], false ) ) : false,
     6 => sprintf( __('Event published. <a href="%s">View event</a>','iftheme'), esc_url( get_permalink($post_ID) ) ),
     7 => __('Event saved.','iftheme'),
@@ -402,9 +420,9 @@ function events_scripts() {
     //wp_enqueue_script('jquery-ui', get_bloginfo('template_url') . '/inc/events/js/jquery-ui-1.8.9.custom.min.js', array('jquery'));
 
     wp_enqueue_script('ui-datepicker', get_bloginfo('template_url') . '/inc/events/js/jquery.ui.datepicker.js', array('jquery'));
-		
+
 		wp_enqueue_script('jquery-validate', get_bloginfo('template_url') . '/inc/events/js/jquery.validate.min.js', array('jquery'), '1.8.1',true);
-    
+
     wp_enqueue_script('custom_script', get_bloginfo('template_url').'/inc/events/js/ifevents-admin.js', array('jquery-validate'));
     wp_localize_script( 'custom_script', 'objectL10n', array(
   			'place' => __("You must tell where this event takes place.", 'iftheme'),
@@ -413,7 +431,7 @@ function events_scripts() {
   			'lat' => __("Latitude is required and must be a valid decimal", 'iftheme'),
   			'httpurl' => __('Must be like: <b>http://www.my-link.ext</b>','iftheme'),
   			'disciplines' => __('You must check at least one discipline !','iftheme'),
-        ) 
+        )
     );
 }
 

@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Institut Français theme\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-09-24 13:08+0200\n"
-"PO-Revision-Date: 2016-09-24 13:08+0200\n"
+"POT-Creation-Date: 2017-03-07 16:53+0100\n"
+"PO-Revision-Date: 2017-03-07 16:54+0100\n"
 "Last-Translator: David THOMAS <anou@smol.org>\n"
 "Language-Team: smol <anou@smol.org>\n"
 "Language: fr_FR\n"
@@ -13,7 +13,7 @@ msgstr ""
 "X-Poedit-KeywordsList: __;_e;_x;_ex;_n\n"
 "X-Poedit-Basepath: .\n"
 "X-Poedit-SourceCharset: UTF-8\n"
-"X-Generator: Poedit 1.8.9\n"
+"X-Generator: Poedit 1.8.12\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 "X-Poedit-SearchPath-0: ../../iftheme\n"
 
@@ -31,7 +31,7 @@ msgstr ""
 "Merci de vérifier votre URL ou utilisez le champ de recherche ci-dessous."
 
 #: ../../iftheme/archive.php:15 ../../iftheme/archives-page.php:21
-#: ../../iftheme/category.php:447
+#: ../../iftheme/category.php:521
 msgid "Archives"
 msgstr "Archives"
 
@@ -86,22 +86,22 @@ msgstr "Pas de commentaire par "
 msgid "Modify your slider"
 msgstr "Modifiez votre diaporama"
 
-#: ../../iftheme/category.php:210 ../../iftheme/index.php:241
-#: ../../iftheme/multi-front-page.php:236
+#: ../../iftheme/category.php:254 ../../iftheme/multi-front-page.php:251
 msgid "No post for the moment"
 msgstr "Pas d'article pour l'instant"
 
-#: ../../iftheme/category.php:218
+#: ../../iftheme/category.php:262
 msgid "No post for the moment and/or no homepage category selected"
 msgstr ""
 "Pas d'article pour l'instant et/ou aucune catégorie de page d'accueil "
 "sélectionnée "
 
-#: ../../iftheme/category.php:310
+#: ../../iftheme/category.php:365
 msgid "Agenda"
 msgstr "Agenda"
 
-#: ../../iftheme/category.php:393 ../../iftheme/single.php:38
+#: ../../iftheme/category.php:460 ../../iftheme/inc/theme-options.php:104
+#: ../../iftheme/single.php:38
 msgid "News"
 msgstr "Articles"
 
@@ -152,7 +152,7 @@ msgstr "Balises HTML autorisées :"
 
 #: ../../iftheme/comments.php:64
 #: ../../iftheme/inc/IF-class/class-IF-terms-list-table.php:103
-#: ../../iftheme/inc/IF-class/class-IF-terms-list-table.php:343
+#: ../../iftheme/inc/IF-class/class-IF-terms-list-table.php:345
 msgid "Name"
 msgstr "Nom"
 
@@ -204,28 +204,28 @@ msgstr ""
 "Attention - Vous devez assigner une catégorie à l'utilisateur courant <a "
 "href=\"%2$s/wp-admin/users.php\"><b>%1$s</b>!</a>"
 
-#: ../../iftheme/functions.php:411
+#: ../../iftheme/functions.php:418
 msgid "You must assign a category to this user : "
 msgstr "Vous devez assigner une catégorie à cet utilisateur : "
 
-#: ../../iftheme/functions.php:652 ../../iftheme/inc/events/if-events.php:220
-#: ../../iftheme/inc/theme-options.php:535
+#: ../../iftheme/functions.php:663 ../../iftheme/inc/events/if-events.php:229
+#: ../../iftheme/inc/theme-options.php:577
 msgid "Select"
 msgstr "Sélectionner"
 
-#: ../../iftheme/functions.php:675 ../../iftheme/inc/events/if-events.php:77
+#: ../../iftheme/functions.php:689 ../../iftheme/inc/events/if-events.php:77
 msgid "Start Date"
 msgstr "Date de début"
 
-#: ../../iftheme/functions.php:676 ../../iftheme/inc/events/if-events.php:78
+#: ../../iftheme/functions.php:690 ../../iftheme/inc/events/if-events.php:78
 msgid "End Date"
 msgstr "Date de fin"
 
-#: ../../iftheme/functions.php:678
+#: ../../iftheme/functions.php:692
 msgid "Date"
 msgstr "Date"
 
-#: ../../iftheme/functions.php:690 ../../iftheme/inc/theme-classes.php:41
+#: ../../iftheme/functions.php:705 ../../iftheme/inc/theme-classes.php:41
 msgid "Image"
 msgstr "Image"
 
@@ -282,11 +282,11 @@ msgstr "Votre demande a été envoyé."
 msgid "A error occur and your message has not been sent."
 msgstr "Une erreur s'est produite et votre message n’a pas été envoyé."
 
-#: ../../iftheme/functions.php:1174 ../../iftheme/sidebar.php:44
+#: ../../iftheme/functions.php:1174 ../../iftheme/sidebar.php:47
 msgid "Last name"
 msgstr "Nom"
 
-#: ../../iftheme/functions.php:1177 ../../iftheme/sidebar.php:43
+#: ../../iftheme/functions.php:1177 ../../iftheme/sidebar.php:46
 msgid "First name"
 msgstr "Prénom"
 
@@ -339,7 +339,7 @@ msgid "No sliders found in Trash"
 msgstr "Aucun diaporama trouvé dans la corbeille"
 
 #: ../../iftheme/functions.php:1229
-#: ../../iftheme/inc/widgets/if-partners-widget.php:61
+#: ../../iftheme/inc/widgets/if-partners-widget.php:63
 msgid "Partners"
 msgstr "Partenaires"
 
@@ -424,16 +424,16 @@ msgstr "Navigation transversale"
 msgid "Theme options"
 msgstr "Options du thème"
 
-#: ../../iftheme/header.php:52
+#: ../../iftheme/header.php:56
 #, php-format
 msgid "Search for &quot;%s&quot; | "
 msgstr "Recherche pour &quot;%s&quot; | "
 
-#: ../../iftheme/header.php:56
+#: ../../iftheme/header.php:60
 msgid "No results - search our archives | "
 msgstr "Pas de résultat. Recherchez dans nos archives |"
 
-#: ../../iftheme/header.php:157
+#: ../../iftheme/header.php:163
 msgid "Skip to Content"
 msgstr "Aller au contenu"
 
@@ -442,7 +442,7 @@ msgid "Invalid taxonomy"
 msgstr "Taxonomy invalide"
 
 #: ../../iftheme/inc/IF-class/class-IF-terms-list-table.php:86
-#: ../../iftheme/inc/IF-class/class-IF-terms-list-table.php:265
+#: ../../iftheme/inc/IF-class/class-IF-terms-list-table.php:267
 msgid "Delete"
 msgstr "Supprimer"
 
@@ -451,7 +451,7 @@ msgid "Description"
 msgstr "Description"
 
 #: ../../iftheme/inc/IF-class/class-IF-terms-list-table.php:105
-#: ../../iftheme/inc/IF-class/class-IF-terms-list-table.php:348
+#: ../../iftheme/inc/IF-class/class-IF-terms-list-table.php:350
 msgid "Slug"
 msgstr "Jeton"
 
@@ -463,28 +463,28 @@ msgstr "Liens"
 msgid "Posts"
 msgstr "Articles/Evènements"
 
-#: ../../iftheme/inc/IF-class/class-IF-terms-list-table.php:257
+#: ../../iftheme/inc/IF-class/class-IF-terms-list-table.php:259
 #, php-format
 msgid "Edit &#8220;%s&#8221;"
 msgstr "Modifier &#8220;%s&#8221;"
 
-#: ../../iftheme/inc/IF-class/class-IF-terms-list-table.php:261
+#: ../../iftheme/inc/IF-class/class-IF-terms-list-table.php:263
 msgid "Edit"
 msgstr "Modifier"
 
-#: ../../iftheme/inc/IF-class/class-IF-terms-list-table.php:262
+#: ../../iftheme/inc/IF-class/class-IF-terms-list-table.php:264
 msgid "Quick&nbsp;Edit"
 msgstr "Modification&nbsp;rapide"
 
-#: ../../iftheme/inc/IF-class/class-IF-terms-list-table.php:266
+#: ../../iftheme/inc/IF-class/class-IF-terms-list-table.php:268
 msgid "View"
 msgstr "Voir"
 
-#: ../../iftheme/inc/IF-class/class-IF-terms-list-table.php:340
+#: ../../iftheme/inc/IF-class/class-IF-terms-list-table.php:342
 msgid "Quick Edit"
 msgstr "Modification rapide"
 
-#: ../../iftheme/inc/IF-class/class-IF-terms-list-table.php:369
+#: ../../iftheme/inc/IF-class/class-IF-terms-list-table.php:371
 msgid "Cancel"
 msgstr "Annuler"
 
@@ -707,14 +707,15 @@ msgstr "Informations complémentaire sur l'évènement"
 
 #: ../../iftheme/inc/events/if-events.php:77
 #: ../../iftheme/inc/events/if-events.php:78
-#: ../../iftheme/inc/events/if-events.php:202
 #: ../../iftheme/inc/events/if-events.php:212
-#: ../../iftheme/inc/events/if-events.php:216
-#: ../../iftheme/inc/events/if-events.php:218
-#: ../../iftheme/inc/events/if-events.php:228
-#: ../../iftheme/inc/events/if-events.php:231
-#: ../../iftheme/inc/events/if-events.php:243
-#: ../../iftheme/inc/events/if-events.php:411
+#: ../../iftheme/inc/events/if-events.php:221
+#: ../../iftheme/inc/events/if-events.php:225
+#: ../../iftheme/inc/events/if-events.php:227
+#: ../../iftheme/inc/events/if-events.php:237
+#: ../../iftheme/inc/events/if-events.php:244
+#: ../../iftheme/inc/events/if-events.php:246
+#: ../../iftheme/inc/events/if-events.php:261
+#: ../../iftheme/inc/events/if-events.php:429
 msgid "Mandatory field"
 msgstr "Champ obligatoire"
 
@@ -744,11 +745,11 @@ msgid ""
 "next cron run"
 msgstr ""
 
-#: ../../iftheme/inc/events/if-events.php:202
+#: ../../iftheme/inc/events/if-events.php:212
 msgid "Disciplines"
 msgstr "Disciplines"
 
-#: ../../iftheme/inc/events/if-events.php:203
+#: ../../iftheme/inc/events/if-events.php:213
 msgid ""
 "The proposed disciplines are useful for the mobile application only and have "
 "<b>no impact on your website</b>"
@@ -756,35 +757,35 @@ msgstr ""
 "Les disciplines sont utilisées pour l'application mobile uniquement et n'ont "
 "<b>aucune incidence sur votre site internet</b>"
 
-#: ../../iftheme/inc/events/if-events.php:212
+#: ../../iftheme/inc/events/if-events.php:221
 msgid "Place"
 msgstr "Lieu"
 
-#: ../../iftheme/inc/events/if-events.php:213
+#: ../../iftheme/inc/events/if-events.php:222
 msgid "Address"
 msgstr "Adresse"
 
-#: ../../iftheme/inc/events/if-events.php:214
+#: ../../iftheme/inc/events/if-events.php:223
 msgid "Additional address"
 msgstr "Adresse complémentaire"
 
-#: ../../iftheme/inc/events/if-events.php:215
+#: ../../iftheme/inc/events/if-events.php:224
 msgid "Zip code"
 msgstr "Code postal"
 
-#: ../../iftheme/inc/events/if-events.php:216
+#: ../../iftheme/inc/events/if-events.php:225
 msgid "City"
 msgstr "Ville"
 
-#: ../../iftheme/inc/events/if-events.php:218
+#: ../../iftheme/inc/events/if-events.php:227
 msgid "Country"
 msgstr "Pays"
 
-#: ../../iftheme/inc/events/if-events.php:228
+#: ../../iftheme/inc/events/if-events.php:237
 msgid "Get longitude & latitude"
 msgstr "Obtenir la longitude et Latitude"
 
-#: ../../iftheme/inc/events/if-events.php:228
+#: ../../iftheme/inc/events/if-events.php:237
 msgid ""
 "<em>Type here the full address of your event. <b>Press \"tab\" key</b> to "
 "get/modify the longitude and latitude</em>"
@@ -793,78 +794,78 @@ msgstr ""
 "69000 ou  l'adresse complète). <b>Appuyer sur la touche \"tab\"</b> pour "
 "obtenir la longitude et latitude</em>"
 
-#: ../../iftheme/inc/events/if-events.php:231
+#: ../../iftheme/inc/events/if-events.php:244
 msgid "Longitude"
 msgstr "Longitude"
 
-#: ../../iftheme/inc/events/if-events.php:231
+#: ../../iftheme/inc/events/if-events.php:246
 msgid "Latitude"
 msgstr "Latitude"
 
-#: ../../iftheme/inc/events/if-events.php:231
+#: ../../iftheme/inc/events/if-events.php:248
 msgid "Zoom"
 msgstr "Zoom"
 
-#: ../../iftheme/inc/events/if-events.php:236
+#: ../../iftheme/inc/events/if-events.php:254
 msgid "Phone number"
 msgstr "Numéro de téléphone"
 
-#: ../../iftheme/inc/events/if-events.php:237
+#: ../../iftheme/inc/events/if-events.php:255
 #: ../../iftheme/inc/theme-classes.php:103
 msgid "Email"
 msgstr "Courriel"
 
-#: ../../iftheme/inc/events/if-events.php:238
-#: ../../iftheme/inc/events/if-events.php:239
-#: ../../iftheme/inc/events/if-events.php:240
+#: ../../iftheme/inc/events/if-events.php:256
+#: ../../iftheme/inc/events/if-events.php:257
+#: ../../iftheme/inc/events/if-events.php:258
 #: ../../iftheme/inc/theme-classes.php:76
 msgid "Link"
 msgstr "Lien"
 
-#: ../../iftheme/inc/events/if-events.php:243
+#: ../../iftheme/inc/events/if-events.php:261
 msgid "Mandatory fields"
 msgstr "Champs obligatoires"
 
-#: ../../iftheme/inc/events/if-events.php:371
+#: ../../iftheme/inc/events/if-events.php:389
 #, php-format
 msgid "Event updated. <a href=\"%s\">View item</a>"
 msgstr "Évènement mis à jour. <a href=\"%s\">Voir l'évènement</a>"
 
-#: ../../iftheme/inc/events/if-events.php:372
+#: ../../iftheme/inc/events/if-events.php:390
 msgid "Custom field updated."
 msgstr "Champ personnalisé mis à jour."
 
-#: ../../iftheme/inc/events/if-events.php:373
+#: ../../iftheme/inc/events/if-events.php:391
 msgid "Custom field deleted."
 msgstr "Champ personnalisé supprimé."
 
-#: ../../iftheme/inc/events/if-events.php:374
+#: ../../iftheme/inc/events/if-events.php:392
 msgid "Event updated."
 msgstr "Évènement mis à jour."
 
 #. translators: %s: date and time of the revision
-#: ../../iftheme/inc/events/if-events.php:376
+#: ../../iftheme/inc/events/if-events.php:394
 #, php-format
 msgid "Event restored to revision from %s"
 msgstr "Évènement restauré à la révision de %s"
 
-#: ../../iftheme/inc/events/if-events.php:377
+#: ../../iftheme/inc/events/if-events.php:395
 #, php-format
 msgid "Event published. <a href=\"%s\">View event</a>"
 msgstr "Évènement publié. <a href=\"%s\">Voir l'évènement</a>"
 
-#: ../../iftheme/inc/events/if-events.php:378
+#: ../../iftheme/inc/events/if-events.php:396
 msgid "Event saved."
 msgstr "Évènement sauvegardé."
 
-#: ../../iftheme/inc/events/if-events.php:379
+#: ../../iftheme/inc/events/if-events.php:397
 #, php-format
 msgid "Event submitted. <a target=\"_blank\" href=\"%s\">Preview event</a>"
 msgstr ""
 "Évènement soumit. <a target=\"_blank\" href=\"%s\">Prévisualiser "
 "l'évènement</a>"
 
-#: ../../iftheme/inc/events/if-events.php:380
+#: ../../iftheme/inc/events/if-events.php:398
 #, php-format
 msgid ""
 "Event scheduled for: <strong>%1$s</strong>. <a target=\"_blank\" href=\"%2$s"
@@ -874,34 +875,34 @@ msgstr ""
 "href=\"%2$s\">Prévisualiser l'évènement</a>"
 
 #. translators: Publish box date format, see http://php.net/date
-#: ../../iftheme/inc/events/if-events.php:382
+#: ../../iftheme/inc/events/if-events.php:400
 msgid "M j, Y @ G:i"
 msgstr "j M Y @ G:i"
 
-#: ../../iftheme/inc/events/if-events.php:383
+#: ../../iftheme/inc/events/if-events.php:401
 #, php-format
 msgid "Event draft updated. <a target=\"_blank\" href=\"%s\">Preview event</a>"
 msgstr ""
 "Brouillon de l'évènement mis à jour. <a target=\"_blank\" href=\"%s"
 "\">Prévisualiser l'évènement</a>"
 
-#: ../../iftheme/inc/events/if-events.php:410
+#: ../../iftheme/inc/events/if-events.php:428
 msgid "You must tell where this event takes place."
 msgstr "Vous devez renseigner le lieu de l'évènement."
 
-#: ../../iftheme/inc/events/if-events.php:412
+#: ../../iftheme/inc/events/if-events.php:430
 msgid "Longitude is required and must be a valid decimal"
 msgstr "La Longitude est obligatoire et doit être un nombre décimal."
 
-#: ../../iftheme/inc/events/if-events.php:413
+#: ../../iftheme/inc/events/if-events.php:431
 msgid "Latitude is required and must be a valid decimal"
 msgstr "La Latitude est obligatoire et doit être un nombre décimal."
 
-#: ../../iftheme/inc/events/if-events.php:414
+#: ../../iftheme/inc/events/if-events.php:432
 msgid "Must be like: <b>http://www.my-link.ext</b>"
 msgstr "Doit être de la forme : <b>http://www.mon-lien.ext</b>"
 
-#: ../../iftheme/inc/events/if-events.php:415
+#: ../../iftheme/inc/events/if-events.php:433
 msgid "You must check at least one discipline !"
 msgstr "Vous devez sélectionner au minimum 1 discipline !"
 
@@ -909,17 +910,17 @@ msgstr "Vous devez sélectionner au minimum 1 discipline !"
 msgid "Antenna"
 msgstr "Antenne"
 
-#: ../../iftheme/inc/if-user.php:57
+#: ../../iftheme/inc/if-user.php:58
 msgid "Category assigned to this Antenna"
 msgstr "Catégorie assignée à cette Antenne"
 
-#: ../../iftheme/inc/if-user.php:79
+#: ../../iftheme/inc/if-user.php:81
 msgid "You must create another top level category to assign to this user"
 msgstr ""
 "Vous devez créer une top catégorie (level 0) pour l'assigner à cet "
 "utilisateur"
 
-#: ../../iftheme/inc/if-user.php:107
+#: ../../iftheme/inc/if-user.php:109
 msgid "Category"
 msgstr "Catégorie"
 
@@ -1031,143 +1032,155 @@ msgstr "Options supplémentaires"
 msgid "Display header's menu pages"
 msgstr "Affiche le menu des pages dans l'entête"
 
-#: ../../iftheme/inc/theme-options.php:89
+#: ../../iftheme/inc/theme-options.php:90
 msgid "Use MailPoet Newsletter's theme form"
 msgstr "Utiliser le formulaire de newsletter de MailPoet"
 
-#: ../../iftheme/inc/theme-options.php:91
+#: ../../iftheme/inc/theme-options.php:94
+msgid "Use YLMP newsletter subscription form"
+msgstr ""
+
+#: ../../iftheme/inc/theme-options.php:97
 msgid "Calendar"
 msgstr "Calendrier"
 
-#: ../../iftheme/inc/theme-options.php:93
+#: ../../iftheme/inc/theme-options.php:99
 msgid "Custom front page"
 msgstr "Page d’accueil personnalisée"
 
-#: ../../iftheme/inc/theme-options.php:95
+#: ../../iftheme/inc/theme-options.php:101
 msgid "Add Header Image"
 msgstr "Image d'en-tête"
 
-#: ../../iftheme/inc/theme-options.php:98
+#: ../../iftheme/inc/theme-options.php:106
+msgid "Number of news"
+msgstr "Nombre d'articles"
+
+#: ../../iftheme/inc/theme-options.php:110
 msgid "Under construction Page"
 msgstr "Page « En construction »"
 
-#: ../../iftheme/inc/theme-options.php:105
+#: ../../iftheme/inc/theme-options.php:117
 msgid "Social sites on the web"
 msgstr "Réseaux sociaux sur le net"
 
-#: ../../iftheme/inc/theme-options.php:111
+#: ../../iftheme/inc/theme-options.php:123
 msgid "Background frame"
 msgstr "Trame de fond"
 
-#: ../../iftheme/inc/theme-options.php:117
+#: ../../iftheme/inc/theme-options.php:129
 msgid "Displayed home categories"
 msgstr "Catégories affichées sur la page d'accueil"
 
-#: ../../iftheme/inc/theme-options.php:119
+#: ../../iftheme/inc/theme-options.php:131
 msgid "Number of events for each category displayed on homepage:"
 msgstr ""
 "Nombre d'événements affichés pour chaque catégorie sur la page d'accueil :"
 
-#: ../../iftheme/inc/theme-options.php:121
+#: ../../iftheme/inc/theme-options.php:133
+msgid "Number of events in listing displayed on category page:"
+msgstr "Nombre d'événements listés sur une page catégorie :"
+
+#: ../../iftheme/inc/theme-options.php:135
 msgid "Background image"
 msgstr "Image de fond"
 
-#: ../../iftheme/inc/theme-options.php:128
+#: ../../iftheme/inc/theme-options.php:142
 msgid "Facebook Page"
 msgstr "Page Facebook"
 
-#: ../../iftheme/inc/theme-options.php:130
+#: ../../iftheme/inc/theme-options.php:144
 msgid "Twitter Account"
 msgstr "Compte Twitter"
 
-#: ../../iftheme/inc/theme-options.php:132
+#: ../../iftheme/inc/theme-options.php:146
 msgid "Google Plus Page"
 msgstr "Page Google Plus"
 
-#: ../../iftheme/inc/theme-options.php:134
+#: ../../iftheme/inc/theme-options.php:148
 msgid "Your IF TV Page"
 msgstr "Votre page sur IF TV"
 
-#: ../../iftheme/inc/theme-options.php:136
+#: ../../iftheme/inc/theme-options.php:150
 msgid "You Tube Page"
 msgstr "Votre page You Tube"
 
-#: ../../iftheme/inc/theme-options.php:138
+#: ../../iftheme/inc/theme-options.php:152
 msgid "Instagram Page"
 msgstr "Votre page Instagram"
 
-#: ../../iftheme/inc/theme-options.php:142
+#: ../../iftheme/inc/theme-options.php:156
 msgid "Country's background frame"
 msgstr "Trame de fond du Pays"
 
-#: ../../iftheme/inc/theme-options.php:143
+#: ../../iftheme/inc/theme-options.php:157
 msgid "Displayed country's homepage categories"
 msgstr "Catégories affichées sur la page d'accueil Pays"
 
-#: ../../iftheme/inc/theme-options.php:144
+#: ../../iftheme/inc/theme-options.php:158
 msgid "Number of events for each category displayed on country's homepage:"
 msgstr ""
 "Nombre d'événements affichés pour chaque catégorie sur la page d'accueil :"
 
-#: ../../iftheme/inc/theme-options.php:145
+#: ../../iftheme/inc/theme-options.php:159
 msgid "Country's background image"
 msgstr "Image de fond Pays"
 
-#: ../../iftheme/inc/theme-options.php:183
-#: ../../iftheme/inc/theme-options.php:184
+#: ../../iftheme/inc/theme-options.php:197
+#: ../../iftheme/inc/theme-options.php:198
 msgid "Theme Options"
 msgstr "Options du thème"
 
-#: ../../iftheme/inc/theme-options.php:212
+#: ../../iftheme/inc/theme-options.php:226
 msgid "No frame"
 msgstr "Pas de trame"
 
-#: ../../iftheme/inc/theme-options.php:220
+#: ../../iftheme/inc/theme-options.php:234
 #, php-format
 msgid "Frame %s"
 msgstr "Trame %s"
 
-#: ../../iftheme/inc/theme-options.php:228
+#: ../../iftheme/inc/theme-options.php:242
 msgid "Frame 1"
 msgstr "Trame 1"
 
-#: ../../iftheme/inc/theme-options.php:373
+#: ../../iftheme/inc/theme-options.php:391
 msgid "You must create some child categories"
 msgstr "Vous devez créer des catégories enfants"
 
-#: ../../iftheme/inc/theme-options.php:373 ../../iftheme/sitemap.php:19
+#: ../../iftheme/inc/theme-options.php:391 ../../iftheme/sitemap.php:19
 msgid "Categories"
 msgstr "Catégories"
 
-#: ../../iftheme/inc/theme-options.php:418
+#: ../../iftheme/inc/theme-options.php:460
 msgid "Upload image"
 msgstr "Téléverser une image"
 
-#: ../../iftheme/inc/theme-options.php:419
+#: ../../iftheme/inc/theme-options.php:461
 msgid "Choose your background image"
 msgstr "Choisir l'image de fond"
 
-#: ../../iftheme/inc/theme-options.php:423
-#: ../../iftheme/inc/theme-options.php:581
+#: ../../iftheme/inc/theme-options.php:465
+#: ../../iftheme/inc/theme-options.php:623
 msgid "Actual Image"
 msgstr "Image actuelle"
 
-#: ../../iftheme/inc/theme-options.php:432
-#: ../../iftheme/inc/theme-options.php:586
+#: ../../iftheme/inc/theme-options.php:474
+#: ../../iftheme/inc/theme-options.php:628
 msgid "Remove image"
 msgstr "Supprimer l’image"
 
-#: ../../iftheme/inc/theme-options.php:484
+#: ../../iftheme/inc/theme-options.php:526
 msgid "In this section you can custom some functionalities."
 msgstr ""
 "Dans cette section, vous pouvez personnaliser certaines fonctionnalités."
 
-#: ../../iftheme/inc/theme-options.php:494
+#: ../../iftheme/inc/theme-options.php:536
 msgid "Check this box to display in the header the page's menu dropdown"
 msgstr ""
 "Cochez cette case pour afficher dans l'en-tête le menu déroulant des pages"
 
-#: ../../iftheme/inc/theme-options.php:506
+#: ../../iftheme/inc/theme-options.php:548
 msgid ""
 "Check this box to use and display the MailPoet Newsletters (formerly Wysija) "
 "subscription form embedded in IF theme"
@@ -1175,22 +1188,22 @@ msgstr ""
 "Cochez cette case pour utiliser et afficher le formulaire d'abonnement aux "
 "Newsletters MailPoet (anciennement Wysija) du thème IF"
 
-#: ../../iftheme/inc/theme-options.php:518
+#: ../../iftheme/inc/theme-options.php:560
 msgid ""
 "Check this box to display in the sidebar the default calendar of IF theme"
 msgstr ""
 "Cochez cette case pour afficher dans la barre latérale, le calendrier par "
 "défaut du thème IF"
 
-#: ../../iftheme/inc/theme-options.php:540
+#: ../../iftheme/inc/theme-options.php:582
 msgid "Please select an Under construction Landing page"
 msgstr "Veuillez sélectionner une page « En construction »"
 
-#: ../../iftheme/inc/theme-options.php:555
+#: ../../iftheme/inc/theme-options.php:597
 msgid "Check this box to use a custom frontpage."
 msgstr "Cochez cette case pour utiliser une page d'accueil personnalisée."
 
-#: ../../iftheme/inc/theme-options.php:556
+#: ../../iftheme/inc/theme-options.php:598
 msgid ""
 "You must create/edit a file named \"custom-frontpage.php\" in iftheme/ "
 "folder."
@@ -1198,19 +1211,39 @@ msgstr ""
 "Vous devez créer/éditer un fichier nommé « custom-frontpage.php » à la "
 "racine du dossier iftheme/."
 
-#: ../../iftheme/inc/theme-options.php:577
+#: ../../iftheme/inc/theme-options.php:619
 msgid "Upload Header image"
 msgstr "Télécharger une image d’en-tête"
 
-#: ../../iftheme/inc/theme-options.php:578
+#: ../../iftheme/inc/theme-options.php:620
 msgid "Image dimensions ratio: 620px X 135px"
 msgstr "Ratio dimensions de votre image : 620px X 135px"
 
-#: ../../iftheme/inc/theme-options.php:589
+#: ../../iftheme/inc/theme-options.php:631
 msgid "Optional link to put on your image"
 msgstr "Lien optionnel pour votre image"
 
-#: ../../iftheme/inc/theme-options.php:598
+#: ../../iftheme/inc/theme-options.php:652
+msgid "Check this box to always display news"
+msgstr "Cochez cette case pour afficher les articles sans limite de temps"
+
+#: ../../iftheme/inc/theme-options.php:653
+msgid "Leave it unchecked to display only news whose date is not passed"
+msgstr ""
+
+#: ../../iftheme/inc/theme-options.php:666
+msgid "Number of news to display:"
+msgstr "Nombre d'articles à afficher :"
+
+#: ../../iftheme/inc/theme-options.php:668
+msgid "Please choose how many news you want to display in news listing"
+msgstr ""
+
+#: ../../iftheme/inc/theme-options.php:683
+msgid "Check this box to use and display YMLP newsletter subscription form"
+msgstr ""
+
+#: ../../iftheme/inc/theme-options.php:690
 msgid ""
 "This section is where you can save the social networks where readers can "
 "find you on the Internet."
@@ -1218,7 +1251,7 @@ msgstr ""
 "Dans cette section, vous pouvez configurer vos réseaux sociaux, pour que vos "
 "visiteurs vous trouvent sur la toile."
 
-#: ../../iftheme/inc/theme-options.php:653
+#: ../../iftheme/inc/theme-options.php:745
 #, php-format
 msgid "%s Theme Options"
 msgstr "Options du thème %s"
@@ -1257,10 +1290,10 @@ msgstr "Calendrier IF"
 
 #: ../../iftheme/inc/widgets/calendar/if-calendar-widget.php:31
 #: ../../iftheme/inc/widgets/if-antennas-widget.php:38
-#: ../../iftheme/inc/widgets/if-categ-widget.php:64
+#: ../../iftheme/inc/widgets/if-categ-widget.php:65
 #: ../../iftheme/inc/widgets/if-mobile-widget.php:39
 #: ../../iftheme/inc/widgets/if-nopadding-widget.php:38
-#: ../../iftheme/inc/widgets/if-partners-widget.php:51
+#: ../../iftheme/inc/widgets/if-partners-widget.php:53
 #: ../../iftheme/inc/widgets/if-world-widget.php:39
 msgid "Title"
 msgstr "Titre"
@@ -1292,11 +1325,11 @@ msgstr ""
 msgid "Antenna's categories"
 msgstr "Catégories de l'antenne"
 
-#: ../../iftheme/inc/widgets/if-categ-widget.php:59
+#: ../../iftheme/inc/widgets/if-categ-widget.php:60
 msgid "None"
 msgstr "Aucun"
 
-#: ../../iftheme/inc/widgets/if-categ-widget.php:65
+#: ../../iftheme/inc/widgets/if-categ-widget.php:66
 msgid ""
 "You can custom the widget title here. Default is the category name you "
 "choose in the Category parent field below."
@@ -1304,7 +1337,7 @@ msgstr ""
 "Vous pouvez configurer le titre du widget ici. Le titre par défaut est le "
 "nom de la catégorie parent que vous choisissez dans le champ ci-dessous."
 
-#: ../../iftheme/inc/widgets/if-categ-widget.php:68
+#: ../../iftheme/inc/widgets/if-categ-widget.php:69
 msgid "Category parent"
 msgstr "Catégorie parent"
 
@@ -1374,7 +1407,7 @@ msgstr ""
 msgid "Antenna's partners"
 msgstr "Partenaires de l'antenne"
 
-#: ../../iftheme/inc/widgets/if-partners-widget.php:52
+#: ../../iftheme/inc/widgets/if-partners-widget.php:54
 msgid ""
 "You can custom the widget title here. Default is the title of the selected "
 "partner."
@@ -1382,23 +1415,23 @@ msgstr ""
 "Vous pouvez configurer le titre du widget ici. Par défaut c'est le titre des "
 "partenaires sélectionnés."
 
-#: ../../iftheme/inc/widgets/if-partners-widget.php:55
+#: ../../iftheme/inc/widgets/if-partners-widget.php:57
 msgid "Select Partners:"
 msgstr "Sélectionnez des partenaires :"
 
-#: ../../iftheme/inc/widgets/if-partners-widget.php:61
+#: ../../iftheme/inc/widgets/if-partners-widget.php:63
 msgid "You must create a Partner in order to use this widget:"
 msgstr "Vous devez créer un Partenaire pour utiliser ce widget :"
 
-#: ../../iftheme/inc/widgets/if-partners-widget.php:93
+#: ../../iftheme/inc/widgets/if-partners-widget.php:95
 msgid "Error"
 msgstr "Erreur"
 
-#: ../../iftheme/inc/widgets/if-partners-widget.php:105
+#: ../../iftheme/inc/widgets/if-partners-widget.php:107
 msgid "You must choose a Partner in the widget configuration:"
 msgstr "Vous devez choisir un Partenaire dans la configuration du widget :"
 
-#: ../../iftheme/inc/widgets/if-partners-widget.php:105
+#: ../../iftheme/inc/widgets/if-partners-widget.php:107
 msgid "widgets"
 msgstr "widgets"
 
@@ -1423,7 +1456,7 @@ msgstr "Etiquette"
 msgid "URL"
 msgstr "URL"
 
-#: ../../iftheme/index.php:250
+#: ../../iftheme/index.php:272
 msgid "No post for the moment & no homepage category selected"
 msgstr ""
 "Pas d'article pour l'instant & aucune catégorie de page d'accueil "
@@ -1437,12 +1470,12 @@ msgstr ""
 "Vous n'avez pas encore enregistré de <em>Diaporama</em>. <a href=\"/wp-admin/"
 "post-new.php?post_type=if_slider\">Voulez-vous le faire maintenant ?</a>"
 
-#: ../../iftheme/multi-front-page.php:244
+#: ../../iftheme/multi-front-page.php:259
 msgid "No post for the moment & no configuration options"
 msgstr ""
 "Aucun article/évènement pour l'instant & pas d'options de configuration"
 
-#: ../../iftheme/multi-front-page.php:274
+#: ../../iftheme/multi-front-page.php:287
 msgid "Coming soon"
 msgstr "Prochainement"
 
@@ -1450,19 +1483,19 @@ msgstr "Prochainement"
 msgid "Edit this page"
 msgstr "Modifier cette page"
 
-#: ../../iftheme/sidebar.php:36
+#: ../../iftheme/sidebar.php:39
 msgid "Newsletter"
 msgstr "Lettre d'information"
 
-#: ../../iftheme/sidebar.php:37
+#: ../../iftheme/sidebar.php:40
 msgid "Subscribe"
 msgstr "S'inscrire"
 
-#: ../../iftheme/sidebar.php:40
+#: ../../iftheme/sidebar.php:43
 msgid "OK"
 msgstr "OK"
 
-#: ../../iftheme/sidebar.php:41
+#: ../../iftheme/sidebar.php:44
 msgid ""
 "You’ve successfully subscribed. Check your inbox now to confirm your "
 "subscription."
@@ -1470,11 +1503,11 @@ msgstr ""
 "Inscription réussie. Vérifiez votre boîte de réception dès maintenant pour "
 "confirmer votre abonnement."
 
-#: ../../iftheme/sidebar.php:45
+#: ../../iftheme/sidebar.php:48
 msgid "Your Email"
 msgstr "Votre courriel"
 
-#: ../../iftheme/sidebar.php:76
+#: ../../iftheme/sidebar.php:86
 msgid "Join-us"
 msgstr "Rejoignez-nous"
 
@@ -1487,7 +1520,7 @@ msgstr "Modifier %s"
 msgid "Useful informations"
 msgstr "Infos"
 
-#: ../../iftheme/single.php:101
+#: ../../iftheme/single.php:120
 msgid "Booking"
 msgstr "Réservation"
 

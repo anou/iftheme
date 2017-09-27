@@ -7,7 +7,7 @@ require_once("Tax-meta-class/Tax-meta-class.php");
   global $current_user;
   $current_user = wp_get_current_user();
 
- 
+
 /*
 * configure taxonomy custom fields
 */
@@ -20,7 +20,7 @@ $configt = array(
    'local_images' => true,                         // Use local or hosted images (meta box images for add/remove)
    'use_with_theme' => true                        //change path if used with theme set to true, false for a plugin or anything else for a custom path(default false).
 );
- 
+
 /*
 * Initiate your taxonomy custom fields
 */
@@ -37,17 +37,19 @@ $custom_category->addCheckbox('categ_children',array('name'=> __('Display sub-ca
 $check = true;
 
 if(isset($_GET['taxonomy']) && $_GET['taxonomy'] == 'category' ){
-	$check = isset($_GET['tag_ID']) ? get_term_meta($_GET['tag_ID'],'categ_posts') : true;
+  $check = isset($_GET['tag_ID']) ? get_term_meta($_GET['tag_ID'],'categ_posts') : true;
 }
 $custom_category->addCheckbox('categ_posts',array('name'=> __('Display Posts','iftheme'), 'desc'=>__("Check this box if you want to display a list of the category's posts",'iftheme'), 'std' => $check));
 //hidden field
 //to avoid conflict with wpml plugin
-//  global $current_user;
+/**
+ * Detect plugin. For use on Front End only.
+ */
+include_once( ABSPATH . 'wp-admin/includes/plugin.php' );
+if ( is_plugin_active( 'sitepress-multilingual-cms/sitepress.php') ) {
   $current_user = wp_get_current_user();
-
-//$custom_category->addHidden('cur_user',array('name'=> 'current user', 'std'=>$current_user->ID));
-//$custom_category->addText('cur_user',array('name'=> 'current user', 'std'=>$current_user->ID));
-
+  $custom_category->addText('cur_user',array('name'=> 'current user', 'std'=>$current_user->ID));
+}
 $custom_category->Finish();
 
 

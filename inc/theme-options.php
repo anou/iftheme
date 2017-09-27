@@ -70,7 +70,7 @@ function iftheme_theme_options_init() {
 		'theme_options' // Menu slug, used to uniquely identify the page; see iftheme_theme_options_add_page()
 	);
 	
-	if( $multi && in_array('administrator', $current_user->caps) ) {
+	if( $multi && array_key_exists('administrator', $current_user->caps) ) {
 		//adding a section for the Country hompage if exist (multi-antenna site)
 		add_settings_section(
 			'homepage', // Unique identifier for the settings section
@@ -81,12 +81,18 @@ function iftheme_theme_options_init() {
 	}
 	// Add the section to theme options settings so we can add our fields to it.
 	//Only for admin (user 1) -- SPECIAL SETTINGS
-	if( in_array('administrator', $current_user->caps) ) {
+	if( array_key_exists('administrator', $current_user->caps) ) {
 	  add_settings_section('special_setting_section', __('Special settings','iftheme'), 'special_setting_section_callback_function', 'theme_options');
 	  //Header menu pages
 	  add_settings_field('theme_options_setting_header', __("Display header's menu pages",'iftheme'), 'theme_options_setting_header_callback_function', 'theme_options','special_setting_section');
-	  //Mailpoet NL form
-	  add_settings_field('theme_options_wysija_embed', __("Use MailPoet Newsletter's theme form",'iftheme'), 'theme_options_setting_wysija_embed_callback_function', 'theme_options','special_setting_section');
+    if ( is_plugin_active( 'wysija-newsletters/index.php' ) ){
+  	  //Mailpoet NL form
+  	  add_settings_field('theme_options_wysija_embed', __("Use MailPoet Newsletter's theme form",'iftheme'), 'theme_options_setting_wysija_embed_callback_function', 'theme_options','special_setting_section');
+    }
+    if ( is_plugin_active( 'nl-ymlp/nl-ymlp.php' ) ){
+      //display ymlp nl subscription form in sidebar
+      add_settings_field('custom_nl_form', __('Use YLMP newsletter subscription form', 'iftheme'), 'iftheme_settings_field_ymlp', 'theme_options', 'special_setting_section');
+    }
 	  //Display Calendar
 	  add_settings_field('theme_options_calendar', __("Calendar",'iftheme'), 'theme_options_setting_calendar_callback_function', 'theme_options','special_setting_section');
   	//Custom frontpage
@@ -96,6 +102,8 @@ function iftheme_theme_options_init() {
     if ( is_plugin_active( 'ifplugin/ifplugin.php' ) ){
       //display always news
       add_settings_field('display_news', __('News', 'iftheme'), 'iftheme_settings_field_news_diplay', 'theme_options', 'special_setting_section');
+      //number of news to display
+      add_settings_field('display_news_nb', __('Number of news', 'iftheme'), 'iftheme_settings_field_news_diplay_nb', 'theme_options', 'special_setting_section');
     }
 	  
     if ( is_plugin_active( 'underconstruction/underConstruction.php' ) ){
@@ -297,6 +305,8 @@ function iftheme_get_default_theme_options() {
 		'custom_hp' => 0,
 		'header_img' => '',
 		'display_news' => 0,
+		'display_news_nb' => 3,
+		'custom_nl_form' => false,
 		'header_img_link' => '',
 		'theme_options_setting_facebook' => '',
 		'theme_options_setting_twitter' => '',
@@ -443,10 +453,11 @@ function iftheme_settings_field_background_img( $pays = NULL ) {
 
 	$antenna = get_antenna();
 	$options = iftheme_get_theme_options();
-	?>
+  $id_img = $pays ? 'background_img_'.$pays : 'background_img';
+?>
 		<div class="layout image-background_img-option background-img">
 			<label for="background_img" class="description">
-				<input id="background_img<?php echo $pays ? '_'.$pays:'';?>" class="image-field" type="text" size="36" name="iftheme_theme_options_<?php echo $antenna;?>[background_img<?php echo $pays ? '_'.$pays : '';?>]" value="<?php echo $pays ? esc_attr( $options['background_img_country'] ) : esc_attr( $options['background_img'] ); ?>" /><?php //TODO : hide image when uploading a new one !!!?>
+				<input id="<?php echo $id_img;?>" class="image-field" type="text" size="36" name="iftheme_theme_options_<?php echo $antenna;?>[<?php echo $id_img;?>]" value="<?php echo $pays ? esc_attr( $options['background_img_country'] ) : esc_attr( $options['background_img'] ); ?>" /><?php //TODO : hide image when uploading a new one !!!?>
 				<button id="upload_image_button<?php echo $pays ? '_'.$pays : '';?>" type="button" class="upload-button"><?php _e('Upload image', 'iftheme');?></button>
 				<span style="display:inline-block; margin: 5px 0"><?php _e('Choose your background image', 'iftheme'); ?></span>
 			</label>
@@ -454,7 +465,7 @@ function iftheme_settings_field_background_img( $pays = NULL ) {
 			<div class="actual-img">
   			<p><?php _e('Actual Image', 'iftheme');?></p>
   			<br />
-			<?php if($options['background_img'] && !$section): ?>
+			<?php if($options[$id_img] && !$section): ?>
 			  <div class="bg-img-preview" style="background: transparent url('<?php echo esc_attr( $options["background_img"] ); ?>') no-repeat center center; background-size: contain;"></div>
       <?php endif;?>
 			
@@ -644,6 +655,36 @@ function iftheme_settings_field_news_diplay() {
    
   echo $html;
 }
+/**
+ * number of news to display in listing
+ */
+function iftheme_settings_field_news_diplay_nb() {
+	$antenna = get_antenna();
+	$options = iftheme_get_theme_options();
+	$defaults = iftheme_get_default_theme_options();
+  $value = isset($options['display_news_nb']) ? $options['display_news_nb'] : $defaults['display_news_nb'];
+   
+  $html = '<label for="display_news_nb">' . __('Number of news to display:', 'iftheme') . '</label>';
+  $html .= '<input type="number" id="display_news_nb" name="iftheme_theme_options_' . $antenna . '[display_news_nb]" value="' . $value . '" />';
+  $html .= '<p class="description">' . __('Please choose how many news you want to display in news listing', 'iftheme') . '</p>';
+   
+  echo $html;
+}
+
+/**
+ * special field for nl-ymlp plugin
+ */
+function iftheme_settings_field_ymlp() {
+	$antenna = get_antenna();
+	$options = iftheme_get_theme_options();
+	$defaults = iftheme_get_default_theme_options();
+  $value = isset($options['custom_nl_form']) ? $options['custom_nl_form'] : $defaults['custom_nl_form'];
+   
+  $html = '<input type="checkbox" id="custom_nl_form" name="iftheme_theme_options_' . $antenna . '[custom_nl_form]" ' . checked( $value, 'on', false ) . '/>';
+  $html .= '<label for="custom_nl_form">' . __('Check this box to use and display YMLP newsletter subscription form', 'iftheme') . '</label>';
+   
+  echo $html;
+}
 
 // —————-Settings section callback function social networks
 function social_setting_section_callback_function() {
@@ -772,6 +813,10 @@ function iftheme_theme_options_validate( $input ) {
 	$output['header_img_link'] = isset( $input['header_img_link'] ) ? $input['header_img_link'] : '';
 	//Display news
 	$output['display_news'] = isset($input['display_news']) ? $input['display_news'] : 0;
+	//Number of news
+	$output['display_news_nb'] = isset($input['display_news_nb']) ? $input['display_news_nb'] : 0;
+	//YMLP NL form
+	$output['custom_nl_form'] = isset($input['custom_nl_form']) ? $input['custom_nl_form'] : 0;
 
 	//Under construction Landing page
   if ( isset( $input['theme_options_setting_underconstruction'] ) )

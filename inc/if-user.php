@@ -29,16 +29,15 @@ function extendUser_antenna($user_id){
     $default_lg = isset($sitepress) ? $sitepress->get_default_language() : get_site_lang();
 
     $userID = $user_id->ID;
-    $userRole = $profileuser->roles[0];
-
+    $userRoles = $profileuser->roles;
+// echo '<pre>';print_r($profileuser);echo '</pre>';
     $antennaz = get_antenna_users();
 
-    //display only top level categories even if no posts assign to it
-    //FYI : add in array $args 'exclude'=>1 if you're not using the default category;
+    // display only top level categories even if no posts assign to it
+    // FYI : add in array $args 'exclude'=>1 if you're not using the default category;
     $args = array('parent'=>0,'hide_empty'=>0);
     $categories = get_categories($args);
 
-    //exclude categories that are allready in use
     foreach($antennaz as $k => $o){
     	$cat = get_user_meta($o->ID, 'categ_to_antenna', true);
 	    $usedCateg[$cat]['cat'] = $cat; 
@@ -47,13 +46,16 @@ function extendUser_antenna($user_id){
     
     foreach($categories as $c => $v){
       $tid = array_key_exists( 'wpml_object_id' , $GLOBALS['wp_filter'] ) ? apply_filters( 'wpml_object_id', $v->term_id, 'category', true, $default_lg) : $v->term_id;
-
+      
+      // exclude categories that are allready in use
+/*
 	    if(isset($usedCateg[$tid]['cat']) && $userID != $usedCateg[$tid]['user']){
 		    unset($categories[$c]);
 	    }
+*/
     }
     
-    if($userRole == "administrator" || $userRole == "antenna" && current_user_can('publish_posts')) : ?>
+    if( in_array("administrator", $userRoles) || in_array("antenna", $userRoles) && current_user_can('publish_posts') ) : ?>
    
     <h3><?php echo __('Category assigned to this Antenna', 'iftheme');?></h3>
  
@@ -77,7 +79,7 @@ function extendUser_antenna($user_id){
           <td><input type="radio" name="categ_to_antenna" value="<?php echo $categAdmin->cat_ID ?>" <?php checked( get_user_meta(1, "categ_to_antenna", true), $categAdmin->cat_ID ); ?> /></td>
         </tr>
       </table>
-    <?php else: ?>
+    <?php else: // not usefull anymore... ?>
       <?php _e('You must create another top level category to assign to this user', 'iftheme');?>
       <?php //defined('ICL_LANGUAGE_CODE') ? _e('Or there is no category in this language', 'iftheme') : '';?>
     <?php endif;?>
@@ -111,12 +113,13 @@ function if_modify_user_table( $column ) {
 }
 add_filter( 'manage_users_columns', 'if_modify_user_table' );
  
-//Add category assigned to user in admin users section
+// Add category assigned to user in admin users section
 function if_modify_user_table_row( $val, $column_name, $user_id ) {
-    $user = get_userdata( $user_id );
- 
-    if ( 'categ_to_antenna' == $column_name )
-    	$categ = get_cat_name( $user->categ_to_antenna );
+  $user = get_userdata( $user_id );
+  $categ = false;
+  if ( 'categ_to_antenna' == $column_name )
+    $categ = get_cat_name( $user->categ_to_antenna );
+
 		return $categ;
 }
 add_filter( 'manage_users_custom_column', 'if_modify_user_table_row', 10, 3 );

@@ -156,13 +156,21 @@
       <?php // check for IF plugin
           if ( is_plugin_active( 'ifplugin/ifplugin.php' ) ) {
             $always_news = isset( $options[$original]['display_news'] ) ? $options[$original]['display_news'] : 0;
+            $display_news_nb = 3; //default 
+            if( isset( $options[$original]['display_news_nb'] ) ){
+              $display_news_nb = $options[$original]['display_news_nb'];
+            } 
+            else if( isset( $options['display_news_nb'] ) ){
+              $display_news_nb = $options['display_news_nb'];
+            }
             //plugin is activated
             $news_args = array(
               'cat' => $cid,
               'post_type' => array('news'),
               'meta_key' => '_ifp_news_date',
               'orderby' => 'meta_value_num',
-              'order' => 'ASC',
+              'order' => 'DESC',
+              'posts_per_page' => $display_news_nb,
             );
             if( !$always_news ) {
               $news_args['meta_query'] = array(
@@ -189,7 +197,7 @@
 						$pid = get_the_ID();
 						$data = get_meta_if_post($pid);
 						$type = isset($data['type']) ? $data['type'] : false;
-						$classes = 'post-single-home clearfix';
+						$classes = 'clearfix post-single-home';
 						$classes .= $type ? ' ' . $type : '';
 						$classes = apply_filters('if_event_classes', $classes);
 						
