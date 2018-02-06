@@ -152,7 +152,7 @@ function iftheme_theme_options_init() {
 	add_settings_field('theme_options_setting_instagram', __('Instagram Page','iftheme'),'theme_options_setting_instagram_callback_function','theme_options','social_setting_section');
 
 	// Register our individual settings fields for country hompage if multi-antenna site
-	if($multi && $current_user->caps['administrator']) {
+	if($multi && array_key_exists('administrator', $current_user->caps) ) {
 		add_settings_field('bg_frame_country', __( "Country's background frame", 'iftheme' ), 'iftheme_settings_field_bg_frames_country', 'theme_options', 'homepage' );
 		add_settings_field( 'theme_home_categ_country', __( "Displayed country's homepage categories", 'iftheme' ), 'iftheme_settings_field_home_categories_country', 'theme_options', 'homepage' );//categories on homepage
 	add_settings_field( 'theme_home_nb_events_country', __( "Number of events for each category displayed on country's homepage:", 'iftheme' ), 'iftheme_settings_field_nb_events_country', 'theme_options', 'homepage' );//number of posts on homepage
