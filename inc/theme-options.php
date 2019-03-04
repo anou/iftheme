@@ -80,13 +80,13 @@ function iftheme_theme_options_init() {
 		);
 	}
 	// Add the section to theme options settings so we can add our fields to it.
-	//Only for admin (user 1) -- SPECIAL SETTINGS
+	// Only for admin (user 1) -- SPECIAL SETTINGS
 	if( array_key_exists('administrator', $current_user->caps) ) {
 	  add_settings_section('special_setting_section', __('Special settings','iftheme'), 'special_setting_section_callback_function', 'theme_options');
 	  //Header menu pages
 	  add_settings_field('theme_options_setting_header', __("Display header's menu pages",'iftheme'), 'theme_options_setting_header_callback_function', 'theme_options','special_setting_section');
-    if ( is_plugin_active( 'wysija-newsletters/index.php' ) ){
-  	  //Mailpoet NL form
+    if ( is_plugin_active( 'wysija-newsletters/index.php') || is_plugin_active( 'mailpoet/mailpoet.php' ) ) {
+  	  // Mailpoet NL form
   	  add_settings_field('theme_options_wysija_embed', __("Use MailPoet Newsletter's theme form",'iftheme'), 'theme_options_setting_wysija_embed_callback_function', 'theme_options','special_setting_section');
     }
     if ( is_plugin_active( 'nl-ymlp/nl-ymlp.php' ) ){
