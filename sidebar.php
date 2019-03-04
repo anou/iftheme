@@ -4,7 +4,8 @@
 
   if($multi){
     $sidebar = !$cat_slug ? 'Sidebar' : 'Sidebar '.$cat_slug;
-  } else { $sidebar = 'Sidebar';}
+  } 
+  else { $sidebar = 'Sidebar';}
 ?>
 <div id="sidebar">
       <?php  //NEWSLETTER FORM
@@ -18,7 +19,6 @@
       else {
         $wysija_embedded = isset($options['theme_options_setting_wysija_embed']) ? $options['theme_options_setting_wysija_embed'] : $wysija_embedded;
       }
-
       // mailpoet 2
       $wysija2 = defined('WYSIJA');
 
@@ -86,7 +86,7 @@
         //echo $form_widget->widget(array('form' => 1, 'form_type' => 'php'));
         echo $form_widget->widget($widgetdata);
       }
-
+      
       ?>
     <!-- CUSTOM NL FORM -->
     <?php $custom_nl_form = false;

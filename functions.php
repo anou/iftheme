@@ -209,8 +209,10 @@ function get_if_top_categ( $args = array() ) {
     'title_li' => '',
     'child_of' => 0,
     'depth' => 1,
+    'hierarchical' => true,
   );
 
+  
   if( !empty($args) && is_array($args) ) {
     $default_args = array_merge($default_args,$args);
   }
@@ -1644,7 +1646,7 @@ elseif(function_exists('icl_get_languages')) {
 
 //MISCELANEOUS
 function if_login_logo() {
-    echo '<style type="text/css">.login h1 a { background-image:url('.get_bloginfo('template_url').'/images/logo-if.png) !important; background-size:auto !important; width:auto} </style>';
+    echo '<style type="text/css">.login h1 a { background-image:url('.get_bloginfo('template_url').'/images/logo-if.png) !important; background-size:contain !important; width:auto} </style>';
 }
 add_action('login_head', 'if_login_logo');
 

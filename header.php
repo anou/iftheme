@@ -106,17 +106,17 @@ $current_user = wp_get_current_user();
   <?php if( is_rtl() ):?><link rel="stylesheet" type="text/css" media="all" href="<?php bloginfo( 'template_directory' );?>/rtl.css" /><?php endif;?>
 
 	<style type="text/css">
-		<?php if(!is_date() && !is_404() && !is_search() && !is_page() && $multi && (!$if_front || !is_home())) : ?> 
-		  #top-menu-antennes ul li.cat-item-<?php echo $antenna;?> a { color: #008ac9; } 
+		<?php if(!is_date() && !is_404() && !is_search() && !is_page() && $multi && (!$if_front || !is_home())) : ?>
+		  #top-menu-antennes ul li.cat-item-<?php echo $antenna;?> a { color: #008ac9; }
 		<?php endif;?>
-  	<?php 
+  	<?php
   	if( $multi ) {
-  	  $i = 0; 
+  	  $i = 0;
   	  $j = count($options);
   	  foreach($options as $k => $vals){
   	  	printf('body.category-%s {background-image: url(%s) !important}  body.category-%s .sides {background-image: url(%s) !important}',
   		      $k,
-  		      $vals['background_img'], 
+  		      $vals['background_img'],
   		      $k,
   		      $vals['bg_frame'] != 'f0' ? get_template_directory_uri() . '/inc/images/frames/'.$vals['bg_frame'] . '.png' : ''
   		  );
@@ -124,16 +124,16 @@ $current_user = wp_get_current_user();
         $k = array_key_exists( 'wpml_object_id' , $GLOBALS['wp_filter'] ) ? apply_filters( 'wpml_object_id', $k, 'category', true) : $k;
   	  	printf('body.category-%s {background-image: url(%s) !important}  body.category-%s .sides {background-image: url(%s) !important}',
   		      $k,
-  		      $vals['background_img'], 
+  		      $vals['background_img'],
   		      $k,
   		      $vals['bg_frame'] != 'f0' ? get_template_directory_uri() . '/inc/images/frames/'.$vals['bg_frame'] . '.png' : ''
   		  );
-  		 
+
         $i++;
-  		 
+
         if($j <= $i){ //home css
-  		 	  printf('body.home {background-image: url(%s) !important} body.home .sides {background-image: url(%s) !important}', 
-  		 		   $vals['background_img_country'], 
+  		 	  printf('body.home {background-image: url(%s) !important} body.home .sides {background-image: url(%s) !important}',
+  		 		   $vals['background_img_country'],
   		 		   $vals['bg_frame'] != 'f0' ? get_template_directory_uri() . '/inc/images/frames/'.$vals['bg_frame_country'] . '.png' : ''
           );
   		  }
@@ -185,7 +185,7 @@ $current_user = wp_get_current_user();
       <?php if( $custom_hp ):?>
           <?php require_once('custom-header.php'); ?>
       <?php else: ?>
-  			<div id="logo-container">
+  			<div id="logo-container" class="logo-container">
   				<div id="logo">
   					<a href="<?php bloginfo('url');?>" title="<?php bloginfo('description'); ?>"><img src="<?php echo bloginfo('template_url');?>/images/logo-if.png" alt="<?php bloginfo('name'); ?>" /></a>
   				</div>
