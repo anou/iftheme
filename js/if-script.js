@@ -75,7 +75,7 @@ $(document).ready(function() {
     
     }
     
-    //PARTNERS
+    // PARTNERS
     if ($('.partners').length) {
 	    $(function(){
 	      $(".partners").slides({
@@ -119,7 +119,7 @@ $(document).ready(function() {
 	}
  }
 	
-	//main menu
+	// main menu
 	//$('nav#antennes').css('height','30px');
 	  
  
@@ -134,14 +134,12 @@ if (windowWidth > 767){
     $('.children li.current-cat-parent').closest('ul.children').show();
   }
   
-  //uncomment to display sub-menu on mouseover
-/*
+  // comment to hide sub-menu on mouseover (@todo: theme setting
   $('nav#antennes ul:not(.children) li.cat-item').each(function(){ 
     $(this).hover( function() {
       $(this).find('ul.children').stop( true, true ).slideToggle('fast');
     });
   });
-*/
 }
 //responsive select
 
